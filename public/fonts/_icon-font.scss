@@ -1,0 +1,404 @@
+/**
+icon-font Webfont
+*/
+//@base-url: fontURL; //icon-font
+
+//@base-url path is provided from variable.less file.
+
+ @font-face {
+	font-family: 'icon-font';
+	src: url('#{$font-icon-url}icon-font.eot');
+	src: url('#{$font-icon-url}icon-font.eot') format('embedded-opentype'),
+		url('#{$font-icon-url}icon-font.woff2') format('woff2'),
+		url('#{$font-icon-url}icon-font.woff?') format('woff'),
+		url('#{$font-icon-url}icon-font.ttf?') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+
+.icon,
+%icon,
+*[class^='icon-']{
+	font-family: 'icon-font';
+	display: inline-block;
+	vertical-align: middle;
+	line-height: 1.2;
+	font-weight: normal;
+	font-style: normal;
+	speak: none;
+	text-decoration: inherit;
+	font-size: inherit;
+	text-transform: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+@function icon-char($filename) {
+  $char: "";
+
+@if $filename == add {
+$char: "\E001";
+}
+@if $filename == arrow-down {
+$char: "\E002";
+}
+@if $filename == arrow-up {
+$char: "\E003";
+}
+@if $filename == cal {
+$char: "\E004";
+}
+@if $filename == check {
+$char: "\E005";
+}
+@if $filename == chevron-down {
+$char: "\E006";
+}
+@if $filename == chevron-left {
+$char: "\E007";
+}
+@if $filename == chevron-right {
+$char: "\E008";
+}
+@if $filename == chevron-up {
+$char: "\E009";
+}
+@if $filename == circle-question {
+$char: "\E00A";
+}
+@if $filename == cisco-logo {
+$char: "\E00B";
+}
+@if $filename == close {
+$char: "\E00C";
+}
+@if $filename == cog {
+$char: "\E00D";
+}
+@if $filename == exit-contain {
+$char: "\E00E";
+}
+@if $filename == help-outline {
+$char: "\E00F";
+}
+@if $filename == modal-close {
+$char: "\E010";
+}
+@if $filename == more {
+$char: "\E011";
+}
+@if $filename == participant-list {
+$char: "\E012";
+}
+@if $filename == power {
+$char: "\E013";
+}
+@if $filename == search {
+$char: "\E014";
+}
+@if $filename == settings {
+$char: "\E015";
+}
+@if $filename == sort {
+$char: "\E016";
+}
+
+@return $char;
+}
+
+@mixin icon($filename) {
+  content: icon-char($filename);
+}
+
+
+
+
+
+.icon-add{
+  &:before {
+   @include icon(add);
+  }
+}
+
+
+
+@mixin icon-add {
+   @extend %icon;
+   @include icon(add);
+}
+
+.icon-arrow-down{
+  &:before {
+   @include icon(arrow-down);
+  }
+}
+
+
+
+@mixin icon-arrow-down {
+   @extend %icon;
+   @include icon(arrow-down);
+}
+
+.icon-arrow-up{
+  &:before {
+   @include icon(arrow-up);
+  }
+}
+
+
+
+@mixin icon-arrow-up {
+   @extend %icon;
+   @include icon(arrow-up);
+}
+
+.icon-cal{
+  &:before {
+   @include icon(cal);
+  }
+}
+
+
+
+@mixin icon-cal {
+   @extend %icon;
+   @include icon(cal);
+}
+
+.icon-check{
+  &:before {
+   @include icon(check);
+  }
+}
+
+
+
+@mixin icon-check {
+   @extend %icon;
+   @include icon(check);
+}
+
+.icon-chevron-down{
+  &:before {
+   @include icon(chevron-down);
+  }
+}
+
+
+
+@mixin icon-chevron-down {
+   @extend %icon;
+   @include icon(chevron-down);
+}
+
+.icon-chevron-left{
+  &:before {
+   @include icon(chevron-left);
+  }
+}
+
+
+
+@mixin icon-chevron-left {
+   @extend %icon;
+   @include icon(chevron-left);
+}
+
+.icon-chevron-right{
+  &:before {
+   @include icon(chevron-right);
+  }
+}
+
+
+
+@mixin icon-chevron-right {
+   @extend %icon;
+   @include icon(chevron-right);
+}
+
+.icon-chevron-up{
+  &:before {
+   @include icon(chevron-up);
+  }
+}
+
+
+
+@mixin icon-chevron-up {
+   @extend %icon;
+   @include icon(chevron-up);
+}
+
+.icon-circle-question{
+  &:before {
+   @include icon(circle-question);
+  }
+}
+
+
+
+@mixin icon-circle-question {
+   @extend %icon;
+   @include icon(circle-question);
+}
+
+.icon-cisco-logo{
+  &:before {
+   @include icon(cisco-logo);
+  }
+}
+
+
+
+@mixin icon-cisco-logo {
+   @extend %icon;
+   @include icon(cisco-logo);
+}
+
+.icon-close{
+  &:before {
+   @include icon(close);
+  }
+}
+
+
+
+@mixin icon-close {
+   @extend %icon;
+   @include icon(close);
+}
+
+.icon-cog{
+  &:before {
+   @include icon(cog);
+  }
+}
+
+
+
+@mixin icon-cog {
+   @extend %icon;
+   @include icon(cog);
+}
+
+.icon-exit-contain{
+  &:before {
+   @include icon(exit-contain);
+  }
+}
+
+
+
+@mixin icon-exit-contain {
+   @extend %icon;
+   @include icon(exit-contain);
+}
+
+.icon-help-outline{
+  &:before {
+   @include icon(help-outline);
+  }
+}
+
+
+
+@mixin icon-help-outline {
+   @extend %icon;
+   @include icon(help-outline);
+}
+
+.icon-modal-close{
+  &:before {
+   @include icon(modal-close);
+  }
+}
+
+
+
+@mixin icon-modal-close {
+   @extend %icon;
+   @include icon(modal-close);
+}
+
+.icon-more{
+  &:before {
+   @include icon(more);
+  }
+}
+
+
+
+@mixin icon-more {
+   @extend %icon;
+   @include icon(more);
+}
+
+.icon-participant-list{
+  &:before {
+   @include icon(participant-list);
+  }
+}
+
+
+
+@mixin icon-participant-list {
+   @extend %icon;
+   @include icon(participant-list);
+}
+
+.icon-power{
+  &:before {
+   @include icon(power);
+  }
+}
+
+
+
+@mixin icon-power {
+   @extend %icon;
+   @include icon(power);
+}
+
+.icon-search{
+  &:before {
+   @include icon(search);
+  }
+}
+
+
+
+@mixin icon-search {
+   @extend %icon;
+   @include icon(search);
+}
+
+.icon-settings{
+  &:before {
+   @include icon(settings);
+  }
+}
+
+
+
+@mixin icon-settings {
+   @extend %icon;
+   @include icon(settings);
+}
+
+.icon-sort{
+  &:before {
+   @include icon(sort);
+  }
+}
+
+
+
+@mixin icon-sort {
+   @extend %icon;
+   @include icon(sort);
+}

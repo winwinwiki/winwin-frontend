@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="332px" height="481px" viewBox="0 0 332 481" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Colored Stars</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Login-Page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-809.000000, -268.000000)" id="Info-Card">
+            <g transform="translate(268.000000, 225.000000)">
+                <g id="Bitmap" transform="translate(88.700483, 0.000000)">
+                    <g id="Colored-Stars" transform="translate(422.690821, 40.104878)">
+                        <polygon id="Rectangle-10" fill="#75F0CB" style="mix-blend-mode: multiply;" transform="translate(230.220826, 426.336872) rotate(57.000000) translate(-230.220826, -426.336872) " points="235.878441 427.286366 229.223236 431.72172 224.563211 425.387378 231.218416 420.952025"></polygon>
+                        <polygon id="Rectangle-10-Copy-2" fill="#75F0CB" style="mix-blend-mode: multiply;" transform="translate(356.728072, 8.125623) rotate(117.000000) translate(-356.728072, -8.125623) " points="362.385687 9.07511734 355.730482 13.5104712 351.070457 7.17612942 357.725662 2.74077555"></polygon>
+                        <polygon id="Rectangle-10-Copy" fill="#4BA3F8" style="mix-blend-mode: multiply;" points="311.091393 235.765574 304.436188 240.200928 299.776163 233.866586 306.431368 229.431232"></polygon>
+                        <polygon id="Triangle-2" fill="#75F0CB" style="mix-blend-mode: multiply;" transform="translate(126.926613, 472.973214) rotate(124.000000) translate(-126.926613, -472.973214) " points="134.849622 478.358062 118.440191 475.005008 135.413035 467.588366"></polygon>
+                        <polygon id="Triangle-2-Copy" fill="#75F0CB" style="mix-blend-mode: multiply;" transform="translate(33.114425, 37.106497) rotate(-52.000000) translate(-33.114425, -37.106497) " points="39.4528325 41.4143751 26.3252873 38.731932 39.903563 32.7986186"></polygon>
+                        <polygon id="Triangle-2-Copy-4" fill="#FFA617" style="mix-blend-mode: multiply;" transform="translate(239.361528, 189.042717) rotate(-52.000000) translate(-239.361528, -189.042717) " points="245.699935 193.350595 232.57239 190.668152 246.150666 184.734839"></polygon>
+                        <polygon id="Triangle-2-Copy-3" fill="#4BA3F8" style="mix-blend-mode: multiply;" transform="translate(160.578986, 17.968439) rotate(40.000000) translate(-160.578986, -17.968439) " points="166.917393 22.2763169 153.789848 19.5938738 167.368123 13.6605604"></polygon>
+                        <polygon id="Triangle-2-Copy-2" fill="#75F0CB" style="mix-blend-mode: multiply;" points="347.688624 404.157306 334.561079 401.474863 348.139355 395.54155"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
