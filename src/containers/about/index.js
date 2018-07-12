@@ -7,9 +7,7 @@ import AppliedFilters from '../applied-filters';
 
 export default () => (
     <React.Fragment>
-        <nav className="navbar fixed-top navbar-dark bg-dark navbar-expand-md">
-            <Header/>
-        </nav>
+        <Header/>
         <main role="main" className="dashboard-container">
             <SectionHeader/>
             <section className="dashboard-content p-0">

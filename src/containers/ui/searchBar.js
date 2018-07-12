@@ -1,7 +1,6 @@
 import React from 'react';
-import './search.css';
 
-const Search = () => {
+const SearchBar = () => {
     return (
         <div className="form-group search-input-group search">
             <label for="inputDropdown1" className="sr-only">Search Input</label>
@@ -10,4 +9,4 @@ const Search = () => {
     )
 }
 
-export default Search;
+export default SearchBar;

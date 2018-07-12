@@ -1,11 +1,18 @@
 import React from 'react';
+import ButtonGroup from '../ui/buttonGroup';
+import Search from '../ui/searchBar';
 
-const OrgFilter = (props) => {
+const OrgFilters = () => {
     return (
-    <div className="d-flex flex-column h-100">
-      org filter view here
+    <div className="d-flex align-content-center border-bottom py-3">
+        <Search/>
+        <ButtonGroup/>
+        <div className="ml-auto">
+            <a href="javascript:;" className="btn btn-link"><i className="icon-add mr-1"></i> Create</a>
+            <a href="javascript:;" className="btn btn-link pr-0"><i className="icon-upload mr-1"></i> Upload</a>
+        </div>
     </div>
     )
 }
 
-export default OrgFilter;
+export default OrgFilters;
