@@ -69,41 +69,47 @@ $char: "\E009";
 @if $filename == circle-question {
 $char: "\E00A";
 }
-@if $filename == cisco-logo {
+@if $filename == close {
 $char: "\E00B";
 }
-@if $filename == close {
+@if $filename == cog {
 $char: "\E00C";
 }
-@if $filename == cog {
+@if $filename == exit-contain {
 $char: "\E00D";
 }
-@if $filename == exit-contain {
+@if $filename == filter {
 $char: "\E00E";
 }
 @if $filename == help-outline {
 $char: "\E00F";
 }
-@if $filename == modal-close {
+@if $filename == menu {
 $char: "\E010";
 }
-@if $filename == more {
+@if $filename == modal-close {
 $char: "\E011";
 }
-@if $filename == participant-list {
+@if $filename == more {
 $char: "\E012";
 }
-@if $filename == power {
+@if $filename == participant-list {
 $char: "\E013";
 }
-@if $filename == search {
+@if $filename == power {
 $char: "\E014";
 }
-@if $filename == settings {
+@if $filename == search {
 $char: "\E015";
 }
-@if $filename == sort {
+@if $filename == settings {
 $char: "\E016";
+}
+@if $filename == sort {
+$char: "\E017";
+}
+@if $filename == upload {
+$char: "\E018";
 }
 
 @return $char;
@@ -247,19 +253,6 @@ $char: "\E016";
    @include icon(circle-question);
 }
 
-.icon-cisco-logo{
-  &:before {
-   @include icon(cisco-logo);
-  }
-}
-
-
-
-@mixin icon-cisco-logo {
-   @extend %icon;
-   @include icon(cisco-logo);
-}
-
 .icon-close{
   &:before {
    @include icon(close);
@@ -299,6 +292,19 @@ $char: "\E016";
    @include icon(exit-contain);
 }
 
+.icon-filter{
+  &:before {
+   @include icon(filter);
+  }
+}
+
+
+
+@mixin icon-filter {
+   @extend %icon;
+   @include icon(filter);
+}
+
 .icon-help-outline{
   &:before {
    @include icon(help-outline);
@@ -310,6 +316,19 @@ $char: "\E016";
 @mixin icon-help-outline {
    @extend %icon;
    @include icon(help-outline);
+}
+
+.icon-menu{
+  &:before {
+   @include icon(menu);
+  }
+}
+
+
+
+@mixin icon-menu {
+   @extend %icon;
+   @include icon(menu);
 }
 
 .icon-modal-close{
@@ -401,4 +420,17 @@ $char: "\E016";
 @mixin icon-sort {
    @extend %icon;
    @include icon(sort);
+}
+
+.icon-upload{
+  &:before {
+   @include icon(upload);
+  }
+}
+
+
+
+@mixin icon-upload {
+   @extend %icon;
+   @include icon(upload);
 }

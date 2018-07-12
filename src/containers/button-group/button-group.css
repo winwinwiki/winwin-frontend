@@ -1,0 +1,13 @@
+.btn-group .btn-outline-secondary:not(:disabled):not(.disabled):active,
+.btn-group .btn-outline-secondary:not(:disabled):not(.disabled).active,
+.show > .btn-outline-secondary.dropdown-toggle {
+    background: #9AD8F3;
+    border-color: #9AD8F3;
+    color: #145976;
+}
+
+.btn-group .btn-outline-secondary:hover {
+    background: #9AD8F3;
+    border-color: #9AD8F3;
+    color: #145976;
+}
