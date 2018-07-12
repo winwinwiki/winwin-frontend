@@ -4,12 +4,11 @@ import Login from '../auth/login';
 
 const Home = (props) => {
     return (
-    <div className="d-flex flex-column h-100">
       <div className="main-content d-flex flex-grow-1">
         <main className="section-login p-3 flex-fill d-flex align-items-center">
           <div className="login-container d-flex px-4">
             <div className="card card-login align-items-center">
-              <div className="my-5"><img src="../images/cisco-logo.svg" alt="cisco logo" className="mb-2"/></div>
+              <div className="my-5"><img src="../images/winwin-logo.svg" alt="WinWin logo" className="mb-2"/></div>
                {props.children}
             </div>
             <div className="login-text">
@@ -19,7 +18,6 @@ const Home = (props) => {
           </div>
         </main>
       </div>
-    </div>
     )
 }
 

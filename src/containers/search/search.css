@@ -1,0 +1,16 @@
+::-webkit-input-placeholder {
+    text-transform: none;
+    font-weight: 300;
+}
+::-moz-placeholder {
+    text-transform: none;
+    font-weight: 300;
+}
+:-ms-input-placeholder {
+    text-transform: none;
+    font-weight: 300;
+}
+:-moz-placeholder {
+    text-transform: none;
+    font-weight: 300;
+}
