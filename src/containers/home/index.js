@@ -1,6 +1,4 @@
 import React from 'react';
-import './home.css';
-import Login from '../auth/login';
 
 const Home = (props) => {
     return (
