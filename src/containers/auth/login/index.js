@@ -96,7 +96,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    changePage: () => push('/about-us'),
+    changePage: () => push('/organizations'),
     onLogin,
     validateLoginForm
 }, dispatch)
