@@ -1,0 +1,88 @@
+.custom-select{
+
+}
+.custom-control-label{
+  line-height: 1.5rem;
+  &::before {
+    border: 1px solid $gray-three;
+  }
+  @include hover-focus-active{
+    color: $primary;
+    &::before {
+      background-color: $white;
+      border-color: $primary;
+    }
+  }
+}
+
+.custom-checkbox {
+  .custom-control-input {
+    &:checked ~ .custom-control-label {
+      &::before {
+        background-color: $white;
+      }
+      &::after {
+        background-image: none !important;
+        background-color: $primary;
+        width: .61rem;
+        height: .6rem;
+        top: 0.45rem;
+        left: -1.3rem
+      }
+    }
+  }
+}
+.custom-control-input{
+
+  &:checked ~ .custom-control-label {
+    color: $primary;
+    &::before {
+      border-color: $primary;
+    }
+  }
+
+  &:disabled,
+  &.disabled{
+    ~ .custom-control-label {
+      &::before {
+        background-color: $white;
+        border-color: $gray-three;
+      }
+      cursor: not-allowed;
+    }
+
+    &:checked ~ .custom-control-label {
+      &::before {
+        border-color: $primary;
+
+      }
+    }
+  }
+}
+
+//Checkbox : Hover When checked!
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label{
+  @include hover{
+    &:before{
+      background-color: $white;
+    }
+
+    &:after{
+      //background-image: $custom-checkbox-indicator-icon-checked-hover;
+    }
+
+  }
+}
+
+.custom-radio .custom-control-input:checked ~ .custom-control-label{
+  @include hover{
+    &:before{
+      background-color: $white;
+    }
+
+    &:after{
+      //background-image: $custom-radio-indicator-icon-checked-hover;
+    }
+
+  }
+}

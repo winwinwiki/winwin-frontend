@@ -1,0 +1,27 @@
+//Bootstrap Modal
+@import "node_modules/bootstrap/scss/_modal";
+
+//Custom Modal // Bootstrap override.
+.modal{
+  .modal-open &{
+    overflow: hidden;
+  }
+  .modal-content{
+    max-height: calc(100vh - 100px);
+  }
+
+  .modal-close{
+    font-size: rem(20px);
+  }
+  .modal-title{
+    font-size: rem(36px);
+  }
+  .bg-info{
+    .modal-title,
+    .modal-close{
+      color: $white;
+    }
+
+  }
+
+}

@@ -1,0 +1,10 @@
+.badge-secondary {
+  background-color: $badge-bg-color;
+  color: $badge-text-color;
+  font-weight: 300;
+  font-size: rem(12px);
+
+  a {
+    color: $badge-text-color;
+  }
+}

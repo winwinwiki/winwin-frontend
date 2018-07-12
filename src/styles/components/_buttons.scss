@@ -1,0 +1,48 @@
+.btn {
+  font-size: 14px;
+  line-height: 24px;
+  //@include button-size($btn-padding-y, $btn-padding-x, $font-size-button, $btn-line-height, $btn-border-radius);
+}
+
+.btn-outline-secondary {
+  border-color: #E6E6E6;
+}
+
+.btn-lg{
+  font-size: 20px !important;
+}
+
+.btn-icon{
+  *[class*='icon-']{
+    font-size: rem(11px);
+    line-height: $line-height-one;
+  }
+}
+
+.btn-tiles {
+  border-radius: rem(23px);
+  font-size: rem(11px);
+  padding: 6px 10px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  &:last-child {
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+}
+
+.btn-icon-only{
+  padding: rem(3px);
+  border-radius: 50%;
+  line-height: 9px;
+  @include hover-focus{
+    text-decoration: none;
+  }
+
+  *[class*='icon-']{
+    font-size: rem(10px);
+    line-height: $line-height-one;
+    color: $white;
+    font-weight: 700;
+  }
+}
