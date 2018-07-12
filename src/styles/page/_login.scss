@@ -1,0 +1,104 @@
+$login-container-bg: #FAFAFA;
+$login-header-color: #6D7C7F;
+$login-button-color: #219ED6;
+
+.section-login{
+  background: $login-bg;
+  background-size: cover;
+}
+
+.login-container {
+  background: $login-container-bg;
+  box-shadow: 0 20px 60px 10px rgba(55, 55, 55, 0.40); //0 32px 45px 0 rgba(55,55,55,0.63);
+  border-radius: 6px;
+  margin: 0 auto;
+  width:904px;
+}
+
+.login-text {
+  background: url(../images/login-bg.svg) right center no-repeat;
+  padding: 80px 50px 80px 80px;
+  width: 400px;
+
+  h1 {
+    color: $login-header-color;
+    font-size: 32px;
+  }
+
+  p {
+    color: #6D7C7F;
+    font-size: 16px;
+  }
+}
+
+.card-login{
+  width: 468px;
+  min-height: 660px;
+  max-height: 90vh;
+  border: none;
+  border-radius: 0;
+  padding: rem(56px 35px);
+  margin-top: -50px;
+  margin-bottom: -50px;
+  background: rgba(193,240,255,1);
+  background: -moz-linear-gradient(top, rgba(193,240,255,1) 0%, rgba(33,157,214,1) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(193,240,255,1)), color-stop(100%, rgba(33,157,214,1)));
+  background: -webkit-linear-gradient(top, rgba(193,240,255,1) 0%, rgba(33,157,214,1) 100%);
+  background: -o-linear-gradient(top, rgba(193,240,255,1) 0%, rgba(33,157,214,1) 100%);
+  background: -ms-linear-gradient(top, rgba(193,240,255,1) 0%, rgba(33,157,214,1) 100%);
+  background: linear-gradient(to bottom, rgba(193,240,255,1) 0%, rgba(33,157,214,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c1f0ff', endColorstr='#219dd6', GradientType=0 );
+
+  a {
+    font-size: 14px;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .btn {
+    border-radius: 40px;
+    color: $login-button-color;
+    line-height: 42px;
+    text-transform: uppercase;
+  }
+}
+
+.login-heading{
+  font-size:rem(26px);
+  font-weight: 200;
+  color: $login-heading-color;
+}
+
+.login-sub-header{
+  color: $login-sub-header-color;
+  font-size: rem(20px);
+  line-height: $line-height-one;
+  font-weight: 200;
+  margin-bottom: rem(33px);
+}
+
+.login-form-group{
+  .form-control, .custom-select{
+    border: 1px solid $white;
+    border-radius: 40px;
+    background: rgba(255,255,255,.2);
+    color: $white;
+    text-align: left;
+    font-size: 18px;
+    font-weight: 200;
+    line-height: 46px;
+    padding: 0.375rem 1.5rem;
+  }
+
+  .custom-select{
+    background: transparent url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTNweCIgaGVpZ2h0PSI4cHgiIHZpZXdCb3g9IjAgMCAxMyA4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA1MC4yICg1NTA0NykgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+Q2hldnJvbi1Eb3duIEljb248L3RpdGxlPgogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+CiAgICA8ZGVmcz48L2RlZnM+CiAgICA8ZyBpZD0iQ2hhdF9FbnRyeS1wb2ludCIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgaWQ9IjAxX2VnYWluX2xvZ2luX2RlZmF1bHQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC04MDkuMDAwMDAwLCAtMzMxLjAwMDAwMCkiIGZpbGw9IiNBRUFFQUYiPgogICAgICAgICAgICA8ZyBpZD0iR3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAtMTAyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPGcgaWQ9IlBDQ0UtTG9naW4iIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ4My4wMDAwMDAsIDE2Ni4wMDAwMDApIj4KICAgICAgICAgICAgICAgICAgICA8ZyBpZD0iUHJvZmlsZS1QYXJ0aWFsIj4KICAgICAgICAgICAgICAgICAgICAgICAgPGcgaWQ9Ikdyb3VwLTQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUwLjAwMDAwMCwgMjU2LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPGcgaWQ9Ikdyb3VwLTMiPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxnIGlkPSJHcm91cC0yIj4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTI4Ny42ODY1MDEsMTEuNTcwMzEzNiBMMjgyLjc3NzMwNSwxNi40Nzk1MzY5IEwyNzcuODk0MTg4LDExLjU3MDMxMzYgQzI3Ny41OTMzNjYsMTEuMjY5NDkxNiAyNzcuMTA3MTI3LDExLjI2OTQ5MTYgMjc2LjgwNjMwNSwxMS41NzAzMTM2IEMyNzYuNTA1NDgzLDExLjg3MTEzNTUgMjc2LjUwNTQ4MywxMi4zNTczNzQ2IDI3Ni44MDYzMDUsMTIuNjU4MTk2NiBMMjgyLjc3NzMwNSwxOC42NTUzMDI5IEwyODguNzc0Mzg0LDEyLjY1ODE5NjYgQzI4OS4wNzUyMDUsMTIuMzU3Mzc0NiAyODkuMDc1MjA1LDExLjg3MTEzNTUgMjg4Ljc3NDM4NCwxMS41NzAzMTM2IEMyODguNDczNTYyLDExLjI2OTQ5MTYgMjg3Ljk4NzMyMiwxMS4yNjk0OTE2IDI4Ny42ODY1MDEsMTEuNTcwMzEzNiBaIiBpZD0iQ2hldnJvbi1Eb3duLUljb24iPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==") no-repeat right 5.75rem center;
+    background-size: 12px 10px;
+    text-align-last: center;
+
+    @include hover-focus{
+      box-shadow: none;
+    }
+  }
+
+}

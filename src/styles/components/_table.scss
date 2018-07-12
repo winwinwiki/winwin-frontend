@@ -1,0 +1,62 @@
+.table {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  color: $gray-one;
+  th,
+  td {
+    font-weight: 400;
+    padding: $table-cell-padding;
+  }
+  th.sortable {
+    position: relative;
+    cursor: pointer;
+    &:before {
+      @include icon-chevron-down;
+      position: absolute;
+      right: 2px;
+      top: 50%;
+      @include transform(translate(0, -50%));
+      font-size: 20px;
+    }
+  }
+}
+
+.table-hover {
+  tbody tr {
+    position: relative;
+    width: 100% !important;
+    @include hover {
+      background-color: $table-hover-bg;
+      position: relative;
+      cursor: pointer;
+    }
+    td {
+      position: relative;
+      &:not(:last-child):hover {
+        &:after {
+          content: '';
+        }
+      }
+    }
+    td:hover {
+      // &:after{
+      //   @include icon-exit-contain;
+      //   position: absolute;
+      //   right: 12px;
+      //   cursor: pointer;
+      //   top: 50%;
+      //   @include transform(translate(0, -50%));
+      // }
+    }
+  }
+}
+
+.table-bordered {
+  thead {
+    th,
+    td {
+      border-bottom-width: $border-width;
+    }
+  }
+}

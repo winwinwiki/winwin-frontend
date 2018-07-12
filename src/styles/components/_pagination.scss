@@ -1,0 +1,30 @@
+.page-link{
+  border-radius: rem(23px);
+}
+
+.page-item{
+    margin-right: rem(4px);
+
+    &:last-child{
+      margin-right: 0;
+    }
+
+    &:first-child, &:last-child {
+
+      *[class*='icon-']{
+        &:before{
+          font-size: rem(22px);
+          line-height: 13px;
+        }
+      }
+
+      .page-link:not(:disabled):not(.disabled){
+        @include hover-focus{
+          background-color: $white;
+          color: $pagination-color;
+        }
+    }
+
+  }
+}
+

@@ -1,0 +1,36 @@
+.nav-tabs-box{
+  .nav-item, .nav-link{
+    color: $gray-five;
+    font-weight: 300;
+    border: 1px solid $nav-tabs-border-color;
+
+    &:not(:first-child){
+      border-left-width: 0;
+    }
+
+    &:first-child{
+      &.active{
+        border-left-color: $gray-200;
+      }
+
+      @include hover-focus{
+        border-left-color: $gray-200;
+      }
+    }
+
+    @include hover-focus{
+      color: $info;
+    }
+
+    &.active{
+      font-weight: 400;
+      border-width: 1px 1px 0 1px;
+    }
+  }
+}
+
+.tab-box-content{
+  padding: rem(16px);
+  border: 1px solid $gray-200;
+  border-top: 0;
+}

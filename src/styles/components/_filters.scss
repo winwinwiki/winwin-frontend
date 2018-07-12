@@ -1,0 +1,32 @@
+.applied-filters-container {
+  font-size: 14px;
+  > div {
+    + div {
+      margin-left: 20px;
+      padding-left: 20px;
+      border-left: 1px solid #CCC;
+      line-height: 34px;
+    }
+  }
+
+  .dropdown-menu {
+    min-width: 210px;
+    .dropdown-item {
+      font-size: rem(14px);
+    }
+  }
+}
+
+#filterDropdown {
+  border-radius: 0.25rem !important;
+
+  +.dropdown-menu {
+    width: 1100px;
+  }
+}
+
+.applied-filters {
+  span {
+    margin-right: 20px;
+  }
+}

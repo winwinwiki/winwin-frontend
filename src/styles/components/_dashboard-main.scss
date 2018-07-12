@@ -1,0 +1,40 @@
+.site-wrapper,
+.main-content,
+.nav,
+.sidebar{       // TODO Firefox bug fix, actually its chrome and Safari bug which implements min-height differently. this is for nested flexbox.
+  min-height: 0;
+}
+
+.dashboard-container{
+  overflow: hidden;
+  //overflow-x: hidden;
+  //overflow-y: auto;
+  //overflow: auto;
+  display: flex;
+  flex: 1 100%;
+  flex-direction: column;
+  position: relative;
+  background-color: #ffffff;
+
+  .dashboard-content{
+    padding: 1rem;
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; //momentum scroll
+  }
+  .dashboard-footer{
+    //padding: 1rem;
+    //position: absolute;
+    //bottom: 0;
+    //left: 0;
+    //right: 0;
+  }
+  &.dashboard-compressed{
+    .dashboard-header,
+    .dashboard-content{
+      padding: 0.5rem 1rem;
+    }
+  }
+}
+

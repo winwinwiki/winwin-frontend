@@ -1,0 +1,50 @@
+$status-background: #818283;
+$status-background-active: #84DC99;
+$status-background-inactive: #F98E89;
+$status-background-info: #6CD3E7;
+$status-background-danger: $danger;
+
+@mixin status-color(
+  $background:            $status-background
+) {
+  background-color: $background;
+
+}
+
+// -----------------------------------------------------------------------------
+
+$status-colors: (
+        name: 'active',
+        params: (
+                background: $status-background-active
+        )
+), (
+        name: 'inactive',
+        params:(
+                background: $status-background-inactive
+        )
+), (
+        name: 'info',
+        params:(
+                background: $status-background-info
+        )
+), (
+        name: 'danger',
+        params:(
+                background: $status-background-danger
+        )
+);
+
+
+
+.status{
+  @include status-color();
+  @each $status-obj in $status-colors {
+    &-#{map-get($status-obj, name)} {
+      @include status-color(map-get($status-obj, params)...);
+    }
+  }
+  display: inline-block;
+  @include size(rem(10px));
+  border-radius: 50%;
+}

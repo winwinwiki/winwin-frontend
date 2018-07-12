@@ -1,0 +1,43 @@
+html{
+  @include rem-baseline;
+}
+
+html, body {
+  min-height: 100vh;
+  height: 100%;
+  //overflow-x: hidden;
+  //overflow-y: auto;
+  overflow: hidden;
+  font-weight: 300;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  *:focus, *.focus{
+    box-shadow: none;
+    outline: 0;
+    /* or */
+    outline: none;
+  }
+}
+
+.template{
+  overflow: auto;
+}
+
+
+//main-content
+.container {
+  min-width: 1200px !important;
+}
+.main-content{
+  display: flex;
+  flex: 1 1 100%;
+}
+
+[role="main"] {
+  padding-top: 90px;
+}
+
+.bg-dark {
+  background-color: #4D4D4D !important;
+}
