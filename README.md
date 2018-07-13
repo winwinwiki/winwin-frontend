@@ -1,8 +1,10 @@
 WINWIN frontend App
 
-  run "npm install"
+### Running the service
+
+```
+  npm install
+  npm start
+```
   
-  run "npm start"
-  
-  then point your browser to "localhost:3000"
-  
+The service should be up on http://localhost:3000
