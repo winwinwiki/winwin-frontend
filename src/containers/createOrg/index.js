@@ -1,17 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { push } from 'react-router-redux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import Geosuggest from 'react-geosuggest';
 
 import Dropdown from '../ui/dropdown';
 import {
     onCreateOrg,
     validateCreateOrgForm
 } from '../../actions/createOrg/createOrgAction';
+import './createOrg.css';
 
 const sectoryList = ['Public', 'Private', 'Social'];
 const entityList = ['Federal', 'Private', 'Social'];
+
 
 class CreateOrg extends React.Component {
     constructor(props) {
@@ -19,9 +21,10 @@ class CreateOrg extends React.Component {
         this.state = {
             orgName: '',
             sector : sectoryList[0],
-            entity : entityList[0]
+            entity : entityList[0],
+            location: null
         }
-
+        this._geoSuggest =  null;
         this.onChange = this.onChange.bind(this);
         this.validateField = this.validateField.bind(this);
         this.onCreateOrg = this.onCreateOrg.bind(this);
@@ -53,6 +56,12 @@ class CreateOrg extends React.Component {
                             onChange={this.onDropdownChange.bind(this)}
                             items={entityList}/>
                     </div>
+                    <Geosuggest
+                        ref={el=>this._geoSuggest=el}
+                        placeholder="Start typing!"
+                        initialValue="Hamburg"
+                        fixtures={[]}
+                        onSuggestSelect={this.onSuggestSelect} />
                     <button className="btn btn-lg btn-light w-100 mt-4" onClick={this.onCreateOrg}>Create</button>
             </div>
         )
@@ -71,7 +80,21 @@ class CreateOrg extends React.Component {
     }
 
     onCreateOrg() {
-        this.props.onCreateOrg(this.state);
+        this.props.onCreateOrg(this.state, () => {
+            this.setState({
+                orgName: '',
+                sector : sectoryList[0],
+                entity : entityList[0],
+                location: null 
+            });
+            this.props.changePage();
+        });
+    }
+
+    onSuggestSelect(suggest) {
+        this.setState({
+            location: suggest
+        });
     }
 }
 

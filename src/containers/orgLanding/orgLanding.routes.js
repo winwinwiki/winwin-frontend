@@ -9,13 +9,11 @@ import CreateOrg from '../createOrg';
 
 const OrgLandingRoutes = () => (
     <OrgLanding>
-      <BrowserRouter>
           <Switch>
               <Route exact path="/organizations" component={OrgList} />
               <Route exact path="/organizations/new" component={CreateOrg} />
               <Route path="/organizations/:id" component={OrgDetailRoutes} />
           </Switch>
-      </BrowserRouter>
     </OrgLanding>
 )
 
