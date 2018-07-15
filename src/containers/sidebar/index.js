@@ -3,8 +3,7 @@ import './sidebar.css';
 import { Link } from 'react-router-dom';
 
 const SideBar = (props) => {
-    console.log("match find at this")
-    console.log(props.url)
+
     return (
         <div id="mySidenav" className="sidenav">
             <a href="javascript:void(0)" className="closebtn" onclick="closeNav()">&times;</a>
