@@ -2,13 +2,13 @@ import { SET_CREATEORG_PENDING, SET_CREATEORG_SUCCESS, SET_CREATEORG_ERROR, SET_
 import { callCreateOrgApi } from '../../api/createOrg/createOrgApi';
 import validate from '../../util/validation';
 
-export const onCreateOrg = (orgg, cb) => {
+export const onCreateOrg = (org, cb) => {
     return dispatch => {
         dispatch(setCreateOrgPending(true));
         dispatch(setCreateOrgSuccess(false));
         dispatch(setCreateOrgError(null));
 
-        callCreateOrgApi(user.email, user.password, (error, res) => {
+        callCreateOrgApi(org, (error, res) => {
             dispatch(setCreateOrgPending(false));
             if (!error) {
                 dispatch(setCreateOrgSuccess(true));

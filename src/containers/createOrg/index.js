@@ -1,6 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { push } from 'react-router-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
 import Dropdown from '../ui/dropdown';
+import {
+    onCreateOrg,
+    validateCreateOrgForm
+} from '../../actions/createOrg/createOrgAction';
+
 const sectoryList = ['Public', 'Private', 'Social'];
 const entityList = ['Federal', 'Private', 'Social'];
 
@@ -15,6 +24,7 @@ class CreateOrg extends React.Component {
 
         this.onChange = this.onChange.bind(this);
         this.validateField = this.validateField.bind(this);
+        this.onCreateOrg = this.onCreateOrg.bind(this);
     }
     render() {
         const { orgName, sector, entity} = this.state;
@@ -43,7 +53,7 @@ class CreateOrg extends React.Component {
                             onChange={this.onDropdownChange.bind(this)}
                             items={entityList}/>
                     </div>
-                    <button className="btn btn-lg btn-light w-100 mt-4" onClick={this.onLoginSubmit}>Login</button>
+                    <button className="btn btn-lg btn-light w-100 mt-4" onClick={this.onCreateOrg}>Create</button>
             </div>
         )
     }
@@ -59,7 +69,26 @@ class CreateOrg extends React.Component {
     validateField() {
 
     }
+
+    onCreateOrg() {
+        this.props.onCreateOrg(this.state);
+    }
 }
 
-export default CreateOrg;
+const mapStateToProps = state => ({
+    isCreateOrgPending: state.createOrg.isCreateOrgPending,
+    isCreateOrgSuccess: state.createOrg.isCreateOrgSuccess,
+    createOrgError: state.createOrg.createOrgError,
+    createOrgFormError: state.createOrg.createOrgFormError
+})
 
+const mapDispatchToProps = dispatch => bindActionCreators({
+    changePage: () => push('/organizations'),
+    onCreateOrg,
+    validateCreateOrgForm
+}, dispatch)
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CreateOrg);
