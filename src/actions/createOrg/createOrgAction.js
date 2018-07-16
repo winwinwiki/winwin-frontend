@@ -1,4 +1,6 @@
 import { SET_CREATEORG_PENDING, SET_CREATEORG_SUCCESS, SET_CREATEORG_ERROR, SET_CREATEORGFORM_ERROR } from '../../constants/dispatch';
+import {REQ_ORG_NAME, VALID_ORG_NAME, REQ_ORG_LOCATION} from '../../constants/error';
+
 import { callCreateOrgApi } from '../../api/createOrg/createOrgApi';
 import validate from '../../util/validation';
 
@@ -22,17 +24,15 @@ export const onCreateOrg = (org, cb) => {
 
 export const validateCreateOrgForm = (field, value) => {
     return dispatch => {
-        if(field === 'email') {
-            dispatch(setCreateOrgFormError({email: ''}));
-            if(!value) { dispatch(setCreateOrgFormError({email: 'email is required.'} )); return; }
-            let isValid = validate.email(value);
-            if(!isValid) { dispatch(setCreateOrgFormError({email: 'enter valid email.'}));}
+        if(field === 'orgName') {
+            dispatch(setCreateOrgFormError({orgName: ''}));
+            if(!value) { dispatch(setCreateOrgFormError({orgName: REQ_ORG_NAME} )); return; }
+            let isValid = validate.name(value);
+            if(!isValid) { dispatch(setCreateOrgFormError({orgName: VALID_ORG_NAME}));}
            return;
        } 
-       dispatch(setCreateOrgFormError({password: ''}));
-       if(!value) { dispatch(setCreateOrgFormError({password: 'password is required.'})); return; }
-       let isValidPwd = validate.password(value);
-       if(!isValidPwd) { dispatch(setCreateOrgFormError({password: 'enter valid password'}));}
+       dispatch(setCreateOrgFormError({location: ''}));
+       if(!value) { dispatch(setCreateOrgFormError({location: REQ_ORG_LOCATION})); return; }
     }
 }
 

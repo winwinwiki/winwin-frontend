@@ -9,5 +9,9 @@ export default {
     },
     confirmPassword: function(pwd, cnfPwd) {
         return pwd === cnfPwd;
+    },
+    name: function(name) {
+        let regx = /^[a-zA-Z][a-zA-Z ]*$/;
+        return regx.test(name);
     }
 }

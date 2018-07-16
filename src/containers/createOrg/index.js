@@ -28,9 +28,12 @@ class CreateOrg extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.validateField = this.validateField.bind(this);
         this.onCreateOrg = this.onCreateOrg.bind(this);
+        this.onSuggestSelect = this.onSuggestSelect.bind(this);
+        this.validateLocationField = this.validateLocationField.bind(this);
     }
     render() {
         const { orgName, sector, entity} = this.state;
+        let {createOrgFormError} = this.props;
         return (
             <div>
                 <label for="orgName" className="sr-only">User Name</label>
@@ -42,14 +45,15 @@ class CreateOrg extends React.Component {
                         name="orgName" 
                         value={orgName} />
                     <small id="orgNameDesc" className="sr-only">Org Name</small>
-                    <div>
+                    { createOrgFormError.orgName && <div>{createOrgFormError.orgName}</div> }
+                    <div style={{margin: 15}}>
                         <Dropdown
                             selectedItem={sector}
                             name="sector"
                             onChange={this.onDropdownChange.bind(this)}
                             items={sectoryList}/>
                     </div>
-                    <div>
+                    <div style={{margin: 15}}>
                         <Dropdown
                             selectedItem={entity}
                             name="entity"
@@ -59,9 +63,11 @@ class CreateOrg extends React.Component {
                     <Geosuggest
                         ref={el=>this._geoSuggest=el}
                         placeholder="Start typing!"
-                        initialValue="Hamburg"
+                        initialValue=""
                         fixtures={[]}
+                        onBlur={this.validateLocationField}
                         onSuggestSelect={this.onSuggestSelect} />
+                        { createOrgFormError.location && <div>{createOrgFormError.location}</div> }
                     <button className="btn btn-lg btn-light w-100 mt-4" onClick={this.onCreateOrg}>Create</button>
             </div>
         )
@@ -75,11 +81,21 @@ class CreateOrg extends React.Component {
         this.setState({[field]: value});
     }
 
-    validateField() {
+    validateField(e) {
+        this.props.validateCreateOrgForm(e.target.name, e.target.value);
+    }
 
+    validateLocationField(location) {
+        this.props.validateCreateOrgForm('location', location);
     }
 
     onCreateOrg() {
+        const {orgName, location} = this.state;
+        if(!orgName || !location) { 
+            this.props.validateCreateOrgForm('orgName', orgName);
+            this.props.validateCreateOrgForm('location', location);
+            return;
+        }
         this.props.onCreateOrg(this.state, () => {
             this.setState({
                 orgName: '',
@@ -92,6 +108,7 @@ class CreateOrg extends React.Component {
     }
 
     onSuggestSelect(suggest) {
+        this.props.validateCreateOrgForm('location', suggest);
         this.setState({
             location: suggest
         });

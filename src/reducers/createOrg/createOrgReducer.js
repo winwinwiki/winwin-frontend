@@ -5,8 +5,8 @@ const initialState = {
   isCreateOrgPending: false,
   createOrgError: null,
   createOrgFormError: {
-    email: '',
-    password: ''
+    orgName: '',
+    location: ''
   },
   userInfo: null
 };
