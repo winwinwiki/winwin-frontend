@@ -7,7 +7,7 @@ import 'react-table/react-table.css'
 import './orgList.css';
 
 import OrgFilters from './orgFilter';
-import AppliedOrgFilters from './appliedOrgFilter';
+import AppliedOrgFilters from './appliedOrgFilters/index';
 import Dropdown from '../ui/dropdown';
 import {fetchOrganisationsList} from '../../actions/orgLanding/orgLandingAction';
 
