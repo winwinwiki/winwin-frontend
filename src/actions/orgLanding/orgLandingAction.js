@@ -4,7 +4,7 @@ import { callFetchOrgApi } from '../../api/orgLanding/orgLandingApi';
 export const fetchOrganisationsList = () => {
     return dispatch => {
         dispatch(setFetchOrgPending(true));
-        dispatch(setFetchOrgSuccess(false));
+        dispatch(setFetchOrgSuccess(false, []));
         dispatch(setFetchOrgError(null));
 
         callFetchOrgApi((error, orgList) => {

@@ -2,12 +2,42 @@ import React from 'react';
 import { push } from 'react-router-redux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import ReactTable from "react-table";
+import 'react-table/react-table.css'
+import './orgList.css';
 
 import OrgFilters from './orgFilter';
 import Dropdown from '../ui/dropdown';
 import {fetchOrganisationsList} from '../../actions/orgLanding/orgLandingAction';
 
 const filterList = ['Federal', 'Private', 'Social'];
+const columns = [{
+    Header: <span><input type="checkbox"/></span>,
+    accessor: 'name',
+    Cell: () => <div className="centerText"><input type="checkbox"/></div>,
+    width: 50
+  }, {
+    id: 'org',
+    Header: 'Organisation Name',
+    accessor: 'name',
+    Cell: (row) => <div className="centerText">{row.value}</div>
+  }, {
+    id: 'Sector',
+    Header: 'Sector',
+    accessor: 'sector',
+    Cell: (row) => <div className="centerText">{row.value}</div>
+  }, {
+    id: 'Revenue',
+    Header: 'Total Revenue',
+    accessor: 'totalRevenue[0][value]',
+    Cell: (row) => <div className="centerText">{row.value}</div>
+  },
+  {
+    id: 'Assets',
+    Header: 'Total Assets',
+    accessor: 'totalAssets',
+    Cell: (row) => <div className="centerText">{row.value}</div>
+  }]
 
 class OrgList extends React.Component {
     constructor(props) {
@@ -24,9 +54,11 @@ class OrgList extends React.Component {
 
     render() {
         const { entity } = this.state;
-        console.log("org list")
-        if(this.props.isFetchOrgSuccess) {
-            console.log(this.props.orgList)
+        const {isFetchOrgSuccess, orgList} = this.props;
+        if(!isFetchOrgSuccess || !orgList) {
+            console.log("org list ")
+            console.log(orgList)
+            return null;
         }
         return (
         <section className="dashboard-content p-0">
@@ -51,53 +83,38 @@ class OrgList extends React.Component {
             </div>
         </div>
         <div>
-            <table className="table table-bordered table-hover">
-                <thead className="thead-light">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col" className="sortable">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <th scope="row">
-                        <div className="custom-control custom-checkbox">
-                            <input id="customCheckCustom" type="checkbox" className="custom-control-input"/>
-                            <label htmlFor="customCheckCustom"className="custom-control-label">&nbsp;</label>
-                        </div>
-                    </th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Larry the Bird</td>
-                    <td>Larry the Bird 2</td>
-                    <td>@twitter</td>
-                </tr>
-                <tr>
-                    <th scope="row">4</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">5</th>
-                    <td>Larry the Bird</td>
-                    <td>Larry the Bird 2</td>
-                    <td>@twitter</td>
-                </tr>
-                </tbody>
-            </table>
+        <ReactTable
+            pageSize={10} 
+            data={orgList}
+            columns={columns}
+            className="-highlight"
+            getTrProps={(state, rowInfo) => {
+                return {
+                  onClick: (e) => {
+                    this.props.changePage(rowInfo.original.id);
+                  }
+                }
+              }
+            }
+            getTdProps={(state, rowInfo) => {
+                return {
+                  style: {
+                    height: 50
+                  }
+                }
+              }
+            }
+            getTheadThProps={(state, rowInfo) => {
+                return {
+                  style: {
+                    height: 50,
+                    verticalAlign: 'middle',
+                    lineHeight: 3
+                  }
+                }
+              }
+            }
+        />
         </div>
     </section>
         )
@@ -116,7 +133,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    changePage: () => push('/organizations'),
+    changePage: (id) => push('/organizations/'+ id),
     fetchOrganisationsList
 }, dispatch)
 
