@@ -7,11 +7,13 @@ import 'react-table/react-table.css'
 import './orgList.css';
 
 import OrgFilters from './orgFilter';
+import AppliedOrgFilters from './appliedOrgFilter';
 import Dropdown from '../ui/dropdown';
 import {fetchOrganisationsList} from '../../actions/orgLanding/orgLandingAction';
 
 const filterList = ['Federal', 'Private', 'Social'];
 const columns = [{
+    id: 'select',
     Header: <span><input type="checkbox"/></span>,
     accessor: 'name',
     Cell: () => <div className="centerText"><input type="checkbox"/></div>,
@@ -72,12 +74,7 @@ class OrgList extends React.Component {
             <div className="result-count">
                 1,203 organizations found
             </div>
-            <div className="applied-filters col align-items-center d-flex">
-                <span className="badge badge-pill badge-secondary">Arts &amp; Culture (A20) <a href="javascript:;" className=""><i className="icon-close"></i></a></span>
-                <span className="badge badge-pill badge-secondary">Allison Zimmerman  <a href="javascript:;" className=""><i className="icon-close"></i></a></span>
-                <span className="badge badge-pill badge-secondary">Basic Human Need - Opportunity - All  <a href="javascript:;" className=""><i className="icon-close"></i></a></span>
-                <a href="javascript:;" className="text-primary">+ 2 More</a>
-            </div>
+            <AppliedOrgFilters/>
             <div className="clear-filters">
                 <a href="javascript:;" className="text-primary">Clear All Filters</a>
             </div>
@@ -88,16 +85,13 @@ class OrgList extends React.Component {
             data={orgList}
             columns={columns}
             className="-highlight"
-            getTrProps={(state, rowInfo) => {
+            getTdProps={(state, rowInfo, column) => {
                 return {
                   onClick: (e) => {
-                    this.props.changePage(rowInfo.original.id);
-                  }
-                }
-              }
-            }
-            getTdProps={(state, rowInfo) => {
-                return {
+                      if(column.id !== 'select') {
+                        this.props.changePage(rowInfo.original.id);
+                      }
+                  },
                   style: {
                     height: 50
                   }
