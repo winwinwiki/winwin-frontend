@@ -1,6 +1,11 @@
 import React from 'react';
+import { push } from 'react-router-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
 import OrgFilters from './orgFilter';
 import Dropdown from '../ui/dropdown';
+import {fetchOrganisationsList} from '../../actions/orgLanding/orgLandingAction';
 
 const filterList = ['Federal', 'Private', 'Social'];
 
@@ -14,11 +19,15 @@ class OrgList extends React.Component {
     }
 
     componentDidMount() {
-
+        this.props.fetchOrganisationsList();
     }
 
     render() {
         const { entity } = this.state;
+        console.log("org list")
+        if(this.props.isFetchOrgSuccess) {
+            console.log(this.props.orgList)
+        }
         return (
         <section className="dashboard-content p-0">
         <OrgFilters/>
@@ -100,6 +109,10 @@ class OrgList extends React.Component {
 }
 
 const mapStateToProps = state => ({
+    isFetchOrgPending: state.orgLanding.isFetchOrgPending,
+    isFetchOrgSuccess: state.orgLanding.isFetchOrgSuccess,
+    fetchOrgError: state.orgLanding.fetchOrgError,
+    orgList: state.orgLanding.orgList
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({

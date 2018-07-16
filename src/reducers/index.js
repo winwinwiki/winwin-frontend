@@ -5,11 +5,13 @@ import forgetPassword from './auth/forgetPasswordReducer';
 import resetPassword from './auth/resetPasswordReducer';
 
 import createOrg from './createOrg/createOrgReducer';
+import orgLanding from './orgLanding/orgLandingReducer';
 
 export default combineReducers({
     routing: routerReducer,
     login,
     forgetPassword,
     resetPassword,
-    createOrg
+    createOrg,
+    orgLanding
 });
