@@ -1,20 +1,32 @@
 import React from 'react';
 
-const Dropdown = () => {
-    return (
-        <div className="dropdown dropdown-with-searchbox">
-            <button id="dropdownMenuButton1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">Actions</button>
-            <div aria-labelledby="dropdownMenuButton1" className="dropdown-menu">
-                <div className="menu-conteiner">
-                    <div className="menu-section">
-                        <a href="#" className="dropdown-item">Action</a>
-                        <a href="#" className="dropdown-item">Another action</a>
-                        <a href="#" className="dropdown-item">Something else here</a>
+class Dropdown extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.onChange = this.onChange.bind(this);
+    }
+    render() {
+        const { items, selectedItem } = this.props;
+        return (
+            <div className="dropdown dropdown-with-searchbox">
+                <button id="dropdownMenuButton1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">{selectedItem}</button>
+                <div aria-labelledby="dropdownMenuButton1" className="dropdown-menu">
+                    <div className="menu-conteiner">
+                        <div className="menu-section">
+                            {items && items.map((item, idx) => <a key={idx} onClick={this.onChange.bind(this, item)} className="dropdown-item">{item}</a>)}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    )
+        )
+    }
+
+    onChange(item) {
+        this.props.onChange(this.props.name, item);
+    }
+
+
 }
 
 export default Dropdown;
