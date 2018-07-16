@@ -20,7 +20,7 @@ const ButtonGroup = () => {
             </div>
             <div className="btn-group dropdown dropdown-with-checkbox" role="group" aria-label="group">
                 <button id="filterDropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-outline-secondary m-0"><i className="icon-filter"></i></button>
-                <form aria-labelledby="filterDropdown" className="dropdown-menu pt-4 px-4">
+                <form aria-labelledby="filterDropdown" className="dropdown-menu px-3">
                     <div className="row">
                         <div className="col">
                             <h5>Sector Level</h5>
@@ -41,7 +41,7 @@ const ButtonGroup = () => {
                                 <label htmlFor="customCheckCustom4"className="custom-control-label">City</label>
                             </div>
 
-                            <h5>Status</h5>
+                            <h5 className="mt-4">Status</h5>
                             <div className="custom-control custom-checkbox">
                                 <input id="customCheckCustom5" type="checkbox" className="custom-control-input"/>
                                 <label htmlFor="customCheckCustom5"className="custom-control-label">Auto Tag</label>
@@ -61,7 +61,7 @@ const ButtonGroup = () => {
                         </div>
                         <div className="col">
                             <h5>Priority</h5>
-                            <div className="btn-group btn-group-toggle mb-3" data-toggle="buttons">
+                            <div className="btn-group btn-group-toggle mb-4" data-toggle="buttons">
                                 <label className="btn btn-outline-secondary">
                                     <input type="radio" name="options" id="normal" autoComplete="off" /> Normal
                                 </label>
@@ -71,7 +71,7 @@ const ButtonGroup = () => {
                             </div>
 
                             <h5>Edited by User</h5>
-                            <div className="dropdown dropdown-with-searchbox mb-3">
+                            <div className="dropdown dropdown-with-searchbox mb-4">
                                 <button id="dropdownMenuButton2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">Allison Zimmer..</button>
                                 <div aria-labelledby="dropdownMenuButton2" className="dropdown-menu">
                                     <div className="menu-conteiner">
@@ -85,7 +85,7 @@ const ButtonGroup = () => {
                             </div>
 
                             <h5>Industry Classification</h5>
-                            <div className="dropdown dropdown-with-searchbox mb-3">
+                            <form className="dropdown dropdown-with-searchbox mb-3">
                                 <button id="dropdownMenuButton3" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">NTEE</button>
                                 <div aria-labelledby="dropdownMenuButton3" className="dropdown-menu">
                                     <div className="menu-conteiner">
@@ -96,8 +96,8 @@ const ButtonGroup = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="dropdown dropdown-with-searchbox mb-3">
+                            </form>
+                            <div className="dropdown dropdown-with-searchbox mb-4">
                                 <button id="dropdownMenuButton4" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">Arts & Culture (A20)</button>
                                 <div aria-labelledby="dropdownMenuButton4" className="dropdown-menu">
                                     <div className="menu-conteiner">
@@ -115,7 +115,7 @@ const ButtonGroup = () => {
                         </div>
                         <div className="col">
                             <h5>Framework Tag</h5>
-                            <div className="dropdown dropdown-with-searchbox mb-3">
+                            <div className="dropdown dropdown-with-searchbox mb-4">
                                 <button id="dropdownMenuButton5" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">Social Progress Index</button>
                                 <div aria-labelledby="dropdownMenuButton5" className="dropdown-menu">
                                     <div className="menu-conteiner">
@@ -129,7 +129,7 @@ const ButtonGroup = () => {
                             </div>
 
                             <h5>Level 1</h5>
-                            <div className="dropdown dropdown-with-searchbox mb-3">
+                            <div className="dropdown dropdown-with-searchbox mb-4">
                                 <button id="dropdownMenuButton6" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">Basic Human N..</button>
                                 <div aria-labelledby="dropdownMenuButton6" className="dropdown-menu">
                                     <div className="menu-conteiner">
@@ -143,7 +143,7 @@ const ButtonGroup = () => {
                             </div>
 
                             <h5>Level 2</h5>
-                            <div className="dropdown dropdown-with-searchbox mb-3">
+                            <div className="dropdown dropdown-with-searchbox mb-4">
                                 <button id="dropdownMenuButton5" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">Shelter</button>
                                 <div aria-labelledby="dropdownMenuButton5" className="dropdown-menu">
                                     <div className="menu-conteiner">
@@ -156,7 +156,7 @@ const ButtonGroup = () => {
                             </div>
 
                             <h5>Level 3</h5>
-                            <div className="dropdown dropdown-with-searchbox mb-3">
+                            <div className="dropdown dropdown-with-searchbox">
                                 <button id="dropdownMenuButton5" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">All</button>
                                 <div aria-labelledby="dropdownMenuButton5" className="dropdown-menu">
                                     <div className="menu-conteiner">
@@ -168,6 +168,12 @@ const ButtonGroup = () => {
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div className="row mt-5">
+                        <div className="col justify-content-end d-flex">
+                            <button type="button" className="btn btn-link">Reset Filters</button>
+                            <button type="button" className="btn btn-primary">Done</button>
                         </div>
                     </div>
                 </form>

@@ -8052,10 +8052,26 @@ textarea {
     .applied-filters-container .dropdown-menu .dropdown-item {
       font-size: 0.875rem; }
 
+.dropdown-menu.show {
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1); }
+
 #filterDropdown {
   border-radius: 0.25rem !important; }
   #filterDropdown + .dropdown-menu {
+    padding-top: 48px;
+    padding-bottom: 48px;
     width: 1100px; }
+    #filterDropdown + .dropdown-menu * {
+      font-size: 14px !important; }
+    #filterDropdown + .dropdown-menu .row > .col {
+      padding-left: 38px;
+      padding-right: 38px; }
+      #filterDropdown + .dropdown-menu .row > .col + .col {
+        border-left: 1px solid #e5e5e5; }
+    #filterDropdown + .dropdown-menu .custom-checkbox {
+      margin-bottom: 7px; }
+      #filterDropdown + .dropdown-menu .custom-checkbox:last-child {
+        margin-bottom: 0; }
 
 .applied-filters span {
   margin-right: 20px; }

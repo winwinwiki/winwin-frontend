@@ -15,10 +15,10 @@ const OrgList = (props) => {
             <span className="badge badge-pill badge-secondary">Arts &amp; Culture (A20) <a href="javascript:;" className=""><i className="icon-close"></i></a></span>
             <span className="badge badge-pill badge-secondary">Allison Zimmerman  <a href="javascript:;" className=""><i className="icon-close"></i></a></span>
             <span className="badge badge-pill badge-secondary">Basic Human Need - Opportunity - All  <a href="javascript:;" className=""><i className="icon-close"></i></a></span>
-            <a href="javascript:;" className="">+ 2 More</a>
+            <a href="javascript:;" className="text-primary">+ 2 More</a>
         </div>
           <div className="clear-filters">
-              <a href="javascript:;" className="">Clear All Filters</a>
+              <a href="javascript:;" className="text-primary">Clear All Filters</a>
           </div>
       </div>
       <div>
