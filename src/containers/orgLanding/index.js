@@ -4,11 +4,13 @@ import SectionHeader from '../section-header/';
 
 const OrgLanding = (props) => {
     return (
-    <div className="d-flex flex-column h-100">
+    <div className="d-flex flex-column h-100 w-100">
         <Header/>
         <main role="main" className="dashboard-container">
-            <SectionHeader/>
-            {props.children}
+            <React.Fragment>
+                <SectionHeader/>
+                {props.children}
+            </React.Fragment>
       </main>
     </div>
     )

@@ -17,11 +17,61 @@
   }
 }
 
+.dropdown-menu {
+  &.show {
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
+  }
+}
+
 #filterDropdown {
   border-radius: 0.25rem !important;
 
   +.dropdown-menu {
+    padding-top: 48px;
+    padding-bottom: 48px;
+    //margin-top: 10px;
     width: 1100px;
+    //left: 50%;
+    //transform: translateX(-50%);
+    //
+    //&:before {
+    //  content: "";
+    //  position: absolute;
+    //  width: 0;
+    //  height: 0;
+    //  margin-left: -0.5em;
+    //  top: -0.1em;
+    //  left: 50%;
+    //  box-sizing: border-box;
+    //  border: .5em solid black;
+    //  border-color: transparent transparent #FFF #FFF;
+    //  transform-origin: 0 0;
+    //  transform: rotate(135deg);
+    //  box-shadow: -2px 2px 3px 0 rgba(0, 0, 0, 0.2);
+    //  z-index: 100000;
+    //}
+
+    * {
+      font-size: 14px !important;
+    }
+
+    .row {
+      > .col {
+        padding-left: 38px;
+        padding-right: 38px;
+        +.col {
+          border-left: 1px solid #e5e5e5;
+        }
+      }
+    }
+
+    .custom-checkbox {
+      margin-bottom: 7px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
   }
 }
 
