@@ -3,7 +3,7 @@ import { Route, BrowserRouter } from 'react-router-dom';
 import { Switch } from 'react-router';
 
 import OrgLanding from './';
-import OrgDetail from '../orgDetail';
+import OrgDetailRoutes from '../orgDetail/orgDetail.routes';
 import OrgList from './orgList';
 
 const OrgLandingRoutes = () => (
@@ -11,7 +11,7 @@ const OrgLandingRoutes = () => (
       <BrowserRouter>
           <Switch>
               <Route exact path="/organizations" component={OrgList} />
-              <Route exact path="/organizations/detail" component={OrgDetail} />
+              <Route path="/organizations/:id" component={OrgDetailRoutes} />
           </Switch>
       </BrowserRouter>
     </OrgLanding>
