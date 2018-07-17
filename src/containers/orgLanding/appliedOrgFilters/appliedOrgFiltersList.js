@@ -1,58 +1,53 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import Dropdown from '../../ui/dropdown';
+import Checkbox from '../../ui/checkbox';
+import {setAppliedFilters} from '../../../actions/orgLanding/orgLandingAction';
+import InputRange from 'react-input-range';
+import 'react-input-range/lib/css/index.css';
 
 const userList = ['abc abc', 'sumit chaudhari', 'Suuny tambi'];
 class AppliedOrgFiltersList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userMod: userList[0]
+            userMod: userList[0],
+            sector: [],
+            status: []
         }
         this.onDropdownChange = this.onDropdownChange.bind(this);
+        this.onSectorCheckboxChange = this.onSectorCheckboxChange.bind(this);
+        this.onStatusCheckboxChange = this.onStatusCheckboxChange.bind(this);
+        this.addFiltersTag = this.addFiltersTag.bind(this);
     }
 
 
     render() {
-        const {userMod} = this.state;
+        const {userMod, sector, status} = this.state;
         return (
         <form aria-labelledby="filterDropdown" className="dropdown-menu px-3">
         <div className="row">
             <div className="col">
                 <h5>Sector Level</h5>
-                <div className="custom-control custom-checkbox">
-                    <input id="customCheckCustom1" type="checkbox" className="custom-control-input"/>
-                    <label htmlFor="customCheckCustom1"className="custom-control-label">Federal</label>
-                </div>
-                <div className="custom-control custom-checkbox">
-                    <input id="customCheckCustom2" type="checkbox" className="custom-control-input"/>
-                    <label htmlFor="customCheckCustom2"className="custom-control-label">State</label>
-                </div>
-                <div className="custom-control custom-checkbox">
-                    <input id="customCheckCustom3" type="checkbox" className="custom-control-input"/>
-                    <label htmlFor="customCheckCustom3"className="custom-control-label">County</label>
-                </div>
-                <div className="custom-control custom-checkbox">
-                    <input id="customCheckCustom4" type="checkbox" className="custom-control-input"/>
-                    <label htmlFor="customCheckCustom4"className="custom-control-label">City</label>
-                </div>
+                <Checkbox name="federal" label="Federal"
+                    checked={sector.indexOf('federal') > -1} onChange={this.onSectorCheckboxChange}/>
+                <Checkbox name="state" label="State"
+                    checked={sector.indexOf('state') > -1} onChange={this.onSectorCheckboxChange}/>
+                <Checkbox name="country" label="County"
+                    checked={sector.indexOf('country') > -1} onChange={this.onSectorCheckboxChange}/>
+                <Checkbox name="city" label="City"
+                    checked={sector.indexOf('city') > -1} onChange={this.onSectorCheckboxChange}/>
 
                 <h5 className="mt-4">Status</h5>
-                <div className="custom-control custom-checkbox">
-                    <input id="customCheckCustom5" type="checkbox" className="custom-control-input"/>
-                    <label htmlFor="customCheckCustom5"className="custom-control-label">Auto Tag</label>
-                </div>
-                <div className="custom-control custom-checkbox">
-                    <input id="customCheckCustom6" type="checkbox" className="custom-control-input"/>
-                    <label htmlFor="customCheckCustom6"className="custom-control-label">Complete Tag</label>
-                </div>
-                <div className="custom-control custom-checkbox">
-                    <input id="customCheckCustom7" type="checkbox" className="custom-control-input"/>
-                    <label htmlFor="customCheckCustom7"className="custom-control-label">Organization Tag</label>
-                </div>
-                <div className="custom-control custom-checkbox">
-                    <input id="customCheckCustom8" type="checkbox" className="custom-control-input"/>
-                    <label htmlFor="customCheckCustom8"className="custom-control-label">Untagged</label>
-                </div>
+                <Checkbox name="autoTag" label="Auto Tag"
+                    checked={status.indexOf('autoTag') > -1} onChange={this.onStatusCheckboxChange}/>
+                <Checkbox name="completeTag" label="Complete Tag"
+                    checked={status.indexOf('completeTag') > -1} onChange={this.onStatusCheckboxChange}/>
+                <Checkbox name="orgTag" label="Organization Tag"
+                    checked={status.indexOf('orgTag') > -1} onChange={this.onStatusCheckboxChange}/>
+                <Checkbox name="unTaggged" label="Untagged"
+                    checked={status.indexOf('unTaggged') > -1} onChange={this.onStatusCheckboxChange}/>
             </div>
             <div className="col">
                 <h5>Priority</h5>
@@ -113,6 +108,11 @@ class AppliedOrgFiltersList extends React.Component {
             </div>
             <div className="col">
                 <h5>Revenue</h5>
+                <InputRange
+                    maxValue={100}
+                    minValue={0}
+                    value={0}
+                    onChange={value => this.setState({ value })} />
             </div>
             <div className="col">
                 <h5>Framework Tag</h5>
@@ -174,15 +174,53 @@ class AppliedOrgFiltersList extends React.Component {
         <div className="row mt-5">
             <div className="col justify-content-end d-flex">
                 <button type="button" className="btn btn-link">Reset Filters</button>
-                <button type="button" className="btn btn-primary">Done</button>
+                <button type="button" className="btn btn-primary" onClick={this.addFiltersTag}>Done</button>
             </div>
         </div>
         </form>
     )
 }
-onDropdownChange() {
+    onDropdownChange() {
 
-}
+    }
+
+    onSectorCheckboxChange(name) {
+        let sectorList = JSON.parse(JSON.stringify(this.state.sector));
+        let index = sectorList.indexOf(name);
+        index > -1 ? sectorList.splice(index, 1) : sectorList.push(name);
+        this.setState({
+            sector : sectorList
+        })
+    }
+
+    onStatusCheckboxChange(name) {
+        let statusList = JSON.parse(JSON.stringify(this.state.status));
+        let index = statusList.indexOf(name);
+        index > -1 ? statusList.splice(index, 1) : statusList.push(name);
+        this.setState({
+            status : statusList
+        })
+    }
+
+    addFiltersTag() {
+        let filters = [...this.state.sector, ...this.state.status];
+        this.props.setAppliedFilters(filters);
+    }
+
+    percentFormatter(v) {
+        return `${v} %`;
+    }
 }
 
-export default AppliedOrgFiltersList;
+const mapStateToProps = state => ({
+    appliedFilterList: state.orgLanding.appliedFilterList
+})
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    setAppliedFilters
+}, dispatch)
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(AppliedOrgFiltersList);

@@ -1,4 +1,4 @@
-import { SET_FETCHORG_PENDING, SET_FETCHORG_SUCCESS, SET_FECTHORG_ERROR } from '../../constants/dispatch';
+import { SET_FETCHORG_PENDING, SET_FETCHORG_SUCCESS, SET_FECTHORG_ERROR, SET_APPLIED_FILTER } from '../../constants/dispatch';
 import { callFetchOrgApi } from '../../api/orgLanding/orgLandingApi';
 
 export const fetchOrganisationsList = () => {
@@ -15,6 +15,12 @@ export const fetchOrganisationsList = () => {
                 dispatch(setFetchOrgError(error));
             }
         });
+    }
+}
+
+export const setAppliedFilters = (filterList) => {
+    return dispatch => {
+        dispatch(setAplliedFiltersList(filterList));
     }
 }
 
@@ -37,5 +43,12 @@ function setFetchOrgError(fetchOrgError) {
     return {
         type: SET_FECTHORG_ERROR,
         fetchOrgError
+    }
+}
+
+function setAplliedFiltersList(appliedFilterList) {
+    return {
+        type: SET_APPLIED_FILTER,
+        appliedFilterList
     }
 }
