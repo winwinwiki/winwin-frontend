@@ -69,6 +69,7 @@ class OrgList extends React.Component {
             <Dropdown
                 selectedItem={entity}
                 name="filterEntity"
+                containerClass="dropdown dropdown-with-searchbox"
                 onChange={this.onDropdownChange.bind(this)}
                 items={filterList}/>
             <div className="result-count">

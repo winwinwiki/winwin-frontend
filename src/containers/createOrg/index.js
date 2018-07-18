@@ -50,6 +50,7 @@ class CreateOrg extends React.Component {
                         <Dropdown
                             selectedItem={sector}
                             name="sector"
+                            containerClass="dropdown dropdown-with-searchbox"
                             onChange={this.onDropdownChange.bind(this)}
                             items={sectoryList}/>
                     </div>
@@ -57,6 +58,7 @@ class CreateOrg extends React.Component {
                         <Dropdown
                             selectedItem={entity}
                             name="entity"
+                            containerClass="dropdown dropdown-with-searchbox"
                             onChange={this.onDropdownChange.bind(this)}
                             items={entityList}/>
                     </div>

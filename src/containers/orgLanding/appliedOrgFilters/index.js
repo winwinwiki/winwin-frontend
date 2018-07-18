@@ -9,16 +9,45 @@ class AppliedOrgFilters extends React.Component {
 
 
     render() {
-        const { appliedFilterList } = this.props;
+        
         console.log("filter list");
-        console.log(appliedFilterList)
         return (
             <div className="applied-filters col align-items-center d-flex">
-                {appliedFilterList.map(filter => <span className="badge badge-pill badge-secondary"> {filter} <a href="javascript:;" className=""><i className="icon-close"></i></a></span>)}
+                {this.createTag()}
+                {/* {appliedFilterList.map(filter => <span className="badge badge-pill badge-secondary"> {filter} <a href="javascript:;" className=""><i className="icon-close"></i></a></span>)} */}
                 <a href="javascript:;" className="text-primary">+ 2 More</a>
             </div>
 
         )
+    }
+
+    createTag() {
+        const { appliedFilterList } = this.props;
+        return Object.keys(appliedFilterList).map((filterKey) => {
+            switch(filterKey) {
+                case 'userMod':
+                case 'priority':
+                case 'subIndustryCls':
+                case 'industryCls': 
+                case 'frameworkTag':
+                case 'level1':
+                case 'level2':
+                case 'level3':
+                    return <span className="badge badge-pill badge-secondary"> {appliedFilterList[filterKey]}
+                        <a href="javascript:;" className=""><i className="icon-close"></i></a></span>;
+                case 'revenueRange':
+                case 'assetsRange':
+                    return <span className="badge badge-pill badge-secondary"> {appliedFilterList[filterKey]['min'] + '-' + appliedFilterList[filterKey]['max']}
+                        <a href="javascript:;" className=""><i className="icon-close"></i></a></span>;
+                case 'sector':
+                case 'status' : 
+                    return appliedFilterList[filterKey].map(key => <span className="badge badge-pill badge-secondary">{key}
+                        <a href="javascript:;" className=""><i className="icon-close"></i></a></span>);
+                default:
+                    break;
+    
+            }
+        });  
     }
 }
 const mapStateToProps = state => ({

@@ -7,9 +7,9 @@ class Dropdown extends React.Component {
         this.onChange = this.onChange.bind(this);
     }
     render() {
-        const { items, selectedItem } = this.props;
+        const { items, selectedItem, containerClass } = this.props;
         return (
-            <div className="dropdown dropdown-with-searchbox">
+            <div className={containerClass}>
                 <button id="dropdownMenuButton1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">{selectedItem}</button>
                 <div aria-labelledby="dropdownMenuButton1" className="dropdown-menu">
                     <div className="menu-conteiner">

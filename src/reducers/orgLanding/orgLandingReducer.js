@@ -1,10 +1,12 @@
-import {SET_FETCHORG_PENDING, SET_FETCHORG_SUCCESS, SET_FECTHORG_ERROR, SET_APPLIED_FILTER} from '../../constants/dispatch';
+import {SET_FETCHORG_PENDING, SET_FETCHORG_SUCCESS, SET_FECTHORG_ERROR, SET_APPLIED_FILTER,
+  SET_APPLIED_FILTER_FLAG} from '../../constants/dispatch';
 
 const initialState = {
   isFetchOrgSuccess: false,
   isFetchOrgPending: false,
   fetchOrgError: null,
   appliedFilterList: [],
+  isAppliedFilterVisible: false,
   orgList: []
 };
 
@@ -29,7 +31,12 @@ export default (state = initialState, action) => {
     case SET_APPLIED_FILTER:
       return Object.assign({}, state, {
         appliedFilterList:action.appliedFilterList
-      });
+    });
+
+    case SET_APPLIED_FILTER_FLAG:
+    return Object.assign({}, state, {
+      isAppliedFilterVisible:action.isAppliedFilterVisible
+  });
 
     default:
       return state;

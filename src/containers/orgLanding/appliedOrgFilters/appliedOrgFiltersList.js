@@ -6,15 +6,30 @@ import Checkbox from '../../ui/checkbox';
 import {setAppliedFilters} from '../../../actions/orgLanding/orgLandingAction';
 import InputRange from 'react-input-range';
 import 'react-input-range/lib/css/index.css';
+import {showAppliedFilterModal} from '../../../actions/orgLanding/orgLandingAction';
 
+var classNames = require('classnames');
+
+const Priority = ['normal', 'high'];
 const userList = ['abc abc', 'sumit chaudhari', 'Suuny tambi'];
+const industryClassification = ['option 1', 'option 2', 'option 3'];
+const SubIndustryClassification = ['select 1', 'select 2', 'select 3'];
 class AppliedOrgFiltersList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             userMod: userList[0],
+            industryCls: industryClassification[0],
+            subIndustryCls: SubIndustryClassification[0],
+            frameworkTag: userList[0],
+            level1: userList[0],
+            level2: userList[0],
+            level3: userList[0],
             sector: [],
-            status: []
+            status: [],
+            priority: Priority[0],
+            revenueRange: {min: 0, max: 100},
+            assetsRange: {min: 0, max: 100}
         }
         this.onDropdownChange = this.onDropdownChange.bind(this);
         this.onSectorCheckboxChange = this.onSectorCheckboxChange.bind(this);
@@ -24,9 +39,12 @@ class AppliedOrgFiltersList extends React.Component {
 
 
     render() {
-        const {userMod, sector, status} = this.state;
+        const {userMod, sector, status, revenueRange, assetsRange, priority,
+            industryCls, subIndustryCls, frameworkTag, level1, level2, level3} = this.state;
+        const {isAppliedFilterVisible} = this.props;
+        let showFilterCls = classNames({ show: isAppliedFilterVisible }, { 'dropdown-menu': true }, {'px-3' : true});
         return (
-        <form aria-labelledby="filterDropdown" className="dropdown-menu px-3">
+        <form aria-labelledby="filterDropdown" className={showFilterCls} style={{left: -500}}>
         <div className="row">
             <div className="col">
                 <h5>Sector Level</h5>
@@ -51,11 +69,13 @@ class AppliedOrgFiltersList extends React.Component {
             </div>
             <div className="col">
                 <h5>Priority</h5>
-                <div className="btn-group btn-group-toggle mb-4" data-toggle="buttons">
-                    <label className="btn btn-outline-secondary">
+                <div className="btn-group btn-group-toggle mb-4">
+                    <label className={`btn btn-outline-secondary ${ priority === Priority[0] ? 'active' : ''}`} 
+                        onClick={this.setPriority.bind(this, Priority[0])}>
                         <input type="radio" name="options" id="normal" autoComplete="off" /> Normal
                     </label>
-                    <label className="btn btn-outline-secondary">
+                    <label className={`btn btn-outline-secondary ${ priority === Priority[1] ? 'active' : ''}`}  
+                         onClick={this.setPriority.bind(this, Priority[1])}>
                         <input type="radio" name="options" id="high" autoComplete="off"/> High
                     </label>
                 </div>
@@ -64,111 +84,79 @@ class AppliedOrgFiltersList extends React.Component {
                 <Dropdown
                     selectedItem={userMod}
                     name="userMod"
+                    containerClass="dropdown dropdown-with-searchbox mb-4"
                     onChange={this.onDropdownChange.bind(this)}
                     items={userList} />
 
-                {/* <div className="dropdown dropdown-with-searchbox mb-4">
-                    <button id="dropdownMenuButton2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">Allison Zimmer..</button>
-                    <div aria-labelledby="dropdownMenuButton2" className="dropdown-menu">
-                        <div className="menu-conteiner">
-                            <div className="menu-section">
-                                <a href="#" className="dropdown-item">Allison Zimmer..</a>
-                                <a href="#" className="dropdown-item">User 1</a>
-                                <a href="#" className="dropdown-item">User 2</a>
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
-
                 <h5>Industry Classification</h5>
-                <form className="dropdown dropdown-with-searchbox mb-3">
-                    <button id="dropdownMenuButton3" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">NTEE</button>
-                    <div aria-labelledby="dropdownMenuButton3" className="dropdown-menu">
-                        <div className="menu-conteiner">
-                            <div className="menu-section">
-                                <a href="#" className="dropdown-item">NTEE</a>
-                                <a href="#" className="dropdown-item">Option 1</a>
-                                <a href="#" className="dropdown-item">Option 2</a>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <div className="dropdown dropdown-with-searchbox mb-4">
-                    <button id="dropdownMenuButton4" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">Arts & Culture (A20)</button>
-                    <div aria-labelledby="dropdownMenuButton4" className="dropdown-menu">
-                        <div className="menu-conteiner">
-                            <div className="menu-section">
-                                <a href="#" className="dropdown-item">Arts & Culture (A20)</a>
-                                <a href="#" className="dropdown-item">Option 1</a>
-                                <a href="#" className="dropdown-item">Option 2</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Dropdown
+                    selectedItem={industryCls}
+                    name="industryCls"
+                    containerClass="dropdown dropdown-with-searchbox mb-3"
+                    onChange={this.onDropdownChange.bind(this)}
+                    items={industryClassification} />
+
+                <Dropdown
+                    selectedItem={subIndustryCls}
+                    name="subIndustryCls"
+                    containerClass="dropdown dropdown-with-searchbox mb-4"
+                    onChange={this.onDropdownChange.bind(this)}
+                    items={SubIndustryClassification} />
             </div>
             <div className="col">
                 <h5>Revenue</h5>
+                <div className="mb-4">
                 <InputRange
+                    draggableTrack
                     maxValue={100}
                     minValue={0}
-                    value={0}
-                    onChange={value => this.setState({ value })} />
+                    formatLabel={value => `$ ${value}`}
+                    value={revenueRange}
+                    onChange={value => this.setState({ revenueRange: value })}
+                    onChangeComplete={value => console.log(value)}/>
+                </div>
+                <h5>Assets</h5>
+                <InputRange
+                    draggableTrack
+                    maxValue={100}
+                    minValue={0}
+                    formatLabel={value => `$ ${value}`}
+                    value={assetsRange}
+                    onChange={value => this.setState({ assetsRange: value })}
+                    onChangeComplete={value => console.log(value)}/>
             </div>
             <div className="col">
                 <h5>Framework Tag</h5>
-                <div className="dropdown dropdown-with-searchbox mb-4">
-                    <button id="dropdownMenuButton5" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">Social Progress Index</button>
-                    <div aria-labelledby="dropdownMenuButton5" className="dropdown-menu">
-                        <div className="menu-conteiner">
-                            <div className="menu-section">
-                                <a href="#" className="dropdown-item">Social Progress Index</a>
-                                <a href="#" className="dropdown-item">Option 1</a>
-                                <a href="#" className="dropdown-item">Option 2</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Dropdown
+                    selectedItem={frameworkTag}
+                    name="frameworkTag"
+                    containerClass="dropdown dropdown-with-searchbox mb-4"
+                    onChange={this.onDropdownChange.bind(this)}
+                    items={userList} />
 
                 <h5>Level 1</h5>
-                <div className="dropdown dropdown-with-searchbox mb-4">
-                    <button id="dropdownMenuButton6" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">Basic Human N..</button>
-                    <div aria-labelledby="dropdownMenuButton6" className="dropdown-menu">
-                        <div className="menu-conteiner">
-                            <div className="menu-section">
-                                <a href="#" className="dropdown-item">Basic Human N</a>
-                                <a href="#" className="dropdown-item">Option 1</a>
-                                <a href="#" className="dropdown-item">Option 2</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Dropdown
+                    selectedItem={level1}
+                    name="level1"
+                    containerClass="dropdown dropdown-with-searchbox mb-4"
+                    onChange={this.onDropdownChange.bind(this)}
+                    items={userList} />
 
                 <h5>Level 2</h5>
-                <div className="dropdown dropdown-with-searchbox mb-4">
-                    <button id="dropdownMenuButton5" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">Shelter</button>
-                    <div aria-labelledby="dropdownMenuButton5" className="dropdown-menu">
-                        <div className="menu-conteiner">
-                            <div className="menu-section">
-                                <a href="#" className="dropdown-item">Shelter</a>
-                                <a href="#" className="dropdown-item">Another name</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Dropdown
+                    selectedItem={level2}
+                    name="level2"
+                    containerClass="dropdown dropdown-with-searchbox mb-4"
+                    onChange={this.onDropdownChange.bind(this)}
+                    items={userList} />
 
                 <h5>Level 3</h5>
-                <div className="dropdown dropdown-with-searchbox">
-                    <button id="dropdownMenuButton5" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">All</button>
-                    <div aria-labelledby="dropdownMenuButton5" className="dropdown-menu">
-                        <div className="menu-conteiner">
-                            <div className="menu-section">
-                                <a href="#" className="dropdown-item">All</a>
-                                <a href="#" className="dropdown-item">Option 1</a>
-                                <a href="#" className="dropdown-item">Option 2</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Dropdown
+                    selectedItem={level3}
+                    name="level3"
+                    containerClass="dropdown dropdown-with-searchbox mb-4"
+                    onChange={this.onDropdownChange.bind(this)}
+                    items={userList} />
             </div>
         </div>
         <div className="row mt-5">
@@ -180,8 +168,8 @@ class AppliedOrgFiltersList extends React.Component {
         </form>
     )
 }
-    onDropdownChange() {
-
+    onDropdownChange(field, value) {
+        this.setState({[field]: value});
     }
 
     onSectorCheckboxChange(name) {
@@ -203,21 +191,32 @@ class AppliedOrgFiltersList extends React.Component {
     }
 
     addFiltersTag() {
-        let filters = [...this.state.sector, ...this.state.status];
-        this.props.setAppliedFilters(filters);
+        const {isAppliedFilterVisible} = this.props;
+       // const {userMod, industryCls, subIndustryCls, revenueRange, assetsRange} = this.state;
+        //let filters = [...this.state.sector, ...this.state.status];
+        this.props.setAppliedFilters(this.state);
+        this.props.showAppliedFilterModal(!isAppliedFilterVisible);
     }
 
     percentFormatter(v) {
         return `${v} %`;
     }
+
+    setPriority(priority) {
+        this.setState({
+            priority
+        });
+    }
 }
 
 const mapStateToProps = state => ({
-    appliedFilterList: state.orgLanding.appliedFilterList
+    appliedFilterList: state.orgLanding.appliedFilterList,
+    isAppliedFilterVisible: state.orgLanding.isAppliedFilterVisible
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    setAppliedFilters
+    setAppliedFilters,
+    showAppliedFilterModal
 }, dispatch)
 
 export default connect(

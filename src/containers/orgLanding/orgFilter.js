@@ -6,11 +6,13 @@ import { connect } from 'react-redux';
 import ButtonGroup from '../ui/buttonGroup';
 import Search from '../ui/searchBar';
 import AppliedOrgFiltersList from './appliedOrgFilters/appliedOrgFiltersList';
+import {showAppliedFilterModal} from '../../actions/orgLanding/orgLandingAction';
 
 class OrgFilters extends React.Component {
     constructor(props) {
         super(props);
         this.changePage = this.changePage.bind(this);
+        this.showAppliedFilterModal = this.showAppliedFilterModal.bind(this);
     }
     render() {
         return (
@@ -18,7 +20,12 @@ class OrgFilters extends React.Component {
             <Search/>
             <ButtonGroup/>
             <div className="btn-group dropdown dropdown-with-checkbox" role="group" aria-label="group">
-                <button id="filterDropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-outline-secondary m-0"><i className="icon-filter"></i></button>
+                <button id="filterDropdown" type="button" 
+                    aria-haspopup="true" aria-expanded="false" 
+                    className="btn btn-outline-secondary m-0"
+                    onClick={this.showAppliedFilterModal}>
+                    <i className="icon-filter"></i>
+                </button>
                 <AppliedOrgFiltersList />
             </div>
             <div className="ml-auto">
@@ -32,13 +39,20 @@ class OrgFilters extends React.Component {
     changePage() {
         this.props.changePage();
     }
+
+    showAppliedFilterModal() {
+        const {isAppliedFilterVisible} = this.props;
+        this.props.showAppliedFilterModal(!isAppliedFilterVisible);
+    }
 }
 
 const mapStateToProps = state => ({
+    isAppliedFilterVisible: state.orgLanding.isAppliedFilterVisible
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     changePage: () => push('/organizations/new'),
+    showAppliedFilterModal
 }, dispatch)
 
 export default connect(
