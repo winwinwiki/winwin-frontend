@@ -27,7 +27,7 @@ class AppliedOrgFiltersList extends React.Component {
             level3: userList[0],
             sector: [],
             status: [],
-            priority: Priority[0],
+            priority: '',
             revenueRange: {min: 0, max: 100},
             assetsRange: {min: 0, max: 100}
         }
