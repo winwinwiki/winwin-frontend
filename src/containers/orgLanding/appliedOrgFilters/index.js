@@ -9,21 +9,43 @@ class AppliedOrgFilters extends React.Component {
 
 
     render() {
-        
-        console.log("filter list");
+        const {appliedFilterList} = this.props;
+        if(!appliedFilterList) {return null; }
+        let valueArr = this.filterTagList();
+        let tagCount = this.calculateTagCount(valueArr);
         return (
             <div className="applied-filters col align-items-center d-flex">
-                {this.createTag()}
+                {this.createTag(valueArr)}
                 {/* {appliedFilterList.map(filter => <span className="badge badge-pill badge-secondary"> {filter} <a href="javascript:;" className=""><i className="icon-close"></i></a></span>)} */}
-                <a href="javascript:;" className="text-primary">+ 2 More</a>
+                {!tagCount && <span> No filters applied</span>} 
+                {tagCount > 3  && <a href="javascript:;" className="text-primary">+ {tagCount - 3} More</a> }
             </div>
 
         )
     }
 
-    createTag() {
+    calculateTagCount(valueArr) {
         const { appliedFilterList } = this.props;
-        return Object.keys(appliedFilterList).map((filterKey) => {
+        return appliedFilterList['status'] && appliedFilterList['sector'] ?
+        valueArr.length + appliedFilterList['status'].length + appliedFilterList['sector'].length : valueArr.length;   
+    }
+
+    createTag(valueArr) {
+        const { appliedFilterList } = this.props;
+        let count = 0; 
+        let tagValues = appliedFilterList['status'] && appliedFilterList['sector'] ? [...valueArr, ...appliedFilterList['status'], ...appliedFilterList['sector']] : valueArr;
+        return tagValues.map(val =>  {
+            if(val && count <= 2) {
+                count++;
+             return (<span className="badge badge-pill badge-secondary"> {val}
+                <a href="javascript:;" className=""><i className="icon-close"></i></a></span>)
+            }
+        })
+    }
+
+    filterTagList() {
+        const { appliedFilterList } = this.props;
+        return Object.keys(appliedFilterList).map((filterKey, idx) => {
             switch(filterKey) {
                 case 'userMod':
                 case 'priority':
@@ -33,21 +55,15 @@ class AppliedOrgFilters extends React.Component {
                 case 'level1':
                 case 'level2':
                 case 'level3':
-                    return <span className="badge badge-pill badge-secondary"> {appliedFilterList[filterKey]}
-                        <a href="javascript:;" className=""><i className="icon-close"></i></a></span>;
+                    return appliedFilterList[filterKey].includes('Select') || !appliedFilterList[filterKey] ? null : appliedFilterList[filterKey];
                 case 'revenueRange':
                 case 'assetsRange':
-                    return <span className="badge badge-pill badge-secondary"> {appliedFilterList[filterKey]['min'] + '-' + appliedFilterList[filterKey]['max']}
-                        <a href="javascript:;" className=""><i className="icon-close"></i></a></span>;
-                case 'sector':
-                case 'status' : 
-                    return appliedFilterList[filterKey].map(key => <span className="badge badge-pill badge-secondary">{key}
-                        <a href="javascript:;" className=""><i className="icon-close"></i></a></span>);
+                    return appliedFilterList[filterKey]['min'] + '- $' + appliedFilterList[filterKey]['max'];
                 default:
                     break;
     
             }
-        });  
+        }).filter(key => key);
     }
 }
 const mapStateToProps = state => ({

@@ -11,9 +11,9 @@ import {showAppliedFilterModal} from '../../../actions/orgLanding/orgLandingActi
 var classNames = require('classnames');
 
 const Priority = ['normal', 'high'];
-const userList = ['abc abc', 'sumit chaudhari', 'Suuny tambi'];
-const industryClassification = ['option 1', 'option 2', 'option 3'];
-const SubIndustryClassification = ['select 1', 'select 2', 'select 3'];
+const userList = ['Select User', 'abc abc', 'sumit chaudhari', 'Suuny tambi'];
+const industryClassification = ['Select Industry', 'option 1', 'option 2', 'option 3'];
+const SubIndustryClassification = ['Select Sub Industry','select 1', 'select 2', 'select 3'];
 class AppliedOrgFiltersList extends React.Component {
     constructor(props) {
         super(props);
