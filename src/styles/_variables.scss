@@ -14,6 +14,7 @@ $table-tr-hover-bg: #9DE2EF;
 $login-heading-color: #858688;
 $login-sub-header-color: #6A6B6C;
 $login-bg: #F8F8F8;
+$org-detail-bg: #F2F2F2;
 //Box Shadow Variables
 $sub-header-box-shadow: 0 1px 3px 0 rgba(0,0,0,0.37);
 $card-login-box-shadow: 0 1px 3px 0 rgba(0,0,0,0.18);
@@ -199,7 +200,8 @@ $input-btn-focus-box-shadow:  0 none;
 $input-label-color: $gray-one;
 
 //Forms
-$input-bg:                             #F7F7F7 !default;
+$search-input-bg:                             #F7F7F7 !default;
+$input-bg:                             #FFFFFF !default;
 $custom-control-indicator-bg: $white;
 $custom-control-indicator-focus-box-shadow:     0 none;
 $input-border-color:                    #E6E6E6;
@@ -249,6 +251,7 @@ $badge-text-color:                  #6B6B6B !default;
 //cards
 
 $card-shadows:                      0 2px 4px 0 #E6E6E6;
+$card-border-radius:                0 !default;
 
 //Navs
 $nav-tabs-border-color:               $gray-200;
