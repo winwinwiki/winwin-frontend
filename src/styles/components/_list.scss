@@ -1,0 +1,54 @@
+.custom-list-container {
+  overflow: hidden;
+
+  .card-body {
+    > ul {
+      padding-left: 20px;
+      list-style: none;
+      &:before {
+        content: "";
+        position: absolute;
+        border-left: 1px solid #E2E2E2;
+        height: 100%;
+        margin-left:4px;
+      }
+
+      > li {
+        position: relative;
+
+        > span {
+          font-size: 13px;
+          color: $secondary;
+          font-weight: 400;
+          background: $white;
+          line-height: 26px;
+          margin-bottom: 5px;
+          display: inline-block;
+        }
+
+        ul {
+          padding-left: 30px;
+          li {
+            list-style: none;
+            span {
+              line-height: 26px;
+              color: #9D9D9D;
+              font-size: 12px;
+              position: relative;
+              &:before {
+                content: "";
+                height: 11px;
+                width: 11px;
+                background-color: #E2E2E2;
+                border-radius: 50%;
+                position: absolute;
+                margin-left: -31px;
+                margin-top: 7px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
