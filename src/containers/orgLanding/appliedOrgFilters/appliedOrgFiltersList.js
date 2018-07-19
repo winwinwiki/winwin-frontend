@@ -3,10 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Dropdown from '../../ui/dropdown';
 import Checkbox from '../../ui/checkbox';
-import {setAppliedFilters} from '../../../actions/orgLanding/orgLandingAction';
+import {setAppliedFilters, showAppliedFilterModal} from '../../../actions/orgLanding/orgFilterAction';
 import InputRange from 'react-input-range';
 import 'react-input-range/lib/css/index.css';
-import {showAppliedFilterModal} from '../../../actions/orgLanding/orgLandingAction';
 
 var classNames = require('classnames');
 
@@ -27,7 +26,7 @@ class AppliedOrgFiltersList extends React.Component {
             level3: userList[0],
             sector: [],
             status: [],
-            priority: Priority[0],
+            priority: '',
             revenueRange: {min: 0, max: 100},
             assetsRange: {min: 0, max: 100}
         }
@@ -210,8 +209,8 @@ class AppliedOrgFiltersList extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    appliedFilterList: state.orgLanding.appliedFilterList,
-    isAppliedFilterVisible: state.orgLanding.isAppliedFilterVisible
+    appliedFilterList: state.orgFilter.appliedFilterList,
+    isAppliedFilterVisible: state.orgFilter.isAppliedFilterVisible
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({

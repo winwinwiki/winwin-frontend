@@ -6,6 +6,7 @@ import resetPassword from './auth/resetPasswordReducer';
 
 import createOrg from './createOrg/createOrgReducer';
 import orgLanding from './orgLanding/orgLandingReducer';
+import orgFilter from './orgLanding/orgFilterReducer';
 
 export default combineReducers({
     routing: routerReducer,
@@ -13,5 +14,6 @@ export default combineReducers({
     forgetPassword,
     resetPassword,
     createOrg,
-    orgLanding
+    orgLanding,
+    orgFilter
 });

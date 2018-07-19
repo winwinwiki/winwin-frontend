@@ -67,7 +67,7 @@ class AppliedOrgFilters extends React.Component {
     }
 }
 const mapStateToProps = state => ({
-    appliedFilterList: state.orgLanding.appliedFilterList
+    appliedFilterList: state.orgFilter.appliedFilterList
 })
 
 export default connect(

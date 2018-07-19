@@ -9,7 +9,7 @@ import './orgList.css';
 import OrgFilters from './orgFilter';
 import AppliedOrgFilters from './appliedOrgFilters/index';
 import Dropdown from '../ui/dropdown';
-import {fetchOrganisationsList} from '../../actions/orgLanding/orgLandingAction';
+import {fetchOrganisationsList, filterOrganisationsList} from '../../actions/orgLanding/orgLandingAction';
 
 const filterList = ['Federal', 'Private', 'Social'];
 const columns = [{
@@ -45,26 +45,34 @@ class OrgList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            entity: filterList[0]
+            entity: filterList[0],
+            orgList: []
         }
         this.onDropdownChange = this.onDropdownChange.bind(this);
+        this.filterOrgList = this.filterOrgList.bind(this);
     }
 
     componentDidMount() {
         this.props.fetchOrganisationsList();
     }
 
+    componentWillReceiveProps(nextProps) {
+        if(JSON.stringify(nextProps.orgList) !== JSON.stringify(this.props.orgList) ) {
+            this.setState({
+                orgList: nextProps.orgList
+            });
+        }
+    }
+
     render() {
-        const { entity } = this.state;
-        const {isFetchOrgSuccess, orgList} = this.props;
+        const { entity, orgList } = this.state;
+        const {isFetchOrgSuccess} = this.props;
         if(!isFetchOrgSuccess || !orgList) {
-            console.log("org list ")
-            console.log(orgList)
             return null;
         }
         return (
         <section className="dashboard-content p-0">
-        <OrgFilters/>
+        <OrgFilters filterOrgList={this.filterOrgList}/>
         <div className="d-flex py-3 align-items-center applied-filters-container">
             <Dropdown
                 selectedItem={entity}
@@ -118,18 +126,66 @@ class OrgList extends React.Component {
     onDropdownChange() {
 
     }
+
+    filterOrgList(filter) {
+        const { orgList } = this.props;
+        let orgListCopy = JSON.parse(JSON.stringify(orgList));
+         let filteredList = orgListCopy.filter((org => {
+            return Object.keys(filter).map((key) => {
+               return (filter[key].toLowerCase() === org[key].toLowerCase() || filter[key] === 'All')[0];
+            });
+        }));
+
+        this.setState({
+            orgList: filteredList
+        });
+    }
+
+    filterOrgList(filter) {
+        const { orgList, appliedFilterList } = this.props;
+        let orgListCopy = JSON.parse(JSON.stringify(orgList));
+         let filteredList = orgListCopy.filter((org => {
+            return Object.keys(filter).map((key) => {
+                switch(key) {
+                    case 'userMod':
+                    case 'priority':
+                    case 'subIndustryCls':
+                    case 'industryCls': 
+                    case 'frameworkTag':
+                    case 'level1':
+                    case 'level2':
+                    case 'level3':
+                        return appliedFilterList[key].includes('Select') || !appliedFilterList[key] ? false :  (filter[key].toLowerCase() === org[key].toLowerCase())[0];
+                    case 'revenueRange':
+                        break;
+                    case 'assetsRange':
+                        return  filter[key]['min'] >= org[key] && filter[key]['max'] <= org[key];
+                    default:
+                        break;
+        
+                }
+               return;
+            });
+        }));
+        
+        this.setState({
+            orgList: filteredList
+        });
+    }
 }
 
 const mapStateToProps = state => ({
     isFetchOrgPending: state.orgLanding.isFetchOrgPending,
     isFetchOrgSuccess: state.orgLanding.isFetchOrgSuccess,
     fetchOrgError: state.orgLanding.fetchOrgError,
-    orgList: state.orgLanding.orgList
+    orgList: state.orgLanding.orgList,
+    appliedFilterList: state.orgFilter.appliedFilterList
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     changePage: (id) => push('/organizations/'+ id),
-    fetchOrganisationsList
+    fetchOrganisationsList,
+    filterOrganisationsList
 }, dispatch)
 
 export default connect(
