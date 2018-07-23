@@ -34,10 +34,10 @@ class AppliedOrgFilters extends React.Component {
         const { appliedFilterList } = this.props;
         let count = 0; 
         let tagValues = appliedFilterList['status'] && appliedFilterList['sector'] ? [...valueArr, ...appliedFilterList['status'], ...appliedFilterList['sector']] : valueArr;
-        return tagValues.map(val =>  {
+        return tagValues.map((val, idx) =>  {
             if(val && count <= 2) {
                 count++;
-             return (<span className="badge badge-pill badge-secondary"> {val}
+             return (<span key={idx} className="badge badge-pill badge-secondary"> {val}
                 <a href="javascript:;" className=""><i className="icon-close"></i></a></span>)
             }
         })

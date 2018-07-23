@@ -193,8 +193,10 @@ class AppliedOrgFiltersList extends React.Component {
         const {isAppliedFilterVisible} = this.props;
        // const {userMod, industryCls, subIndustryCls, revenueRange, assetsRange} = this.state;
         //let filters = [...this.state.sector, ...this.state.status];
+        let filters = JSON.parse(JSON.stringify(this.state));
         this.props.setAppliedFilters(this.state);
         this.props.showAppliedFilterModal(!isAppliedFilterVisible);
+        this.props.onAppliedFilters(filters)
     }
 
     percentFormatter(v) {

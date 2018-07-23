@@ -50,6 +50,7 @@ class OrgList extends React.Component {
         }
         this.onDropdownChange = this.onDropdownChange.bind(this);
         this.filterOrgList = this.filterOrgList.bind(this);
+        this.appliedFilterOrgList = this.appliedFilterOrgList.bind(this);
     }
 
     componentDidMount() {
@@ -72,7 +73,7 @@ class OrgList extends React.Component {
         }
         return (
         <section className="dashboard-content p-0">
-        <OrgFilters filterOrgList={this.filterOrgList}/>
+        <OrgFilters filterOrgList={this.filterOrgList} onAppliedFilters={this.appliedFilterOrgList}/>
         <div className="d-flex py-3 align-items-center applied-filters-container">
             <Dropdown
                 selectedItem={entity}
@@ -83,7 +84,7 @@ class OrgList extends React.Component {
             <div className="result-count">
                 1,203 organizations found
             </div>
-            <AppliedOrgFilters/>
+            <AppliedOrgFilters />
             <div className="clear-filters">
                 <a href="javascript:;" className="text-primary">Clear All Filters</a>
             </div>
@@ -132,8 +133,8 @@ class OrgList extends React.Component {
         let orgListCopy = JSON.parse(JSON.stringify(orgList));
          let filteredList = orgListCopy.filter((org => {
             return Object.keys(filter).map((key) => {
-               return (filter[key].toLowerCase() === org[key].toLowerCase() || filter[key] === 'All')[0];
-            });
+               return (filter[key].toLowerCase() === org[key].toLowerCase() || filter[key] === 'All');
+            })[0];
         }));
 
         this.setState({
@@ -141,11 +142,14 @@ class OrgList extends React.Component {
         });
     }
 
-    filterOrgList(filter) {
-        const { orgList, appliedFilterList } = this.props;
+    appliedFilterOrgList(filters) {
+        console.log(this.props)
+        const { orgList } = this.props;
         let orgListCopy = JSON.parse(JSON.stringify(orgList));
          let filteredList = orgListCopy.filter((org => {
-            return Object.keys(filter).map((key) => {
+            let isFiltered = true;
+            Object.keys(filters).map((key) => {
+                if(!isFiltered) { return; }
                 switch(key) {
                     case 'userMod':
                     case 'priority':
@@ -155,17 +159,19 @@ class OrgList extends React.Component {
                     case 'level1':
                     case 'level2':
                     case 'level3':
-                        return appliedFilterList[key].includes('Select') || !appliedFilterList[key] ? false :  (filter[key].toLowerCase() === org[key].toLowerCase())[0];
+                        isFiltered = filters[key].includes('Select') || !filters[key] ? true :  (filters[key].toLowerCase() === org[key].toLowerCase());
+                        break;
                     case 'revenueRange':
                         break;
                     case 'assetsRange':
-                        return  filter[key]['min'] >= org[key] && filter[key]['max'] <= org[key];
+                        isFiltered =  (filters[key]['min'] <= org['totalAssets'] && filters[key]['max'] >= org['totalAssets']);
+                        break;
                     default:
                         break;
         
                 }
-               return;
             });
+            return isFiltered;
         }));
         
         this.setState({
