@@ -8,7 +8,8 @@ const initialState = {
     email: '',
     password: ''
   },
-  userInfo: null
+  userInfo: null,
+  isAuthenticated: false
 };
 
 export default (state = initialState, action) => {
@@ -20,7 +21,8 @@ export default (state = initialState, action) => {
 
     case SET_LOGIN_SUCCESS:
       return Object.assign({}, state, {
-        isLoginSuccess: action.isLoginSuccess
+        isLoginSuccess: action.isLoginSuccess,
+        isAuthenticated: true
       });
 
     case SET_LOGIN_ERROR:
