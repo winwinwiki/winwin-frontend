@@ -11,16 +11,12 @@ import {showAppliedFilterModal} from '../../actions/orgLanding/orgFilterAction';
 class OrgFilters extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            activeButton: 'All'
-        }
         this.changePage = this.changePage.bind(this);
         this.showAppliedFilterModal = this.showAppliedFilterModal.bind(this);
         this.setActiveButton = this.setActiveButton.bind(this);
-        this.onAppliedFilters = this.onAppliedFilters.bind(this);
     }
     render() {
-        const {activeButton} = this.state;
+        const {activeButton} = this.props;
         return (
         <div className="d-flex align-content-center border-bottom py-3">
             <Search/>
@@ -32,7 +28,7 @@ class OrgFilters extends React.Component {
                     onClick={this.showAppliedFilterModal}>
                     <i className="icon-filter"></i>
                 </button>
-                <AppliedOrgFiltersList onAppliedFilters={this.onAppliedFilters} />
+                <AppliedOrgFiltersList />
             </div>
             <div className="ml-auto">
                 <a onClick={this.changePage} className="btn btn-link"><i className="icon-add mr-1"></i> Create</a>
@@ -51,15 +47,8 @@ class OrgFilters extends React.Component {
         this.props.showAppliedFilterModal(!isAppliedFilterVisible);
     }
 
-    onAppliedFilters(filters) {
-        this.props.onAppliedFilters(filters);
-    }
-
     setActiveButton(field) {
         this.props.filterOrgList({sector: field});
-        this.setState({
-            activeButton: field
-        });
     }
 }
 

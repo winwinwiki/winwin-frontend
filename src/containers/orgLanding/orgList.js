@@ -10,6 +10,7 @@ import OrgFilters from './orgFilter';
 import AppliedOrgFilters from './appliedOrgFilters/index';
 import Dropdown from '../ui/dropdown';
 import {fetchOrganisationsList, filterOrganisationsList} from '../../actions/orgLanding/orgLandingAction';
+import {fetchFilteredOrgList, setAppliedFilters} from '../../actions/orgLanding/orgFilterAction';
 
 const filterList = ['Federal', 'Private', 'Social'];
 const columns = [{
@@ -46,11 +47,12 @@ class OrgList extends React.Component {
         super(props);
         this.state = {
             entity: filterList[0],
-            orgList: []
+            orgList: [],
+            activeButton: 'All'
         }
         this.onDropdownChange = this.onDropdownChange.bind(this);
         this.filterOrgList = this.filterOrgList.bind(this);
-        this.appliedFilterOrgList = this.appliedFilterOrgList.bind(this);
+        this.resetAllFilters = this.resetAllFilters.bind(this);
     }
 
     componentDidMount() {
@@ -66,14 +68,14 @@ class OrgList extends React.Component {
     }
 
     render() {
-        const { entity, orgList } = this.state;
+        const { entity, orgList, activeButton } = this.state;
         const {isFetchOrgSuccess} = this.props;
         if(!isFetchOrgSuccess || !orgList) {
             return null;
         }
         return (
         <section className="dashboard-content p-0">
-        <OrgFilters filterOrgList={this.filterOrgList} onAppliedFilters={this.appliedFilterOrgList}/>
+        <OrgFilters activeButton={activeButton} filterOrgList={this.filterOrgList} />
         <div className="d-flex py-3 align-items-center applied-filters-container">
             <Dropdown
                 selectedItem={entity}
@@ -86,7 +88,7 @@ class OrgList extends React.Component {
             </div>
             <AppliedOrgFilters />
             <div className="clear-filters">
-                <a href="javascript:;" className="text-primary">Clear All Filters</a>
+                <a onClick={this.resetAllFilters} className="text-primary">Clear All Filters</a>
             </div>
         </div>
         <div>
@@ -129,53 +131,64 @@ class OrgList extends React.Component {
     }
 
     filterOrgList(filter) {
-        const { orgList } = this.props;
-        let orgListCopy = JSON.parse(JSON.stringify(orgList));
-         let filteredList = orgListCopy.filter((org => {
-            return Object.keys(filter).map((key) => {
-               return (filter[key].toLowerCase() === org[key].toLowerCase() || filter[key] === 'All');
-            })[0];
-        }));
+        this.props.fetchFilteredOrgList(filter);
+        // const { orgList } = this.props;
+        // let orgListCopy = JSON.parse(JSON.stringify(orgList));
+        //  let filteredList = orgListCopy.filter((org => {
+        //     return Object.keys(filter).map((key) => {
+        //        return (filter[key].toLowerCase() === org[key].toLowerCase() || filter[key] === 'All');
+        //     })[0];
+        // }));
 
         this.setState({
-            orgList: filteredList
+            activeButton: filter['sector']
         });
     }
 
     appliedFilterOrgList(filters) {
-        console.log(this.props)
-        const { orgList } = this.props;
-        let orgListCopy = JSON.parse(JSON.stringify(orgList));
-         let filteredList = orgListCopy.filter((org => {
-            let isFiltered = true;
-            Object.keys(filters).map((key) => {
-                if(!isFiltered) { return; }
-                switch(key) {
-                    case 'userMod':
-                    case 'priority':
-                    case 'subIndustryCls':
-                    case 'industryCls': 
-                    case 'frameworkTag':
-                    case 'level1':
-                    case 'level2':
-                    case 'level3':
-                        isFiltered = filters[key].includes('Select') || !filters[key] ? true :  (filters[key].toLowerCase() === org[key].toLowerCase());
-                        break;
-                    case 'revenueRange':
-                        break;
-                    case 'assetsRange':
-                        isFiltered =  (filters[key]['min'] <= org['totalAssets'] && filters[key]['max'] >= org['totalAssets']);
-                        break;
-                    default:
-                        break;
+        // console.log(this.props)
+        // const { orgList } = this.props;
+        // let orgListCopy = JSON.parse(JSON.stringify(orgList));
+        //  let filteredList = orgListCopy.filter((org => {
+        //     let isFiltered = true;
+        //     Object.keys(filters).map((key) => {
+        //         if(!isFiltered) { return; }
+        //         switch(key) {
+        //             case 'userMod':
+        //             case 'priority':
+        //             case 'subIndustryCls':
+        //             case 'industryCls': 
+        //             case 'frameworkTag':
+        //             case 'level1':
+        //             case 'level2':
+        //             case 'level3':
+        //                 isFiltered = filters[key].includes('Select') || !filters[key] ? true :  (filters[key].toLowerCase() === org[key].toLowerCase());
+        //                 break;
+        //             case 'revenueRange':
+        //                 break;
+        //             case 'assetsRange':
+        //                 isFiltered =  (filters[key]['min'] <= org['totalAssets'] && filters[key]['max'] >= org['totalAssets']);
+        //                 break;
+        //             case 'status':
+        //                 isFiltered = !!filters[key].find(status => status.toLowerCase() === org['sectorLevel']);
+        //             default:
+        //                 break;
         
-                }
-            });
-            return isFiltered;
-        }));
+        //         }
+        //     });
+        //     return isFiltered;
+        // }));
         
+        // this.setState({
+        //     orgList: filteredList
+        // });
+    }
+
+    resetAllFilters() {
+        this.props.fetchFilteredOrgList([]);
+        this.props.setAppliedFilters([]);
         this.setState({
-            orgList: filteredList
+            activeButton: 'All'
         });
     }
 }
@@ -191,7 +204,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     changePage: (id) => push('/organizations/'+ id),
     fetchOrganisationsList,
-    filterOrganisationsList
+    filterOrganisationsList,
+    fetchFilteredOrgList,
+    setAppliedFilters
 }, dispatch)
 
 export default connect(
