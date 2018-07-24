@@ -10,7 +10,7 @@ const SideBar = (props) => {
             <Link to={`${props.url.url}`}>Basic Info</Link>
             <Link to={`${props.url.url}/data-sets`}>Data Sets</Link>
             <Link to={`${props.url.url}/data-sets`}>Regions Served </Link>
-            <Link to={`${props.url.url}`}>Spi Tag</Link>
+            <Link to={`${props.url.url}/spi-tags`}>Spi Tag</Link>
             <Link to={`${props.url.url}/data-sets`}>Sdg Tag</Link>
         </div>
     )

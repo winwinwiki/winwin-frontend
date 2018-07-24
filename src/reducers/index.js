@@ -8,6 +8,8 @@ import createOrg from './createOrg/createOrgReducer';
 import orgLanding from './orgLanding/orgLandingReducer';
 import orgFilter from './orgLanding/orgFilterReducer';
 
+import spiTags from './orgDetail/spiTagsReducer';
+
 export default combineReducers({
     routing: routerReducer,
     login,
@@ -15,5 +17,6 @@ export default combineReducers({
     resetPassword,
     createOrg,
     orgLanding,
-    orgFilter
+    orgFilter,
+    spiTags
 });
