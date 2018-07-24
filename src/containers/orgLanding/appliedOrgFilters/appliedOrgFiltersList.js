@@ -3,10 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Dropdown from '../../ui/dropdown';
 import Checkbox from '../../ui/checkbox';
-import {setAppliedFilters} from '../../../actions/orgLanding/orgLandingAction';
+import {setAppliedFilters, showAppliedFilterModal} from '../../../actions/orgLanding/orgFilterAction';
 import InputRange from 'react-input-range';
 import 'react-input-range/lib/css/index.css';
-import {showAppliedFilterModal} from '../../../actions/orgLanding/orgLandingAction';
 
 var classNames = require('classnames');
 
@@ -35,6 +34,7 @@ class AppliedOrgFiltersList extends React.Component {
         this.onSectorCheckboxChange = this.onSectorCheckboxChange.bind(this);
         this.onStatusCheckboxChange = this.onStatusCheckboxChange.bind(this);
         this.addFiltersTag = this.addFiltersTag.bind(this);
+        this.clearAppliedFilters = this.clearAppliedFilters.bind(this);
     }
 
 
@@ -161,7 +161,7 @@ class AppliedOrgFiltersList extends React.Component {
         </div>
         <div className="row mt-5">
             <div className="col justify-content-end d-flex">
-                <button type="button" className="btn btn-link">Reset Filters</button>
+                <button type="button" className="btn btn-link" onClick={this.clearAppliedFilters}>Reset Filters</button>
                 <button type="button" className="btn btn-primary" onClick={this.addFiltersTag}>Done</button>
             </div>
         </div>
@@ -192,10 +192,27 @@ class AppliedOrgFiltersList extends React.Component {
 
     addFiltersTag() {
         const {isAppliedFilterVisible} = this.props;
-       // const {userMod, industryCls, subIndustryCls, revenueRange, assetsRange} = this.state;
-        //let filters = [...this.state.sector, ...this.state.status];
+        let filters = JSON.parse(JSON.stringify(this.state));
         this.props.setAppliedFilters(this.state);
         this.props.showAppliedFilterModal(!isAppliedFilterVisible);
+    }
+
+    clearAppliedFilters() {
+        this.props.setAppliedFilters([]);
+        this.setState({
+            userMod: userList[0],
+            industryCls: industryClassification[0],
+            subIndustryCls: SubIndustryClassification[0],
+            frameworkTag: userList[0],
+            level1: userList[0],
+            level2: userList[0],
+            level3: userList[0],
+            sector: [],
+            status: [],
+            priority: '',
+            revenueRange: {min: 0, max: 100},
+            assetsRange: {min: 0, max: 100}
+        });
     }
 
     percentFormatter(v) {
@@ -210,8 +227,8 @@ class AppliedOrgFiltersList extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    appliedFilterList: state.orgLanding.appliedFilterList,
-    isAppliedFilterVisible: state.orgLanding.isAppliedFilterVisible
+    appliedFilterList: state.orgFilter.appliedFilterList,
+    isAppliedFilterVisible: state.orgFilter.isAppliedFilterVisible
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({

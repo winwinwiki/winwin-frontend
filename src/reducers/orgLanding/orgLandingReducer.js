@@ -1,4 +1,4 @@
-import {SET_FETCHORG_PENDING, SET_FETCHORG_SUCCESS, SET_FECTHORG_ERROR, SET_APPLIED_FILTER,
+import {SET_FETCHORG_PENDING, SET_FETCHORG_SUCCESS, SET_FECTHORG_ERROR, FILTER_ORG_LIST,
   SET_APPLIED_FILTER_FLAG} from '../../constants/dispatch';
 
 const initialState = {
@@ -28,15 +28,10 @@ export default (state = initialState, action) => {
         fetchOrgError: action.fetchOrgError
       });
 
-    case SET_APPLIED_FILTER:
+      case FILTER_ORG_LIST: 
       return Object.assign({}, state, {
-        appliedFilterList:action.appliedFilterList
-    });
-
-    case SET_APPLIED_FILTER_FLAG:
-    return Object.assign({}, state, {
-      isAppliedFilterVisible:action.isAppliedFilterVisible
-  });
+        orgList: action.filteredOrgList
+      });
 
     default:
       return state;

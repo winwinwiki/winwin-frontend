@@ -1,4 +1,4 @@
-import { SET_FETCHORG_PENDING, SET_FETCHORG_SUCCESS, SET_FECTHORG_ERROR, SET_APPLIED_FILTER,
+import { SET_FETCHORG_PENDING, SET_FETCHORG_SUCCESS, SET_FECTHORG_ERROR, FILTER_ORG_LIST,
     SET_APPLIED_FILTER_FLAG } from '../../constants/dispatch';
 import { callFetchOrgApi } from '../../api/orgLanding/orgLandingApi';
 
@@ -19,15 +19,9 @@ export const fetchOrganisationsList = () => {
     }
 }
 
-export const setAppliedFilters = (filterList) => {
+export const filterOrganisationsList = (newList) => {
     return dispatch => {
-        dispatch(setAplliedFiltersList(filterList));
-    }
-}
-
-export const showAppliedFilterModal = (isAppliedFilterVisible) => {
-    return dispatch => {
-        dispatch(setAppliedilterFlag(isAppliedFilterVisible))
+        dispatch(updateOrganisationsList(newList));
     }
 }
 
@@ -53,16 +47,9 @@ function setFetchOrgError(fetchOrgError) {
     }
 }
 
-function setAplliedFiltersList(appliedFilterList) {
+function updateOrganisationsList(filteredOrgList) {
     return {
-        type: SET_APPLIED_FILTER,
-        appliedFilterList
-    }
-}
-
-function setAppliedilterFlag(isAppliedFilterVisible) {
-    return {
-        type: SET_APPLIED_FILTER_FLAG,
-        isAppliedFilterVisible
+        type: FILTER_ORG_LIST,
+        filteredOrgList
     }
 }
