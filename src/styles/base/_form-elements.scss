@@ -1,17 +1,30 @@
-::-webkit-input-placeholder {
+.card-login ::-webkit-input-placeholder {
   text-transform: uppercase;
+  font-weight: 300;
+}
+.card-login ::-moz-placeholder {
+  text-transform: uppercase;
+  font-weight: 300;
+}
+.card-login :-ms-input-placeholder {
+  text-transform: uppercase;
+  font-weight: 300;
+}
+.card-login :-moz-placeholder {
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+::-webkit-input-placeholder {
   font-weight: 300;
 }
 ::-moz-placeholder {
-  text-transform: uppercase;
   font-weight: 300;
 }
 :-ms-input-placeholder {
-  text-transform: uppercase;
   font-weight: 300;
 }
 :-moz-placeholder {
-  text-transform: uppercase;
   font-weight: 300;
 }
 
@@ -22,9 +35,9 @@ input {
 .search {
   >.form-control{
     font-weight: 300;
-    font-size: 14px;
-    border-radius: 24px;
-    line-height: 26px;
+    font-size: rem(14px);
+    border-radius: rem(24px);
+    line-height: rem(26px);
     min-width: 324px;
     background-color: $search-input-bg;
   }
@@ -37,7 +50,7 @@ input {
   &:before{
     @include icon-search();
     position: absolute;
-    left: 12px;
+    left: rem(12px);
     top: 50%;
     transform: translate(0, -50%);
     color: $gray-500;
@@ -46,23 +59,30 @@ input {
   >.form-control{
     padding-left: rem(34px);
   }
-
 }
 
+.form-control {
+  line-height: rem(26px);
+  font-size: rem(14px);
+  font-weight: 400;
+  color: $body-color;
+}
 
 .form-label{
   color: $input-label-color;
 }
 
-.form-control {
-
+.form-group {
+  margin-bottom: rem(22px);
+  label {
+    color: $page-heading-color;
+  }
 }
 
 
 //Custom Select
 .custom-select{
   font-weight: 300;
-
 }
 
 //Textarea Resize Disable

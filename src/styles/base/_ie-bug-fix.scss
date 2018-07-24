@@ -1,0 +1,5 @@
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .modal .modal-content {      //main file at modals.scss ie doens't support maxheight in modal. using fixed height.
+    height: 400px;
+  }
+}

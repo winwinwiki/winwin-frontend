@@ -6,6 +6,11 @@
   .modal-open &{
     overflow: hidden;
   }
+
+  .modal-header {
+    padding: 0;
+  }
+
   .modal-content{
     max-height: calc(100vh - 100px);
   }
@@ -24,4 +29,10 @@
 
   }
 
+}
+
+@media (min-width: 1024px) {
+  .modal-xl {
+    min-width: 1200px;
+  }
 }
