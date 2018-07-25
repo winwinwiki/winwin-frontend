@@ -6519,56 +6519,62 @@ icon-font Webfont
 .icon-cog:before {
   content: ""; }
 
-.icon-exit-contain:before {
+.icon-delete:before {
   content: ""; }
 
-.icon-facebook:before {
+.icon-edit:before {
   content: ""; }
 
-.icon-filter:before {
+.icon-exit-contain:before {
   content: ""; }
 
-.icon-globe:before {
+.icon-facebook:before {
   content: ""; }
 
-.icon-help-outline:before {
+.icon-filter:before {
   content: ""; }
 
-.icon-linkedin:before {
+.icon-globe:before {
   content: ""; }
 
-.icon-menu:before {
+.icon-help-outline:before {
   content: ""; }
 
-.icon-modal-close:before {
+.icon-linkedin:before {
   content: ""; }
 
-.icon-more:before {
+.icon-menu:before {
   content: ""; }
 
-.icon-participant-list:before {
+.icon-modal-close:before {
   content: ""; }
 
-.icon-pinterest:before {
+.icon-more:before {
   content: ""; }
 
-.icon-power:before {
+.icon-participant-list:before {
   content: ""; }
 
-.icon-search:before {
+.icon-pinterest:before {
   content: ""; }
 
-.icon-settings:before {
+.icon-power:before {
   content: ""; }
 
-.icon-sort:before {
+.icon-search:before {
   content: ""; }
 
-.icon-twitter:before {
+.icon-settings:before {
   content: ""; }
 
-.icon-upload:before {
+.icon-sort:before {
   content: ""; }
+
+.icon-twitter:before {
+  content: ""; }
+
+.icon-upload:before {
+  content: ""; }
 
 .overflow-scroll {
   overflow: scroll; }
@@ -6622,7 +6628,8 @@ p {
   overflow: auto; }
 
 .section-title {
-  color: #4D4D4D; }
+  color: #4D4D4D;
+  font-size: 0.875rem; }
 
 .container {
   min-width: 1200px !important; }
@@ -6680,7 +6687,7 @@ input {
   position: relative;
   margin-bottom: 0; }
   .search-input-group:before {
-    content: "";
+    content: "";
     position: absolute;
     left: 0.75rem;
     top: 50%;
@@ -6701,7 +6708,8 @@ input {
 .form-group {
   margin-bottom: 1.375rem; }
   .form-group label {
-    color: #4D4D4D; }
+    color: #4D4D4D;
+    font-size: 0.875rem; }
 
 .custom-select {
   font-weight: 300; }
@@ -7029,12 +7037,13 @@ textarea {
 .dropdown-with-searchbox .btn-dropdown {
   color: #343537;
   font-weight: 300;
-  border: 1px solid #D7D7D8;
+  border: 1px solid #E6E6E6;
   text-align: left;
   position: relative;
   padding-right: 2.5rem;
   display: inline-block;
-  background-color: #fff; }
+  background-color: #fff;
+  line-height: 1.875rem; }
   .dropdown-with-searchbox .btn-dropdown:after {
     content: "";
     font-size: 1.125rem;
@@ -7760,7 +7769,7 @@ textarea {
   .ReactTable.-highlight .rt-tbody .rt-tr:not(.-padRow):hover {
     background: #9DE2EF; }
     .ReactTable.-highlight .rt-tbody .rt-tr:not(.-padRow):hover:after {
-      content: "";
+      content: "";
       position: absolute;
       right: 12px;
       cursor: pointer;
@@ -7894,8 +7903,8 @@ textarea {
               margin-left: -31px;
               margin-top: 7px; }
 
-.progress-index-modal h5.modal-title {
-  font-size: 1.5rem; }
+h5.modal-title {
+  font-size: 1.5rem !important; }
 
 .progress-index-options h3 {
   font-weight: 500; }
@@ -7906,6 +7915,22 @@ textarea {
 
 .org-details-container {
   background-color: #F2F2F2; }
+  .org-details-container .list-group-item:hover .action-icons {
+    display: block; }
+  .org-details-container .list-group-item .action-icons {
+    transition: ease all .3s;
+    display: none; }
+
+.action-icons {
+  list-style: none;
+  position: absolute;
+  top: 0;
+  right: 0; }
+  .action-icons li {
+    float: left;
+    display: inline-block; }
+    .action-icons li + li {
+      margin-left: 10px; }
 
 .section-login {
   background-size: cover; }

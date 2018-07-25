@@ -35,42 +35,47 @@ class CreateOrg extends React.Component {
         const { orgName, sector, entity} = this.state;
         let {createOrgFormError} = this.props;
         return (
-            <div>
-                <label for="orgName" className="sr-only">User Name</label>
-                    <input id="orgName" type="text" aria-describedby="orgNameDesc" 
-                        placeholder="Organization Name" 
-                        className="form-control"
-                        onBlur={this.validateField} 
-                        onChange={this.onChange} 
-                        name="orgName" 
-                        value={orgName} />
-                    <small id="orgNameDesc" className="sr-only">Org Name</small>
-                    { createOrgFormError.orgName && <div>{createOrgFormError.orgName}</div> }
-                    <div style={{margin: 15}}>
-                        <Dropdown
-                            selectedItem={sector}
-                            name="sector"
-                            containerClass="dropdown dropdown-with-searchbox"
-                            onChange={this.onDropdownChange.bind(this)}
-                            items={sectoryList}/>
+            <div className="container">
+                <div className="row ">
+                    <div className="col-sm-12 mx-auto my-3">
+                        <label htmlFor="orgName" className="sr-only">User Name</label>
+                        <input id="orgName" type="text" aria-describedby="orgNameDesc"
+                               placeholder="Organization Name"
+                               className="form-control"
+                               onBlur={this.validateField}
+                               onChange={this.onChange}
+                               name="orgName"
+                               value={orgName}/>
+                        <small id="orgNameDesc" className="sr-only">Org Name</small>
+                        {createOrgFormError.orgName && <div className="text-danger small">{createOrgFormError.orgName}</div>}
+                        <div className="my-3">
+                            <Dropdown
+                                selectedItem={sector}
+                                name="sector"
+                                containerClass="dropdown dropdown-with-searchbox"
+                                onChange={this.onDropdownChange.bind(this)}
+                                items={sectoryList}/>
+                        </div>
+                        <div className="my-3">
+                            <Dropdown
+                                selectedItem={entity}
+                                name="entity"
+                                containerClass="dropdown dropdown-with-searchbox"
+                                onChange={this.onDropdownChange.bind(this)}
+                                items={entityList}/>
+                        </div>
+                        <Geosuggest
+                            ref={el => this._geoSuggest = el}
+                            placeholder="Start typing!"
+                            className="form-control position-relative"
+                            initialValue=""
+                            fixtures={[]}
+                            onBlur={this.validateLocationField}
+                            onSuggestSelect={this.onSuggestSelect}/>
+                        {createOrgFormError.location && <div className="text-danger small">{createOrgFormError.location}</div>}
+                        <button className="btn btn-lg btn-primary w-100 mt-4" onClick={this.onCreateOrg}>Create</button>
                     </div>
-                    <div style={{margin: 15}}>
-                        <Dropdown
-                            selectedItem={entity}
-                            name="entity"
-                            containerClass="dropdown dropdown-with-searchbox"
-                            onChange={this.onDropdownChange.bind(this)}
-                            items={entityList}/>
-                    </div>
-                    <Geosuggest
-                        ref={el=>this._geoSuggest=el}
-                        placeholder="Start typing!"
-                        initialValue=""
-                        fixtures={[]}
-                        onBlur={this.validateLocationField}
-                        onSuggestSelect={this.onSuggestSelect} />
-                        { createOrgFormError.location && <div>{createOrgFormError.location}</div> }
-                    <button className="btn btn-lg btn-light w-100 mt-4" onClick={this.onCreateOrg}>Create</button>
+                </div>
             </div>
         )
     }

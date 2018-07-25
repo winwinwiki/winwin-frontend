@@ -42,13 +42,14 @@
     color: $gray-five;
     //font-size: 1rem;
     font-weight: 300;
-    border: 1px solid $gray-300;
+    border: 1px solid $input-border-color;
     text-align: left;
     position: relative;
     padding-right: rem(40px);
     display: inline-block;
     @extend .text-truncate;
     background-color: $white;
+    line-height: rem(30px);
 
     &:after{
       @include icon-chevron-down;
