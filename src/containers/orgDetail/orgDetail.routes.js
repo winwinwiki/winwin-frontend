@@ -6,6 +6,7 @@ import OrgDetail from './';
 import OrgDetailPage from './orgDetailPage';
 import DataSets from './dataSets';
 import SpiTags from './spiTag';
+import SdgTags from './sdgTag';
 
 const OrgDetailRoutes = ({ match }) => (
         <OrgDetail url={match}>
@@ -13,6 +14,7 @@ const OrgDetailRoutes = ({ match }) => (
                 <PrivateRoute authenticated={true} exact path={`${match.path}`} component={OrgDetailPage} />
                 <PrivateRoute authenticated={true} exact path={`${match.path}/data-sets`} component={DataSets} />
                 <PrivateRoute authenticated={true} exact path={`${match.path}/spi-tags`} component={SpiTags} />
+                <PrivateRoute authenticated={true} exact path={`${match.path}/sdg-tags`} component={SdgTags} />
             </Switch>
         </OrgDetail>
 )

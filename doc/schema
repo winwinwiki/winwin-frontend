@@ -1,0 +1,118 @@
+User Data Model- 
+    id
+    name
+    email
+    password
+    role [admin, data seeder]
+    image
+    location
+
+Organization DM- 
+    id - number
+    name - string    
+    address: {
+        street,
+        city,
+        county,
+        state,
+        zip,
+        country
+    }
+    totalRevenue [{
+        value,
+        year
+    }]
+    totalAssets - number
+    sector - string
+    sectorLevel - string
+    priority - string
+    isTaggingReady - boolean
+    tagStatus - string
+    tags - array []
+    website - string
+    social - array []
+    code - {
+        name - ntee , naics etc
+        description
+    }
+    childOrganization - array[orgids]
+    lastUpdated - array [{
+        userId,
+        username,
+        fieldsEdited[]
+        timestamp
+    }]
+    cretedOn - date
+
+Programmes DM- 
+    id
+    name    
+    sector
+    sectorLevel
+    address: {
+        street,
+        city,
+        county,
+        state,
+        zip,
+        country
+    }
+    totalRevenue [{
+        value,
+        year
+    }]
+    totalAssets
+    priority
+    tagStatus
+    website
+    social []
+    code {
+        name - ntee , naics etc
+        description
+    }
+    parentOrganizationId
+    cretedOn
+    updatedOn
+
+DataSet  DM -
+    id
+    category
+    description
+    type
+    url
+    orgid
+    progId
+
+resources DM- 
+    id
+    category
+    count 
+    description
+    orgId
+    progId
+
+resiognServed DM-
+    id
+    city
+    county
+    country
+    state
+    orgId
+    progId
+
+spiTag DM -
+    id
+    name
+    type
+    orgId
+    progId
+
+sdgTag DM -
+
+    id
+    name
+    type
+    orgId
+    progId
+
+
