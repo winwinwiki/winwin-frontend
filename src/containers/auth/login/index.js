@@ -40,7 +40,7 @@ class Login extends React.Component {
                         name="email" 
                         value={email} />
                   <small id="userNameDesc" className="sr-only">User Name</small>
-                  { formError.email && <div>{formError.email}</div> }
+                  { formError.email && <div className="text-danger small error">{formError.email}</div> }
                 </div>
                 <div className="form-group w-100 mb-4 login-form-group">
                   <label for="userPassword" className="sr-only">User Password</label>
@@ -52,7 +52,7 @@ class Login extends React.Component {
                         name="password" 
                         value={password}/>
                   <small id="passwordDesc" className="sr-only">User Name</small>
-                  { formError.password ? <div>{formError.password}</div> : <div>&nbsp;</div> }
+                  { formError.password ? <div className="text-danger small error">{formError.password}</div> : <div>&nbsp;</div> }
                 </div>
                 <Link to='/forget-password' className="px-4 text-white">Forgot password?</Link>
                     <button className="btn btn-lg btn-light w-100 mt-4" onClick={this.onLoginSubmit}>Login</button>
