@@ -1,8 +1,11 @@
-export function fetchOrgSdgTags(orgId, progId,callback) {
-    fetch('https://2f248b72-f468-4550-9f26-e85de48b7c33.mock.pstmn.io/sdg-tags')
-  .then((response) => response.json())
-  .then((responseJson) => callback(null, responseJson))
-  .catch((error) => {
-    callback(error, null);
-  });
+import CommonUtil from '../commonUtil';
+
+export function fetchOrgSdgTags(orgId, progId, callback) {
+  let url = CommonUtil.createUrl('/sdg-tags');
+  fetch(url)
+    .then((response) => response.json())
+    .then((responseJson) => callback(null, responseJson))
+    .catch((error) => {
+      callback(error, null);
+    });
 }
