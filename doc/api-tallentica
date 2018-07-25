@@ -1,0 +1,102 @@
+FOR ADMIN -
+
+POST  - /user - create user
+PUT - /user/:id - update user
+DELETE - /user/:id - delete user
+
+
+FOR ALL USERS-
+
+POST - /login - login user
+POST - /logout - logout the user
+POST - /password/reset - reset password email
+POST - /password/update - update new password
+
+GET - /user/:id - get user information
+UPDATE - /user/:id - update user info
+
+
+
+GET - /organizations/:pagenum - get all organisation with page index
+
+POST - /organization - create one or more than one organisation at once 
+GET - /organization/:id - get organisation basic info by id
+PUT - /organization/:id - update a organization info
+DELETE - /organization/:id - delete an organization
+
+GET - /organization/:id/dataset - fetch data set for a organization
+POST - /organization/:id/dataset - Create data set for a organization
+PUT - /organization/:id/dataset - Update data set for a organisation
+DELETE - /organization/:id/dataset - Delete data set for a organization
+
+GET - /organization/:id/resources - fetch resources for a organization
+POST - /organization/:id/resources - Create resources for a organization
+PUT - /organization/:id/resources - Update resources for a organization
+DELETE - /organization/:id/resources - Delete resources for a organization
+
+GET - /organization/:id/regions - fetch regions for a organization
+POST - /organization/:id/regions - Create regions for a organization
+PUT - /organization/:id/regions - Update regions t for a organization
+DELETE - /organization/:id/regions - Delete regions for a organization
+
+GET - /organization/:id/spi - fetch spi for a organization
+POST - /organization/:id/spi - Create spi for a organization
+PUT - /organization/:id/spi - Update spi for a organization
+DELETE - /organization/:id/spi - Delete spi for a organization
+
+GET - /organization/:id/sdg - fetch sdg for a organization
+POST - /organization/:id/sdg - Create sdg for a organization
+PUT - /organization/:id/sdg - Update sdg for a organization
+DELETE - /organization/:id/sdg - Delete sdg for a organization
+
+
+
+Sub organization - not clear
+POST - /organization/subOrg - create sub organisation
+GET - /organization/:id - get organisation basic info by id
+PUT - /organization/:id - update a organization info
+DELETE - /organization/:id - delete an organization
+
+
+Programs
+POST - /organization/programme - create programmes of an organisation
+GET - /organization/programme/:id - get programme basic info by id
+PUT - /organization/programme/:id - update a programme info
+DELETE - /organization/programme/:id - delete a programme
+
+GET - /organization/programme/:id/dataset - fetch data set for a programme
+POST - /organization/programme/:id/dataset - Create data set for a programme
+PUT - /organization/programme/:id/dataset - Update data set for a programme
+DELETE - /organization/programme/:id/dataset - Delete data set for a programme
+
+GET - /organization/:id/resources - fetch resources for a programme
+POST - /organization/:id/resources - Create resources for a programme
+PUT - /organization/:id/resources - Update resources for a programme
+DELETE - /organization/:id/resources - Delete resources for a programme
+
+GET - /organization/programme/:id/regions - fetch regions for a programme
+POST - /organization/programme/:id/regions - Create regions for a programme
+PUT - /organization/programme/:id/regions - Update regions t for a programme
+DELETE - /organization/programme/:id/regions - Delete regions for a programme
+
+GET - /organization/programme/:id/spi - fetch spi for a programme
+POST - /organization/programme/:id/spi - Create spi for a programme
+PUT - /organization/programme/:id/spi - Update spi for a programme
+DELETE - /organization/programme/:id/spi - Delete spi for a programme
+
+GET - /organization/programme/:id/sdg - fetch sdg for a programme
+POST - /organization/programme/:id/sdg - Create sdg for a programme
+PUT - /organization/programme/:id/sdg - Update sdg for a programme
+DELETE - /organization/programme/:id/sdg - Delete sdg for a programme
+
+
+- Get Mapping of tags
+- Get users who edited the organisation
+- Get All categories of an organization
+
+
+Suggestion api for city, state and country for filter view
+Add resource tag and list resources api for org detail view
+
+
+
