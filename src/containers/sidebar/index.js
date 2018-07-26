@@ -14,8 +14,8 @@ const SideBar = (props) => {
                             <li><Link className="active" to={`${props.url.url}`}><i></i>Basic Info</Link></li>
                             <li><Link to={`${props.url.url}/data-sets`}><i></i>Data Sets</Link></li>
                             <li><Link to={`${props.url.url}/data-sets`}><i></i>Regions Served </Link></li>
-                            <li><Link to={`${props.url.url}`}><i></i>Spi Tag</Link></li>
-                            <li><Link to={`${props.url.url}/data-sets`}><i></i>Sdg Tag</Link></li>
+                            <li><Link to={`${props.url.url}/spi-tags`}><i></i>Spi Tag</Link></li>
+                            <li><Link to={`${props.url.url}/sdg-tags`}><i></i>Sdg Tag</Link></li>
                         </ul>
                     </div>
                 </li>
