@@ -3,7 +3,7 @@ $login-header-color: #6D7C7F;
 $login-button-color: #219ED6;
 
 .section-login{
-  background: $login-bg;
+  //background: $login-bg;
   background-size: cover;
 }
 
@@ -79,6 +79,8 @@ $login-button-color: #219ED6;
 }
 
 .login-form-group{
+  position: relative;
+
   .form-control, .custom-select{
     border: 1px solid $white;
     border-radius: 40px;
@@ -100,5 +102,9 @@ $login-button-color: #219ED6;
       box-shadow: none;
     }
   }
-
+}
+#userNameDesc + div,
+#passwordDesc + div {
+  position: absolute;
+  right: 10px;
 }

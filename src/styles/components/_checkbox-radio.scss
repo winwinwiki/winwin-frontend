@@ -1,5 +1,6 @@
-.custom-select{
+$checkbox-color : #333333;
 
+.custom-select{
 }
 .custom-control-label{
   line-height: 1.5rem;
@@ -16,6 +17,7 @@
 }
 
 .custom-checkbox {
+  color: $checkbox-color;
   .custom-control-input {
     &:checked ~ .custom-control-label {
       &::before {
@@ -25,7 +27,7 @@
         background-image: none !important;
         background-color: $primary;
         width: .61rem;
-        height: .6rem;
+        height: .61rem;
         top: 0.45rem;
         left: -1.3rem
       }
@@ -35,7 +37,7 @@
 .custom-control-input{
 
   &:checked ~ .custom-control-label {
-    color: $primary;
+    color: $checkbox-color;
     &::before {
       border-color: $primary;
     }

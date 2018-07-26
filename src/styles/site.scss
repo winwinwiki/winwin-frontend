@@ -52,7 +52,7 @@
 //
 //base elements styles
 @import "base/form-elements";
-
+@import "base/ie-bug-fix";
 
 //Common Components common to all the themes
 //
@@ -78,6 +78,7 @@
 
 //Pages Styles
 //
+@import "page/progress-index";
 @import "page/org-details";
 @import "page/login";
 

@@ -15,6 +15,7 @@ $login-heading-color: #858688;
 $login-sub-header-color: #6A6B6C;
 $login-bg: #F8F8F8;
 $org-detail-bg: #F2F2F2;
+$body-color: #9C9C9C;
 //Box Shadow Variables
 $sub-header-box-shadow: 0 1px 3px 0 rgba(0,0,0,0.37);
 $card-login-box-shadow: 0 1px 3px 0 rgba(0,0,0,0.18);
@@ -24,7 +25,7 @@ $card-login-box-shadow: 0 1px 3px 0 rgba(0,0,0,0.18);
 $font-family-url:             '../fonts/';
 $font-icon-url:  $font-family-url;
 $font-winwin: 'Fira Sans', sans-serif;
-$page-heading-color: #333333;
+$page-heading-color: #4D4D4D;
 
 $base-spacing: 1rem !default;
 //Custom Line height
@@ -330,6 +331,7 @@ $modal-backdrop-opacity:            .65 !default;
 //$modal-footer-border-width:         $modal-header-border-width !default;
 $modal-header-padding:              1.1rem !default;
 
+$modal-xl:                          1200px !default;
 $modal-lg:                          964px !default;
 $modal-md:                          640px !default;
 $modal-sm:                          300px !default;

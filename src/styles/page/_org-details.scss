@@ -1,3 +1,31 @@
 .org-details-container {
   background-color: $org-detail-bg;
+
+  .list-group-item {
+    &:hover {
+      .action-icons {
+        display: block;
+      }
+    }
+    .action-icons {
+      transition: ease all .3s;
+      display: none;
+    }
+  }
+}
+
+.action-icons {
+  list-style:none;
+  position: absolute;
+  top:0;
+  right:0;
+
+  li {
+    float: left;
+    display: inline-block;
+
+    + li {
+      margin-left: 10px;
+    }
+  }
 }

@@ -48,68 +48,92 @@ $char: "\E002";
 @if $filename == arrow-up {
 $char: "\E003";
 }
-@if $filename == cal {
+@if $filename == arrow {
 $char: "\E004";
 }
-@if $filename == check {
+@if $filename == cal {
 $char: "\E005";
 }
-@if $filename == chevron-down {
+@if $filename == check {
 $char: "\E006";
 }
-@if $filename == chevron-left {
+@if $filename == chevron-down {
 $char: "\E007";
 }
-@if $filename == chevron-right {
+@if $filename == chevron-left {
 $char: "\E008";
 }
-@if $filename == chevron-up {
+@if $filename == chevron-right {
 $char: "\E009";
 }
-@if $filename == circle-question {
+@if $filename == chevron-up {
 $char: "\E00A";
 }
-@if $filename == close {
+@if $filename == circle-question {
 $char: "\E00B";
 }
-@if $filename == cog {
+@if $filename == close {
 $char: "\E00C";
 }
-@if $filename == exit-contain {
+@if $filename == cog {
 $char: "\E00D";
 }
-@if $filename == filter {
+@if $filename == delete {
 $char: "\E00E";
 }
-@if $filename == help-outline {
+@if $filename == edit {
 $char: "\E00F";
 }
-@if $filename == menu {
+@if $filename == exit-contain {
 $char: "\E010";
 }
-@if $filename == modal-close {
+@if $filename == facebook {
 $char: "\E011";
 }
-@if $filename == more {
+@if $filename == filter {
 $char: "\E012";
 }
-@if $filename == participant-list {
+@if $filename == globe {
 $char: "\E013";
 }
-@if $filename == power {
+@if $filename == help-outline {
 $char: "\E014";
 }
-@if $filename == search {
+@if $filename == linkedin {
 $char: "\E015";
 }
-@if $filename == settings {
+@if $filename == menu {
 $char: "\E016";
 }
-@if $filename == sort {
+@if $filename == modal-close {
 $char: "\E017";
 }
-@if $filename == upload {
+@if $filename == more {
 $char: "\E018";
+}
+@if $filename == participant-list {
+$char: "\E019";
+}
+@if $filename == pinterest {
+$char: "\E01A";
+}
+@if $filename == power {
+$char: "\E01B";
+}
+@if $filename == search {
+$char: "\E01C";
+}
+@if $filename == settings {
+$char: "\E01D";
+}
+@if $filename == sort {
+$char: "\E01E";
+}
+@if $filename == twitter {
+$char: "\E01F";
+}
+@if $filename == upload {
+$char: "\E020";
 }
 
 @return $char;
@@ -160,6 +184,19 @@ $char: "\E018";
 @mixin icon-arrow-up {
    @extend %icon;
    @include icon(arrow-up);
+}
+
+.icon-arrow{
+  &:before {
+   @include icon(arrow);
+  }
+}
+
+
+
+@mixin icon-arrow {
+   @extend %icon;
+   @include icon(arrow);
 }
 
 .icon-cal{
@@ -279,6 +316,32 @@ $char: "\E018";
    @include icon(cog);
 }
 
+.icon-delete{
+  &:before {
+   @include icon(delete);
+  }
+}
+
+
+
+@mixin icon-delete {
+   @extend %icon;
+   @include icon(delete);
+}
+
+.icon-edit{
+  &:before {
+   @include icon(edit);
+  }
+}
+
+
+
+@mixin icon-edit {
+   @extend %icon;
+   @include icon(edit);
+}
+
 .icon-exit-contain{
   &:before {
    @include icon(exit-contain);
@@ -290,6 +353,19 @@ $char: "\E018";
 @mixin icon-exit-contain {
    @extend %icon;
    @include icon(exit-contain);
+}
+
+.icon-facebook{
+  &:before {
+   @include icon(facebook);
+  }
+}
+
+
+
+@mixin icon-facebook {
+   @extend %icon;
+   @include icon(facebook);
 }
 
 .icon-filter{
@@ -305,6 +381,19 @@ $char: "\E018";
    @include icon(filter);
 }
 
+.icon-globe{
+  &:before {
+   @include icon(globe);
+  }
+}
+
+
+
+@mixin icon-globe {
+   @extend %icon;
+   @include icon(globe);
+}
+
 .icon-help-outline{
   &:before {
    @include icon(help-outline);
@@ -316,6 +405,19 @@ $char: "\E018";
 @mixin icon-help-outline {
    @extend %icon;
    @include icon(help-outline);
+}
+
+.icon-linkedin{
+  &:before {
+   @include icon(linkedin);
+  }
+}
+
+
+
+@mixin icon-linkedin {
+   @extend %icon;
+   @include icon(linkedin);
 }
 
 .icon-menu{
@@ -370,6 +472,19 @@ $char: "\E018";
    @include icon(participant-list);
 }
 
+.icon-pinterest{
+  &:before {
+   @include icon(pinterest);
+  }
+}
+
+
+
+@mixin icon-pinterest {
+   @extend %icon;
+   @include icon(pinterest);
+}
+
 .icon-power{
   &:before {
    @include icon(power);
@@ -420,6 +535,19 @@ $char: "\E018";
 @mixin icon-sort {
    @extend %icon;
    @include icon(sort);
+}
+
+.icon-twitter{
+  &:before {
+   @include icon(twitter);
+  }
+}
+
+
+
+@mixin icon-twitter {
+   @extend %icon;
+   @include icon(twitter);
 }
 
 .icon-upload{

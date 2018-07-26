@@ -8,7 +8,7 @@ html, body {
   //overflow-x: hidden;
   //overflow-y: auto;
   overflow: hidden;
-  font-weight: 300;
+  font-weight: 400;
   padding: 0;
   margin: 0;
   width: 100%;
@@ -20,10 +20,22 @@ html, body {
   }
 }
 
+h3 {
+  font-size: rem(14px);
+}
+p {
+  font-size: rem(13px);
+  line-height: rem(20px);
+}
+
 .template{
   overflow: auto;
 }
 
+.section-title {
+  color: $page-heading-color;
+  font-size: rem(14px);
+}
 
 //main-content
 .container {
