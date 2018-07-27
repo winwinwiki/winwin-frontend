@@ -1,8 +1,28 @@
 import React from 'react';
 import ResourceBlock from './resourceBlock';
 
-const Resources = (props) => {
-    return (
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { setOrgResources, fetchOrgResources } from '../../../actions/orgDetail/resourcesAction';
+
+class Resources extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            location: null
+        }
+        this.onSuggestSelect = this.onSuggestSelect.bind(this);
+    }
+
+    componentDidMount() {
+        this.props.fetchOrgResources();
+    }
+
+    render() {
+        const {resourcesList, isResourcesSuccess} = this.props;
+        if(!isResourcesSuccess) { return null; }
+        return (
         <section className="dashboard-content p-0 py-3 org-details-container">
         <div className="col-md-18 m-auto card">
             <div className="col-md-18 m-auto d-flex flex-column py-3">
@@ -106,5 +126,20 @@ const Resources = (props) => {
     </section>
     )
 }
+}
 
-export default Resources;
+const mapStateToProps = state => ({
+    resourcesList: state.resources.resourcesList,
+    isResourcesSuccess: state.resources.isResourcesSuccess
+})
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    setOrgResources,
+    fetchOrgResources
+}, dispatch)
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Resources);
+
