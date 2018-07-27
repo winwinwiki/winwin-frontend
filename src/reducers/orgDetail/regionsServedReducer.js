@@ -1,26 +1,30 @@
-import { FETCH_REGIONSERVED_PENDING, FETCH_REGIONSERVED_SUCCESS, FETCH_REGIONSERVED_ERROR } from '../../constants/dispatch';
+import { FETCH_REGIONSERVED_PENDING, FETCH_REGIONSERVED_SUCCESS, FETCH_REGIONSERVED_ERROR,
+    SET_REGIONSERVED_PENDING, SET_REGIONSERVED_SUCCESS, SET_REGIONSERVED_ERROR  } from '../../constants/dispatch';
 
   const initialState = {
     regionsServedList: [],
-    isregionsServedPending: false,
-    isregionsServedSuccess: false,
-    isregionsServedError: null
+    isRegionsServedPending: false,
+    isRegionsServedSuccess: false,
+    isRegionsServedError: null
   };
   
   export default (state = initialState, action) => {
     switch (action.type) {
       case FETCH_REGIONSERVED_PENDING:
+      case SET_REGIONSERVED_PENDING:
         return Object.assign({}, state, {
-            isregionsServedPending: action.isregionsServedPending
+            isRegionsServedPending: action.isRegionsServedPending
         });
       case FETCH_REGIONSERVED_SUCCESS:
+      case SET_REGIONSERVED_SUCCESS:
         return Object.assign({}, state, {
-            isregionsServedSuccess: action.isregionsServedSuccess,
+            isRegionsServedSuccess: action.isRegionsServedSuccess,
             regionsServedList: action.regionsServedList
         });
       case FETCH_REGIONSERVED_ERROR:
+      case SET_REGIONSERVED_ERROR:
         return Object.assign({}, state, {
-            isregionsServedError: action.isregionsServedError
+            isRegionsServedError: action.isRegionsServedError
         });
   
       default:

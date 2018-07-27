@@ -1,6 +1,6 @@
 import CommonUtil from '../commonUtil';
 
-export function callRegionsServedApi(regions, callback) {
+export function setRegionsServedApi(regions, callback) {
     let url = CommonUtil.createUrl('/regions-served');
     fetch(url,{
         method: 'POST',
@@ -10,6 +10,16 @@ export function callRegionsServedApi(regions, callback) {
         },
         body: JSON.stringify(regions)
     })
+    .then((response) => response.json())
+    .then((responseJson) => callback(null, responseJson))
+    .catch((error) => {
+        callback(error, null);
+    });
+}
+
+export function fetchRegionsServedApi(callback) {
+    let url = CommonUtil.createUrl('/regions-served');
+    fetch(url)
     .then((response) => response.json())
     .then((responseJson) => callback(null, responseJson))
     .catch((error) => {
