@@ -1,5 +1,5 @@
 
-const url = "https://2f248b72-f468-4550-9f26-e85de48b7c33.mock.pstmn.io";
+const url = "https://demo8782246.mockable.io";
 class CommonUtil {
     static createUrl(endPoints) {
         return url + endPoints;
