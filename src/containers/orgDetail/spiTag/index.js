@@ -36,8 +36,8 @@ class SpiTags extends React.Component {
     }
 
     createSpiBox(spiTagsList) {
-        return spiTagsList.map(tags => {
-        return (<div className="card custom-list-container">
+        return spiTagsList.map((tags, idx) => {
+        return (<div key={idx} className="card custom-list-container">
         <div className="card-header">
             {tags['level1']}
         </div>

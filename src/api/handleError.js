@@ -12,7 +12,7 @@ class HandleError {
         } else if (response.status === 502) {
 
         }  else {
-            cb(response, null);
+            cb(null, response);
         }
     }
 }

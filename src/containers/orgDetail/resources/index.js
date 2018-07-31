@@ -12,7 +12,6 @@ class Resources extends React.Component {
         this.state = {
             location: null
         }
-        this.onSuggestSelect = this.onSuggestSelect.bind(this);
     }
 
     componentDidMount() {

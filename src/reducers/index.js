@@ -11,6 +11,8 @@ import orgFilter from './orgLanding/orgFilterReducer';
 import spiTags from './orgDetail/spiTagsReducer';
 import sdgTags from './orgDetail/sdgTagsReducer';
 import regionsServed from './orgDetail/regionsServedReducer';
+import resources from './orgDetail/resourcesReducer';
+import dataset from './orgDetail/dataSetReducer';
 
 export default combineReducers({
     routing: routerReducer,
@@ -22,5 +24,7 @@ export default combineReducers({
     orgFilter,
     spiTags,
     sdgTags,
-    regionsServed
+    regionsServed,
+    resources,
+    dataset
 });
