@@ -4,6 +4,7 @@ import { Switch } from 'react-router';
 import PrivateRoute from  '../privateRouter';
 import OrgDetail from './';
 import OrgDetailPage from './orgDetailPage';
+import OrgPrograms from './orgPrograms';
 import DataSets from './dataSets';
 import SpiTags from './spiTag';
 import SdgTags from './sdgTag';
@@ -17,6 +18,7 @@ const OrgDetailRoutes = ({ match }) => (
                 <PrivateRoute authenticated={true} exact path={`${match.path}/regions-served`} component={RegionsServed} />
                 <PrivateRoute authenticated={true} exact path={`${match.path}/spi-tags`} component={SpiTags} />
                 <PrivateRoute authenticated={true} exact path={`${match.path}/sdg-tags`} component={SdgTags} />
+                <PrivateRoute authenticated={true} exact path={`${match.path}/programs`} component={OrgPrograms} />
             </Switch>
         </OrgDetail>
 )

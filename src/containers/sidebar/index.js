@@ -19,7 +19,9 @@ const SideBar = (props) => {
                         </ul>
                     </div>
                 </li>
-                <li className="list-group-item"><a href="javascript:;">Programs</a></li>
+                <li className="list-group-item">
+                    <Link to={`${props.url.url}/programs`}>Programs</Link>
+                </li>
             </ul>
             <div className="social-footer mt-auto">
                 <ul className="d-flex flex-row justify-content-between pl-1 pr-3">
