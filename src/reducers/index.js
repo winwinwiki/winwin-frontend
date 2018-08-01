@@ -12,6 +12,10 @@ import spiTags from './orgDetail/spiTagsReducer';
 import sdgTags from './orgDetail/sdgTagsReducer';
 import regionsServed from './orgDetail/regionsServedReducer';
 
+import orgDetail from './orgDetail/orgDetailReducer';
+
+import programList from './program/programListReducer';
+
 export default combineReducers({
     routing: routerReducer,
     login,
@@ -22,5 +26,7 @@ export default combineReducers({
     orgFilter,
     spiTags,
     sdgTags,
-    regionsServed
+    regionsServed,
+    orgDetail,
+    programList
 });

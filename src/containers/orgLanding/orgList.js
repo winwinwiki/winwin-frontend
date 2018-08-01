@@ -12,6 +12,7 @@ import Dropdown from '../ui/dropdown';
 import {fetchOrganisationsList, filterOrganisationsList} from '../../actions/orgLanding/orgLandingAction';
 import {fetchFilteredOrgList, setAppliedFilters} from '../../actions/orgLanding/orgFilterAction';
 
+
 const filterList = ['Federal', 'Private', 'Social'];
 const columns = [{
     id: 'select',
@@ -50,6 +51,7 @@ class OrgList extends React.Component {
             orgList: [],
             activeButton: 'All'
         }
+        this.changePage = this.changePage.bind(this);
         this.onDropdownChange = this.onDropdownChange.bind(this);
         this.filterOrgList = this.filterOrgList.bind(this);
         this.resetAllFilters = this.resetAllFilters.bind(this);
@@ -101,7 +103,7 @@ class OrgList extends React.Component {
                     return {
                       onClick: (e) => {
                           if(column.id !== 'select') {
-                            this.props.changePage(rowInfo.original.id);
+                            this.changePage(rowInfo.original.id);
                           }
                       },
                       style: {
@@ -503,6 +505,10 @@ class OrgList extends React.Component {
         </div>
     </section>
         )
+    }
+
+    changePage(orgId) {
+        this.props.changePage(orgId);
     }
 
     onDropdownChange() {

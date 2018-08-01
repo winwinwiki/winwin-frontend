@@ -15,7 +15,7 @@ const OrgLandingRoutes = (props) => (
           <Switch>
               <PrivateRoute authenticated={props.isAuthenticated} exact path="/organizations" component={OrgList} />
               <PrivateRoute authenticated={props.isAuthenticated} exact path="/organizations/new" component={CreateOrg} />
-              <PrivateRoute authenticated={props.isAuthenticated} path="/organizations/:id" component={OrgDetailRoutes} />
+              <PrivateRoute authenticated={props.isAuthenticated} strict path="/organizations/:id" component={OrgDetailRoutes}/>
           </Switch>
     </OrgLanding>
 )

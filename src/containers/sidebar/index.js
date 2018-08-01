@@ -7,8 +7,8 @@ const SideBar = (props) => {
     return (
         <div id="mySidenav" className="sidenav d-flex flex-column">
             <ul className="list-group list-group-flush pr-3">
-                <li className="list-group-item"><a href="javascript:;">Basic Information</a></li>
-                <li className="list-group-item"><a href="javascript:;" className="active" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Organization Details</a>
+            {props.type === 'Organisation' && <li className="list-group-item"><a href="javascript:;">Basic Information</a></li>}
+                <li className="list-group-item"><a href="javascript:;" className="active" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{props.type} Details</a>
                     <div className="collapse" id="collapseExample">
                         <ul className="subnav">
                             <li><Link className="active" to={`${props.url.url}`}><i></i>Basic Info</Link></li>
@@ -19,7 +19,7 @@ const SideBar = (props) => {
                         </ul>
                     </div>
                 </li>
-                <li className="list-group-item"><a href="javascript:;">Programs</a></li>
+                {props.type === 'Organisation' && <li className="list-group-item"><Link to={`${props.url.url}/programs`}>Programs</Link></li>}
             </ul>
             <div className="social-footer mt-auto">
                 <ul className="d-flex flex-row justify-content-between pl-1 pr-3">

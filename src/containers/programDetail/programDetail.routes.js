@@ -1,26 +1,23 @@
 import React from 'react';
 import { Switch } from 'react-router';
 import PrivateRoute from  '../privateRouter';
-import OrgDetail from './';
-import OrgDetailPage from './orgDetailPage';
+import ProgramDetail from './';
+import ProgramDetailPage from './programDetailPage';
 import DataSets from './dataSets';
 import SpiTags from './spiTag';
 import SdgTags from './sdgTag';
 import RegionsServed from './regionsServed';
 
-import ProgramListRoutes from './programList.routes';
-
-const OrgDetailRoutes = ({ match }) => (
-        <OrgDetail url={match}>
+const ProgramDetailRoutes = ({ match }) => (
+        <ProgramDetail url={match}>
             <Switch>
-                <PrivateRoute authenticated={true} orgId={match.params.id} exact path={`${match.path}`} component={OrgDetailPage} />
+                <PrivateRoute authenticated={true} exact path={`${match.path}`} component={ProgramDetailPage} />
                 <PrivateRoute authenticated={true} exact path={`${match.path}/data-sets`} component={DataSets} />
                 <PrivateRoute authenticated={true} exact path={`${match.path}/regions-served`} component={RegionsServed} />
                 <PrivateRoute authenticated={true} exact path={`${match.path}/spi-tags`} component={SpiTags} />
                 <PrivateRoute authenticated={true} exact path={`${match.path}/sdg-tags`} component={SdgTags} />
-                <PrivateRoute authenticated={true} exact path={`${match.path}/programs`} component={ProgramListRoutes} />
             </Switch>
-        </OrgDetail>
+        </ProgramDetail>
 )
 
-export default OrgDetailRoutes;
+export default ProgramDetailRoutes;
