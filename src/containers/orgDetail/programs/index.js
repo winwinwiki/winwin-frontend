@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import {fetchProgramsList} from '../../../actions/program/programListAction';
+import Search from '../../ui/searchBar';
 
 class ProgramList extends React.Component {
     constructor(props) {
@@ -39,10 +40,20 @@ class ProgramList extends React.Component {
             programListArray.push(<li className="list-group-item" key={programList[i].id}><Link to={`${this.props.match.url}/${programList[i].id}`}>{programList[i].name}</Link></li>);
         }
         return (
-        <section className="dashboard-content p-0">
-            <ul className="list-group">
-                {programListArray}
-            </ul>
+            <section className="dashboard-content p-0 py-3 org-details-container">
+            <div className="col-md-18 m-auto card">
+                <div className="col-md-18 m-auto d-flex flex-column py-3">
+                <div className="d-flex align-content-center border-bottom py-3">
+                    <Search placeholder="Search Program"/>
+                    <div className="ml-auto">
+                        <a className="btn btn-link"><i className="icon-add mr-1"></i> Add</a>
+                    </div>
+                </div>
+                <ul className="list-group py-3">
+                    {programListArray}
+                </ul>
+            </div>
+            </div>
         </section>
         )
     }
