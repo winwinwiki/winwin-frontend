@@ -11,8 +11,8 @@ const SideBar = (props) => {
                 <li className="list-group-item"><a href="javascript:;" className="active" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Organization Details</a>
                     <div className="collapse" id="collapseExample">
                         <ul className="subnav">
-                            <li><Link className="active" to={`${props.url.url}`}><i></i>Basic Info</Link></li>
-                            <li><Link to={`${props.url.url}/data-sets`}><i></i>Data Sets</Link></li>
+                            <li><Link className="active" to={`${props.url.url}/data-sets`}><i></i>Data Sets</Link></li>
+                            <li><Link to={`${props.url.url}/resources`}><i></i>Resources</Link></li>
                             <li><Link to={`${props.url.url}/regions-served`}><i></i>Regions Served </Link></li>
                             <li><Link to={`${props.url.url}/spi-tags`}><i></i>Spi Tag</Link></li>
                             <li><Link to={`${props.url.url}/sdg-tags`}><i></i>Sdg Tag</Link></li>
