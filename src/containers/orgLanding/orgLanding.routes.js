@@ -10,12 +10,15 @@ import OrgDetailRoutes from '../orgDetail/orgDetail.routes';
 import OrgList from './orgList';
 import CreateOrg from '../createOrg';
 
+import ProgramDetailRoutes from '../programDetail/programDetail.routes';
+
 const OrgLandingRoutes = (props) => (
     <OrgLanding>
           <Switch>
               <PrivateRoute authenticated={props.isAuthenticated} exact path="/organizations" component={OrgList} />
               <PrivateRoute authenticated={props.isAuthenticated} exact path="/organizations/new" component={CreateOrg} />
-              <PrivateRoute authenticated={props.isAuthenticated} strict path="/organizations/:id" component={OrgDetailRoutes}/>
+              <PrivateRoute authenticated={props.isAuthenticated} path="/organizations/:id/programs/:programId" component={ProgramDetailRoutes} />
+              <PrivateRoute authenticated={props.isAuthenticated} path="/organizations/:id" component={OrgDetailRoutes}/>
           </Switch>
     </OrgLanding>
 )

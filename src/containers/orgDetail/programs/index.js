@@ -3,7 +3,9 @@ import { push } from 'react-router-redux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import {fetchProgramsList} from '../../actions/program/programListAction';
+import { Link } from 'react-router-dom';
+
+import {fetchProgramsList} from '../../../actions/program/programListAction';
 
 class ProgramList extends React.Component {
     constructor(props) {
@@ -15,7 +17,7 @@ class ProgramList extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchProgramsList(this.props.url.params.id);
+        this.props.fetchProgramsList(this.props.match.params.id);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -30,11 +32,17 @@ class ProgramList extends React.Component {
         const { programList } = this.state;
         const {isFetchProgramSuccess} = this.props;
         if(!isFetchProgramSuccess || !programList) {
-          //  return null;
+           return null;
+        }
+        var programListArray = [];
+        for (var i = 0; i < programList.length; i++) {
+            programListArray.push(<li className="list-group-item" key={programList[i].id}><Link to={`${this.props.match.url}/${programList[i].id}`}>{programList[i].name}</Link></li>);
         }
         return (
         <section className="dashboard-content p-0">
-            {this.props.children}
+            <ul className="list-group">
+                {programListArray}
+            </ul>
         </section>
         )
     }

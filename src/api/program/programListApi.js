@@ -1,6 +1,6 @@
 import CommonUtil from '../commonUtil';
 
-export function callFetchOrgApi(orgId, callback) {
+export function callFetchProgramApi(orgId, callback) {
   let url = CommonUtil.createUrl('/programs');
   fetch(url)
     .then((response) => response.json())

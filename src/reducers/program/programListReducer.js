@@ -17,7 +17,7 @@ import { SET_FETCHPROGRAM_PENDING, SET_FETCHPROGRAM_SUCCESS, SET_FECTHPROGRAM_ER
       case SET_FETCHPROGRAM_SUCCESS:
         return Object.assign({}, state, {
             isFetchProgramSuccess: action.isFetchProgramSuccess,
-          orgList: action.orgList
+            programList: action.programList
         });
   
       case SET_FECTHPROGRAM_ERROR:
