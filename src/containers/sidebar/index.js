@@ -6,9 +6,9 @@ const SideBar = (props) => {
 
     return (
         <div id="mySidenav" className="sidenav d-flex flex-column">
-        {props.type === 'Programs' && <div className="py-3 d-flex justify-content-between">
-            <a className="btn btn-link"><i className="icon-chevron-left mr-1"></i></a>
-            <h4>Classes, camps, events and location rentals</h4>
+        {props.type === 'Programs' && <div className="py-3 d-flex justify-content-between" onClick={()=>props.history.goBack()}>
+            <i className="icon-chevron-left mr-1"></i>
+            <h4>{props.programDetail.name}</h4>
         </div>}
             <ul className="list-group list-group-flush pr-3">
             {props.type === 'Organisation' && <li className="list-group-item"><a href="javascript:;">Basic Information</a></li>}

@@ -12,7 +12,7 @@ import RegionsServed from '../orgDetail/regionsServed';
 
 
 const ProgramDetailRoutes = (props) => (
-    <ProgramDetail url={props.match}>
+    <ProgramDetail url={props.match} history={props.history}>
         <Switch>
             <PrivateRoute authenticated={props.isAuthenticated} exact path={`${props.match.path}/data-sets`} component={DataSets} />
             <PrivateRoute authenticated={props.isAuthenticated} exact path={`${props.match.path}/regions-served`} component={RegionsServed} />

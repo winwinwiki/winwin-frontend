@@ -2,13 +2,13 @@ import React from 'react';
 
 const ProgramDetailPage = (props) => {
     return (
-      <section className="dashboard-content p-0 py-3 program-details-container">
+      <section className="dashboard-content p-0 py-3 org-details-container">
           <div className="col-md-18 m-auto card">
               <div className="col-md-18 m-auto d-flex flex-column py-3">
                   <form>
                       <div className="form-group">
-                          <label htmlFor="category">Program Name</label>
-                          <input type="text" className="form-control" id="category" placeholder="Enter Category" value="Classes, camps, events and location rentals"/>
+                          <label htmlFor="programName">Program Name</label>
+                          <input type="text" className="form-control" id="programName" placeholder="Enter Program Name" value="Classes, camps, events and location rentals"/>
                       </div>
                       <div className="form-group">
                           <label htmlFor="description">Program Description</label>
