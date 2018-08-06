@@ -6,10 +6,14 @@ const SideBar = (props) => {
 
     return (
         <div id="mySidenav" className="sidenav d-flex flex-column">
+        {props.type === 'Programs' && <div className="py-3 d-flex justify-content-between">
+            <a className="btn btn-link"><i className="icon-chevron-left mr-1"></i></a>
+            <h4>Classes, camps, events and location rentals</h4>
+        </div>}
             <ul className="list-group list-group-flush pr-3">
             {props.type === 'Organisation' && <li className="list-group-item"><a href="javascript:;">Basic Information</a></li>}
-                <li className="list-group-item"><a href="javascript:;" className="active" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{props.type} Details</a>
-                    <div className="collapse" id="collapseExample">
+                <li className="list-group-item"><a href="javascript:;" className="active" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded={props.type === 'Organisation'? false : true} aria-controls="collapseExample">{props.type} Details</a>
+                    <div className={props.type === 'Organisation'? 'collapse' : 'collapse show' } id="collapseExample">
                         <ul className="subnav">
                             <li><Link className="active" to={`${props.url.url}`}><i></i>Basic Info</Link></li>
                             <li><Link to={`${props.url.url}/data-sets`}><i></i>Data Sets</Link></li>
