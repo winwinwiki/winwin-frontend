@@ -37,16 +37,12 @@ class ProgramList extends React.Component {
         if(!isFetchProgramSuccess || !programList) {
            return null;
         }
-        var programListArray = [];
-        for (var i = 0; i < filteredProgramList.length; i++) {
-            programListArray.push(<li className="list-group-item" key={filteredProgramList[i].id}><Link to={`${this.props.match.url}/${filteredProgramList[i].id}`}>{filteredProgramList[i].name}</Link></li>);
-        }
         return (
             <section className="dashboard-content p-0 py-3 org-details-container">
             <div className="col-md-18 m-auto card">
                 <div className="col-md-18 m-auto d-flex flex-column py-3">
                 <div className="d-flex align-content-center border-bottom py-3">
-                    <Search placeholder="Search Program" onKeyUp={(e) =>this.getFilteredListOfPrograms(e)} />
+                    <Search placeholder="Search Program" onChange={(e) =>this.getFilteredListOfPrograms(e)} />
                     <div className="ml-auto" data-toggle="modal" data-target="#addProgramModal">
                         <a className="btn btn-link"><i className="icon-add mr-1"></i> Add</a>
                     </div>
@@ -93,7 +89,7 @@ class ProgramList extends React.Component {
                     </div>
                 </div>
                 <ul className="list-group py-3">
-                    {programListArray}
+                    {this.renderProgramList()}
                 </ul>
             </div>
             </div>
@@ -105,14 +101,14 @@ class ProgramList extends React.Component {
         this.props.changePage(programId);
     }
 
+    renderProgramList(){
+        return this.state.filteredProgramList.map(program =><li className="list-group-item" key={program.id}><Link to={`${this.props.match.url}/${program.id}`}>{program.name}</Link></li>);
+    }
+
     getFilteredListOfPrograms(e){
         var filteredProgramList = [];
         if(e.target.value){
-            for (var i = 0; i < this.state.programList.length; i++) {
-                if(this.state.programList[i].name.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1){
-                    filteredProgramList.push(this.state.programList[i]);
-                }
-            }
+            filteredProgramList = this.state.programList.filter( program => program.name.toLowerCase().indexOf(e.target.value.toLowerCase()) >-1);
         } else {
             filteredProgramList = this.state.programList.slice();
         }
