@@ -12,6 +12,10 @@ export const SET_FP_PENDING = 'auth/SET_FP_PENDING';
 export const SET_FP_SUCCESS = 'auth/SET_FFP_SUCCESS';
 export const SET_FP_ERROR = 'auth/SET_FP_ERROR';
 export const SET_FPFORM_ERROR = 'auth/SET_FPFORM_ERROR';
+//users
+export const SET_USERINFO_PENDING = 'user/SET_USERINFO_PENDING';
+export const SET_USERINFO_SUCCESS = 'user/SET_USERINFO_SUCCESS';
+export const SET_USERINFO_ERROR = 'user/SET_USERINFO_ERROR';
 //create org
 export const SET_CREATEORG_PENDING = 'org/SET_CREATEORG_PENDING';
 export const SET_CREATEORG_SUCCESS = 'org/SET_CREATEORG_SUCCESS';

@@ -15,7 +15,7 @@ class CommonUtil {
 
     static getToken() {
         let token = localStorage.getItem('_token') ? localStorage.getItem('_token') : null;
-        return { Authorization: 'Bearer ' + token };
+        return { Authorization: 'Bearer ' + token, 'Content-Type': 'application/x-www-form-urlencoded' };
     }
 
 }

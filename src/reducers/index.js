@@ -4,6 +4,8 @@ import login from './auth/loginReducer';
 import forgetPassword from './auth/forgetPasswordReducer';
 import resetPassword from './auth/resetPasswordReducer';
 
+import userInfo from './users/userInfoReducer';
+
 import createOrg from './createOrg/createOrgReducer';
 import orgLanding from './orgLanding/orgLandingReducer';
 import orgFilter from './orgLanding/orgFilterReducer';
@@ -28,5 +30,6 @@ export default combineReducers({
     sdgTags,
     regionsServed,
     orgDetail,
-    programList
+    programList,
+    userInfo
 });
