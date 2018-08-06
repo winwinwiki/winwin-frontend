@@ -4,6 +4,8 @@ import login from './auth/loginReducer';
 import forgetPassword from './auth/forgetPasswordReducer';
 import resetPassword from './auth/resetPasswordReducer';
 
+import userInfo from './users/userInfoReducer';
+
 import createOrg from './createOrg/createOrgReducer';
 import orgLanding from './orgLanding/orgLandingReducer';
 import orgFilter from './orgLanding/orgFilterReducer';
@@ -13,6 +15,10 @@ import sdgTags from './orgDetail/sdgTagsReducer';
 import regionsServed from './orgDetail/regionsServedReducer';
 import resources from './orgDetail/resourcesReducer';
 import dataset from './orgDetail/dataSetReducer';
+
+import orgDetail from './orgDetail/orgDetailReducer';
+
+import programList from './program/programListReducer';
 
 export default combineReducers({
     routing: routerReducer,
@@ -26,5 +32,8 @@ export default combineReducers({
     sdgTags,
     regionsServed,
     resources,
-    dataset
+    dataset,
+    orgDetail,
+    programList,
+    userInfo
 });
