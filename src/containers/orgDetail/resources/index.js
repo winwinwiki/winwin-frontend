@@ -19,7 +19,7 @@ class Resources extends React.Component {
     }
 
     render() {
-        const {resourcesList, isResourcesSuccess} = this.props;
+        const {isResourcesSuccess} = this.props;
         if(!isResourcesSuccess) { return null; }
         return (
         <section className="dashboard-content p-0 py-3 org-details-container">
