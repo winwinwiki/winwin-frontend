@@ -13,6 +13,8 @@ import orgFilter from './orgLanding/orgFilterReducer';
 import spiTags from './orgDetail/spiTagsReducer';
 import sdgTags from './orgDetail/sdgTagsReducer';
 import regionsServed from './orgDetail/regionsServedReducer';
+import resources from './orgDetail/resourcesReducer';
+import dataset from './orgDetail/dataSetReducer';
 
 import orgDetail from './orgDetail/orgDetailReducer';
 
@@ -29,6 +31,8 @@ export default combineReducers({
     spiTags,
     sdgTags,
     regionsServed,
+    resources,
+    dataset,
     orgDetail,
     programList,
     userInfo
