@@ -5,24 +5,20 @@ import { Link } from 'react-router-dom';
 
 const subNavOptions = [
     {
-        title: 'Basic Info',
-        path: ''
-    },{
         title: 'Data Sets',
-        path: '/data-sets'
-    },
-    {
+        path: 'data-sets'
+    },{
         title: 'Resources',
-        path: '/resources'
+        path: 'resources'
     },{
         title: 'Regions Served',
-        path: '/regions-served'
+        path: 'regions-served'
     },{
         title: 'Spi Tag',
-        path: '/spi-tags'
+        path: 'spi-tags'
     },{
         title: 'Sdg Tag',
-        path: '/sdg-tags'
+        path: 'sdg-tags'
     }
 ];
 
@@ -30,9 +26,39 @@ class SideBar extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            activeNav: `${props.type} Details`,
-            activeSubNav: 'Basic Info'
+            activeNav: props.type === 'Organisation' ?(props.history.action === "PUSH"?'':'programs'): `${props.type}-details`,
+            activeSubNav: props.type === 'Organisation'? 'data-sets': ''
         }
+    }
+
+    componentWillReceiveProps() {
+        // console.log(this.props.history.location.pathname);
+
+        if(this.props.type == "Organisation"){
+            if(this.props.history.location.pathname.indexOf('programs')>-1){
+                this.setState({activeNav: "programs", activeSubNav: ""});
+            } else if(this.props.history.location.pathname.indexOf('data-sets')>-1){
+                this.setState({activeNav: `${this.props.type}-details`});
+            } else {
+                this.setState({activeNav: "", activeSubNav: ""});
+            }
+        }
+        if(this.props.type == "Programs"){
+            this.setState({activeNav: `${this.props.type}-detials`});
+        }
+
+        if(this.props.history.location.pathname.indexOf('data-sets')>-1){
+            this.setState({activeNav: `${this.props.type}-details`, activeSubNav: "data-sets"});
+        } else if(this.props.history.location.pathname.indexOf('resources')>-1){
+            this.setState({activeNav: `${this.props.type}-details`, activeSubNav: "resources"});
+        } else if(this.props.history.location.pathname.indexOf('regions-served')>-1){
+            this.setState({activeNav: `${this.props.type}-details`, activeSubNav: "regions-served"});
+        } else if(this.props.history.location.pathname.indexOf('spi-tags')>-1){
+            this.setState({activeNav: `${this.props.type}-details`, activeSubNav: "spi-tags"});
+        } else if(this.props.history.location.pathname.indexOf('sdg-tags')>-1){
+            this.setState({activeNav: `${this.props.type}-details`, activeSubNav: "sdg-tags"});
+        }
+
     }
 
     render(){
@@ -43,15 +69,21 @@ class SideBar extends React.Component{
                 <h4>{this.props.programDetail.name}</h4>
             </div>}
                 <ul className="list-group list-group-flush pr-3">
-                {this.props.type === 'Organisation' && <li className="list-group-item"><a href="javascript:;" className={this.state.activeNav === 'Basic Information'?'active':''} onClick={()=>this.changeActiveNav('Basic Information')}>Basic Information</a></li>}
-                    <li className="list-group-item"><a href="javascript:;" className={this.state.activeNav === `${this.props.type} Details`?'active':''} onClick={()=>this.changeActiveNav(`${this.props.type} Details`)} data-toggle="collapse" href="#collapseExample" role="button" aria-expanded={this.props.type === 'Organisation'? false : true} aria-controls="collapseExample">{this.props.type} Details</a>
+
+                    {this.props.type === 'Organisation' && <li className="list-group-item"><Link className={this.state.activeNav === ''?'active':''} onClick={()=>{this.changeActiveNav(''); this.setState({activeSubNav:''})}} to={`${this.props.url.url}`}>Basic Information</Link></li>}
+                    
+                    <li className="list-group-item">
+                        {this.props.type === 'Organisation' && <a href="javascript:;" className={this.state.activeNav === `${this.props.type}-details`?'active':''} onClick={()=>{this.changeActiveNav(`${this.props.type}-details`); this.setState({activeSubNav:''})}} data-target="#collapseExample" data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample">Organisation Details</a>}
+                        {this.props.type === 'Programs' && <Link to={`${this.props.url.url}`} className={this.state.activeNav === `${this.props.type}-details`?'active':''} onClick={()=>this.changeActiveNav(`${this.props.type}-details`)} data-target="#collapseExample" data-toggle="collapse" aria-expanded="true" aria-controls="collapseExample">Programs Details</Link>}
+                        
                         <div className={this.props.type === 'Organisation'? 'collapse' : 'collapse show' } id="collapseExample">
                             <ul className="subnav">
                                 {this.renderSubNavOptions()}
                             </ul>
                         </div>
+
                     </li>
-                    {this.props.type === 'Organisation' && <li className="list-group-item"><Link className={this.state.activeNav === 'Programs'?'active':''} to={`${this.props.url.url}/programs`} onClick={()=>this.changeActiveNav(`Programs`)}>Programs</Link></li>}
+                    {this.props.type === 'Organisation' && <li className="list-group-item"><Link className={this.state.activeNav === 'programs'?'active':''} to={`${this.props.url.url}/programs`} onClick={()=>{this.changeActiveNav(`Programs`); this.setState({activeSubNav:''})}}>Programs</Link></li>}
                 </ul>
                 <div className="social-footer mt-auto">
                     <ul className="d-flex flex-row justify-content-between pl-1 pr-3">
@@ -67,7 +99,7 @@ class SideBar extends React.Component{
     }
 
     renderSubNavOptions(){
-        return subNavOptions.map(option => <li onClick={()=>this.setState({activeSubNav:option.title})}><Link className={this.state.activeSubNav === option.title?'active':''} to={`${this.props.url.url}${option.path}`}><i></i>{option.title}</Link></li>)
+        return subNavOptions.map(option => <li onClick={()=>this.setState({activeSubNav:option.path})}><Link className={this.state.activeSubNav === option.path?'active':''} to={`${this.props.url.url}/${option.path}`}><i></i>{option.title}</Link></li>)
     }
 
     changeActiveNav(activeNavTitle){

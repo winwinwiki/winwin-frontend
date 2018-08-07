@@ -42,7 +42,7 @@ class OrgDetail extends React.Component {
                     </div>
                 </div>
                 <div className="d-flex h-100">
-                    <SideBar url={this.props.url} type={'Organisation'}/>
+                    <SideBar url={this.props.url} history={this.props.history} type={'Organisation'}/>
                     {this.props.children}
                 </div>
             </React.Fragment>
