@@ -37,6 +37,7 @@ class Login extends React.Component {
                         className="form-control"
                         onBlur={this.validateForm} 
                         onChange={this.onChange} 
+                        onKeyUp={(e) => this.onKeyUp(e)}
                         name="email" 
                         value={email} />
                   <small id="userNameDesc" className="sr-only">User Name</small>
@@ -48,7 +49,8 @@ class Login extends React.Component {
                         placeholder="Password" 
                         className="form-control"
                         onBlur={this.validateForm} 
-                        onChange={this.onChange} 
+                        onChange={this.onChange}
+                        onKeyUp={(e) => this.onKeyUp(e)}
                         name="password" 
                         value={password}/>
                   <small id="passwordDesc" className="sr-only">User Name</small>
@@ -62,6 +64,11 @@ class Login extends React.Component {
     
     onChange(e) {
         this.setState({[e.target.name]: e.target.value});
+    }
+    onKeyUp(e){
+        if (e.keyCode === 13) {
+            this.onLoginSubmit(e);
+        }
     }
 
     validateForm(e) {

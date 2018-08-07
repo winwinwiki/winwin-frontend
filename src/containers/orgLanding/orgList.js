@@ -99,6 +99,10 @@ class OrgList extends React.Component {
                 data={orgList}
                 columns={columns}
                 className="-highlight"
+                sorted={[{
+                    id: "org",
+                    asc: true
+                }]}
                 getTdProps={(state, rowInfo, column) => {
                     return {
                       onClick: (e) => {
