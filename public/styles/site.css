@@ -7932,6 +7932,29 @@ h5.modal-title {
     .action-icons li + li {
       margin-left: 10px; }
 
+.program-details-container {
+  background-color: #F2F2F2; }
+  .program-details-container .list-group-item .action-icons {
+    transition: ease all .3s;
+    display: none; }
+    .program-details-container .list-group-item .action-icons.active {
+      display: block; }
+  .program-details-container .footer-actions {
+    display: none; }
+    .program-details-container .footer-actions.active {
+      display: flex; }
+
+.action-icons {
+  list-style: none;
+  position: absolute;
+  top: 0;
+  right: 0; }
+  .action-icons li {
+    float: left;
+    display: inline-block; }
+    .action-icons li + li {
+      margin-left: 10px; }
+
 .section-login {
   background-size: cover; }
 
