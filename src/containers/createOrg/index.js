@@ -73,7 +73,8 @@ class CreateOrg extends React.Component {
                             onBlur={this.validateLocationField}
                             onSuggestSelect={this.onSuggestSelect}/>
                         {createOrgFormError.location && <div className="text-danger small">{createOrgFormError.location}</div>}
-                        <button className="btn btn-lg btn-primary w-100 mt-4" onClick={this.onCreateOrg}>Create</button>
+                        <button className="btn btn-link w-50 mt-4" onClick={this.props.history.goBack}>Cancel</button>
+                        <button className="btn btn-lg btn-primary w-50 mt-4" onClick={this.onCreateOrg}>Create</button>
                     </div>
                 </div>
             </div>

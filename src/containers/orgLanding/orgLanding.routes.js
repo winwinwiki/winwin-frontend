@@ -13,7 +13,7 @@ import CreateOrg from '../createOrg';
 import ProgramDetailRoutes from '../programDetail/programDetail.routes';
 
 const OrgLandingRoutes = (props) => (
-    <OrgLanding>
+    <OrgLanding history={props.history}>
           <Switch>
               <PrivateRoute authenticated={props.isAuthenticated} exact path="/organizations" component={OrgList} />
               <PrivateRoute authenticated={props.isAuthenticated} exact path="/organizations/new" component={CreateOrg} />
