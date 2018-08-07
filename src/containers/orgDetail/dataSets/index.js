@@ -24,76 +24,9 @@ class DataSets extends React.Component {
                         <p>Arts center conducts classes on any artistic or cultural topics ranging from ?crafts, dance, singing, painting. Camps for youth and adults and events ?open to the public. They also offer open space for private events.</p>
 
                         <div className="section-title border-bottom pb-3 mb-3">
-                            Resources
+                            Data Sets
                         </div>
-                        <form>
-                            <ul className="list-group list-group-flush">
-
-                                <li className="list-group-item px-0">
-                                    <div className="row">
-                                        <ul className="action-icons">
-                                            <li><a href="javascript:;" data-toggle="modal" data-target="#exampleModal"><i className="icon-edit"></i></a></li>
-                                            <li><a href="javascript:;" data-toggle="modal" data-target="#deleteModal"><i className="icon-delete"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col">
-                                            <div className="form-group">
-                                                <label htmlFor="category">Category</label>
-                                                <input type="text" className="form-control" id="category" readOnly="readOnly" placeholder="Enter Category" value="Event Space" />
-                                            </div>
-                                        </div>
-                                        <div className="col">
-                                            <div className="form-group">
-                                                <label htmlFor="count">Count</label>
-                                                <input type="text" className="form-control" id="count" readOnly="readOnly" placeholder="Count" value="" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col">
-                                            <div className="form-group">
-                                                <label htmlFor="description">Description</label>
-                                                <textarea className="form-control" name="" id="description" readOnly="readOnly" rows="5">The Organization is dedicated to the community to provide a variety of challenging and newartistic programming through its school of the arts, dance studio, adult and children's performance programming, special events, and education</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className="list-group-item px-0">
-                                    <div className="row">
-                                        <ul className="action-icons">
-                                            <li><a href="javascript:;" data-toggle="modal" data-target="#exampleModal"><i className="icon-edit"></i></a></li>
-                                            <li><a href="javascript:;" data-toggle="modal" data-target="#deleteModal"><i className="icon-delete"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col">
-                                            <div className="form-group">
-                                                <label htmlFor="category">Category</label>
-                                                <input type="text" className="form-control" id="category" readOnly="readOnly" placeholder="Enter Category" value="Musicians" />
-                                            </div>
-                                        </div>
-                                        <div className="col">
-                                            <div className="form-group">
-                                                <label htmlFor="count">Count</label>
-                                                <input type="text" className="form-control" id="count" readOnly="readOnly" placeholder="Count" value="" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col">
-                                            <div className="form-group">
-                                                <label htmlFor="description">Description</label>
-                                                <textarea className="form-control" name="" id="description" readOnly="readOnly" rows="5">The Organization is dedicated to the community to provide a variety of challenging and newartistic programming through its school of the arts, dance studio, adult and children's performance programming, special events, and education</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className="list-group-item px-0 pt-4">
-                                    <a href="javascript:;" data-toggle="modal" data-target="#exampleModal"><i className="icon-add mr-2"></i> Add Another</a>
-                                </li>
-                            </ul>
-                        </form>
+                        <DataSetBlock/>
                     </div>
                 </div>
                 <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
