@@ -12,6 +12,7 @@ export const onLogin = (user, cb) => {
             dispatch(setLoginPending(false));
             if (!error) {
                 dispatch(setLoginSuccess(true));
+                localStorage.setItem('_token', res._token);
                 cb();
             } else {
                 dispatch(setLoginError(error));
