@@ -25,7 +25,7 @@ const subNavOptions = [
     }
 ];
 
-class programSidebar extends React.Component{
+class ProgramSidebar extends React.Component{
     constructor(props){
         super(props)
         this.state = {
@@ -55,9 +55,9 @@ class programSidebar extends React.Component{
     render(){
         return (
             <div id="mySidenav" className="sidenav d-flex flex-column">
-            <div className="py-3 d-flex justify-content-between" onClick={()=>this.props.history.goBack()}>
-                <i className="icon-chevron-left mr-1"></i>
-                <h4>{this.props.programDetail.name}</h4>
+            <div className="py-3 d-flex justify-content-between">
+                <Link to={this.props.history.location.pathname.replace(/\/programs\/(.)*$/ig,'/programs')}><i className="icon-chevron-left mr-1"></i>
+                <h4>{this.props.programDetail.name}</h4></Link>
             </div>
                 <ul className="list-group list-group-flush pr-3">
                     <li className="list-group-item">
@@ -87,5 +87,6 @@ class programSidebar extends React.Component{
     }
 }
 
-export default programSidebar;
+
+export default ProgramSidebar;
 

@@ -16,7 +16,6 @@ class ProgramList extends React.Component {
             programList: [],
             filteredProgramList: []
         }
-        this.changePage = this.changePage.bind(this);
     }
 
     componentDidMount() {
@@ -64,10 +63,6 @@ class ProgramList extends React.Component {
         )
     }
 
-    changePage(programId) {
-        this.props.changePage(programId);
-    }
-
     renderProgramList(){
         return this.state.filteredProgramList.map(program =><Link to={`${this.props.match.url}/${program.id}`} className="list-group-item list-group-item-action">{program.name}</Link>);
     }
@@ -94,7 +89,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    changePage: (id) => push('/programs/'+ id),
     fetchProgramsList
 }, dispatch)
 

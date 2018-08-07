@@ -26,7 +26,7 @@ class SideBar extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            activeNav: props.history.action == 'PUSH'? '': 'Programs',
+            activeNav: props.history.location.pathname.indexOf('programs') > -1?'programs':'',
             activeSubNav: ''
         }
     }
