@@ -39,8 +39,8 @@ class ProgramDetailPage extends React.Component {
                                         </div>
                                     </div>
                                     <div className={`row justify-content-center footer-actions ${editProgramDetail ? 'active' : ''}`}>
-                                        <button className="btn" onClick={() => this.onCancelProgramEdit()}>Cancel</button>
-                                        <button className="btn btn-primary" onClick={()=>this.onSave()}>Save</button>
+                                        <button className="btn" onClick={(e) => this.onCancelProgramEdit(e)}>Cancel</button>
+                                        <button className="btn btn-primary" onClick={(e)=>this.onSave(e)}>Save</button>
                                     </div>
                                 </li>
                             </ul>
@@ -56,12 +56,14 @@ class ProgramDetailPage extends React.Component {
             editProgramDetail: true
         });
     }
-    onCancelProgramEdit(){
+    onCancelProgramEdit(e){
+        e.preventDefault();
         this.setState({
             editProgramDetail: false
         });
     }
-    onSave(){
+    onSave(e){
+        e.preventDefault();
         this.setState({
             editProgramDetail: false
         }); 

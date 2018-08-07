@@ -7943,6 +7943,10 @@ h5.modal-title {
     display: none; }
     .program-details-container .footer-actions.active {
       display: flex; }
+    .program-details-container .footer-actions > :not(:last-child) {
+      margin-right: .25rem; }
+    .program-details-container .footer-actions > :not(:first-child) {
+      margin-left: .25rem; }
 
 .action-icons {
   list-style: none;
