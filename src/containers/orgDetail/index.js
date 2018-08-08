@@ -53,9 +53,11 @@ class OrgDetail extends React.Component {
                                id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="icon-menu mr-2 ml-5"></i> Menu</a>
 
                             <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                                <a className="dropdown-item" href="#">Action</a>
-                                <a className="dropdown-item" href="#">Another action</a>
-                                <a className="dropdown-item" href="#">Something else here</a>
+                                <a className="dropdown-item" href="#">Change Status</a>
+                                <a className="dropdown-item" href="#">Add Program</a>
+                                <a className="dropdown-item" href="#">Add Child Organization</a>
+                                <a className="dropdown-item" href="#">Edit Organization Name</a>
+                                <a className="dropdown-item" href="#">View History</a>
                             </div>
                         </div>
                     </div>
