@@ -1,0 +1,14 @@
+.app-breadcrumb{
+
+    font-size: 0.8rem;
+
+    .breadcrumb{
+        background-color: transparent;
+        padding: 0.25rem 0.25rem;
+        margin-bottom: 0.25rem;
+
+        &>.breadcrumb-item.active > a {
+            color: $primary
+        }
+    }
+}

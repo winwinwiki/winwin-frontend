@@ -1,7 +1,7 @@
 import { SET_FETCHORGDETAIL_PENDING, SET_FETCHORGDETAIL_SUCCESS, SET_FECTHORGDETAIL_ERROR} from '../../constants/dispatch';
 import { callFetchOrgDetailApi } from '../../api/orgDetail/orgDetailApi';
 
-export const fetchOrganisationDetail = (orgId) => {
+export const fetchOrganisationDetail = (orgId, callback) => {
     return dispatch => {
         dispatch(setFetchOrgDetailPending(true));
         dispatch(setFetchOrgDetailSuccess(false, {}));
@@ -11,6 +11,7 @@ export const fetchOrganisationDetail = (orgId) => {
             dispatch(setFetchOrgDetailPending(false));
             if (!error) {
                 dispatch(setFetchOrgDetailSuccess(true, orgDetail));
+                callback();
             } else {
                 dispatch(setFetchOrgDetailError(error));
             }

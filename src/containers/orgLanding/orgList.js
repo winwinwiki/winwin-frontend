@@ -6,6 +6,8 @@ import ReactTable from "react-table";
 import 'react-table/react-table.css'
 import './orgList.css';
 
+import {addToAppNavigation, removeFromAppNavigation} from '../../actions/sectionHeader/sectionHeaderAction';
+
 import OrgFilters from './orgFilter';
 import AppliedOrgFilters from './appliedOrgFilters/index';
 import Dropdown from '../ui/dropdown';
@@ -59,6 +61,14 @@ class OrgList extends React.Component {
 
     componentDidMount() {
         this.props.fetchOrganisationsList();
+        this.props.removeFromAppNavigation({
+            title: "Organisation Management",
+            path: "/organizations"
+        });
+        this.props.addToAppNavigation({
+            title: "Organisation Management",
+            path: "/organizations"
+        });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -90,7 +100,7 @@ class OrgList extends React.Component {
             </div>
             <AppliedOrgFilters />
             <div className="clear-filters">
-                <a onClick={this.resetAllFilters} className="text-primary">Clear All Filters</a>
+                <a href="javascript:;" onClick={this.resetAllFilters} className="text-primary">Clear All Filters</a>
             </div>
         </div>
         <div>
@@ -592,6 +602,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     changePage: (id) => push('/organizations/'+ id),
+    addToAppNavigation,
+    removeFromAppNavigation,
     fetchOrganisationsList,
     filterOrganisationsList,
     fetchFilteredOrgList,

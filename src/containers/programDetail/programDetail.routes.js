@@ -15,11 +15,11 @@ import RegionsServed from '../orgDetail/regionsServed';
 const ProgramDetailRoutes = (props) => (
     <ProgramDetail url={props.match} history={props.history}>
         <Switch>
-            <PrivateRoute authenticated={props.isAuthenticated} exact path={`${props.match.path}/data-sets`} component={DataSets} />
-            <PrivateRoute authenticated={props.isAuthenticated} exact path={`${props.match.path}/resources`} component={Resources} />
-            <PrivateRoute authenticated={props.isAuthenticated} exact path={`${props.match.path}/regions-served`} component={RegionsServed} />
-            <PrivateRoute authenticated={props.isAuthenticated} exact path={`${props.match.path}/spi-tags`} component={SpiTags} />
-            <PrivateRoute authenticated={props.isAuthenticated} exact path={`${props.match.path}/sdg-tags`} component={SdgTags} />
+            <PrivateRoute authenticated={props.isAuthenticated} exact path={`${props.match.path}/data-sets`} component={DataSets} type={"Program"}/>
+            <PrivateRoute authenticated={props.isAuthenticated} exact path={`${props.match.path}/resources`} component={Resources} type={"Program"}/>
+            <PrivateRoute authenticated={props.isAuthenticated} exact path={`${props.match.path}/regions-served`} component={RegionsServed} type={"Program"}/>
+            <PrivateRoute authenticated={props.isAuthenticated} exact path={`${props.match.path}/spi-tags`} component={SpiTags} type={"Program"}/>
+            <PrivateRoute authenticated={props.isAuthenticated} exact path={`${props.match.path}/sdg-tags`} component={SdgTags} type={"Program"}/>
             <PrivateRoute authenticated={props.isAuthenticated} path={`${props.match.path}`} component={ProgramDetailPage} />
         </Switch>
     </ProgramDetail>

@@ -7937,6 +7937,33 @@ h5.modal-title {
     .action-icons li + li {
       margin-left: 10px; }
 
+.program-details-container {
+  background-color: #F2F2F2; }
+  .program-details-container .list-group-item .action-icons {
+    transition: ease all .3s;
+    display: none; }
+    .program-details-container .list-group-item .action-icons.active {
+      display: block; }
+  .program-details-container .footer-actions {
+    display: none; }
+    .program-details-container .footer-actions.active {
+      display: flex; }
+    .program-details-container .footer-actions > :not(:last-child) {
+      margin-right: .25rem; }
+    .program-details-container .footer-actions > :not(:first-child) {
+      margin-left: .25rem; }
+
+.action-icons {
+  list-style: none;
+  position: absolute;
+  top: 0;
+  right: 0; }
+  .action-icons li {
+    float: left;
+    display: inline-block; }
+    .action-icons li + li {
+      margin-left: 10px; }
+
 .section-login {
   background-size: cover; }
 
@@ -8020,3 +8047,12 @@ h5.modal-title {
 #passwordDesc + div {
   position: absolute;
   right: 10px; }
+
+.app-breadcrumb {
+  font-size: 0.8rem; }
+  .app-breadcrumb .breadcrumb {
+    background-color: transparent;
+    padding: 0.25rem 0.25rem;
+    margin-bottom: 0.25rem; }
+    .app-breadcrumb .breadcrumb > .breadcrumb-item.active > a {
+      color: #29ABE2; }

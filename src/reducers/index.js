@@ -6,6 +6,8 @@ import resetPassword from './auth/resetPasswordReducer';
 
 import userInfo from './users/userInfoReducer';
 
+import sectionHeader from './sectionHeader/sectionHeaderReducer';
+
 import createOrg from './createOrg/createOrgReducer';
 import orgLanding from './orgLanding/orgLandingReducer';
 import orgFilter from './orgLanding/orgFilterReducer';
@@ -35,5 +37,6 @@ export default combineReducers({
     dataset,
     orgDetail,
     programList,
-    userInfo
+    userInfo,
+    sectionHeader
 });
