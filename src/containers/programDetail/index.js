@@ -1,6 +1,11 @@
 import React from 'react';
 import SideBar from '../sidebar/programSidebar';
 
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
+
 class ProgramDetail extends React.Component { 
     constructor(props){
         super(props);
@@ -12,6 +17,15 @@ class ProgramDetail extends React.Component {
     }
 
     componentDidMount() {
+            
+            this.props.removeFromAppNavigation({
+                title: this.state.programDetail.name,
+                path: this.props.url.url
+            });
+            this.props.addToAppNavigation({
+                title: this.state.programDetail.name,
+                path: this.props.url.url
+            });
         // console.log("orgID: "+this.props.url.params.id);
         // this.props.fetchOrganisationDetail(this.props.url.params.id);
     }
@@ -29,4 +43,12 @@ class ProgramDetail extends React.Component {
     }
 }
 
-export default ProgramDetail;
+const mapDispatchToProps = dispatch => bindActionCreators({
+    addToAppNavigation,
+    removeFromAppNavigation
+}, dispatch)
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(ProgramDetail);

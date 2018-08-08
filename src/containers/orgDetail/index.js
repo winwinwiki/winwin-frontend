@@ -4,10 +4,11 @@ import SideBar from '../sidebar';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import {fetchOrganisationDetail} from '../../actions/orgDetail/orgDetailAction'
+import { fetchOrganisationDetail } from '../../actions/orgDetail/orgDetailAction';
+import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
 
-class OrgDetail extends React.Component { 
-    constructor(props){
+class OrgDetail extends React.Component {
+    constructor(props) {
         super(props);
         this.state = {
             orgDetail: {},
@@ -15,12 +16,21 @@ class OrgDetail extends React.Component {
     }
 
     componentDidMount() {
-        console.log("orgID: "+this.props.url.params.id);
-        this.props.fetchOrganisationDetail(this.props.url.params.id);
+        console.log("orgID: " + this.props.url.params.id);
+        this.props.fetchOrganisationDetail(this.props.url.params.id, () => {
+            this.props.removeFromAppNavigation({
+                title: this.props.orgDetail.name,
+                path: this.props.url.url
+            });
+            this.props.addToAppNavigation({
+                title: this.props.orgDetail.name,
+                path: this.props.url.url
+            });
+        });
     }
 
     componentWillReceiveProps(nextProps) {
-        if(JSON.stringify(nextProps.orgDetail) !== JSON.stringify(this.props.orgDetail) ) {
+        if (JSON.stringify(nextProps.orgDetail) !== JSON.stringify(this.props.orgDetail)) {
             this.setState({
                 orgDetail: nextProps.orgDetail
             });
@@ -28,8 +38,8 @@ class OrgDetail extends React.Component {
     }
     render() {
         const { orgDetail } = this.state;
-        const {isFetchOrgDetailSuccess} = this.props;
-        if(!isFetchOrgDetailSuccess || !orgDetail) {
+        const { isFetchOrgDetailSuccess } = this.props;
+        if (!isFetchOrgDetailSuccess || !orgDetail) {
             return null;
         }
         return (
@@ -42,7 +52,7 @@ class OrgDetail extends React.Component {
                     </div>
                 </div>
                 <div className="d-flex h-100">
-                    <SideBar url={this.props.url} history={this.props.history} type={'Organisation'}/>
+                    <SideBar url={this.props.url} history={this.props.history} type={'Organisation'} />
                     {this.props.children}
                 </div>
             </React.Fragment>
@@ -58,7 +68,9 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchOrganisationDetail
+    fetchOrganisationDetail,
+    addToAppNavigation,
+    removeFromAppNavigation
 }, dispatch)
 
 export default connect(

@@ -1,5 +1,4 @@
 import React from 'react';
-import { push } from 'react-router-redux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -53,7 +52,7 @@ class ProgramList extends React.Component {
                         <div className="row">
                             <div className="col">
                                 <div className="list-group">
-                                    {this.renderProgramList()}
+                                    {this.renderProgramList(filteredProgramList)}
                                 </div>
                             </div>
                         </div>
@@ -63,8 +62,8 @@ class ProgramList extends React.Component {
         )
     }
 
-    renderProgramList(){
-        return this.state.filteredProgramList.map(program =><Link to={`${this.props.match.url}/${program.id}`} className="list-group-item list-group-item-action">{program.name}</Link>);
+    renderProgramList(filteredProgramList){
+        return filteredProgramList.map(program =><Link to={`${this.props.match.url}/${program.id}`} className="list-group-item list-group-item-action">{program.name}</Link>);
     }
 
     getFilteredListOfPrograms(e){

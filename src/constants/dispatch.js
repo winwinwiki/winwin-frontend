@@ -71,3 +71,7 @@ export const FETCH_DATASET_ERROR = 'org/FETCH_DATASET_ERROR';
 export const SET_DATASET_PENDING = 'org/SET_DATASET_PENDING';
 export const SET_DATASET_SUCCESS = 'org/SET_DATASET_SUCCESS';
 export const SET_DATASET_ERROR = 'org/SET_DATASET_ERROR';
+
+//section header
+export const ADD_APP_NAVIGATION = 'header/ADD_APP_NAVIGATION';
+export const REMOVE_APP_NAVIGATION = 'header/REMOVE_APP_NAVIGATION';
