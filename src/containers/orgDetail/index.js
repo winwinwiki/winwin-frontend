@@ -1,6 +1,6 @@
 import React from 'react';
 import SideBar from '../sidebar';
-
+import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -53,7 +53,7 @@ class OrgDetail extends React.Component {
 
                             <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                                 <a className="dropdown-item" href="#">Change Status</a>
-                                <a className="dropdown-item" href="#">Add Program</a>
+                                <Link className="dropdown-item" to={`${this.props.url.url}/new-program`}>Add Program</Link>
                                 <a className="dropdown-item" href="#">Add Child Organization</a>
                                 <a className="dropdown-item" href="#">Edit Organization Name</a>
                                 <a className="dropdown-item" href="#">View History</a>
