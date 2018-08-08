@@ -27,7 +27,7 @@ class SectionHeader extends React.Component {
         return (
             <section className="dashboard-header">
                 <div className="page-header border-bottom pb-2">
-                    <nav aria-label="breadcrumb">
+                    <nav className="app-breadcrumb" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             {this.getAppNavigation(appNavigation)}
                         </ol>

@@ -8042,3 +8042,12 @@ h5.modal-title {
 #passwordDesc + div {
   position: absolute;
   right: 10px; }
+
+.app-breadcrumb {
+  font-size: 0.8rem; }
+  .app-breadcrumb .breadcrumb {
+    background-color: transparent;
+    padding: 0.25rem 0.25rem;
+    margin-bottom: 0.25rem; }
+    .app-breadcrumb .breadcrumb > .breadcrumb-item.active > a {
+      color: #29ABE2; }
