@@ -90,7 +90,7 @@ class SideBar extends React.Component{
     }
 
     renderSubNavOptions(){
-        return subNavOptions.map(option => <li onClick={()=>this.setState({activeSubNav:option.path})}><Link className={this.state.activeSubNav === option.path?'active':''} to={`${this.props.url.url}/${option.path}`}><i></i>{option.title}</Link></li>)
+        return subNavOptions.map(option => <li onClick={()=>this.setState({activeSubNav:option.path})} key={option.path}><Link className={this.state.activeSubNav === option.path?'active':''} to={`${this.props.url.url}/${option.path}`}><i></i>{option.title}</Link></li>)
     }
 
     changeActiveNav(activeNavTitle){
