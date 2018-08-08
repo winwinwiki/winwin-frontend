@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 
 import {fetchProgramsList} from '../../../actions/program/programListAction';
 import Search from '../../ui/searchBar';
-import AddProgram from './addProgram';
 
 class ProgramList extends React.Component {
     constructor(props) {
@@ -45,10 +44,9 @@ class ProgramList extends React.Component {
                                 <Search placeholder="Search Program" onChange={(e) =>this.getFilteredListOfPrograms(e)} />
                             </div>
                             <div className="col col-md-auto" data-toggle="modal" data-target="#addProgramModal">
-                                <a href="javascript:;" className="btn btn-primary">Add Program</a>
+                                <Link to={`${this.props.match.url.replace('/programs','/new-program')}`} className="btn btn-primary">Add Program</Link>
                             </div>
                         </div>
-                        <AddProgram />
                         <div className="row">
                             <div className="col">
                                 <div className="list-group">

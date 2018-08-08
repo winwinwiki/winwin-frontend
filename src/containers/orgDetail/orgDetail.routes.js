@@ -9,7 +9,8 @@ import SpiTags from './spiTag';
 import SdgTags from './sdgTag';
 import RegionsServed from './regionsServed';
 import Resources from './resources';
-import programs from './programs';
+import Programs from './programs';
+import AddProgram from './programs/addProgram';
 
 
 const OrgDetailRoutes = (props) => (
@@ -20,7 +21,8 @@ const OrgDetailRoutes = (props) => (
                 <PrivateRoute authenticated={true} exact path={`${props.match.path}/regions-served`} component={RegionsServed} type={"Organization"}/>
                 <PrivateRoute authenticated={true} exact path={`${props.match.path}/spi-tags`} component={SpiTags} type={"Organization"}/>
                 <PrivateRoute authenticated={true} exact path={`${props.match.path}/sdg-tags`} component={SdgTags} type={"Organization"}/>
-                <PrivateRoute authenticated={true} exact path={`${props.match.path}/programs`} component={programs} type={"Organization"}/>
+                <PrivateRoute authenticated={true} exact path={`${props.match.path}/programs`} component={Programs} type={"Organization"}/>
+                <PrivateRoute authenticated={true} exact path={`${props.match.path}/new-program`} component={AddProgram} type={"Organization"}/>
                 <PrivateRoute authenticated={true} orgId={props.match.params.id} exact path={`${props.match.path}`} component={OrgDetailPage} />
             </Switch>
         </OrgDetail>

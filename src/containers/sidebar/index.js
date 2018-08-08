@@ -26,7 +26,7 @@ class SideBar extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            activeNav: props.history.location.pathname.indexOf('programs') > -1?'programs':'',
+            activeNav: (props.history.location.pathname.indexOf('programs') > -1 || props.history.location.pathname.indexOf('new-program') > -1)?'programs':'',
             activeSubNav: ''
         }
     }
@@ -35,7 +35,7 @@ class SideBar extends React.Component{
         // console.log(this.props.history.location.pathname);
 
         
-        if(this.props.history.location.pathname.indexOf('programs')>-1){
+        if(this.props.history.location.pathname.indexOf('programs')>-1 || this.props.history.location.pathname.indexOf('new-program') > -1){
             this.setState({activeNav: "programs", activeSubNav: ""});
         } else if(this.props.history.location.pathname.indexOf('data-sets')>-1){
             this.setState({activeNav: `${this.props.type}-details`});
