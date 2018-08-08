@@ -100,7 +100,7 @@ class OrgList extends React.Component {
             </div>
             <AppliedOrgFilters />
             <div className="clear-filters">
-                <a onClick={this.resetAllFilters} className="text-primary">Clear All Filters</a>
+                <a href="javascript:;" onClick={this.resetAllFilters} className="text-primary">Clear All Filters</a>
             </div>
         </div>
         <div>
