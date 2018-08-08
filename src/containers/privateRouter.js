@@ -3,15 +3,16 @@ import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const PrivateRoute = ({ component: Component, authenticated, orgId, ...rest }) => (
+const PrivateRoute = ({ component: Component, authenticated, ...rest }) => (
   <Route
     {...rest}
-    render={props =>
-      authenticated === true ? (
-        <Component {...props} />
+    render={props => {
+      let combinedProps = {...rest, ...props};
+      return authenticated === true ? (
+        <Component {...combinedProps}/>
       ) : (
         <Redirect to="/" />
-      )
+      )}
     }
   />
 );

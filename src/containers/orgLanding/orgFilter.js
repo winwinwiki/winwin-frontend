@@ -19,7 +19,7 @@ class OrgFilters extends React.Component {
         const {activeButton} = this.props;
         return (
         <div className="d-flex align-content-center border-bottom py-3">
-            <Search placeholder="Search State/Country/City"/>
+            <Search placeholder="Search State/Country/City" onChange={(e) =>this.getFilteredListOfOrg(e)}/>
             <ButtonGroup activeButton={activeButton} onChange={this.setActiveButton}/>
             <div className="btn-group dropdown dropdown-with-checkbox" role="group" aria-label="group">
                 <button id="filterDropdown" type="button" 
@@ -49,6 +49,10 @@ class OrgFilters extends React.Component {
 
     setActiveButton(field) {
         this.props.filterOrgList({sector: field});
+    }
+
+    getFilteredListOfOrg(e){
+        
     }
 }
 
