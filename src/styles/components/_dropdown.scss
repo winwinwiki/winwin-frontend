@@ -13,6 +13,14 @@
     color: $gray-one;
     word-break: break-all;
   }
+
+  .dropdown-toggle {
+    &.plain {
+      &:after {
+        display: none;
+      }
+    }
+  }
 }
 
 .dropdwon-with-check{

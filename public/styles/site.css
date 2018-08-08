@@ -7019,6 +7019,9 @@ textarea {
   color: #4F5051;
   word-break: break-all; }
 
+.dropdown .dropdown-toggle.plain:after {
+  display: none; }
+
 .dropdwon-with-check .dropdown-item {
   padding: 0.5rem 0.8125rem 0.5rem 1.9375rem;
   line-height: 1;
@@ -7352,6 +7355,8 @@ textarea {
     width: 100%;
     border-collapse: collapse;
     overflow: auto; }
+    .ReactTable .rt-table .rt-tr-group {
+      cursor: pointer; }
   .ReactTable .rt-thead {
     -webkit-box-flex: 1;
     -ms-flex: 1 0 auto;
