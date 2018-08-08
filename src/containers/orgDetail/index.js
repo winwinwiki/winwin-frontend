@@ -47,7 +47,17 @@ class OrgDetail extends React.Component {
                 <div className="py-4 border-bottom d-flex justify-content-between">
                     <h2>{orgDetail.name}</h2>
                     <div className="d-flex align-items-center">
-                        <a href="javascript:;" className="mr-1"><i className="icon-menu mr-2 ml-5"></i> Menu</a>
+                        <h6 className="font-weight-light m-0">Last update: Jens Molbak on 1 Mar’18</h6>
+                        <div className="dropdown">
+                            <a href="javascript:;"  className="mr-1 dropdown-toggle plain" href="#" role="button"
+                               id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="icon-menu mr-2 ml-5"></i> Menu</a>
+
+                            <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                                <a className="dropdown-item" href="#">Action</a>
+                                <a className="dropdown-item" href="#">Another action</a>
+                                <a className="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="d-flex h-100">

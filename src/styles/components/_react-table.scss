@@ -39,6 +39,10 @@ $border_left_color_2: #f7f7f7;
     width: 100%;
     border-collapse: collapse;
     overflow: auto;
+
+    .rt-tr-group {
+      cursor: pointer;
+    }
   }
   .rt-thead {
     -webkit-box-flex: 1;
