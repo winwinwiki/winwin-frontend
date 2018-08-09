@@ -21,7 +21,8 @@ const addProgram = (props) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="row justify-content-center footer-actions">
+                        <div className="row justify-content-center footer-actions active">
+                            <button className="btn" onClick={(e) => { e.preventDefault(); props.history.goBack()}}>Cancel</button>
                             <button className="btn btn-primary">Save</button>
                         </div>
                     </form>

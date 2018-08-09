@@ -10,19 +10,6 @@
         }
       }
     }
-
-    .footer-actions{
-        display: none;
-        &.active{
-            display: flex;
-        }
-        &>:not(:last-child) {
-          margin-right: .25rem;
-        }
-        &>:not(:first-child) {
-          margin-left: .25rem;
-        }
-    }
   }
   
   .action-icons {
@@ -40,3 +27,16 @@
       }
     }
   }
+
+  .footer-actions{
+    display: none;
+    &.active{
+        display: flex;
+    }
+    &>:not(:last-child) {
+      margin-right: .25rem;
+    }
+    &>:not(:first-child) {
+      margin-left: .25rem;
+    }
+}

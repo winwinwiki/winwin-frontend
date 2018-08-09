@@ -7944,14 +7944,6 @@ h5.modal-title {
     display: none; }
     .program-details-container .list-group-item .action-icons.active {
       display: block; }
-  .program-details-container .footer-actions {
-    display: none; }
-    .program-details-container .footer-actions.active {
-      display: flex; }
-    .program-details-container .footer-actions > :not(:last-child) {
-      margin-right: .25rem; }
-    .program-details-container .footer-actions > :not(:first-child) {
-      margin-left: .25rem; }
 
 .action-icons {
   list-style: none;
@@ -7963,6 +7955,15 @@ h5.modal-title {
     display: inline-block; }
     .action-icons li + li {
       margin-left: 10px; }
+
+.footer-actions {
+  display: none; }
+  .footer-actions.active {
+    display: flex; }
+  .footer-actions > :not(:last-child) {
+    margin-right: .25rem; }
+  .footer-actions > :not(:first-child) {
+    margin-left: .25rem; }
 
 .section-login {
   background-size: cover; }
