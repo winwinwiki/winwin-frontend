@@ -51,7 +51,8 @@ class OrgList extends React.Component {
         this.state = {
             entity: filterList[0],
             orgList: [],
-            activeButton: 'All'
+            activeButton: 'All',
+            searchText: null
         }
         this.changePage = this.changePage.bind(this);
         this.onDropdownChange = this.onDropdownChange.bind(this);
@@ -80,14 +81,14 @@ class OrgList extends React.Component {
     }
 
     render() {
-        const { entity, orgList, activeButton } = this.state;
+        const { entity, orgList, activeButton, searchText } = this.state;
         const {isFetchOrgSuccess} = this.props;
         if(!isFetchOrgSuccess || !orgList) {
             return null;
         }
         return (
         <section className="dashboard-content p-0">
-        <OrgFilters activeButton={activeButton} filterOrgList={this.filterOrgList} />
+        <OrgFilters activeButton={activeButton} searchText={searchText} filterOrgList={this.filterOrgList} />
         <div className="d-flex py-3 align-items-center applied-filters-container">
             <Dropdown
                 selectedItem={entity}

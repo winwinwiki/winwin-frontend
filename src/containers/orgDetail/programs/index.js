@@ -12,7 +12,7 @@ class ProgramList extends React.Component {
         super(props);
         this.state = {
             programList: [],
-            searchText: ""
+            searchText: null
         }
 
         this.onChange = this.onChange.bind(this);

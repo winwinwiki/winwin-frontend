@@ -14,12 +14,13 @@ class OrgFilters extends React.Component {
         this.changePage = this.changePage.bind(this);
         this.showAppliedFilterModal = this.showAppliedFilterModal.bind(this);
         this.setActiveButton = this.setActiveButton.bind(this);
+        this.getFilteredListOfOrg = this.getFilteredListOfOrg.bind(this);
     }
     render() {
-        const {activeButton} = this.props;
+        const {activeButton, searchText} = this.props;
         return (
         <div className="d-flex align-content-center border-bottom py-3">
-            <Search placeholder="Search State/Country/City" onChange={(e) =>this.getFilteredListOfOrg(e)}/>
+            <Search placeholder="Search State/Country/City" onChange={this.getFilteredListOfOrg} value={searchText}/>
             <ButtonGroup activeButton={activeButton} onChange={this.setActiveButton}/>
             <div className="btn-group dropdown dropdown-with-checkbox" role="group" aria-label="group">
                 <button id="filterDropdown" type="button" 
