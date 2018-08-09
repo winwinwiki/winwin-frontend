@@ -14,6 +14,8 @@ class ProgramList extends React.Component {
             programList: [],
             filteredProgramList: []
         }
+
+        this.getFilteredListOfPrograms = this.getFilteredListOfPrograms.bind(this);
     }
 
     componentDidMount() {
@@ -41,7 +43,7 @@ class ProgramList extends React.Component {
                     <div className="col-md-18 m-auto d-flex flex-column py-3">
                         <div className="row mb-4">
                             <div className="col">
-                                <Search placeholder="Search Program" onChange={(e) =>this.getFilteredListOfPrograms(e)} />
+                                <Search placeholder="Search Program" onChange={this.getFilteredListOfPrograms} />
                             </div>
                             <div className="col col-md-auto" data-toggle="modal" data-target="#addProgramModal">
                                 <Link to={`${this.props.match.url.replace('/programs','/new-program')}`} className="btn btn-primary">Add Program</Link>
