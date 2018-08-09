@@ -61,7 +61,7 @@ class ProgramList extends React.Component {
     }
 
     renderProgramList(filteredProgramList){
-        return filteredProgramList.map(program =><Link to={`${this.props.match.url}/${program.id}`} className="list-group-item list-group-item-action">{program.name}</Link>);
+        return filteredProgramList.map(program =><Link key={program.id} to={`${this.props.match.url}/${program.id}`} className="list-group-item list-group-item-action">{program.name}</Link>);
     }
 
     getFilteredListOfPrograms(e){

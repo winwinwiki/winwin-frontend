@@ -1,8 +1,9 @@
 
 const url = "https://demo8782246.mockable.io";
+const url1 = "https://demo4705881.mockable.io";
 class CommonUtil {
     static createUrl(endPoints) {
-        return url + endPoints;
+        return endPoints == '/program1' ? (url1 + endPoints):(url + endPoints);
     }
 
     static createAuthUrl(endPoints, accessToken) {

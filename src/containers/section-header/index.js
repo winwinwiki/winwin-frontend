@@ -28,7 +28,7 @@ class SectionHeader extends React.Component {
             <section className="dashboard-header">
                 <div className="page-header border-bottom pb-2">
                     <nav className="app-breadcrumb" aria-label="breadcrumb">
-                        <ol class="breadcrumb">
+                        <ol className="breadcrumb">
                             {this.getAppNavigation(appNavigation)}
                         </ol>
                     </nav>
@@ -38,7 +38,7 @@ class SectionHeader extends React.Component {
     }
 
     getAppNavigation(appNavigation){
-        return appNavigation.map((item, index, arr) => <li class={`breadcrumb-item ${index == (arr.length-1)? 'active': ''}`} key={index}><Link to={item.path}>{item.title}</Link></li>);
+        return appNavigation.map((item, index, arr) => <li className={`breadcrumb-item ${index == (arr.length-1)? 'active': ''}`} key={index}><Link to={item.path}>{item.title}</Link></li>);
     }
 }
 

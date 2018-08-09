@@ -4,20 +4,19 @@ import SideBar from '../sidebar/programSidebar';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import { fetchOrganisationDetail } from '../../actions/orgDetail/orgDetailAction';
 import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
 
-class ProgramDetail extends React.Component { 
-    constructor(props){
+class ProgramDetail extends React.Component {
+    constructor(props) {
         super(props);
         this.state = {
-            programDetail: {
-                name: "Classes, camps, events and location rentals"
-            },
+            programDetail: {}
         }
     }
 
     componentDidMount() {
-            
+        this.props.fetchOrganisationDetail(this.props.url.params.id, this.props.url.params.programId, () => {
             this.props.removeFromAppNavigation({
                 title: this.state.programDetail.name,
                 path: this.props.url.url
@@ -26,29 +25,49 @@ class ProgramDetail extends React.Component {
                 title: this.state.programDetail.name,
                 path: this.props.url.url
             });
-        // console.log("orgID: "+this.props.url.params.id);
-        // this.props.fetchOrganisationDetail(this.props.url.params.id);
+        });
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (JSON.stringify(nextProps.programDetail) !== JSON.stringify(this.props.programDetail)) {
+            this.setState({
+                programDetail: nextProps.programDetail
+            });
+        }
     }
 
     render() {
         const { programDetail } = this.state;
+        const { isFetchProgDetailSuccess } = this.props;
+        if (!isFetchProgDetailSuccess || !programDetail) {
+            return null;
+        }
         return (
             <React.Fragment>
                 <div className="d-flex h-100">
-                    <SideBar url={this.props.url} history={this.props.history} type={'Programs'} programDetail={programDetail}/>
-                    {React.cloneElement(this.props.children, {programDetail: programDetail})}
+                    <SideBar url={this.props.url} history={this.props.history} type={'Programs'} programDetail={programDetail} />
+                    {this.props.children}
                 </div>
             </React.Fragment>
         )
     }
 }
 
+const mapStateToProps = state => ({
+    isFetchProgDetailPending: state.programDetail.isFetchProgDetailPending,
+    isFetchProgDetailSuccess: state.programDetail.isFetchProgDetailSuccess,
+    fetchProgDetailError: state.programDetail.fetchProgDetailError,
+    programDetail: state.programDetail.programDetail,
+})
+
 const mapDispatchToProps = dispatch => bindActionCreators({
     addToAppNavigation,
-    removeFromAppNavigation
+    removeFromAppNavigation,
+    fetchOrganisationDetail
 }, dispatch)
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(ProgramDetail);

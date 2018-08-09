@@ -17,7 +17,7 @@ class OrgDetail extends React.Component {
 
     componentDidMount() {
         console.log("orgID: " + this.props.url.params.id);
-        this.props.fetchOrganisationDetail(this.props.url.params.id, () => {
+        this.props.fetchOrganisationDetail(this.props.url.params.id, null, () => {
             this.props.removeFromAppNavigation({
                 title: this.props.orgDetail.name,
                 path: this.props.url.url

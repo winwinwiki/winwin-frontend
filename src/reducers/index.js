@@ -19,6 +19,7 @@ import resources from './orgDetail/resourcesReducer';
 import dataset from './orgDetail/dataSetReducer';
 
 import orgDetail from './orgDetail/orgDetailReducer';
+import programDetail from './program/programDetailReducer';
 
 import programList from './program/programListReducer';
 
@@ -36,6 +37,7 @@ export default combineReducers({
     resources,
     dataset,
     orgDetail,
+    programDetail,
     programList,
     userInfo,
     sectionHeader

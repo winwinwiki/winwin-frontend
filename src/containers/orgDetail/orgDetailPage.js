@@ -43,7 +43,7 @@ class OrgDetailPage extends React.Component {
                     </div>}
                     
                     <form>
-                        { totalRevenue.map(revenue =><React.Fragment> <div className="col">
+                        { totalRevenue.map((revenue, index) =><React.Fragment key={index}> <div className="col">
                             <div className="form-group">
                                 <label htmlFor="category">Amount</label>
                                 <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={revenue.value}/>

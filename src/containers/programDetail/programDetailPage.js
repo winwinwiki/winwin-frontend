@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { connect } from 'react-redux';
+
 class ProgramDetailPage extends React.Component {
     constructor(props){
         super(props);
@@ -26,7 +28,7 @@ class ProgramDetailPage extends React.Component {
                                         <div className="col">
                                             <div className="form-group">
                                                 <label htmlFor="programName">Program Name</label>
-                                                <input type="text" className="form-control" id="programName" readOnly={`${!editProgramDetail ? "readOnly":''}`} placeholder="Enter Program Name" value="Classes, camps, events and location rentals" />
+                                                <input type="text" className="form-control" id="programName" readOnly={`${!editProgramDetail ? "readOnly":''}`} placeholder="Enter Program Name" value={this.props.programDetail.name} />
                                             </div>
                                         </div>
                                     </div>
@@ -34,7 +36,7 @@ class ProgramDetailPage extends React.Component {
                                         <div className="col">
                                             <div className="form-group">
                                                 <label htmlFor="description">Program Description</label>
-                                                <textarea className="form-control" name="" id="description" readOnly={`${!editProgramDetail ? "readOnly":''}`} rows="5">Arts center conducts classes on any artistic or cultural topics ranging from ?crafts, dance, singing, painting. Camps for youth and adults and events ?open to the public. They also offer open space for private events.</textarea>
+                                                <textarea className="form-control" name="" id="description" readOnly={`${!editProgramDetail ? "readOnly":''}`} rows="5">{this.props.programDetail.description}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -70,4 +72,11 @@ class ProgramDetailPage extends React.Component {
     }
 }
 
-export default ProgramDetailPage;
+const mapStateToProps = state => ({
+    programDetail: state.programDetail.programDetail,
+})
+
+export default connect(
+    mapStateToProps,
+    null
+)(ProgramDetailPage);
