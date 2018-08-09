@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { connect } from 'react-redux';
-
 class ProgramDetailPage extends React.Component {
     constructor(props){
         super(props);
@@ -36,7 +34,7 @@ class ProgramDetailPage extends React.Component {
                                         <div className="col">
                                             <div className="form-group">
                                                 <label htmlFor="description">Program Description</label>
-                                                <textarea className="form-control" name="" id="description" readOnly={`${!editProgramDetail ? "readOnly":''}`} rows="5">{this.props.programDetail.description}</textarea>
+                                                <textarea className="form-control" name="" id="description" readOnly={`${!editProgramDetail ? "readOnly":''}`} rows="5" value={this.props.programDetail.description} />
                                             </div>
                                         </div>
                                     </div>
@@ -72,11 +70,4 @@ class ProgramDetailPage extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({
-    programDetail: state.programDetail.programDetail,
-})
-
-export default connect(
-    mapStateToProps,
-    null
-)(ProgramDetailPage);
+export default ProgramDetailPage;

@@ -14,7 +14,7 @@ import AddProgram from './programs/addProgram';
 
 
 const OrgDetailRoutes = (props) => (
-        <OrgDetail url={props.match} history={props.history}>
+        <OrgDetail match={props.match} history={props.history}>
             <Switch>
                 <PrivateRoute authenticated={true} exact path={`${props.match.path}/data-sets`} component={DataSets} type={"Organization"}/>
                 <PrivateRoute authenticated={true} exact path={`${props.match.path}/resources`} component={Resources} type={"Organization"}/>

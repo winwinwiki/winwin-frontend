@@ -16,15 +16,15 @@ class OrgDetail extends React.Component {
     }
 
     componentDidMount() {
-        console.log("orgID: " + this.props.url.params.id);
-        this.props.fetchOrganisationDetail(this.props.url.params.id, null, () => {
+        console.log("orgID: " + this.props.match.params.id);
+        this.props.fetchOrganisationDetail(this.props.match.params.id, null, () => {
             this.props.removeFromAppNavigation({
                 title: this.props.orgDetail.name,
-                path: this.props.url.url
+                path: this.props.match.url
             });
             this.props.addToAppNavigation({
                 title: this.props.orgDetail.name,
-                path: this.props.url.url
+                path: this.props.match.url
             });
         });
     }
@@ -53,7 +53,7 @@ class OrgDetail extends React.Component {
 
                             <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                                 <a className="dropdown-item" href="#">Change Status</a>
-                                <Link className="dropdown-item" to={`${this.props.url.url}/new-program`}>Add Program</Link>
+                                <Link className="dropdown-item" to={`${this.props.match.url}/new-program`}>Add Program</Link>
                                 <a className="dropdown-item" href="#">Add Child Organization</a>
                                 <a className="dropdown-item" href="#">Edit Organization Name</a>
                                 <a className="dropdown-item" href="#">View History</a>
@@ -62,7 +62,7 @@ class OrgDetail extends React.Component {
                     </div>
                 </div>
                 <div className="d-flex h-100">
-                    <SideBar url={this.props.url} history={this.props.history} type={'Organisation'} />
+                    <SideBar match={this.props.match} history={this.props.history} type={'Organisation'} />
                     {this.props.children}
                 </div>
             </React.Fragment>

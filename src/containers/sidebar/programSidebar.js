@@ -83,7 +83,7 @@ class ProgramSidebar extends React.Component{
     }
 
     renderSubNavOptions(){
-        return subNavOptions.map(option => <li onClick={()=>this.setState({activeSubNav:option.path})} key={option.path}><Link className={this.state.activeSubNav === option.path?'active':''} to={option.path ? `${this.props.url.url}/${option.path}`:`${this.props.url.url}`}><i></i>{option.title}</Link></li>)
+        return subNavOptions.map(option => <li onClick={()=>this.setState({activeSubNav:option.path})} key={option.path}><Link className={this.state.activeSubNav === option.path?'active':''} to={option.path ? `${this.props.match.url}/${option.path}`:`${this.props.match.url}`}><i></i>{option.title}</Link></li>)
     }
 }
 

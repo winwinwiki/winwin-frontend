@@ -62,7 +62,7 @@ class SideBar extends React.Component{
             <div id="mySidenav" className="sidenav d-flex flex-column">
                 <ul className="list-group list-group-flush pr-3">
 
-                    <li className="list-group-item"><Link className={this.state.activeNav === ''?'active':''} onClick={()=>{this.changeActiveNav(''); this.setState({activeSubNav:''})}} to={`${this.props.url.url}`}>Basic Information</Link></li>
+                    <li className="list-group-item"><Link className={this.state.activeNav === ''?'active':''} onClick={()=>{this.changeActiveNav(''); this.setState({activeSubNav:''})}} to={`${this.props.match.url}`}>Basic Information</Link></li>
                     
                     <li className="list-group-item">
                         <a href="javascript:;" className={this.state.activeNav === `${this.props.type}-details`?'active':''} onClick={()=>{this.changeActiveNav(`${this.props.type}-details`); this.setState({activeSubNav:''})}} data-target="#collapseExample" data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample">Organisation Details</a>
@@ -74,7 +74,7 @@ class SideBar extends React.Component{
                         </div>
 
                     </li>
-                    <li className="list-group-item"><Link className={this.state.activeNav === 'programs'?'active':''} to={`${this.props.url.url}/programs`} onClick={()=>{this.changeActiveNav(`Programs`); this.setState({activeSubNav:''})}}>Programs</Link></li>
+                    <li className="list-group-item"><Link className={this.state.activeNav === 'programs'?'active':''} to={`${this.props.match.url}/programs`} onClick={()=>{this.changeActiveNav(`Programs`); this.setState({activeSubNav:''})}}>Programs</Link></li>
                 </ul>
                 <div className="social-footer mt-auto">
                     <ul className="d-flex flex-row justify-content-between pl-1 pr-3">
@@ -90,7 +90,7 @@ class SideBar extends React.Component{
     }
 
     renderSubNavOptions(){
-        return subNavOptions.map(option => <li onClick={()=>this.setState({activeSubNav:option.path})} key={option.path}><Link className={this.state.activeSubNav === option.path?'active':''} to={`${this.props.url.url}/${option.path}`}><i></i>{option.title}</Link></li>)
+        return subNavOptions.map(option => <li onClick={()=>this.setState({activeSubNav:option.path})} key={option.path}><Link className={this.state.activeSubNav === option.path?'active':''} to={`${this.props.match.url}/${option.path}`}><i></i>{option.title}</Link></li>)
     }
 
     changeActiveNav(activeNavTitle){
