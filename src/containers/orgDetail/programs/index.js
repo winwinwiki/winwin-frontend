@@ -12,10 +12,10 @@ class ProgramList extends React.Component {
         super(props);
         this.state = {
             programList: [],
-            filteredProgramList: []
+            searchText: ""
         }
 
-        this.getFilteredListOfPrograms = this.getFilteredListOfPrograms.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
@@ -25,14 +25,13 @@ class ProgramList extends React.Component {
     componentWillReceiveProps(nextProps) {
         if(JSON.stringify(nextProps.programList) !== JSON.stringify(this.props.programList) ) {
             this.setState({
-                programList: nextProps.programList,
-                filteredProgramList: nextProps.programList
+                programList: nextProps.programList
             });
         }
     }
 
     render() {
-        const { programList, filteredProgramList } = this.state;
+        const { programList, searchText } = this.state;
         const {isFetchProgramSuccess} = this.props;
         if(!isFetchProgramSuccess || !programList) {
            return null;
@@ -43,7 +42,7 @@ class ProgramList extends React.Component {
                     <div className="col-md-18 m-auto d-flex flex-column py-3">
                         <div className="row mb-4">
                             <div className="col">
-                                <Search placeholder="Search Program" onChange={this.getFilteredListOfPrograms} />
+                                <Search placeholder="Search Program" onChange={this.onChange} value={searchText}/>
                             </div>
                             <div className="col col-md-auto" data-toggle="modal" data-target="#addProgramModal">
                                 <Link to={`${this.props.match.url.replace('/programs','/new-program')}`} className="btn btn-primary">Add Program</Link>
@@ -52,7 +51,7 @@ class ProgramList extends React.Component {
                         <div className="row">
                             <div className="col">
                                 <div className="list-group">
-                                    {this.renderProgramList(filteredProgramList)}
+                                    {this.renderProgramList(programList, searchText)}
                                 </div>
                             </div>
                         </div>
@@ -62,20 +61,25 @@ class ProgramList extends React.Component {
         )
     }
 
-    renderProgramList(filteredProgramList){
+    onChange(e){
+        this.setState({
+            searchText: e.target.value
+        });
+    }
+
+    renderProgramList(programList, searchText){
+        let filteredProgramList = this.getFilteredListOfPrograms(programList, searchText);
         return filteredProgramList.map(program =><Link key={program.id} to={`${this.props.match.url}/${program.id}`} className="list-group-item list-group-item-action">{program.name}</Link>);
     }
 
-    getFilteredListOfPrograms(e){
+    getFilteredListOfPrograms(programList, searchText){
         var filteredProgramList = [];
-        if(e.target.value){
-            filteredProgramList = this.state.programList.filter( program => program.name.toLowerCase().indexOf(e.target.value.toLowerCase()) >-1);
+        if(searchText){
+            filteredProgramList = programList.filter( program => program.name.toLowerCase().indexOf(searchText.toLowerCase()) >-1);
         } else {
-            filteredProgramList = this.state.programList.slice();
+            filteredProgramList = programList.slice();
         }
-        this.setState({
-            filteredProgramList: filteredProgramList
-        });
+        return filteredProgramList;
     }
 
 }
