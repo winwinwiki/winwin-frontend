@@ -52,12 +52,13 @@ class OrgList extends React.Component {
             entity: filterList[0],
             orgList: [],
             activeButton: 'All',
-            searchText: null
+            searchText: ''
         }
         this.changePage = this.changePage.bind(this);
         this.onDropdownChange = this.onDropdownChange.bind(this);
         this.filterOrgList = this.filterOrgList.bind(this);
         this.resetAllFilters = this.resetAllFilters.bind(this);
+        this.getFilteredListOfOrg = this.getFilteredListOfOrg.bind(this);
     }
 
     componentDidMount() {
@@ -88,7 +89,7 @@ class OrgList extends React.Component {
         }
         return (
         <section className="dashboard-content p-0">
-        <OrgFilters activeButton={activeButton} searchText={searchText} filterOrgList={this.filterOrgList} />
+        <OrgFilters activeButton={activeButton} searchText={searchText} getFilteredListOfOrg={this.getFilteredListOfOrg} filterOrgList={this.filterOrgList} />
         <div className="d-flex py-3 align-items-center applied-filters-container">
             <Dropdown
                 selectedItem={entity}
@@ -520,6 +521,12 @@ class OrgList extends React.Component {
         </div>
     </section>
         )
+    }
+
+    getFilteredListOfOrg(e){
+        this.setState({
+            searchText: e.target.value
+        });
     }
 
     changePage(orgId) {
