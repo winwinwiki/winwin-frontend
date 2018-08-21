@@ -1,0 +1,51 @@
+.breadcrumb-container {
+  max-width: 1000px;
+  .breadcrumb {
+    background: none;
+    border-radius: 0;
+    padding:0;
+
+    .breadcrumb-item {
+      h2 {
+        max-width: 95%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        color: #9C9C9C;
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 1.50rem;
+      }
+
+      &.active {
+        h2 {
+          font-size: 16px;
+          color: $gray-600;
+          font-weight: 400;
+        }
+      }
+
+      .dropdown {
+        width: 50px;
+        > a {
+          position: relative;
+          top: -5px;
+          letter-spacing: 2px;
+        }
+      }
+
+      + .breadcrumb-item {
+        padding-left: 0;
+        &:before {
+          display: none;
+        }
+      }
+
+      i {
+        font-size: 8px;
+        line-height: 20px;
+        margin-left: 8px;
+      }
+    }
+  }
+}

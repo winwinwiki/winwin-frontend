@@ -45,18 +45,55 @@ class OrgDetail extends React.Component {
         return (
             <React.Fragment>
                 <div className="py-4 border-bottom d-flex justify-content-between">
-                    <h2>{orgDetail.name}</h2>
-                    <div className="d-flex align-items-center">
-                        <div className="dropdown">
-                            <a href="javascript:;"  className="mr-1 dropdown-toggle plain" href="#" role="button"
-                               id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="icon-menu mr-2 ml-5"></i> Menu</a>
+                    <div aria-label="breadcrumb" className="col breadcrumb-container pr-0">
+                        <ol class="breadcrumb row flex-row flex-nowrap pl-0">
+                            <li className="breadcrumb-item pl-0 pr-4"><h1>A</h1></li>
+                            <li className="breadcrumb-item col" title="Administration for children &amp; families">
+                                <h2 className="float-left">Administration for children &amp; families</h2>
+                                <i className="icon icon-arrow float-left"></i>
+                            </li>
+                            <li className="breadcrumb-item col" title="Administration for children &amp; families">
+                                <div className="dropdown">
+                                    <a href="javascript:;"  className="mr-1 dropdown-toggle plain" href="#" role="button"
+                                       id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        ..... <i className="icon icon-arrow float-right"></i>
+                                    </a>
 
-                            <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                                <a className="dropdown-item" href="#">Change Status</a>
-                                <Link className="dropdown-item" to={`${this.props.match.url}/new-program`}>Add Program</Link>
-                                <a className="dropdown-item" href="#">Add Child Organization</a>
-                                <a className="dropdown-item" href="#">Edit Organization Name</a>
-                                <a className="dropdown-item" href="#">View History</a>
+                                    <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink1">
+                                        <a className="dropdown-item" href="#">Change Status</a>
+                                        <Link className="dropdown-item" to={`${this.props.match.url}/new-program`}>Add Program</Link>
+                                        <a className="dropdown-item" href="#">Add Child Organization</a>
+                                        <a className="dropdown-item" href="#">Edit Organization Name</a>
+                                        <a className="dropdown-item" href="#">View History</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li className="breadcrumb-item col" title="Administration for children &amp; families">
+                                <h2 className="float-left">Administration for children &amp; families</h2>
+                                <i className="icon icon-arrow float-left"></i>
+                            </li>
+                            <li className="breadcrumb-item col active" title={orgDetail.name} aria-current="page">
+                                <h2 className="float-left">{orgDetail.name} Administration for children &amp; families</h2>
+                                <i className="icon icon-arrow float-left"></i>
+                            </li>
+                            <li className="breadcrumb-item col" title="Administration for children &amp; families">
+                                <h2 className="mr-5">Administration for <a href="javascript:;">+ 4 more</a></h2>
+                            </li>
+                        </ol>
+                    </div>
+                    <div className="ml-auto">
+                        <div className="d-flex align-items-center">
+                            <div className="dropdown">
+                                <a href="javascript:;"  className="mr-1 dropdown-toggle plain" href="#" role="button"
+                                   id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="icon-menu mr-2 ml-0"></i> Menu</a>
+
+                                <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                                    <a className="dropdown-item" href="#">Change Status</a>
+                                    <Link className="dropdown-item" to={`${this.props.match.url}/new-program`}>Add Program</Link>
+                                    <a className="dropdown-item" href="#">Add Child Organization</a>
+                                    <a className="dropdown-item" href="#">Edit Organization Name</a>
+                                    <a className="dropdown-item" href="#">View History</a>
+                                </div>
                             </div>
                         </div>
                     </div>

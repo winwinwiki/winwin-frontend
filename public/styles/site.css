@@ -6722,6 +6722,40 @@ textarea {
   .modal .modal-content {
     height: 400px; } }
 
+.breadcrumb-container {
+  max-width: 1000px; }
+  .breadcrumb-container .breadcrumb {
+    background: none;
+    border-radius: 0;
+    padding: 0; }
+    .breadcrumb-container .breadcrumb .breadcrumb-item h2 {
+      max-width: 95%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      color: #9C9C9C;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.50rem; }
+    .breadcrumb-container .breadcrumb .breadcrumb-item.active h2 {
+      font-size: 16px;
+      color: #6c757d;
+      font-weight: 400; }
+    .breadcrumb-container .breadcrumb .breadcrumb-item .dropdown {
+      width: 50px; }
+      .breadcrumb-container .breadcrumb .breadcrumb-item .dropdown > a {
+        position: relative;
+        top: -5px;
+        letter-spacing: 2px; }
+    .breadcrumb-container .breadcrumb .breadcrumb-item + .breadcrumb-item {
+      padding-left: 0; }
+      .breadcrumb-container .breadcrumb .breadcrumb-item + .breadcrumb-item:before {
+        display: none; }
+    .breadcrumb-container .breadcrumb .breadcrumb-item i {
+      font-size: 8px;
+      line-height: 20px;
+      margin-left: 8px; }
+
 .card-shadow {
   box-shadow: 0 2px 4px 0 #E6E6E6; }
 
@@ -8049,11 +8083,9 @@ h5.modal-title {
   position: absolute;
   right: 10px; }
 
-.app-breadcrumb {
-  font-size: 0.8rem; }
-  .app-breadcrumb .breadcrumb {
-    background-color: transparent;
-    padding: 0.25rem 0.25rem;
-    margin-bottom: 0.25rem; }
-    .app-breadcrumb .breadcrumb > .breadcrumb-item.active > a {
-      color: #29ABE2; }
+.app-breadcrumb .breadcrumb {
+  background-color: transparent;
+  padding: 0.25rem 0.25rem;
+  margin-bottom: 0.25rem; }
+  .app-breadcrumb .breadcrumb > .breadcrumb-item.active > a {
+    color: #29ABE2; }
