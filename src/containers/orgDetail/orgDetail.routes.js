@@ -3,7 +3,7 @@ import { Switch } from 'react-router';
 import PrivateRoute from  '../privateRouter';
 import OrgDetail from './';
 import OrgDetailPage from './orgDetailPage';
-import OrgPrograms from './orgPrograms';
+import ViewHistory from './viewHistory';
 import DataSets from './dataSets';
 import SpiTags from './spiTag';
 import SdgTags from './sdgTag';
@@ -16,6 +16,7 @@ import AddProgram from './programs/addProgram';
 const OrgDetailRoutes = (props) => (
         <OrgDetail match={props.match} history={props.history}>
             <Switch>
+            <PrivateRoute authenticated={true} exact path={`${props.match.path}/view-history`} component={ViewHistory} type={"Organization"}/>
                 <PrivateRoute authenticated={true} exact path={`${props.match.path}/data-sets`} component={DataSets} type={"Organization"}/>
                 <PrivateRoute authenticated={true} exact path={`${props.match.path}/resources`} component={Resources} type={"Organization"}/>
                 <PrivateRoute authenticated={true} exact path={`${props.match.path}/regions-served`} component={RegionsServed} type={"Organization"}/>

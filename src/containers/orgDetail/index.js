@@ -56,13 +56,14 @@ class OrgDetail extends React.Component {
                                 <Link className="dropdown-item" to={`${this.props.match.url}/new-program`}>Add Program</Link>
                                 <a className="dropdown-item" href="#">Add Child Organization</a>
                                 <a className="dropdown-item" href="#">Edit Organization Name</a>
-                                <a className="dropdown-item" href="#">View History</a>
+                                <Link className="dropdown-item" to={`${this.props.match.url}/view-history`}>View History</Link>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="d-flex h-100">
-                    <SideBar match={this.props.match} history={this.props.history} type={'Organisation'} />
+                    { (this.props.history.location.pathname.indexOf('view-history') == -1) &&
+                        <SideBar match={this.props.match} history={this.props.history} type={'Organisation'} />}
                     {this.props.children}
                 </div>
             </React.Fragment>

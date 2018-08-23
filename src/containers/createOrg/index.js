@@ -10,6 +10,7 @@ import {
     validateCreateOrgForm
 } from '../../actions/createOrg/createOrgAction';
 import './createOrg.css';
+import {addToAppNavigation, removeFromAppNavigation} from '../../actions/sectionHeader/sectionHeaderAction';
 
 const sectoryList = ['Public', 'Private', 'Social'];
 const entityList = ['Federal', 'Private', 'Social'];
@@ -31,6 +32,16 @@ class CreateOrg extends React.Component {
         this.onSuggestSelect = this.onSuggestSelect.bind(this);
         this.validateLocationField = this.validateLocationField.bind(this);
     }
+    componentDidMount() {
+        this.props.removeFromAppNavigation({
+            title: "New Organisation",
+            path: this.props.match.url
+        });
+        this.props.addToAppNavigation({
+            title: "New Organisation",
+            path: this.props.match.url
+        });
+    }
     render() {
         const { orgName, sector, entity} = this.state;
         let {createOrgFormError} = this.props;
@@ -38,7 +49,7 @@ class CreateOrg extends React.Component {
             <div className="container">
                 <div className="row ">
                     <div className="col-sm-12 mx-auto my-3">
-                        <label htmlFor="orgName" className="sr-only">User Name</label>
+                        <label htmlFor="orgName" className="sr-only">Organization Name</label>
                         <input id="orgName" type="text" aria-describedby="orgNameDesc"
                                placeholder="Organization Name"
                                className="form-control"
@@ -66,7 +77,7 @@ class CreateOrg extends React.Component {
                         </div>
                         <Geosuggest
                             ref={el => this._geoSuggest = el}
-                            placeholder="Start typing!"
+                            placeholder="Search State/Country/City"
                             className="form-control position-relative"
                             initialValue=""
                             fixtures={[]}
@@ -132,6 +143,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     changePage: () => push('/organizations'),
+    addToAppNavigation,
+    removeFromAppNavigation,
     onCreateOrg,
     validateCreateOrgForm
 }, dispatch)
