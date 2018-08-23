@@ -28,7 +28,7 @@ class ResetPassword extends React.Component {
 
                 { resetPwdError && <div>{resetPwdError.message}</div> }
                 <div className="form-group w-100 mb-4 login-form-group">
-                  <label for="userName" className="sr-only">Password</label>
+                  <label htmlFor="userName" className="sr-only">Password</label>
                   <input id="userName" type="password" aria-describedby="userNameDesc" 
                         placeholder="Password" 
                         className="form-control"
@@ -40,7 +40,7 @@ class ResetPassword extends React.Component {
                   { resetFormError.password && <div>{resetFormError.password}</div> }
                 </div>
                 <div className="form-group w-100 mb-4 login-form-group">
-                  <label for="userPassword" className="sr-only">Confirm Password</label>
+                  <label htmlFor="userPassword" className="sr-only">Confirm Password</label>
                   <input id="userPassword" type="password" aria-describedby="passwordDesc" 
                         placeholder="Confirm Password" 
                         className="form-control"

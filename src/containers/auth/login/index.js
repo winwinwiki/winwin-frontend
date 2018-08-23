@@ -31,7 +31,7 @@ class Login extends React.Component {
 
                 { loginError && <div>{loginError.message}</div> }
                 <div className="form-group w-100 mb-4 login-form-group">
-                  <label for="userName" className="sr-only">User Name</label>
+                  <label htmlFor="userName" className="sr-only">User Name</label>
                   <input id="userName" type="email" aria-describedby="userNameDesc" 
                         placeholder="User Name" 
                         className="form-control"
@@ -44,7 +44,7 @@ class Login extends React.Component {
                   { formError.email && <div className="text-danger small error">{formError.email}</div> }
                 </div>
                 <div className="form-group w-100 mb-4 login-form-group">
-                  <label for="userPassword" className="sr-only">User Password</label>
+                  <label htmlFor="userPassword" className="sr-only">User Password</label>
                   <input id="userPassword" type="password" aria-describedby="passwordDesc" 
                         placeholder="Password" 
                         className="form-control"
