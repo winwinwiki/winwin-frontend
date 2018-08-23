@@ -9,6 +9,7 @@ import userInfo from './users/userInfoReducer';
 import sectionHeader from './sectionHeader/sectionHeaderReducer';
 
 import createOrg from './createOrg/createOrgReducer';
+import dataFeed from './dataFeed/dataFeedReducer';
 import orgLanding from './orgLanding/orgLandingReducer';
 import orgFilter from './orgLanding/orgFilterReducer';
 
@@ -17,7 +18,7 @@ import sdgTags from './orgDetail/sdgTagsReducer';
 import regionsServed from './orgDetail/regionsServedReducer';
 import resources from './orgDetail/resourcesReducer';
 import dataset from './orgDetail/dataSetReducer';
-
+import orgHistory from './orgDetail/orgHistoryReducer';
 import orgDetail from './orgDetail/orgDetailReducer';
 import programDetail from './program/programDetailReducer';
 
@@ -29,6 +30,7 @@ export default combineReducers({
     forgetPassword,
     resetPassword,
     createOrg,
+    dataFeed,
     orgLanding,
     orgFilter,
     spiTags,
@@ -40,5 +42,6 @@ export default combineReducers({
     programDetail,
     programList,
     userInfo,
-    sectionHeader
+    sectionHeader,
+    orgHistory
 });

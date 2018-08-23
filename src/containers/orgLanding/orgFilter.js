@@ -31,15 +31,15 @@ class OrgFilters extends React.Component {
                 <AppliedOrgFiltersList />
             </div>
             <div className="ml-auto">
-                <a onClick={this.changePage} className="btn btn-link"><i className="icon-add mr-1"></i> Create</a>
-                <a href="javascript:;" className="btn btn-link pr-0"><i className="icon-upload mr-1"></i> Upload</a>
+                <a href="javascript:;" onClick={()=>this.changePage('new')} className="btn btn-link"><i className="icon-add mr-1"></i> Create</a>
+                <a href="javascript:;" onClick={()=>this.changePage('uploadDataFeed')} className="btn btn-link pr-0"><i className="icon-upload mr-1"></i> Upload</a>
             </div>
         </div>
         )
     }
 
-    changePage() {
-        this.props.changePage();
+    changePage(page) {
+        this.props.changePage(page);
     }
 
     showAppliedFilterModal() {
@@ -58,7 +58,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    changePage: () => push('/organizations/new'),
+    changePage: (page) => push('/organizations/'+page),
     showAppliedFilterModal
 }, dispatch)
 

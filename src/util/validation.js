@@ -13,5 +13,9 @@ export default {
     name: function(name) {
         let regx = /^[a-zA-Z][a-zA-Z ]*$/;
         return regx.test(name);
+    },
+    file: function(file){
+        let regx = /[.csv|.xlsx|.xls]+$/;
+        return regx.test(file.name);
     }
 }
