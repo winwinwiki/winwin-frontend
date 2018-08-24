@@ -69,6 +69,13 @@ class OrgHistory extends React.Component {
         });
     }
 
+    componentWillUnmount(){
+        this.props.removeFromAppNavigation({
+            title: 'View History',
+            path: this.props.match.url
+        });
+    }
+
 }
 
 const mapStateToProps = state => ({
