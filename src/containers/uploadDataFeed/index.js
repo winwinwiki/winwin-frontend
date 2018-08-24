@@ -106,8 +106,10 @@ class UploadDataFeed extends React.Component {
         if (file) {
             return (
                 <div className="upload-image-wrap d-flex flex-wrap mb-4">
-                    <a href={file.preview}>{file.name}</a>
-                    <div className="close bg-white rounded-circle">
+                    <div className="col-sm-22">
+                        <a href={file.preview}>{file.name}</a>
+                    </div>
+                    <div className="col-sm-2">
                         <span className="icon-close" onClick={this.dropFile} />
                     </div>
                 </div>
