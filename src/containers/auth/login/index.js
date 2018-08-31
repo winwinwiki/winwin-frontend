@@ -66,8 +66,13 @@ class Login extends React.Component {
         this.setState({[e.target.name]: e.target.value});
     }
     onKeyUp(e){
+        const _self = this;
         if (e.keyCode === 13) {
-            this.onLoginSubmit(e);
+            this.props.validateLoginForm(e.target.name, e.target.value).then(
+                (res) => {
+                    _self.onLoginSubmit(e);
+                }
+            );
         }
     }
 
@@ -78,12 +83,15 @@ class Login extends React.Component {
     onLoginSubmit(e) {
         e.preventDefault();
         const {email, password} = this.state;
-        if(!email || !password) { 
+        const {formError} = this.props;
+        if(!email || !password) {
             this.props.validateLoginForm('email', email);
             this.props.validateLoginForm('password', password);
             return;
+        } else if (formError.password !== '' || formError.email !== ''){
+            return;
         }
-        this.props.onLogin(this.state, () => {
+        this.props.onLogin(this.state).then( (res) => {
             this.setState({
                 email: '',
                 password: ''
