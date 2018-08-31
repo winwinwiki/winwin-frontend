@@ -5,7 +5,7 @@ const DataSetBlock = (props) => {
         <form>
             <div className="form-group">
                 <label htmlFor="category">Category</label>
-                <input type="text" className="form-control" id="category" placeholder="Enter Category" value="Community Involvement Data" />
+                <input type="text" className="form-control" id="category" readOnly placeholder="Enter Category" value="Community Involvement Data" />
             </div>
             <div className="form-group">
                 <label htmlFor="description">Description</label>

@@ -4,87 +4,37 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { OrgChartComponent } from './orgChartComponent';
 import './orgChart.css';
+import { fetchOrgHierarchy } from '../../actions/orgDetail/orgChartAction';
 
 class OrgChart extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            orgChartData: {
-                "id": 2,
-                "collapsed": false,
-                "name": "Human Health Services",
-                "location": "Washington, DC",
-                "childrenType": "Division",
-                "children": [
-                    {
-                        "id": 1,
-                        "name": "Administration for Children & Families",
-                        "location": "Washington, DC",
-                        "childrenType": "Department",
-                        "children": [{
-                            "id": 9,
-                            "name": "Administration for Children & Families",
-                            "location": "Washington, DC",
-                            "childrenType": "Department",
-                            "children": [{
-                                "id": 80,
-                                "name": "Administration of Community Living",
-                                "location": "Washington, DC",
-                                "childrenType": "Department"
-                            }]
-                        },
-                        {
-                            "id": 10,
-                            "name": "Administration of Community Living",
-                            "location": "Washington, DC",
-                            "childrenType": "Department"
-                        }]
-                    },
-                    {
-                        "id": 3,
-                        "name": "Administration of Community Living",
-                        "location": "Washington, DC",
-                        "childrenType": "Department"
-                    },
-                    {
-                        "id": 4,
-                        "name": "Agency for Healthcare Research and Quality",
-                        "location": "Washington, DC",
-                        "childrenType": "Department"
-                    },
-                    {
-                        "id": 5,
-                        "name": "Agency for Toxic Substances & Disease Registry",
-                        "location": "Washington, DC",
-                        "childrenType": "Department"
-                    },
-                    {
-                        "id": 6,
-                        "name": "Administration of Aging",
-                        "location": "Washington, DC",
-                        "childrenType": "Department"
-                    },
-                    {
-                        "id": 7,
-                        "name": "Agency for Toxic Substances & Disease Registry",
-                        "location": "Washington, DC",
-                        "childrenType": "Department"
-                    },
-                    {
-                        "id": 8,
-                        "name": "Administration of Aging",
-                        "location": "Washington, DC",
-                        "childrenType": "Department"
-                    }
-                ]
-            },
+            orgChartData: null,
             visibleLevel: 2
         }
     }
     componentDidMount() {
         const { orgChartData, visibleLevel } = this.state;
-        var chart = new OrgChartComponent(this.desiredOrgData(orgChartData), visibleLevel, this.orgDetail, this.addNewChild);
-        chart.renderOrgChart();
+        const { orgHierarchy } = this.props;
+        this.props.fetchOrgHierarchy(this.props.match.params.id);
+        if (Object.keys(orgHierarchy).length) {
+            let chart = new OrgChartComponent(this.desiredOrgData(orgHierarchy), visibleLevel, this.orgDetail, this.addNewChild);
+            chart.renderOrgChart();
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { visibleLevel } = this.state;
+        if(JSON.stringify(nextProps.orgHierarchy) !== JSON.stringify(this.props.orgHierarchy) ) {
+            this.setState({
+                orgChartData: nextProps.orgHierarchy
+            });
+            if (nextProps.orgHierarchy) {
+                let chart = new OrgChartComponent(this.desiredOrgData(nextProps.orgHierarchy), visibleLevel, this.orgDetail, this.addNewChild);
+                chart.renderOrgChart();
+            }
+        }
     }
 
     render() {
@@ -129,12 +79,20 @@ class OrgChart extends React.Component {
 
 }
 
+const mapStateToProps = state => ({
+    isFetchOrgHierarchyPending: state.orgChart.isFetchOrgHierarchyPending,
+    isFetchOrgHierarchySuccess: state.orgChart.isFetchOrgHierarchySuccess,
+    fetchOrgHierarchyError: state.orgChart.fetchOrgHierarchyError,
+    orgHierarchy: state.orgChart.orgHierarchy
+})
+
 const mapDispatchToProps = dispatch => bindActionCreators({
-    changePage: (id) => push('/organizations/'+ id),
-    addChildOrganisation: (parentId, childType) => push('/organizations/'+parentId+'/new-child-organization?'+childType)
+    changePage: (id) => push('/organizations/' + id),
+    addChildOrganisation: (parentId, childType) => push('/organizations/' + parentId + '/new-child-organization?' + childType),
+    fetchOrgHierarchy
 }, dispatch)
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(OrgChart);

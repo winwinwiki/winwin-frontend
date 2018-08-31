@@ -21,7 +21,7 @@ import dataset from './orgDetail/dataSetReducer';
 import orgHistory from './orgDetail/orgHistoryReducer';
 import orgDetail from './orgDetail/orgDetailReducer';
 import programDetail from './program/programDetailReducer';
-
+import orgChart from './orgDetail/orgChartReducer';
 import programList from './program/programListReducer';
 
 export default combineReducers({
@@ -43,5 +43,6 @@ export default combineReducers({
     programList,
     userInfo,
     sectionHeader,
-    orgHistory
+    orgHistory,
+    orgChart
 });
