@@ -26,7 +26,7 @@ class SideBar extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            activeNav: (props.history.location.pathname.indexOf('programs') > -1 || props.history.location.pathname.indexOf('new-program') > -1)?'programs':'',
+            activeNav: (props.history.location.pathname.indexOf('programs') > -1 || props.history.location.pathname.indexOf('new-program') > -1)?'programs':(props.history.location.pathname.indexOf('organization-chart') >-1 ? 'organization-chart' : ''),
             activeSubNav: ''
         }
     }
@@ -37,6 +37,8 @@ class SideBar extends React.Component{
         
         if(this.props.history.location.pathname.indexOf('programs')>-1 || this.props.history.location.pathname.indexOf('new-program') > -1){
             this.setState({activeNav: "programs", activeSubNav: ""});
+        } else if (this.props.history.location.pathname.indexOf("organization-chart")>-1){
+            this.setState({activeNav: "organization-chart", activeSubNav: ""});
         } else if(this.props.history.location.pathname.indexOf('data-sets')>-1){
             this.setState({activeNav: `${this.props.type}-details`});
         } else {
@@ -63,7 +65,7 @@ class SideBar extends React.Component{
                 <ul className="list-group list-group-flush pr-3">
 
                     <li className="list-group-item"><Link className={this.state.activeNav === ''?'active':''} onClick={()=>{this.changeActiveNav(''); this.setState({activeSubNav:''})}} to={`${this.props.match.url}`}>Basic Information</Link></li>
-                    
+                    <li className="list-group-item"><Link className={this.state.activeNav === 'organization-chart'?'active':''} onClick={()=>{this.changeActiveNav('organization-chart'); this.setState({activeSubNav:''})}} to={`${this.props.match.url}/organization-chart`}>Organization Chart</Link></li>
                     <li className="list-group-item">
                         <a href="javascript:;" className={this.state.activeNav === `${this.props.type}-details`?'active':''} onClick={()=>{this.changeActiveNav(`${this.props.type}-details`); this.setState({activeSubNav:''})}} data-target="#collapseExample" data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample">Organisation Details</a>
                         
@@ -74,7 +76,7 @@ class SideBar extends React.Component{
                         </div>
 
                     </li>
-                    <li className="list-group-item"><Link className={this.state.activeNav === 'programs'?'active':''} to={`${this.props.match.url}/programs`} onClick={()=>{this.changeActiveNav(`Programs`); this.setState({activeSubNav:''})}}>Programs</Link></li>
+                    <li className="list-group-item"><Link className={this.state.activeNav === 'programs'?'active':''} to={`${this.props.match.url}/programs`} onClick={()=>{this.changeActiveNav(`programs`); this.setState({activeSubNav:''})}}>Programs</Link></li>
                 </ul>
                 <div className="social-footer mt-auto">
                     <ul className="d-flex flex-row justify-content-between pl-1 pr-3">

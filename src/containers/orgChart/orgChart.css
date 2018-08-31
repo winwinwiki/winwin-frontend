@@ -1,0 +1,72 @@
+.orgChartContainer{
+    height: 92%;
+}
+.orgchart{
+    background-image: none;
+    cursor: move !important;
+}
+.orgchart .node {
+    width: 250px;
+}
+.orgchart.l2r .node, .orgchart.r2l .node{
+    height: 250px;
+}
+.orgchart .orgNode{
+    border: 1px solid #9C9C9C;
+}
+.viewOrgDetails{
+    display: none;
+}
+.orgchart .node:hover .viewOrgDetails{
+    display: block;
+}
+.orgchart .node .title{
+    border: 1px solid #9c9c9c;
+    border-bottom: none;
+    border-radius: 0px;
+    background-color: #ffffff;
+    color: #4D4D4D;
+    font-weight: normal;
+    text-align: left;
+    font-size: 0.9em;
+    text-overflow: inherit;
+    height: auto;
+    overflow: visible;
+    white-space: unset;
+}
+.orgchart .node .content{
+    border: 1px solid #9c9c9c;
+    border-top: none;
+    border-radius: 0px;
+    font-size: 0.7em;
+    color: #9c9c9c;
+    text-align: left;
+    overflow: visible;
+    white-space: unset;
+    height: auto;
+}
+.orgchart .lines .leftLine {
+    border-left: 1px solid #ddd;
+}
+.orgchart .lines .rightLine {
+    border-right: 1px solid #ddd;
+}
+
+.orgchart .lines .topLine {
+    border-top: 2px solid #ddd;
+}
+
+.orgchart .lines .downLine {
+    background-color: #ddd;
+}
+.orgchart .verticalNodes ul>li::after, .orgchart .verticalNodes ul>li::before {
+    border-color: #ddd;
+}
+.orgchart .verticalNodes>td::before {
+    content: '';
+    border: 1px solid #ddd;
+}
+
+.orgchart .node .topEdge, .orgchart .node .rightEdge, .orgchart .node .leftEdge, .orgchart .node .bottomEdge{
+    display: none;
+}
