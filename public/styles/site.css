@@ -7908,6 +7908,17 @@ textarea {
               margin-left: -31px;
               margin-top: 7px; }
 
+.file-dragger-box {
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 183px;
+  border: 2px dashed #999999;
+  border-radius: 3px; }
+  .file-dragger-box .button-browse {
+    border-radius: 23px; }
+
 h5.modal-title {
   font-size: 1.5rem !important; }
 

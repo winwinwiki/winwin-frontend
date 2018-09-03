@@ -3,12 +3,12 @@ import { push } from 'react-router-redux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Geosuggest from 'react-geosuggest';
-import Dropzone from 'react-dropzone';
 
 import Dropdown from '../ui/dropdown';
+import Upload from '../ui/upload';
 import { onDataFeed, validateDataFeedForm } from '../../actions/dataFeed/dataFeedAction';
 import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
-import './uploadDataFeed.css';
+
 const sectoryList = ['Public', 'Private', 'Social'];
 const fileSourceList = ['IRS', 'Other'];
 
@@ -40,7 +40,6 @@ class UploadDataFeed extends React.Component {
         });
     }
     render() {
-        let dropzoneRef;
         const { file, sector, fileSource } = this.state;
         let { dataFeedFormError } = this.props;
         return (
@@ -66,23 +65,7 @@ class UploadDataFeed extends React.Component {
                                 items={sectoryList} />
                         </div>
                         <p>File Selection</p><hr />
-                        <div className="image-dragger-box my-3">
-                            <Dropzone style={{}} ref={(node) => { dropzoneRef = node; }}
-                                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                                onDrop={this.onDrop}>
-                                <div className="d-flex pr-4">
-                                    <i className="icon-upload mr-3 f-36 font-weight-bold text-primary" />
-                                    <div>
-                                        <p className="mb-0 f-18 text-primary">{'Drag and drop file here'}</p>
-                                        <small className="text-muted">.csv or .xls files only</small>
-                                    </div>
-                                </div>
-                            </Dropzone>
-                            <small className="text-muted px-2">or</small>
-                            <button type="button" className="btn btn-outline-primary button-browse px-4 ml-3" onClick={() => { dropzoneRef.open() }}>
-                                Browse
-                            </button>
-                        </div>
+                        <Upload onDrop={this.onDrop}/> 
                         {dataFeedFormError.file && <div className="text-danger small">{dataFeedFormError.file}</div>}
                         {this.renderSelectedFile()}
                         <div className="my-3">
