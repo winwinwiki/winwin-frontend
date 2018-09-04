@@ -9,7 +9,6 @@ import {
     validateLoginForm
 } from '../../../actions/auth/loginAction';
 
-import './login.css';
 
 class Login extends React.Component {
     constructor(props) {

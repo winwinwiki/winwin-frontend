@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ReactTable from "react-table";
 import 'react-table/react-table.css'
-import './orgList.css';
 
 import {addToAppNavigation, removeFromAppNavigation} from '../../actions/sectionHeader/sectionHeaderAction';
 

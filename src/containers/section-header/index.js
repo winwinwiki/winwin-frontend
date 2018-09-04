@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import './section-header.css';
 import { Link } from 'react-router-dom';
 
 class SectionHeader extends React.Component {

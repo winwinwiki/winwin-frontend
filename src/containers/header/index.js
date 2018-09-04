@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './header.css';
 import AccessComponent from '../common/accessComponent';
 
 const Header = (props) => {
