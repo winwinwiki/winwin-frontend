@@ -8,6 +8,7 @@ const App = () => (
     <div className="main-content d-flex container">
      <Switch>
         <Route path="/organizations" component={OrgLandingRoutes} />
+        <Route path="/user-management" component={OrgLandingRoutes} />
         <Route path="/" component={HomeRoutes} />
       </Switch>
     </div>

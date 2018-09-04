@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './header.css';
 import AccessComponent from '../common/accessComponent';
 
@@ -19,6 +20,7 @@ const Header = (props) => {
                     <li className="nav-item dropdown"><a href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="nav-link dropdown-toggle active">{props.userInfo.name}<img src="/images/profile-pic.png" alt="Profile Pic" width="30" className="mb-2 mx-2"/></a>
                         <div aria-labelledby="navbarDropdownMenuLink" className="dropdown-menu dropdown-menu-right">
                             <AccessComponent role={props.userInfo.role} access={['admin', 'data-seeder']}> <a href="#" className="dropdown-item">Settings</a></AccessComponent>
+                            <AccessComponent role={props.userInfo.role} access={['admin']}> <Link to="/user-management" className="dropdown-item">User Management</Link></AccessComponent>
                             <AccessComponent role={props.userInfo.role} access={['admin']}> <a href="#" className="dropdown-item">Admin Access</a></AccessComponent>
                             <AccessComponent role={props.userInfo.role} access={['admin', 'data-seeder']}> <a href="#" className="dropdown-item">Logout</a></AccessComponent>
                         </div>

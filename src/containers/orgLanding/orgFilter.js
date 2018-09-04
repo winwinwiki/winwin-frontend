@@ -16,11 +16,11 @@ class OrgFilters extends React.Component {
         this.setActiveButton = this.setActiveButton.bind(this);
     }
     render() {
-        const {activeButton, searchText, getFilteredListOfOrg} = this.props;
+        const {activeButton, buttonList, searchText, getFilteredListOfOrg} = this.props;
         return (
         <div className="d-flex align-content-center border-bottom py-3">
             <Search placeholder="Search State/Country/City" onChange={getFilteredListOfOrg} value={searchText}/>
-            <ButtonGroup activeButton={activeButton} onChange={this.setActiveButton}/>
+            <ButtonGroup activeButton={activeButton} buttonList={buttonList} onChange={this.setActiveButton}/>
             <div className="btn-group dropdown dropdown-with-checkbox" role="group" aria-label="group">
                 <button id="filterDropdown" type="button" 
                     aria-haspopup="true" aria-expanded="false" 

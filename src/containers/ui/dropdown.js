@@ -7,10 +7,10 @@ class Dropdown extends React.Component {
         this.onChange = this.onChange.bind(this);
     }
     render() {
-        const { items, selectedItem, containerClass } = this.props;
+        const { items, selectedItem, placeholder, containerClass } = this.props;
         return (
             <div className={containerClass}>
-                <button id="dropdownMenuButton1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">{selectedItem}</button>
+                <button id="dropdownMenuButton1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-dropdown btn-block btn-sm">{selectedItem? selectedItem: placeholder}</button>
                 <div aria-labelledby="dropdownMenuButton1" className="dropdown-menu">
                     <div className="menu-conteiner">
                         <div className="menu-section">

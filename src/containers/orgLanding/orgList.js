@@ -16,6 +16,7 @@ import {fetchFilteredOrgList, setAppliedFilters} from '../../actions/orgLanding/
 
 
 const filterList = ['Federal', 'Private', 'Social'];
+const buttonList = [{id: 'all', name: 'All'}, {id: 'public', name: 'Public'}, {id: 'private', name: 'Private'}, {id: 'social', name: 'Social'}]
 const columns = [{
     id: 'select',
     Header: <span><input type="checkbox"/></span>,
@@ -89,7 +90,7 @@ class OrgList extends React.Component {
         }
         return (
         <section className="dashboard-content p-0">
-        <OrgFilters activeButton={activeButton} searchText={searchText} getFilteredListOfOrg={this.getFilteredListOfOrg} filterOrgList={this.filterOrgList} />
+        <OrgFilters activeButton={activeButton} buttonList={buttonList} searchText={searchText} getFilteredListOfOrg={this.getFilteredListOfOrg} filterOrgList={this.filterOrgList} />
         <div className="d-flex py-3 align-items-center applied-filters-container">
             <Dropdown
                 selectedItem={entity}
