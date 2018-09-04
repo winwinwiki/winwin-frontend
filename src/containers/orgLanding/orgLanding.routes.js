@@ -10,14 +10,12 @@ import OrgDetailRoutes from '../orgDetail/orgDetail.routes';
 import OrgList from './orgList';
 import CreateOrg from '../createOrg';
 import UploadDataFeed from '../uploadDataFeed';
-import UserManagement from '../userManagement';
 
 import ProgramDetailRoutes from '../programDetail/programDetail.routes';
 
 const OrgLandingRoutes = (props) => (
     <OrgLanding history={props.history} match={props.match}>
         <Switch>
-            <PrivateRoute authenticated={props.isAuthenticated} exact path="/user-management" component={UserManagement} />
             <PrivateRoute authenticated={props.isAuthenticated} exact path="/organizations" component={OrgList} />
             <PrivateRoute authenticated={props.isAuthenticated} exact path="/organizations/new" component={CreateOrg} />
             <PrivateRoute authenticated={props.isAuthenticated} exact path="/organizations/uploadDataFeed" component={UploadDataFeed} />

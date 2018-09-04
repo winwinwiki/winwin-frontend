@@ -99,7 +99,7 @@ class OrgList extends React.Component {
                 onChange={this.onDropdownChange.bind(this)}
                 items={filterList}/>
             <div className="result-count">
-                1,203 organizations found
+                {orgList.length} organizations found
             </div>
             <AppliedOrgFilters />
             <div className="clear-filters">
