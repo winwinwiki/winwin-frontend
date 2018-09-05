@@ -89,7 +89,7 @@ class UserList extends React.Component {
                     <Search placeholder="Search by name or team" onChange={this.onChange} value={searchText} />
                     <ButtonGroup activeButton={activeButton} buttonList={buttonList} onChange={this.setActiveButton} />
                     <div className="ml-auto">
-                        <button className="btn btn-primary mr-2" onClick={() => this.changePage('upload-users')}>Upload</button>
+                        <button className="btn btn-primary" onClick={() => this.changePage('upload-users')}>Upload</button>
                     </div>
                 </div>
 

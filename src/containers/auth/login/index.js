@@ -80,7 +80,7 @@ class Login extends React.Component {
     }
 
     onLoginSubmit(e) {
-        e.preventDefault();
+        // e.preventDefault();
         const {email, password} = this.state;
         const {formError} = this.props;
         if(!email || !password) {
