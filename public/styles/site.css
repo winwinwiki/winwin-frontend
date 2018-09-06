@@ -8115,3 +8115,12 @@ h5.modal-title {
   margin-bottom: 0.25rem; }
   .app-breadcrumb .breadcrumb > .breadcrumb-item.active > a {
     color: #29ABE2; }
+
+.profilePhoto {
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 183px;
+  border: 2px dashed #999999;
+  border-radius: 3px; }

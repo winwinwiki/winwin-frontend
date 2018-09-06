@@ -104,7 +104,7 @@ class OrgDetailPage extends React.Component {
                                     </div>
                                     {isEditable? <div className="row justify-content-center footer-actions active">
                                         <button className="btn" onClick={() => this.onCancelBasicInfo()}>Cancel</button>
-                                        <button className="btn btn-primary" onClick={()=>this.saveBaiscInfo()}>Save</button>
+                                        <button className="btn btn-primary" onClick={()=>this.saveBasicInfo()}>Save</button>
                                     </div>: ''}
                                 </li>
                             </ul>
@@ -121,7 +121,7 @@ class OrgDetailPage extends React.Component {
         });
     }
 
-    saveBaiscInfo() {
+    saveBasicInfo() {
         this.setState({
             isEditable: false
         })
