@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import ButtonGroup from '../ui/buttonGroup';
 import Search from '../ui/searchBar';
 import AppliedOrgFiltersList from './appliedOrgFilters/appliedOrgFiltersList';
-import {showAppliedFilterModal} from '../../actions/orgLanding/orgFilterAction';
+import { showAppliedFilterModal } from '../../actions/orgLanding/orgFilterAction';
 
 class OrgFilters extends React.Component {
     constructor(props) {
@@ -16,25 +16,27 @@ class OrgFilters extends React.Component {
         this.setActiveButton = this.setActiveButton.bind(this);
     }
     render() {
-        const {activeButton, buttonList, searchText, getFilteredListOfOrg} = this.props;
+        const { activeButton, buttonList, searchText, getFilteredListOfOrg } = this.props;
         return (
-        <div className="d-flex align-content-center border-bottom py-3">
-            <Search placeholder="Search State/County/City/District" onChange={getFilteredListOfOrg} value={searchText}/>
-            <ButtonGroup activeButton={activeButton} buttonList={buttonList} onChange={this.setActiveButton}/>
-            <div className="btn-group dropdown dropdown-with-checkbox" role="group" aria-label="group">
-                <button id="filterDropdown" type="button" 
-                    aria-haspopup="true" aria-expanded="false" 
-                    className="btn btn-outline-secondary m-0"
-                    onClick={this.showAppliedFilterModal}>
-                    <i className="icon-filter"></i>
-                </button>
-                <AppliedOrgFiltersList />
+            <div className="d-flex align-content-center border-bottom py-3">
+
+                <Search placeholder="Search State/County/City/District" onChange={getFilteredListOfOrg} value={searchText} />
+
+                <ButtonGroup activeButton={activeButton} buttonList={buttonList} onChange={this.setActiveButton} />
+                <div className="btn-group dropdown dropdown-with-checkbox" role="group" aria-label="group">
+                    <button id="filterDropdown" type="button"
+                        aria-haspopup="true" aria-expanded="false"
+                        className="btn btn-outline-secondary m-0"
+                        onClick={this.showAppliedFilterModal}>
+                        <i className="icon-filter"></i>
+                    </button>
+                    <AppliedOrgFiltersList />
+                </div>
+                <div className="ml-auto">
+                    <a href="javascript:;" onClick={() => this.changePage('new')} className="btn btn-link"><i className="icon-add mr-1"></i> Create</a>
+                    <a href="javascript:;" onClick={() => this.changePage('uploadDataFeed')} className="btn btn-link pr-0"><i className="icon-upload mr-1"></i> Upload</a>
+                </div>
             </div>
-            <div className="ml-auto">
-                <a href="javascript:;" onClick={()=>this.changePage('new')} className="btn btn-link"><i className="icon-add mr-1"></i> Create</a>
-                <a href="javascript:;" onClick={()=>this.changePage('uploadDataFeed')} className="btn btn-link pr-0"><i className="icon-upload mr-1"></i> Upload</a>
-            </div>
-        </div>
         )
     }
 
@@ -43,12 +45,12 @@ class OrgFilters extends React.Component {
     }
 
     showAppliedFilterModal() {
-        const {isAppliedFilterVisible} = this.props;
+        const { isAppliedFilterVisible } = this.props;
         this.props.showAppliedFilterModal(!isAppliedFilterVisible);
     }
 
     setActiveButton(field) {
-        this.props.filterOrgList({sector: field});
+        this.props.filterOrgList({ sector: field });
     }
 
 }
@@ -58,7 +60,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    changePage: (page) => push('/organizations/'+page),
+    changePage: (page) => push('/organizations/' + page),
     showAppliedFilterModal
 }, dispatch)
 
