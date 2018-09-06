@@ -28,87 +28,86 @@ class OrgDetailPage extends React.Component {
             <section className="dashboard-content p-0 py-3 org-details-container">
                 <div className="col-md-18 m-auto card">
                     <div className="col-md-18 m-auto d-flex flex-column py-3">
-                        {isEditable ? <div className="row">
-                            <ul className="action-icons">
-                                <li><a href="javascript:;" onClick={() => this.saveBaiscInfo()}><i className="icon-delete"></i></a></li>
+                        <form>
+                            <ul className="list-group list-group-flush">
+                                <li className="list-group-item px-0">
+                                    {isEditable ? '' :<div className="row">
+                                        <ul className="action-icons active">
+                                            <li><a href="javascript:;" onClick={() => this.editBasicInfo()}><i className="icon-edit"></i></a></li>
+                                        </ul>
+                                    </div>}
+
+                                    <div className="section-title border-bottom pb-3 mb-3">Sector Detail</div>
+                                    <div className="form-group">
+                                        <label htmlFor="category">Sector</label>
+                                        <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={sector} />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="category">Sector Level</label>
+                                        <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={sectorLevel} />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="category">Level Name</label>
+                                        <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={sector} />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="orgdescription">Organization Description</label>
+                                        <textarea className="form-control" name="" id="orgdescription" readOnly={readOnly} rows="5">{description}</textarea>
+                                    </div>
+                                    <div className="section-title border-bottom pb-3 mb-3">Revenue</div>
+                                    {totalRevenue.map((revenue, index) => <React.Fragment key={index}>
+                                        <div className="form-group">
+                                            <label htmlFor="category">Amount</label>
+                                            <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={revenue.value} />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="category">Year</label>
+                                            <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={revenue.year} />
+                                        </div>
+                                    </React.Fragment>)}
+                                    <div className="form-group">
+                                        <label htmlFor="category">Assets</label>
+                                        <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={totalAssets} />
+                                    </div>
+                                    <div className="section-title border-bottom pb-3 mb-3">Head Quarters</div>
+                                    <div className="form-group">
+                                        <label htmlFor="category">Street Address</label>
+                                        <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={address.street} />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="category">City</label>
+                                        <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={address.city} />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="description">County</label>
+                                        <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={address.county} />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="description">State</label>
+                                        <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={address.state} />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="description">Zip</label>
+                                        <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={address.zip} />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="description">Country</label>
+                                        <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={address.country} />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="description">Website</label>
+                                        <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={website} />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="description">Social Network</label>
+                                        <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value="Community Involvement Data" />
+                                    </div>
+                                    {isEditable? <div className="row justify-content-center footer-actions active">
+                                        <button className="btn" onClick={() => this.onCancelBasicInfo()}>Cancel</button>
+                                        <button className="btn btn-primary" onClick={()=>this.saveBaiscInfo()}>Save</button>
+                                    </div>: ''}
+                                </li>
                             </ul>
-                        </div> : <div className="row">
-                                <ul className="action-icons">
-                                    <li><a href="javascript:;" onClick={() => this.editBasicInfo()}><i className="icon-edit"></i></a></li>
-                                </ul>
-                            </div>}
-
-                        <div className="section-title border-bottom pb-3 mb-3">
-                            Sector Detail
-                        </div>
-                        <form>
-                            <div className="form-group">
-                                <label htmlFor="category">Sector</label>
-                                <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={sector} />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="category">Sector Level</label>
-                                <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={sectorLevel} />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="category">Level Name</label>
-                                <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={sector} />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="orgdescription">Organization Description</label>
-                                <textarea className="form-control" name="" id="orgdescription" readOnly={readOnly} rows="5">{description}</textarea>
-                            </div>
-                        </form>
-                        <div className="section-title border-bottom pb-3 mb-3">
-                            Revenue
-                        </div>
-                        <form>
-                            {totalRevenue.map((revenue, index) => <React.Fragment key={index}>
-                                <div className="form-group">
-                                    <label htmlFor="category">Amount</label>
-                                    <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={revenue.value} />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="category">Year</label>
-                                    <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={revenue.year} />
-                                </div>
-                            </React.Fragment>)}
-                            <div className="form-group">
-                                <label htmlFor="category">Assets</label>
-                                <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={totalAssets} />
-                            </div>
-
-                        </form>
-                        <div className="section-title border-bottom pb-3 mb-3">
-                            Head Quarters
-                        </div>
-                        <form>
-                            <div className="form-group">
-                                <label htmlFor="category">Street Address</label>
-                                <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={address.street} />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="category">City</label>
-                                <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={address.city} />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="description">County</label>
-                                <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={address.county} />                        </div>
-                            <div className="form-group">
-                                <label htmlFor="description">State</label>
-                                <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={address.state} />                        </div>
-                            <div className="form-group">
-                                <label htmlFor="description">Zip</label>
-                                <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={address.zip} />                        </div>
-                            <div className="form-group">
-                                <label htmlFor="description">Country</label>
-                                <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={address.country} />                        </div>
-                            <div className="form-group">
-                                <label htmlFor="description">Website</label>
-                                <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value={website} />                        </div>
-                            <div className="form-group">
-                                <label htmlFor="description">Social Network</label>
-                                <input type="text" className="form-control" id="category" readOnly={readOnly} placeholder="Enter Category" value="Community Involvement Data" />                        </div>
                         </form>
                     </div>
                 </div>
@@ -123,6 +122,12 @@ class OrgDetailPage extends React.Component {
     }
 
     saveBaiscInfo() {
+        this.setState({
+            isEditable: false
+        })
+    }
+
+    onCancelBasicInfo() {
         this.setState({
             isEditable: false
         })

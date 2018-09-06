@@ -7983,6 +7983,8 @@ h5.modal-title {
   .org-details-container .list-group-item .action-icons {
     transition: ease all .3s;
     display: none; }
+    .org-details-container .list-group-item .action-icons.active {
+      display: block; }
 
 .action-icons {
   list-style: none;
