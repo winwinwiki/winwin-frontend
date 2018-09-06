@@ -7013,6 +7013,14 @@ textarea {
 
 .btn-group .btn-outline-secondary.disabled {
   color: #8d8d8d; }
+  .btn-group .btn-outline-secondary.disabled.active, .btn-group .btn-outline-secondary.disabled.selected {
+    background: #9AD8F3;
+    border-color: #9AD8F3;
+    color: #145976; }
+    .btn-group .btn-outline-secondary.disabled.active:hover, .btn-group .btn-outline-secondary.disabled.selected:hover {
+      background: #9AD8F3;
+      border-color: #9AD8F3;
+      color: #145976; }
   .btn-group .btn-outline-secondary.disabled:hover {
     background-color: transparent;
     border-color: #E6E6E6;
