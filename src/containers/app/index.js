@@ -10,6 +10,8 @@ const App = () => (
      <Switch>
         <Route path="/organizations" component={OrgLandingRoutes} />
         <Route path="/user-management" component={UserManagementRoutes} />
+        <Route path="/change-password" component={UserManagementRoutes} />
+        <Route path="/my-profile" component={UserManagementRoutes} />
         <Route path="/" component={HomeRoutes} />
       </Switch>
     </div>

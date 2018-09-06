@@ -49,7 +49,7 @@ class UploadDataFeed extends React.Component {
                         <p>Basic Information</p><hr />
                         <Geosuggest
                             ref={el => this._geoSuggest = el}
-                            placeholder="Search State/Country/City"
+                            placeholder="Search State/County/City/District"
                             className="form-control position-relative"
                             initialValue=""
                             fixtures={[]}
@@ -65,7 +65,11 @@ class UploadDataFeed extends React.Component {
                                 items={sectoryList} />
                         </div>
                         <p>File Selection</p><hr />
-                        <Upload onDrop={this.onDrop}/> 
+                        <Upload 
+                            type="file"
+                            onDrop={this.onDrop} 
+                            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                            text=".csv or .xls files only"/> 
                         {dataFeedFormError.file && <div className="text-danger small">{dataFeedFormError.file}</div>}
                         {this.renderSelectedFile()}
                         <div className="my-3">

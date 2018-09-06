@@ -7,7 +7,7 @@ import 'react-table/react-table.css'
 
 import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
 import { fetchUsersList } from '../../actions/userManagement/userListAction';
-
+import UploadUserModal from './uploadUsersModal';
 import Dropdown from '../ui/dropdown';
 import Search from '../ui/searchBar';
 import ButtonGroup from '../ui/buttonGroup';
@@ -66,6 +66,11 @@ class UserList extends React.Component {
             title: "User Management",
             path: "/user-management"
         });
+        if (this.props.userList.length > 0) {
+            this.setState({
+                userList: this.props.userList
+            })
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -89,7 +94,7 @@ class UserList extends React.Component {
                     <Search placeholder="Search by name or team" onChange={this.onChange} value={searchText} />
                     <ButtonGroup activeButton={activeButton} buttonList={buttonList} onChange={this.setActiveButton} />
                     <div className="ml-auto">
-                        <button className="btn btn-primary" onClick={() => this.changePage('upload-users')}>Upload</button>
+                        <button className="btn btn-primary" data-toggle="modal" data-target="#uploadUsersModal">Upload</button>
                     </div>
                 </div>
 
@@ -140,6 +145,7 @@ class UserList extends React.Component {
                         }
                     />
                 </div>
+                <UploadUserModal />
             </section>
         )
     }

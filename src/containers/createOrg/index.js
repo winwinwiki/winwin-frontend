@@ -10,10 +10,10 @@ import {
     validateCreateOrgForm
 } from '../../actions/createOrg/createOrgAction';
 import './createOrg.css';
-import {addToAppNavigation, removeFromAppNavigation} from '../../actions/sectionHeader/sectionHeaderAction';
+import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
 
 const sectoryList = ['Public', 'Private', 'Social'];
-const entityList = ['Federal', 'Private', 'Social'];
+const entityList = ['Federal', 'State', 'County', 'City', 'District'];
 
 
 class CreateOrg extends React.Component {
@@ -21,11 +21,11 @@ class CreateOrg extends React.Component {
         super(props);
         this.state = {
             orgName: '',
-            sector : sectoryList[0],
-            entity : entityList[0],
+            sector: sectoryList[0],
+            entity: entityList[0],
             location: null
         }
-        this._geoSuggest =  null;
+        this._geoSuggest = null;
         this.onChange = this.onChange.bind(this);
         this.validateField = this.validateField.bind(this);
         this.onCreateOrg = this.onCreateOrg.bind(this);
@@ -43,47 +43,72 @@ class CreateOrg extends React.Component {
         });
     }
     render() {
-        const { orgName, sector, entity} = this.state;
-        let {createOrgFormError} = this.props;
+        const { orgName, sector, entity } = this.state;
+        let { createOrgFormError } = this.props;
         return (
             <div className="container">
                 <div className="row ">
                     <div className="col-sm-12 mx-auto my-3">
-                        <label htmlFor="orgName" className="sr-only">Organization Name</label>
-                        <input id="orgName" type="text" aria-describedby="orgNameDesc"
-                               placeholder="Organization Name"
-                               className="form-control"
-                               onBlur={this.validateField}
-                               onChange={this.onChange}
-                               name="orgName"
-                               value={orgName}/>
-                        <small id="orgNameDesc" className="sr-only">Org Name</small>
-                        {createOrgFormError.orgName && <div className="text-danger small">{createOrgFormError.orgName}</div>}
-                        <div className="my-3">
-                            <Dropdown
-                                selectedItem={sector}
-                                name="sector"
-                                containerClass="dropdown dropdown-with-searchbox"
-                                onChange={this.onDropdownChange.bind(this)}
-                                items={sectoryList}/>
-                        </div>
-                        <div className="my-3">
-                            <Dropdown
-                                selectedItem={entity}
-                                name="entity"
-                                containerClass="dropdown dropdown-with-searchbox"
-                                onChange={this.onDropdownChange.bind(this)}
-                                items={entityList}/>
-                        </div>
-                        <Geosuggest
-                            ref={el => this._geoSuggest = el}
-                            placeholder="Search State/Country/City"
-                            className="form-control position-relative"
-                            initialValue=""
-                            fixtures={[]}
-                            onBlur={this.validateLocationField}
-                            onSuggestSelect={this.onSuggestSelect}/>
-                        {createOrgFormError.location && <div className="text-danger small">{createOrgFormError.location}</div>}
+                        <form>
+                            <div className="row">
+                                <div className="col">
+                                    <div className="form-group">
+                                        <label htmlFor="orgName">Organization Name</label>
+                                        <input id="orgName" type="text" aria-describedby="orgNameDesc"
+                                            placeholder="Organization Name"
+                                            className="form-control"
+                                            onBlur={this.validateField}
+                                            onChange={this.onChange}
+                                            name="orgName"
+                                            value={orgName} />
+                                        <small id="orgNameDesc" className="sr-only">Org Name</small>
+                                        {createOrgFormError.orgName && <div className="text-danger small">{createOrgFormError.orgName}</div>}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col">
+                                    <div className="form-group">
+                                        <label htmlFor="sector">Sector</label>
+                                        <Dropdown
+                                            selectedItem={sector}
+                                            name="sector"
+                                            containerClass="dropdown dropdown-with-searchbox"
+                                            onChange={this.onDropdownChange.bind(this)}
+                                            items={sectoryList} />
+                                    </div>
+                                </div>
+                                <div className="col">
+                                    <div className="form-group">
+                                        <label htmlFor="entity">Sector Level</label>
+                                        <Dropdown
+                                            selectedItem={entity}
+                                            name="entity"
+                                            containerClass="dropdown dropdown-with-searchbox"
+                                            onChange={this.onDropdownChange.bind(this)}
+                                            items={entityList} />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col">
+                                    <div className="form-group">
+                                        <label htmlFor="newOrgLocation">Location</label>
+                                        <Geosuggest
+                                            id="newOrgLocation"
+                                            ref={el => this._geoSuggest = el}
+                                            placeholder="Search State/County/City/District"
+                                            className="form-control position-relative"
+                                            initialValue=""
+                                            fixtures={[]}
+                                            onBlur={this.validateLocationField}
+                                            onSuggestSelect={this.onSuggestSelect} />
+                                        {createOrgFormError.location && <div className="text-danger small">{createOrgFormError.location}</div>}
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
                         <button className="btn btn-link w-50 mt-4" onClick={this.props.history.goBack}>Cancel</button>
                         <button className="btn btn-lg btn-primary w-50 mt-4" onClick={this.onCreateOrg}>Create</button>
                     </div>
@@ -93,11 +118,11 @@ class CreateOrg extends React.Component {
     }
 
     onChange(e) {
-        this.setState({[e.target.name]: e.target.value});
+        this.setState({ [e.target.name]: e.target.value });
     }
 
     onDropdownChange(field, value) {
-        this.setState({[field]: value});
+        this.setState({ [field]: value });
     }
 
     validateField(e) {
@@ -109,8 +134,8 @@ class CreateOrg extends React.Component {
     }
 
     onCreateOrg() {
-        const {orgName, location} = this.state;
-        if(!orgName || !location) { 
+        const { orgName, location } = this.state;
+        if (!orgName || !location) {
             this.props.validateCreateOrgForm('orgName', orgName);
             this.props.validateCreateOrgForm('location', location);
             return;
@@ -118,9 +143,9 @@ class CreateOrg extends React.Component {
         this.props.onCreateOrg(this.state, () => {
             this.setState({
                 orgName: '',
-                sector : sectoryList[0],
-                entity : entityList[0],
-                location: null 
+                sector: sectoryList[0],
+                entity: entityList[0],
+                location: null
             });
             this.props.changePage();
         });
