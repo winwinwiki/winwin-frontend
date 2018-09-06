@@ -77,7 +77,7 @@ class CreateOrg extends React.Component {
                         </div>
                         <Geosuggest
                             ref={el => this._geoSuggest = el}
-                            placeholder="Search State/Country/City"
+                            placeholder="Search State/County/City/District"
                             className="form-control position-relative"
                             initialValue=""
                             fixtures={[]}
