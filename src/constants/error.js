@@ -7,3 +7,6 @@ export const LOGIN_ERROR = 'Email id or password doesn`t match.';
 export const REQ_ORG_NAME = 'Org name is required.';
 export const VALID_ORG_NAME = 'Enter valid org name.';
 export const REQ_ORG_LOCATION = 'Location is required.';
+
+export const REQ_DATA_FEED_FILE = 'File is required.';
+export const VALID_DATA_FEED_FILE = 'Please select .csv or .xls file only.'

@@ -35,7 +35,7 @@ class RegionsServed extends React.Component {
                         <form>
                             <Geosuggest
                                 ref={el => this._geoSuggest = el}
-                                placeholder="Start typing!"
+                                placeholder="Search regions"
                                 initialValue=""
                                 className="form-control position-relative"
                                 fixtures={[]}

@@ -14,14 +14,13 @@ class OrgFilters extends React.Component {
         this.changePage = this.changePage.bind(this);
         this.showAppliedFilterModal = this.showAppliedFilterModal.bind(this);
         this.setActiveButton = this.setActiveButton.bind(this);
-        this.getFilteredListOfOrg = this.getFilteredListOfOrg.bind(this);
     }
     render() {
-        const {activeButton, searchText} = this.props;
+        const {activeButton, buttonList, searchText, getFilteredListOfOrg} = this.props;
         return (
         <div className="d-flex align-content-center border-bottom py-3">
-            <Search placeholder="Search State/Country/City" onChange={this.getFilteredListOfOrg} value={searchText}/>
-            <ButtonGroup activeButton={activeButton} onChange={this.setActiveButton}/>
+            <Search placeholder="Search State/Country/City" onChange={getFilteredListOfOrg} value={searchText}/>
+            <ButtonGroup activeButton={activeButton} buttonList={buttonList} onChange={this.setActiveButton}/>
             <div className="btn-group dropdown dropdown-with-checkbox" role="group" aria-label="group">
                 <button id="filterDropdown" type="button" 
                     aria-haspopup="true" aria-expanded="false" 
@@ -32,15 +31,15 @@ class OrgFilters extends React.Component {
                 <AppliedOrgFiltersList />
             </div>
             <div className="ml-auto">
-                <a onClick={this.changePage} className="btn btn-link"><i className="icon-add mr-1"></i> Create</a>
-                <a href="javascript:;" className="btn btn-link pr-0"><i className="icon-upload mr-1"></i> Upload</a>
+                <a href="javascript:;" onClick={()=>this.changePage('new')} className="btn btn-link"><i className="icon-add mr-1"></i> Create</a>
+                <a href="javascript:;" onClick={()=>this.changePage('uploadDataFeed')} className="btn btn-link pr-0"><i className="icon-upload mr-1"></i> Upload</a>
             </div>
         </div>
         )
     }
 
-    changePage() {
-        this.props.changePage();
+    changePage(page) {
+        this.props.changePage(page);
     }
 
     showAppliedFilterModal() {
@@ -52,9 +51,6 @@ class OrgFilters extends React.Component {
         this.props.filterOrgList({sector: field});
     }
 
-    getFilteredListOfOrg(e){
-        
-    }
 }
 
 const mapStateToProps = state => ({
@@ -62,7 +58,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    changePage: () => push('/organizations/new'),
+    changePage: (page) => push('/organizations/'+page),
     showAppliedFilterModal
 }, dispatch)
 

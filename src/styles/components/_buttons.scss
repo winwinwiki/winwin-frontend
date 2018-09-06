@@ -8,6 +8,19 @@
   border-color: #E6E6E6;
 }
 
+.btn-group {
+  .btn-outline-secondary {
+    &.disabled {
+      color: #8d8d8d;
+      &:hover {
+        background-color: transparent;
+        border-color: #E6E6E6;
+        color: #8d8d8d;
+      }
+    }
+  }
+}
+
 .btn-lg{
   font-size: 20px !important;
 }

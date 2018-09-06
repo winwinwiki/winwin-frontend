@@ -9,7 +9,6 @@ import {
     validateLoginForm
 } from '../../../actions/auth/loginAction';
 
-import './login.css';
 
 class Login extends React.Component {
     constructor(props) {
@@ -31,7 +30,7 @@ class Login extends React.Component {
 
                 { loginError && <div>{loginError.message}</div> }
                 <div className="form-group w-100 mb-4 login-form-group">
-                  <label for="userName" className="sr-only">User Name</label>
+                  <label htmlFor="userName" className="sr-only">User Name</label>
                   <input id="userName" type="email" aria-describedby="userNameDesc" 
                         placeholder="User Name" 
                         className="form-control"
@@ -44,7 +43,7 @@ class Login extends React.Component {
                   { formError.email && <div className="text-danger small error">{formError.email}</div> }
                 </div>
                 <div className="form-group w-100 mb-4 login-form-group">
-                  <label for="userPassword" className="sr-only">User Password</label>
+                  <label htmlFor="userPassword" className="sr-only">User Password</label>
                   <input id="userPassword" type="password" aria-describedby="passwordDesc" 
                         placeholder="Password" 
                         className="form-control"
@@ -66,8 +65,13 @@ class Login extends React.Component {
         this.setState({[e.target.name]: e.target.value});
     }
     onKeyUp(e){
+        const _self = this;
         if (e.keyCode === 13) {
-            this.onLoginSubmit(e);
+            this.props.validateLoginForm(e.target.name, e.target.value).then(
+                (res) => {
+                    _self.onLoginSubmit(e);
+                }
+            );
         }
     }
 
@@ -76,14 +80,17 @@ class Login extends React.Component {
     }
 
     onLoginSubmit(e) {
-        e.preventDefault();
+        // e.preventDefault();
         const {email, password} = this.state;
-        if(!email || !password) { 
+        const {formError} = this.props;
+        if(!email || !password) {
             this.props.validateLoginForm('email', email);
             this.props.validateLoginForm('password', password);
             return;
+        } else if (formError.password !== '' || formError.email !== ''){
+            return;
         }
-        this.props.onLogin(this.state, () => {
+        this.props.onLogin(this.state).then( (res) => {
             this.setState({
                 email: '',
                 password: ''

@@ -7011,6 +7011,13 @@ textarea {
 .btn-outline-secondary {
   border-color: #E6E6E6; }
 
+.btn-group .btn-outline-secondary.disabled {
+  color: #8d8d8d; }
+  .btn-group .btn-outline-secondary.disabled:hover {
+    background-color: transparent;
+    border-color: #E6E6E6;
+    color: #8d8d8d; }
+
 .btn-lg, .btn-group-lg > .btn {
   font-size: 20px !important; }
 
@@ -7796,6 +7803,12 @@ textarea {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none; }
+  .ReactTable .centerText {
+    text-align: center;
+    vertical-align: middle;
+    line-height: 35px;
+    font-weight: 100;
+    font-size: 15px; }
 
 .ReactTable.-striped .rt-tr.-odd {
   background: #fff; }
@@ -7941,6 +7954,17 @@ textarea {
               position: absolute;
               margin-left: -31px;
               margin-top: 7px; }
+
+.file-dragger-box {
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 183px;
+  border: 2px dashed #999999;
+  border-radius: 3px; }
+  .file-dragger-box .button-browse {
+    border-radius: 23px; }
 
 h5.modal-title {
   font-size: 1.5rem !important; }

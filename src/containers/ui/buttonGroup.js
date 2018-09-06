@@ -6,25 +6,22 @@ class ButtonGroup extends React.Component {
         super(props);
     }
     render() {
-        const {activeButton} = this.props;
     return (
         <div className="">
             <div className="btn-group btn-group-toggle mx-3">
-                <label className={`btn btn-outline-secondary ${activeButton === 'All' ? 'active': ''}`}>
-                    <input type="radio" name="options" id="option1" onChange={this.onChange.bind(this, 'All')} autoComplete="off"/> All
-                </label>
-                <label className={`btn btn-outline-secondary ${activeButton === 'Public' ? 'active': ''}`}>
-                    <input type="radio" name="options" id="option2" onChange={this.onChange.bind(this, 'Public')} autoComplete="off"/> Public
-                </label>
-                <label className={`btn btn-outline-secondary ${activeButton === 'Private' ? 'active': ''}`}>
-                    <input type="radio" name="options" id="option3" onChange={this.onChange.bind(this, 'Private')} autoComplete="off"/> Private
-                </label>
-                <label className={`btn btn-outline-secondary ${activeButton === 'Social' ? 'active': ''}`}>
-                    <input type="radio" name="options" id="option4" onChange={this.onChange.bind(this, 'Social')} autoComplete="off"/> Social
-                </label>
+                {this.renderButtons()}
             </div>
         </div>
         )
+    }
+
+    renderButtons(){
+        const { activeButton, buttonList } = this.props;
+        return buttonList.map(button => 
+            <label key={button.id} className={`btn btn-outline-secondary ${activeButton === button.name ? 'active': ''}`}>
+                <input type="radio" name="options" id={button.id} onChange={this.onChange.bind(this, button.name)} autoComplete="off"/> {button.name}
+            </label>
+        );
     }
 
     onChange(field) {

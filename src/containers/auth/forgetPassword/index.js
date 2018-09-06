@@ -27,7 +27,7 @@ class ForgetPassword extends React.Component {
                    { !isFpSuccess ? <div>
                         { fpError && <div>{fpError.message}</div> }
                         <div className="form-group w-100 mb-4 login-form-group">
-                        <label for="userName" className="sr-only">Email</label>
+                        <label htmlFor="userName" className="sr-only">Email</label>
                         <input id="userName" type="email" aria-describedby="userNameDesc" 
                                 placeholder="Email" 
                                 className="form-control"

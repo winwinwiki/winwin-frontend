@@ -2,7 +2,8 @@ import CommonUtil from '../commonUtil';
 
 export function callLoginApi(email, password, callback) {
   let url = CommonUtil.createUrl('/users');
-  fetch(url, {
+  return new Promise((resolve, reject) =>{
+    fetch(url, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -14,8 +15,9 @@ export function callLoginApi(email, password, callback) {
     })
   })
     .then((response) => response.json())
-    .then((responseJson) => callback(null, responseJson))
+    .then((responseJson) => resolve(responseJson))
     .catch((error) => {
-      callback(error, null);
-    });
+      reject(error);//callback(error, null);
+    })
+  });
 }
