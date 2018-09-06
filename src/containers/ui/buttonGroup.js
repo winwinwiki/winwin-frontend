@@ -18,8 +18,8 @@ class ButtonGroup extends React.Component {
     renderButtons(){
         const { activeButton, buttonList } = this.props;
         return buttonList.map(button => 
-            <label key={button.id} className={`btn btn-outline-secondary ${activeButton === button.name ? 'active': ''}`}>
-                <input type="radio" name="options" id={button.id} onChange={this.onChange.bind(this, button.name)} autoComplete="off"/> {button.name}
+            <label key={button.id} className={`btn btn-outline-secondary ${activeButton.indexOf(button.name) > -1 ? 'active': ''}`}>
+                <input type="checkbox" checked={activeButton.indexOf(button.name) > -1 ? 'checked': ''} name="options" id={button.id} onChange={this.onChange.bind(this, button.name)} autoComplete="off"/> {button.name}
             </label>
         );
     }

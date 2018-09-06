@@ -5,53 +5,62 @@ import { connect } from 'react-redux';
 import ReactTable from "react-table";
 import 'react-table/react-table.css'
 
-import {addToAppNavigation, removeFromAppNavigation} from '../../actions/sectionHeader/sectionHeaderAction';
+import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
 
 import OrgFilters from './orgFilter';
 import AppliedOrgFilters from './appliedOrgFilters/index';
 import Dropdown from '../ui/dropdown';
-import {fetchOrganisationsList, filterOrganisationsList} from '../../actions/orgLanding/orgLandingAction';
-import {fetchFilteredOrgList, setAppliedFilters} from '../../actions/orgLanding/orgFilterAction';
+import { fetchOrganisationsList, filterOrganisationsList } from '../../actions/orgLanding/orgLandingAction';
+import { fetchFilteredOrgList, setAppliedFilters } from '../../actions/orgLanding/orgFilterAction';
 
 
-const filterList = ['Federal', 'Private', 'Social'];
-const buttonList = [{id: 'all', name: 'All'}, {id: 'public', name: 'Public'}, {id: 'private', name: 'Private'}, {id: 'social', name: 'Social'}]
+const filterList = ["Set Priority High", "Set Priority Normal", "Mark 'Ready for Tagging'"];
+const buttonList = [{ id: 'all', name: 'All' }, { id: 'public', name: 'Public' }, { id: 'private', name: 'Private' }, { id: 'social', name: 'Social' }]
 const columns = [{
     id: 'select',
-    Header: <span><input type="checkbox"/></span>,
+    Header: <span><input type="checkbox" /></span>,
     accessor: 'name',
-    Cell: () => <div className="centerText"><input type="checkbox"/></div>,
+    Cell: () => <div className="centerText"><input type="checkbox" /></div>,
     width: 50
-  }, {
+}, {
     id: 'org',
     Header: 'Organisation Name',
     accessor: 'name',
+    sortable: true,
     Cell: (row) => <div className="centerText">{row.value}</div>
-  }, {
-    id: 'Sector',
+}, {
+    id: 'sector',
     Header: 'Sector',
     accessor: 'sector',
+    sortable: false,
     Cell: (row) => <div className="centerText">{row.value}</div>
-  }, {
-    id: 'Revenue',
+}, {
+    id: 'revenue',
     Header: 'Total Revenue',
     accessor: 'totalRevenue[0][value]',
+    sortable: true,
     Cell: (row) => <div className="centerText">{row.value}</div>
-  },
-  {
-    id: 'Assets',
-    Header: 'Total Assets',
-    accessor: 'totalAssets',
+},
+{
+    id: 'city',
+    Header: 'City',
+    accessor: 'address[city]',
     Cell: (row) => <div className="centerText">{row.value}</div>
-  }]
+},
+{
+    id: 'industryClassification',
+    Header: 'Industry Classification',
+    accessor: 'sector',
+    Cell: (row) => <div className="centerText">{row.value}</div>
+}]
 
 class OrgList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            entity: filterList[0],
+            entity: '',
             orgList: [],
-            activeButton: 'All',
+            activeButton: ['All'],
             searchText: ''
         }
         this.changePage = this.changePage.bind(this);
@@ -78,7 +87,7 @@ class OrgList extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(JSON.stringify(nextProps.orgList) !== JSON.stringify(this.props.orgList) ) {
+        if (JSON.stringify(nextProps.orgList) !== JSON.stringify(this.props.orgList)) {
             this.setState({
                 orgList: nextProps.orgList
             });
@@ -87,68 +96,71 @@ class OrgList extends React.Component {
 
     render() {
         const { entity, orgList, activeButton, searchText } = this.state;
-        const {isFetchOrgSuccess} = this.props;
-        if(!isFetchOrgSuccess || !orgList) {
+        const { isFetchOrgSuccess } = this.props;
+        if (!isFetchOrgSuccess || !orgList) {
             return null;
         }
         return (
-        <section className="dashboard-content p-0">
-        <OrgFilters activeButton={activeButton} buttonList={buttonList} searchText={searchText} getFilteredListOfOrg={this.getFilteredListOfOrg} filterOrgList={this.filterOrgList} />
-        <div className="d-flex py-3 align-items-center applied-filters-container">
-            <Dropdown
-                selectedItem={entity}
-                name="filterEntity"
-                containerClass="dropdown dropdown-with-searchbox"
-                onChange={this.onDropdownChange.bind(this)}
-                items={filterList}/>
-            <div className="result-count">
-                {orgList.length} organizations found
+            <section className="dashboard-content p-0">
+                <OrgFilters activeButton={activeButton} buttonList={buttonList} searchText={searchText} getFilteredListOfOrg={this.getFilteredListOfOrg} filterOrgList={this.filterOrgList} />
+                <div className="d-flex py-3 align-items-center applied-filters-container">
+                    <Dropdown
+                        selectedItem={entity}
+                        name="filterEntity"
+                        placeholder="Actions"
+                        containerClass="dropdown dropdown-with-searchbox"
+                        onChange={this.onDropdownChange.bind(this)}
+                        items={filterList} />
+                    <div className="result-count">
+                        {orgList.length} organizations found
             </div>
-            <AppliedOrgFilters />
-            <div className="clear-filters">
-                <a href="javascript:;" onClick={this.resetAllFilters} className="text-primary">Clear All Filters</a>
-            </div>
-        </div>
-        <div>
-            <ReactTable
-                pageSize={10}
-                data={orgList}
-                columns={columns}
-                className="-highlight"
-                sorted={[{
-                    id: "org",
-                    asc: true
-                }]}
-                getTdProps={(state, rowInfo, column) => {
-                    return {
-                      onClick: (e) => {
-                          if(column.id !== 'select') {
-                            this.changePage(rowInfo.original.id);
-                          }
-                      },
-                      style: {
-                        height: 50
-                      }
-                    }
-                  }
-                }
-                getTheadThProps={(state, rowInfo) => {
-                    return {
-                      style: {
-                        height: 50,
-                        verticalAlign: 'middle',
-                        lineHeight: 3
-                      }
-                    }
-                  }
-                }
-            />
-        </div>
-    </section>
+                    <AppliedOrgFilters />
+                    <div className="clear-filters">
+                        <a href="javascript:;" onClick={this.resetAllFilters} className="text-primary">Clear All Filters</a>
+                    </div>
+                </div>
+                <div>
+                    <ReactTable
+                        pageSize={10}
+                        data={orgList}
+                        columns={columns}
+                        className="-highlight"
+                        sortable={true}
+                        multiSort={true}
+                        defaultSorted={[{
+                            id: "org",
+                            asc: true
+                        }]}
+                        getTdProps={(state, rowInfo, column) => {
+                            return {
+                                onClick: (e) => {
+                                    if (column.id !== 'select') {
+                                        this.changePage(rowInfo.original.id);
+                                    }
+                                },
+                                style: {
+                                    height: 50
+                                }
+                            }
+                        }
+                        }
+                        getTheadThProps={(state, rowInfo) => {
+                            return {
+                                style: {
+                                    height: 50,
+                                    verticalAlign: 'middle',
+                                    lineHeight: 3
+                                }
+                            }
+                        }
+                        }
+                    />
+                </div>
+            </section>
         )
     }
 
-    getFilteredListOfOrg(e){
+    getFilteredListOfOrg(e) {
         this.setState({
             searchText: e.target.value
         });
@@ -163,7 +175,10 @@ class OrgList extends React.Component {
     }
 
     filterOrgList(filter) {
-        this.props.fetchFilteredOrgList(filter);
+        const { activeButton } = this.state;
+        let newSectors = activeButton.slice();
+        newSectors.indexOf(filter['sector']) > -1 ? newSectors.splice(newSectors.indexOf(filter['sector']), 1) : newSectors.push(filter['sector']);
+        this.props.fetchFilteredOrgList(newSectors);
         // const { orgList } = this.props;
         // let orgListCopy = JSON.parse(JSON.stringify(orgList));
         //  let filteredList = orgListCopy.filter((org => {
@@ -173,7 +188,7 @@ class OrgList extends React.Component {
         // }));
 
         this.setState({
-            activeButton: filter['sector']
+            activeButton: newSectors
         });
     }
 
@@ -205,12 +220,12 @@ class OrgList extends React.Component {
         //                 isFiltered = !!filters[key].find(status => status.toLowerCase() === org['sectorLevel']);
         //             default:
         //                 break;
-        
+
         //         }
         //     });
         //     return isFiltered;
         // }));
-        
+
         // this.setState({
         //     orgList: filteredList
         // });
@@ -220,7 +235,7 @@ class OrgList extends React.Component {
         this.props.fetchFilteredOrgList([]);
         this.props.setAppliedFilters([]);
         this.setState({
-            activeButton: 'All'
+            activeButton: ['All']
         });
     }
 }
@@ -234,7 +249,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    changePage: (id) => push('/organizations/'+ id),
+    changePage: (id) => push('/organizations/' + id),
     addToAppNavigation,
     removeFromAppNavigation,
     fetchOrganisationsList,

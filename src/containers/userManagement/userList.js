@@ -43,7 +43,7 @@ class UserList extends React.Component {
         this.state = {
             action: '',
             userList: [],
-            activeButton: 'Active',
+            activeButton: ['Active'],
             searchText: ''
         }
         this.onChange = this.onChange.bind(this);
@@ -165,10 +165,13 @@ class UserList extends React.Component {
     }
 
     setActiveButton(field) {
+        const {activeButton} = this.state;
+        let newSectors = activeButton.slice();
+        newSectors.indexOf(field) > -1 ? newSectors.splice(newSectors.indexOf(field),1) : newSectors.push(field);
         //this.props.fetchFilteredUserList({type: field});
 
         this.setState({
-            activeButton: field
+            activeButton: newSectors
         })
     }
 }
