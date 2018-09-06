@@ -49,7 +49,7 @@ class UploadDataFeed extends React.Component {
                         <p>Basic Information</p><hr />
                         <Geosuggest
                             ref={el => this._geoSuggest = el}
-                            placeholder="Search State/Country/City"
+                            placeholder="Search State/County/City/District"
                             className="form-control position-relative"
                             initialValue=""
                             fixtures={[]}
