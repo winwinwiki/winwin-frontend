@@ -12,6 +12,18 @@
   .btn-outline-secondary {
     &.disabled {
       color: #8d8d8d;
+
+      &.active,
+      &.selected {
+        background: #9AD8F3;
+        border-color: #9AD8F3;
+        color: #145976;
+        &:hover {
+          background: #9AD8F3;
+          border-color: #9AD8F3;
+          color: #145976;
+        }
+      }
       &:hover {
         background-color: transparent;
         border-color: #E6E6E6;

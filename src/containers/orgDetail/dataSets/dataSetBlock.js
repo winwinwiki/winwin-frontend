@@ -36,11 +36,11 @@ class DataSetBlock extends React.Component {
                         <div className="form-group">
                             <label htmlFor="type">Type</label><br />
                             <div className="btn-group btn-group-toggle mb-4" id="type" data-toggle="buttons">
-                                <label className={`btn btn-outline-secondary disabled ${data.type=="open"? 'active': ''}`}>
-                                    <input type="radio" name="options" id="openType" autoComplete="off" checked={data.type=="open"? true: false}/> Open
+                                <label className={`btn btn-outline-secondary disabled ${data.type=="open"? 'selected': ''}`}>
+                                    <input type="radio" name="options" id="openType" autoComplete="off" disabled checked={data.type=="open"? true: false}/> Open
                                 </label>
-                                <label className={`btn btn-outline-secondary disabled ${data.type=="closed"? 'active': ''}`}>
-                                    <input type="radio" name="options" id="closedType" autoComplete="off" checked={data.type=="closed"? true: false}/> Closed
+                                <label className={`btn btn-outline-secondary disabled ${data.type=="closed"? 'selected': ''}`}>
+                                    <input type="radio" name="options" id="closedType" autoComplete="off" disabled checked={data.type=="closed"? true: false}/> Closed
                                 </label>
                             </div>
                         </div>
