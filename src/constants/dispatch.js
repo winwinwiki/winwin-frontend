@@ -26,6 +26,8 @@ export const SET_FETCHORG_PENDING = 'org/SET_FETCHORG_PENDING';
 export const SET_FETCHORG_SUCCESS = 'org/SET_FETCHORG_SUCCESS';
 export const SET_FECTHORG_ERROR = 'org/SET_FECTHORG_ERROR';
 export const FILTER_ORG_LIST = 'org/FILTER_ORG_LIST';
+export const SET_SDGLIST = 'org/SET_SDGLIST';
+export const SET_SPILIST = 'org/SET_SPILIST';
 //filter org
 export const SET_APPLIED_FILTER = 'org/SET_APPLIED_FILTER';
 export const SET_APPLIED_FILTER_FLAG = 'org/SET_APPLIED_FILTER_FLAG';

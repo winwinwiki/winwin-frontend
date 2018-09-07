@@ -15,7 +15,7 @@ class SpiTags extends React.Component {
 
     render() {
         const { isSpiTagsSuccess, spiTagsList } = this.props;
-        if (!isSpiTagsSuccess) { return null; }
+        if (!isSpiTagsSuccess || !spiTagsList) { return null; }
         return (
             <section className="dashboard-content p-0 py-3 org-details-container">
                 <div className="col-md-18 m-auto card">

@@ -3,7 +3,7 @@ const url = "https://demo8782246.mockable.io";
 const url1 = "https://demo4705881.mockable.io";
 class CommonUtil {
     static createUrl(endPoints) {
-        return endPoints == '/program1' || endPoints == '/data-sets' ? (url1 + endPoints):(url + endPoints);
+        return endPoints == '/program1' || endPoints == '/data-sets' || endPoints == '/sdgList' || endPoints == '/spiList' ? (url1 + endPoints):(url + endPoints);
     }
 
     static createAuthUrl(endPoints, accessToken) {

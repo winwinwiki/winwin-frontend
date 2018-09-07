@@ -1,5 +1,7 @@
-import {SET_FETCHORG_PENDING, SET_FETCHORG_SUCCESS, SET_FECTHORG_ERROR, FILTER_ORG_LIST,
-  SET_APPLIED_FILTER_FLAG} from '../../constants/dispatch';
+import {
+  SET_FETCHORG_PENDING, SET_FETCHORG_SUCCESS, SET_FECTHORG_ERROR, FILTER_ORG_LIST,
+  SET_APPLIED_FILTER_FLAG, SET_SDGLIST, SET_SPILIST
+} from '../../constants/dispatch';
 
 const initialState = {
   isFetchOrgSuccess: false,
@@ -7,7 +9,9 @@ const initialState = {
   fetchOrgError: null,
   appliedFilterList: [],
   isAppliedFilterVisible: false,
-  orgList: []
+  orgList: [],
+  spiList: null,
+  sdgList: null
 };
 
 export default (state = initialState, action) => {
@@ -28,9 +32,19 @@ export default (state = initialState, action) => {
         fetchOrgError: action.fetchOrgError
       });
 
-      case FILTER_ORG_LIST: 
+    case FILTER_ORG_LIST:
       return Object.assign({}, state, {
         orgList: action.filteredOrgList
+      });
+
+    case SET_SDGLIST:
+      return Object.assign({}, state, {
+        sdgList: action.sdgList
+      });
+
+    case SET_SPILIST:
+      return Object.assign({}, state, {
+        spiList: action.spiList
       });
 
     default:

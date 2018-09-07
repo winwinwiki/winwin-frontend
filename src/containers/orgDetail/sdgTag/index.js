@@ -15,7 +15,7 @@ class SdgTags extends React.Component {
 
     render() {
         const { isSdgTagsSuccess, sdgTagsList } = this.props;
-        if (!isSdgTagsSuccess) { return null; }
+        if (!isSdgTagsSuccess || !sdgTagsList) { return null; }
         return (
             <section className="dashboard-content p-0 py-3 org-details-container">
                 <div className="col-md-18 m-auto card">
