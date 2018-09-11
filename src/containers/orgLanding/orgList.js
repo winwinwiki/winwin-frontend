@@ -180,7 +180,13 @@ class OrgList extends React.Component {
     filterOrgList(filter) {
         const { activeButton } = this.state;
         let newSectors = activeButton.slice();
-        newSectors.indexOf(filter['sector']) > -1 ? newSectors.splice(newSectors.indexOf(filter['sector']), 1) : newSectors.push(filter['sector']);
+        if (filter['sector'] == "All") {
+            newSectors = ["All"];
+        } else {
+            newSectors.indexOf("All") > -1 ? newSectors.splice(newSectors.indexOf("All"),1): '';
+            newSectors.indexOf(filter['sector']) > -1 ? newSectors.splice(newSectors.indexOf(filter['sector']), 1) : newSectors.push(filter['sector']);
+        }
+        newSectors.length == 0 ? newSectors.push("All"): '';
         this.props.fetchFilteredOrgList(newSectors);
         // const { orgList } = this.props;
         // let orgListCopy = JSON.parse(JSON.stringify(orgList));

@@ -52,25 +52,27 @@ class AppliedOrgFiltersList extends React.Component {
     render() {
         const { userMod, sector, status, revenueRange, assetsRange, priority,
             industryCls, subIndustryCls, frameworkTag, level1, level2, level3, level1List, level2List, level3List } = this.state;
-        const { isAppliedFilterVisible } = this.props;
+        const { isAppliedFilterVisible, activeOrg } = this.props;
         let showFilterCls = classNames({ show: isAppliedFilterVisible }, { 'dropdown-menu': true }, { 'px-3': true });
+        let isIndustryClsShow = (activeOrg.indexOf("Public") > -1) && (activeOrg.length == 1);
+        let isSectorLevelShow = (activeOrg.indexOf("Public") > -1) || (activeOrg.indexOf("All") > -1);
         return (
             <form aria-labelledby="filterDropdown" className={showFilterCls} style={{ left: -500 }}>
                 <div className="row">
                     <div className="col">
-                        <h5>Sector Level</h5>
-                        <Checkbox name="federal" label="Federal"
-                            checked={sector.indexOf('federal') > -1} onChange={this.onSectorCheckboxChange} />
-                        <Checkbox name="state" label="State"
-                            checked={sector.indexOf('state') > -1} onChange={this.onSectorCheckboxChange} />
-                        <Checkbox name="country" label="County"
-                            checked={sector.indexOf('country') > -1} onChange={this.onSectorCheckboxChange} />
-                        <Checkbox name="city" label="City"
-                            checked={sector.indexOf('city') > -1} onChange={this.onSectorCheckboxChange} />
-                        <Checkbox name="district" label="District"
-                            checked={sector.indexOf('district') > -1} onChange={this.onSectorCheckboxChange} />
+                        {isSectorLevelShow && <h5>Sector Level</h5>}
+                        {isSectorLevelShow && <Checkbox name="federal" label="Federal"
+                            checked={sector.indexOf('federal') > -1} onChange={this.onSectorCheckboxChange} />}
+                        {isSectorLevelShow && <Checkbox name="state" label="State"
+                            checked={sector.indexOf('state') > -1} onChange={this.onSectorCheckboxChange} />}
+                        {isSectorLevelShow && <Checkbox name="country" label="County"
+                            checked={sector.indexOf('country') > -1} onChange={this.onSectorCheckboxChange} />}
+                        {isSectorLevelShow && <Checkbox name="city" label="City"
+                            checked={sector.indexOf('city') > -1} onChange={this.onSectorCheckboxChange} />}
+                        {isSectorLevelShow && <Checkbox name="district" label="District"
+                            checked={sector.indexOf('district') > -1} onChange={this.onSectorCheckboxChange} />}
 
-                        <h5 className="mt-4">Status</h5>
+                        <h5 className={isSectorLevelShow ? 'mt-4' : ''}>Status</h5>
                         <Checkbox name="autoTag" label="Auto Tag"
                             checked={status.indexOf('autoTag') > -1} onChange={this.onStatusCheckboxChange} />
                         <Checkbox name="completeTag" label="Complete Tag"
@@ -105,8 +107,8 @@ class AppliedOrgFiltersList extends React.Component {
                             closeMenuOnSelect={false}
                         />
 
-                        <h5>Industry Classification</h5>
-                        <ReactSelect
+                        {!isIndustryClsShow && <h5>Industry Classification</h5>}
+                        {!isIndustryClsShow && <ReactSelect
                             name="industryCls"
                             className="mb-3"
                             isMulti={false}
@@ -114,9 +116,9 @@ class AppliedOrgFiltersList extends React.Component {
                             value={industryCls}
                             onChange={this.onIndustryClsChange}
                             options={industryClassification}
-                        />
+                        />}
 
-                        <ReactSelect
+                        {!isIndustryClsShow && <ReactSelect
                             name="subIndustryCls"
                             className="mb-3"
                             isMulti={false}
@@ -124,11 +126,11 @@ class AppliedOrgFiltersList extends React.Component {
                             value={subIndustryCls}
                             onChange={this.onIndustryClsChange}
                             options={SubIndustryClassification}
-                        />
+                        />}
                     </div>
                     <div className="col">
                         <h5>Revenue</h5>
-                        <div className="mb-4">
+                        <div className="my-4">
                             <InputRange
                                 draggableTrack
                                 maxValue={100}
@@ -139,14 +141,16 @@ class AppliedOrgFiltersList extends React.Component {
                                 onChangeComplete={value => console.log(value)} />
                         </div>
                         <h5>Assets</h5>
-                        <InputRange
-                            draggableTrack
-                            maxValue={100}
-                            minValue={0}
-                            formatLabel={value => `$ ${value}`}
-                            value={assetsRange}
-                            onChange={value => this.setState({ assetsRange: value })}
-                            onChangeComplete={value => console.log(value)} />
+                        <div className="my-4">
+                            <InputRange
+                                draggableTrack
+                                maxValue={100}
+                                minValue={0}
+                                formatLabel={value => `$ ${value}`}
+                                value={assetsRange}
+                                onChange={value => this.setState({ assetsRange: value })}
+                                onChangeComplete={value => console.log(value)} />
+                        </div>
                     </div>
                     <div className="col">
                         <h5>Framework Tag</h5>
@@ -204,9 +208,24 @@ class AppliedOrgFiltersList extends React.Component {
             </form>
         )
     }
-    onLevel1Change() { }
+    onLevel1Change(level1) {
+        if (!Array.isArray(level1)) {
+            this.setState({
+                level1: level1,
+                level2: '',
+                level3: ''
+            });
+        } else {
+            this.setState({
+                level1: '',
+                level2: '',
+                level3: ''
+            });
+        }
+    }
     onLevel2Change(level2) {
-        if (!Array.isArray(level2)) {
+        const { frameworkTag } = this.state;
+        if (!Array.isArray(level2) && frameworkTag == frameworkTagList[1]) {
             const { SDGList } = this.props;
             let frameworkList = JSON.parse(JSON.stringify(SDGList));
             let selectedFramework;
@@ -214,6 +233,12 @@ class AppliedOrgFiltersList extends React.Component {
             this.setState({
                 level1: { value: selectedFramework.level1Id, label: selectedFramework.level1 },
                 level2: { value: selectedFramework.id, label: selectedFramework.level2 }
+            });
+        } else if (!Array.isArray(level2) && frameworkTag == frameworkTagList[0]) {
+            this.setState({
+                level1: '',
+                level2: level2,
+                level3: ''
             });
         } else {
             this.setState({

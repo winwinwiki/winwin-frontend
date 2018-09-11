@@ -18,19 +18,28 @@ class OrgFilters extends React.Component {
     render() {
         const { activeButton, buttonList, searchText, getFilteredListOfOrg } = this.props;
         return (
-            <div className="d-flex align-content-center border-bottom py-3">
+            <div className="d-flex align-content-center border-bottom py-2">
+                <div className="col">
+                    <label htmlFor="search" className="d-block p-0 mb-0 col-form-label-sm">Search</label>
+                    <Search placeholder="Search State/County/City/District" onChange={getFilteredListOfOrg} value={searchText} />
+                </div>
 
-                <Search placeholder="Search State/County/City/District" onChange={getFilteredListOfOrg} value={searchText} />
+                <div className="col">
+                    <label htmlFor="sector" className="d-block p-0 mb-0 col-form-label-sm">Sector</label>
+                    <ButtonGroup activeButton={activeButton} buttonList={buttonList} onChange={this.setActiveButton} />
+                </div>
 
-                <ButtonGroup activeButton={activeButton} buttonList={buttonList} onChange={this.setActiveButton} />
-                <div className="btn-group dropdown dropdown-with-checkbox" role="group" aria-label="group">
-                    <button id="filterDropdown" type="button"
-                        aria-haspopup="true" aria-expanded="false"
-                        className="btn btn-outline-secondary m-0"
-                        onClick={this.showAppliedFilterModal}>
-                        <i className="icon-filter"></i>
-                    </button>
-                    <AppliedOrgFiltersList />
+                <div className="col">
+                    <label htmlFor="filter" className="d-block p-0 mb-0 col-form-label-sm">Filter</label>
+                    <div className="btn-group dropdown dropdown-with-checkbox" role="group" aria-label="group">
+                        <button id="filterDropdown" type="button"
+                            aria-haspopup="true" aria-expanded="false"
+                            className="btn btn-outline-secondary m-0"
+                            onClick={this.showAppliedFilterModal}>
+                            <i className="icon-filter"></i>
+                        </button>
+                        <AppliedOrgFiltersList activeOrg={activeButton} />
+                    </div>
                 </div>
                 <div className="ml-auto">
                     <a href="javascript:;" onClick={() => this.changePage('new')} className="btn btn-link"><i className="icon-add mr-1"></i> Create</a>

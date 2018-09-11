@@ -27,26 +27,42 @@ export function callFetchUserListApi(callback) {
         {
             id: 1,
             name: "Allison Zimmermann",
+            email:"",
+            imageUrl:"",
             role: "Administrator",
-            team: ""
+            team: "",
+            status:"Active",
+            orgId: ""
         },
         {
             id: 2,
             name: "Ariya Macleod",
+            email:"",
+            imageUrl:"",
             role: "Data Seeder",
-            team: "UCLA"
+            team: "UCLA",
+            status:"Active",
+            orgId: ""
         },
         {
             id: 3,
             name: "Becky Redmond",
+            email:"",
+            imageUrl:"",
             role: "Data Seeder",
-            team: "Cornell University"
+            team: "Cornell University",
+            status:"Active",
+            orgId: ""
         },
         {
             id: 4,
             name: "Jens Molbak",
+            email:"",
+            imageUrl:"",
             role: "Administrator",
-            team: ""
+            team: "",
+            status:"Active",
+            orgId: ""
         }
     ]);
 }

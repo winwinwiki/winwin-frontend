@@ -15,9 +15,10 @@ const initialState = {
         });
   
       case SET_FETCHUSER_SUCCESS:
+        let userListWithSelect = action.userList.map(user => {user['select'] = false; return user;});
         return Object.assign({}, state, {
             isFetchUserSuccess: action.isFetchUserSuccess,
-            userList: action.userList
+            userList: userListWithSelect
         });
   
       case SET_FETCHUSER_ERROR:

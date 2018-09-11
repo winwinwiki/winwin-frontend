@@ -10,7 +10,9 @@ class UploadUsersModal extends React.Component {
         this.onUploadUsers = this.onUploadUsers.bind(this);
     }
     render() {
+        const { action } = this.props;
         // let { uploadUsersFormError } = this.props;
+        // if(!action) { return null;}
         return (
             <div className="modal fade" id="uploadUsersModal" tabIndex="-1" role="dialog" aria-labelledby="uploadUsersModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered" role="document">
@@ -19,7 +21,7 @@ class UploadUsersModal extends React.Component {
                             <div className="dashboard-header">
                                 <div className="modal-header flex-column">
                                     <div className="d-flex w-100 p-3">
-                                        <h5 className="modal-title" id="uploadUsersModalLabel">Upload Users</h5>
+                                        <h5 className="modal-title" id="uploadUsersModalLabel">{action}</h5>
                                         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
