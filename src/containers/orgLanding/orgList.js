@@ -20,6 +20,7 @@ const columns = [{
     id: 'select',
     Header: <span><input type="checkbox" /></span>,
     accessor: 'name',
+    sortable: false,
     Cell: () => <div className="centerText"><input type="checkbox" /></div>,
     width: 50
 }, {
@@ -45,12 +46,14 @@ const columns = [{
     id: 'city',
     Header: 'City',
     accessor: 'address[city]',
+    sortable: false,
     Cell: (row) => <div className="centerText">{row.value}</div>
 },
 {
     id: 'industryClassification',
     Header: 'Industry Classification',
     accessor: 'sector',
+    sortable: false,
     Cell: (row) => <div className="centerText">{row.value}</div>
 }]
 

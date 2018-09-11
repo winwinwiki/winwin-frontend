@@ -5,15 +5,16 @@ import Dropdown from '../../ui/dropdown';
 import Checkbox from '../../ui/checkbox';
 import { setAppliedFilters, showAppliedFilterModal } from '../../../actions/orgLanding/orgFilterAction';
 import InputRange from 'react-input-range';
+import ReactSelect from 'react-select';
 import 'react-input-range/lib/css/index.css';
 
 var classNames = require('classnames');
 
 const Priority = ['normal', 'high'];
-const userList = ['abc abc', 'sumit chaudhari', 'Suuny tambi'];
-const frameworkTagList = ['Social Progress Index', 'Sustainable Developement Goals']
-const industryClassification = ['option 1', 'option 2', 'option 3'];
-const SubIndustryClassification = ['select 1', 'select 2', 'select 3'];
+const userList = [{ value: 'abc', label: 'abc abc' }, { value: 'sumit', label: 'sumit chaudhari' }, { value: 'Sunny', label: 'Sunny tambi' }];
+const frameworkTagList = [{ value: 'Social Progress Index', label: 'Social Progress Index' }, { value: 'Sustainable Developement Goals', label: 'Sustainable Developement Goals' }]
+const industryClassification = [{ value: '1', label: 'option 1' }, { value: '2', label: 'option 2' }, { value: '3', label: 'option 3' }];
+const SubIndustryClassification = [{ value: '1', label: 'select 1' }, { value: '2', label: 'select 2' }, { value: '3', label: 'select 3' }];
 class AppliedOrgFiltersList extends React.Component {
     constructor(props) {
         super(props);
@@ -40,6 +41,11 @@ class AppliedOrgFiltersList extends React.Component {
         this.onStatusCheckboxChange = this.onStatusCheckboxChange.bind(this);
         this.addFiltersTag = this.addFiltersTag.bind(this);
         this.clearAppliedFilters = this.clearAppliedFilters.bind(this);
+        this.onUserChange = this.onUserChange.bind(this);
+        this.onIndustryClsChange = this.onIndustryClsChange.bind(this);
+        this.onLevel3Change = this.onLevel3Change.bind(this);
+        this.onLevel2Change = this.onLevel2Change.bind(this);
+        this.onLevel1Change = this.onLevel1Change.bind(this);
     }
 
 
@@ -88,30 +94,37 @@ class AppliedOrgFiltersList extends React.Component {
                         </div>
 
                         <h5>Edited by User</h5>
-                        <Dropdown
-                            placeholder="Select User"
-                            selectedItem={userMod}
+                        <ReactSelect
                             name="userMod"
-                            containerClass="dropdown dropdown-with-searchbox mb-4"
-                            onChange={this.onDropdownChange}
-                            items={userList} />
+                            className="mb-3"
+                            isMulti="true"
+                            placeholder="Select User"
+                            value={userMod}
+                            onChange={this.onUserChange}
+                            options={userList}
+                            closeMenuOnSelect={false}
+                        />
 
                         <h5>Industry Classification</h5>
-                        <Dropdown
-                            placeholder="Select Industry Classification"
-                            selectedItem={industryCls}
+                        <ReactSelect
                             name="industryCls"
-                            containerClass="dropdown dropdown-with-searchbox mb-3"
-                            onChange={this.onDropdownChange}
-                            items={industryClassification} />
+                            className="mb-3"
+                            isMulti={false}
+                            placeholder="Select Industry Classification"
+                            value={industryCls}
+                            onChange={this.onIndustryClsChange}
+                            options={industryClassification}
+                        />
 
-                        <Dropdown
-                            placeholder="Select Sub Industry Classification"
-                            selectedItem={subIndustryCls}
+                        <ReactSelect
                             name="subIndustryCls"
-                            containerClass="dropdown dropdown-with-searchbox mb-4"
-                            onChange={this.onDropdownChange}
-                            items={SubIndustryClassification} />
+                            className="mb-3"
+                            isMulti={false}
+                            placeholder="Select Sub Industry Classification"
+                            value={subIndustryCls}
+                            onChange={this.onIndustryClsChange}
+                            options={SubIndustryClassification}
+                        />
                     </div>
                     <div className="col">
                         <h5>Revenue</h5>
@@ -137,41 +150,49 @@ class AppliedOrgFiltersList extends React.Component {
                     </div>
                     <div className="col">
                         <h5>Framework Tag</h5>
-                        <Dropdown
-                            placeholder="Select Framework Tag"
-                            selectedItem={frameworkTag}
+                        <ReactSelect
                             name="frameworkTag"
-                            containerClass="dropdown dropdown-with-searchbox mb-4"
+                            className="mb-3"
+                            isMulti={false}
+                            placeholder="Select Framework Tag"
+                            value={frameworkTag}
                             onChange={this.onFrameworkTagChange}
-                            items={frameworkTagList} />
+                            options={frameworkTagList}
+                        />
 
                         {frameworkTag == frameworkTagList[0] && <h5>Level 3</h5>}
-                        {frameworkTag == frameworkTagList[0] && <Dropdown
-                            placeholder="Select Level3"
-                            selectedItem={level3}
+                        {frameworkTag == frameworkTagList[0] && <ReactSelect
                             name="level3"
-                            containerClass="dropdown dropdown-with-searchbox mb-4"
-                            onChange={this.onDropdownChange}
-                            items={level3List} />
+                            className="mb-3"
+                            isMulti={false}
+                            placeholder="Select Level3"
+                            value={level3}
+                            onChange={this.onLevel3Change}
+                            options={level3List}
+                        />
                         }
 
                         {frameworkTag && <h5>Level 2</h5>}
-                        {frameworkTag && <Dropdown
-                            placeholder="Select Level2"
-                            selectedItem={level2}
+                        {frameworkTag && <ReactSelect
                             name="level2"
-                            containerClass="dropdown dropdown-with-searchbox mb-4"
-                            onChange={this.onDropdownChange}
-                            items={level2List} />}
+                            className="mb-3"
+                            isMulti={false}
+                            placeholder="Select Level2"
+                            value={level2}
+                            onChange={this.onLevel2Change}
+                            options={level2List}
+                        />}
 
                         {frameworkTag && <h5>Level 1</h5>}
-                        {frameworkTag && <Dropdown
-                            placeholder="Select Level1"
-                            selectedItem={level1}
+                        {frameworkTag && <ReactSelect
                             name="level1"
-                            containerClass="dropdown dropdown-with-searchbox mb-4"
-                            onChange={this.onDropdownChange}
-                            items={level1List} />}
+                            className="mb-3"
+                            isMulti={false}
+                            placeholder="Select Level1"
+                            value={level1}
+                            onChange={this.onLevel1Change}
+                            options={level1List}
+                        />}
                     </div>
                 </div>
                 <div className="row mt-5">
@@ -183,49 +204,74 @@ class AppliedOrgFiltersList extends React.Component {
             </form>
         )
     }
-    onDropdownChange(field, value) {
-        if (field == "level3") {
-            const { SPIList } = this.props;
-            let frameworkList = JSON.parse(JSON.stringify(SPIList));
-            let level2 = '', level1 = '';
-            level1 = Object.keys(frameworkList).find(l1 => { 
-                level2 = Object.keys(frameworkList[l1]).find(l2 => frameworkList[l1][l2].indexOf(value) > -1); 
-                if(level2){
-                    return true;
-                }
-            });
-            this.setState({
-                [field]: value,
-                level1: level1,
-                level2: level2
-            });
-        } else if (field == "level2") {
+    onLevel1Change() { }
+    onLevel2Change(level2) {
+        if (!Array.isArray(level2)) {
             const { SDGList } = this.props;
             let frameworkList = JSON.parse(JSON.stringify(SDGList));
-            let level1 = '';
-            level1 = Object.keys(frameworkList).find(l1 => frameworkList[l1].indexOf(value) > -1);
+            let selectedFramework;
+            selectedFramework = frameworkList.find(l2 => l2.level2 == level2.label);
             this.setState({
-                [field]: value,
-                level1: level1
+                level1: { value: selectedFramework.level1Id, label: selectedFramework.level1 },
+                level2: { value: selectedFramework.id, label: selectedFramework.level2 }
             });
         } else {
-            this.setState({ [field]: value });
+            this.setState({
+                level1: '',
+                level2: '',
+                level3: ''
+            });
         }
     }
+    onLevel3Change(level3) {
+        if (!Array.isArray(level3)) {
+            const { SPIList } = this.props;
+            let frameworkList = JSON.parse(JSON.stringify(SPIList));
+            let selectedFramework;
+            selectedFramework = frameworkList.find(l3 => l3.level3 == level3.label);
+            this.setState({
+                level3: { value: selectedFramework.id, label: selectedFramework.level3 },
+                level1: { value: selectedFramework.level1Id, label: selectedFramework.level1 },
+                level2: { value: selectedFramework.level2Id, label: selectedFramework.level2 }
+            });
+        } else {
+            this.setState({
+                level1: '',
+                level2: '',
+                level3: ''
+            });
+        }
+    }
+    onDropdownChange(field, value) {
+        this.setState({ [field]: value });
+    }
 
-    onFrameworkTagChange(field, value) {
+    onUserChange(userMod) {
+        this.setState({ userMod });
+    }
+
+    onIndustryClsChange(industryCls) {
+        this.setState({ industryCls });
+    }
+
+    onFrameworkTagChange(value) {
         const { SPIList, SDGList } = this.props;
         let frameworkList = (value === frameworkTagList[0]) ? JSON.parse(JSON.stringify(SPIList)) : JSON.parse(JSON.stringify(SDGList))
-        let level1 = Object.keys(frameworkList);
-        let level2 = [], level3 = [];
+        let level1 = [], level2 = [], level3 = [];
         if (value === frameworkTagList[0]) {
-            Object.keys(frameworkList).map(l1 => Object.keys(frameworkList[l1]).map(l2 => level2.push(l2)));
-            Object.keys(frameworkList).map(l1 => Object.keys(frameworkList[l1]).map(l2 => frameworkList[l1][l2].map(l3 => level3.push(l3))));
-        } else {
-            Object.keys(frameworkList).map(l1 => frameworkList[l1].map(l2 => level2.push(l2)));
+            level3 = frameworkList.map(l3 => {
+                level1[(level1.length - 1)] && (level1[(level1.length - 1)].label == l3.level1) ? '' : level1.push({ value: l3.level1Id, label: l3.level1 });
+                level2[(level2.length - 1)] && (level2[(level2.length - 1)].label == l3.level2) ? '' : level2.push({ value: l3.level2Id, label: l3.level2 });
+                return { "value": l3.id, "label": l3.level3 };
+            });
+        } else if (!Array.isArray(value)) {
+            level2 = frameworkList.map(l2 => {
+                level1[(level1.length - 1)] && (level1[(level1.length - 1)].label == l2.level1) ? '' : level1.push({ value: l2.level1Id, label: l2.level1 });
+                return { "value": l2.id, "label": l2.level2 };
+            });
         }
         this.setState({
-            [field]: value,
+            "frameworkTag": value,
             level1List: level1,
             level2List: level2,
             level3List: level3,

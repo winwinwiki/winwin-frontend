@@ -44,16 +44,21 @@ class SdgTags extends React.Component {
     }
 
     createSdgBox(sdgTagsList) {
-        return sdgTagsList.map(tags =>
-            <div className="card custom-list-container mt-2">
+        let desiredTagsList = {};
+        sdgTagsList.map(tags => {
+            !desiredTagsList[tags["level1"]] ? desiredTagsList[tags["level1"]] = [] : '';
+            desiredTagsList[tags["level1"]].push(tags["level2"]);
+        });
+        return Object.keys(desiredTagsList).map((level1, idx) =>
+            <div key={idx} className="card custom-list-container mt-2">
                 <div className="card-header">
-                    {tags['level1']}
+                    {level1}
                 </div>
                 <div className="card-body">
                     <ul className="">
                         <li>
                             <ul>
-                                {tags['level2'].map(tag3 => <li><span>{tag3}</span></li>)}
+                                {desiredTagsList[level1].map((level2, idx2) => <li key={idx2}><span>{level2}</span></li>)}
                             </ul>
                         </li>
                     </ul>

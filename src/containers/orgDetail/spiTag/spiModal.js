@@ -15,6 +15,7 @@ class SPIModal extends React.Component {
     render() {
         const { searchText } = this.state;
         const { SPIList, SPIData } = this.props;
+        let localSPIList = this.desiredSPIList();
         if(!SPIList || !SPIData) {return null;}
         return (
             <div className="modal progress-index-modal fade bd-example-modal-lg" id="spiModal" tabIndex="-1"
@@ -46,19 +47,19 @@ class SPIModal extends React.Component {
                             <div className="modal-body dashboard-content progress-index-options">
                                 <div className="d-flex flex-column h-100 pt-4">
                                     <div className="row d-flex">
-                                        {Object.keys(SPIList).map(level1 =>
+                                        {Object.keys(localSPIList).map(level1 =>
                                             <React.Fragment>
                                                 <div className="col-sm-24 mb-3">
                                                     <h3>{level1}</h3>
                                                 </div>
-                                                {Object.keys(SPIList[level1]).map(level2 =>
+                                                {Object.keys(localSPIList[level1]).map(level2 =>
                                                     <div className="col">
                                                         <p className="border-bottom pb-3">{level2}</p>
                                                         <div className="item-list mb-4">
-                                                            {SPIList[level1][level2].map(level3 =>
+                                                            {localSPIList[level1][level2].map(level3 =>
                                                                 <div className="custom-control custom-checkbox">
-                                                                    <input id="customCheckCustom-1" type="checkbox" className="custom-control-input" checked={this.isChecked(level3)}/>
-                                                                    <label htmlFor="customCheckCustom-1" className="custom-control-label"> {level3}</label>
+                                                                    <input id={level3.id} type="checkbox" className="custom-control-input" checked={this.isChecked(level3.value)}/>
+                                                                    <label htmlFor={level3.id} className="custom-control-label"> {level3.value}</label>
                                                                 </div>
                                                             )}
                                                         </div>
@@ -75,6 +76,16 @@ class SPIModal extends React.Component {
                 </div>
             </div>
         );
+    }
+    desiredSPIList(){
+        const { SPIList } = this.props;
+        let spi = {};
+        SPIList.map(data => {
+            spi[data.level1] ? '' : spi[data.level1] = {};
+            spi[data.level1][data.level2] ? '' : spi[data.level1][data.level2] = [];
+            spi[data.level1][data.level2].push({id:data.id, value:data.level3});
+        });
+        return spi;
     }
     isChecked(spiTag){
         const { SPIData } = this.props;

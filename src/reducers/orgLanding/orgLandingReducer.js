@@ -39,12 +39,12 @@ export default (state = initialState, action) => {
 
     case SET_SDGLIST:
       return Object.assign({}, state, {
-        sdgList: action.sdgList
+        sdgList: action.sdgList["SDG"]
       });
 
     case SET_SPILIST:
       return Object.assign({}, state, {
-        spiList: action.spiList
+        spiList: action.spiList["SPI"]
       });
 
     default:
