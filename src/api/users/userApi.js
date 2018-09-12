@@ -51,7 +51,7 @@ export function callFetchUserListApi(callback) {
             imageUrl:"",
             role: "Data Seeder",
             team: "Cornell University",
-            status:"Active",
+            status:"Inactive",
             orgId: ""
         },
         {

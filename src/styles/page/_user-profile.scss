@@ -7,3 +7,15 @@
     border: 2px dashed #999999;
     border-radius: 3px;
 }
+
+.statusCircle{
+    width: 10px;
+    height: 10px;
+    padding: 5px;
+    background-color: #999;
+    border-radius: 5px;
+    
+    &.active {
+        background-color: #33c533;
+    }
+}

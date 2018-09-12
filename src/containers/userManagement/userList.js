@@ -25,9 +25,13 @@ const columns = [{
 }, {
     id: 'user',
     Header: 'User Name',
-    accessor: 'name',
+    accessor: row => { return { 'name': row.name, 'status': row.status } },
     sortable: true,
-    Cell: (row) => <div className="centerText">{row.value}</div>
+    Cell: (row) => {
+        return (
+            <React.Fragment><div className={`statusCircle d-inline-block mx-2 ${row.value.status == 'Active' ? 'active' : ''}`}></div><div className="d-inline-block centerText">{row.value.name}</div></React.Fragment>
+        );
+    }
 }, {
     id: 'role',
     Header: 'Role',
@@ -258,10 +262,10 @@ class UserList extends React.Component {
         if (field == "All") {
             newSectors = ["All"];
         } else {
-            newSectors.indexOf("All") > -1 ? newSectors.splice(newSectors.indexOf("All"),1): '';
+            newSectors.indexOf("All") > -1 ? newSectors.splice(newSectors.indexOf("All"), 1) : '';
             newSectors.indexOf(field) > -1 ? newSectors.splice(newSectors.indexOf(field), 1) : newSectors.push(field);
         }
-        newSectors.length == 0 ? newSectors.push("All"): '';
+        newSectors.length == 0 ? newSectors.push("All") : '';
         //this.props.fetchFilteredUserList({type: field});
 
         this.setState({
