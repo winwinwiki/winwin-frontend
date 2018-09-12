@@ -19,17 +19,17 @@ class OrgFilters extends React.Component {
         const { activeButton, buttonList, searchText, getFilteredListOfOrg } = this.props;
         return (
             <div className="d-flex align-content-center border-bottom py-2">
-                <div className="col">
+                <div>
                     <label htmlFor="search" className="d-block p-0 mb-0 col-form-label-sm">Search</label>
                     <Search placeholder="Search State/County/City/District" onChange={getFilteredListOfOrg} value={searchText} />
                 </div>
 
-                <div className="col">
+                <div>
                     <label htmlFor="sector" className="d-block p-0 mb-0 col-form-label-sm">Sector</label>
                     <ButtonGroup activeButton={activeButton} buttonList={buttonList} onChange={this.setActiveButton} />
                 </div>
 
-                <div className="col">
+                <div>
                     <label htmlFor="filter" className="d-block p-0 mb-0 col-form-label-sm">Filter</label>
                     <div className="btn-group dropdown dropdown-with-checkbox" role="group" aria-label="group">
                         <button id="filterDropdown" type="button"

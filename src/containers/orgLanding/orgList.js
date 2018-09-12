@@ -52,7 +52,7 @@ const columns = [{
 {
     id: 'industryClassification',
     Header: 'Industry Classification',
-    accessor: 'sector',
+    accessor: 'industryCls',
     sortable: false,
     Cell: (row) => <div className="centerText">{row.value}</div>
 }]

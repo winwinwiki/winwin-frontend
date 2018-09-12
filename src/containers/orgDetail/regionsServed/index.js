@@ -48,7 +48,7 @@ class RegionsServed extends React.Component {
                                 {isEdited &&
                                     <Geosuggest
                                         ref={el => this._geoSuggest = el}
-                                        placeholder="Search regions"
+                                        placeholder="Search regions (for ex. Seattle, WA, USA)"
                                         initialValue=""
                                         className="form-control position-relative mt-2"
                                         fixtures={[]}

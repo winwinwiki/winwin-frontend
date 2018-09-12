@@ -13,7 +13,7 @@ var classNames = require('classnames');
 const Priority = ['normal', 'high'];
 const userList = [{ value: 'abc', label: 'abc abc' }, { value: 'sumit', label: 'sumit chaudhari' }, { value: 'Sunny', label: 'Sunny tambi' }];
 const frameworkTagList = [{ value: 'Social Progress Index', label: 'Social Progress Index' }, { value: 'Sustainable Developement Goals', label: 'Sustainable Developement Goals' }]
-const industryClassification = [{ value: '1', label: 'option 1' }, { value: '2', label: 'option 2' }, { value: '3', label: 'option 3' }];
+const industryClassification = [{ value: 'NAICS', label: 'NAICS' }, { value: 'NTEE', label: 'NTEE' }];
 const SubIndustryClassification = [{ value: '1', label: 'select 1' }, { value: '2', label: 'select 2' }, { value: '3', label: 'select 3' }];
 class AppliedOrgFiltersList extends React.Component {
     constructor(props) {
@@ -72,8 +72,8 @@ class AppliedOrgFiltersList extends React.Component {
                             checked={sector.indexOf('federal') > -1} onChange={this.onSectorCheckboxChange} />}
                         {isSectorLevelShow && <Checkbox name="state" label="State"
                             checked={sector.indexOf('state') > -1} onChange={this.onSectorCheckboxChange} />}
-                        {isSectorLevelShow && <Checkbox name="country" label="County"
-                            checked={sector.indexOf('country') > -1} onChange={this.onSectorCheckboxChange} />}
+                        {isSectorLevelShow && <Checkbox name="county" label="County"
+                            checked={sector.indexOf('county') > -1} onChange={this.onSectorCheckboxChange} />}
                         {isSectorLevelShow && <Checkbox name="city" label="City"
                             checked={sector.indexOf('city') > -1} onChange={this.onSectorCheckboxChange} />}
                         {isSectorLevelShow && <Checkbox name="district" label="District"

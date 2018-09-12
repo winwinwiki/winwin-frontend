@@ -4,12 +4,16 @@ User Data Model-
     email
     password
     role [admin, data seeder]
-    image
+    imageUrl
+    status [Active, Inactive]
+    team
+    orgId
     location
 
 Organization DM- 
     id - number
-    name - string    
+    name - string 
+    description  
     address: {
         street,
         city,
@@ -46,7 +50,8 @@ Organization DM-
 
 Programmes DM- 
     id
-    name    
+    name 
+    description   
     sector
     sectorLevel
     address: {
@@ -76,11 +81,11 @@ Programmes DM-
 
 DataSet  DM -
     id
-    category
+    name
     description
     type
     url
-    orgid
+    orgId
     progId
 
 resources DM- 
@@ -102,16 +107,18 @@ resiognServed DM-
 
 spiTag DM -
     id
-    name
-    type
+    frameworktag
+    level1
+    level2
+    level3
     orgId
     progId
 
 sdgTag DM -
-
     id
-    name
-    type
+    frameworktag
+    level1
+    level2
     orgId
     progId
 
