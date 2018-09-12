@@ -19,7 +19,7 @@ class AppliedOrgFiltersList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userMod: '',
+            userMod: [],
             industryCls: '',
             subIndustryCls: '',
             frameworkTag: '',
@@ -41,18 +41,25 @@ class AppliedOrgFiltersList extends React.Component {
         this.onStatusCheckboxChange = this.onStatusCheckboxChange.bind(this);
         this.addFiltersTag = this.addFiltersTag.bind(this);
         this.clearAppliedFilters = this.clearAppliedFilters.bind(this);
-        this.onUserChange = this.onUserChange.bind(this);
-        this.onIndustryClsChange = this.onIndustryClsChange.bind(this);
+        this.onSelectChange = this.onSelectChange.bind(this);
         this.onLevel3Change = this.onLevel3Change.bind(this);
         this.onLevel2Change = this.onLevel2Change.bind(this);
         this.onLevel1Change = this.onLevel1Change.bind(this);
     }
 
 
+    componentWillReceiveProps(nextProps){
+        console.log('modal open');
+        if (nextProps.appliedFilterList && (JSON.stringify(nextProps.appliedFilterList) !== JSON.stringify(this.state))) {
+            this.setState(nextProps.appliedFilterList);
+        }
+    }
+
     render() {
         const { userMod, sector, status, revenueRange, assetsRange, priority,
             industryCls, subIndustryCls, frameworkTag, level1, level2, level3, level1List, level2List, level3List } = this.state;
         const { isAppliedFilterVisible, activeOrg } = this.props;
+
         let showFilterCls = classNames({ show: isAppliedFilterVisible }, { 'dropdown-menu': true }, { 'px-3': true });
         let isIndustryClsShow = (activeOrg.indexOf("Public") > -1) && (activeOrg.length == 1);
         let isSectorLevelShow = (activeOrg.indexOf("Public") > -1) || (activeOrg.indexOf("All") > -1);
@@ -102,7 +109,7 @@ class AppliedOrgFiltersList extends React.Component {
                             isMulti="true"
                             placeholder="Select User"
                             value={userMod}
-                            onChange={this.onUserChange}
+                            onChange={(selectedOption) => this.onSelectChange('userMod', selectedOption)}
                             options={userList}
                             closeMenuOnSelect={false}
                         />
@@ -114,7 +121,7 @@ class AppliedOrgFiltersList extends React.Component {
                             isMulti={false}
                             placeholder="Select Industry Classification"
                             value={industryCls}
-                            onChange={this.onIndustryClsChange}
+                            onChange={(selectedOption) => this.onSelectChange('industryCls', selectedOption)}
                             options={industryClassification}
                         />}
 
@@ -124,7 +131,7 @@ class AppliedOrgFiltersList extends React.Component {
                             isMulti={false}
                             placeholder="Select Sub Industry Classification"
                             value={subIndustryCls}
-                            onChange={this.onIndustryClsChange}
+                            onChange={(selectedOption) => this.onSelectChange('subIndustryCls', selectedOption)}
                             options={SubIndustryClassification}
                         />}
                     </div>
@@ -164,8 +171,8 @@ class AppliedOrgFiltersList extends React.Component {
                             options={frameworkTagList}
                         />
 
-                        {frameworkTag == frameworkTagList[0] && <h5>Level 3</h5>}
-                        {frameworkTag == frameworkTagList[0] && <ReactSelect
+                        {frameworkTag && (frameworkTag.label == frameworkTagList[0].label) && <h5>Level 3</h5>}
+                        {frameworkTag && (frameworkTag.label == frameworkTagList[0].label) && <ReactSelect
                             name="level3"
                             className="mb-3"
                             isMulti={false}
@@ -225,7 +232,7 @@ class AppliedOrgFiltersList extends React.Component {
     }
     onLevel2Change(level2) {
         const { frameworkTag } = this.state;
-        if (!Array.isArray(level2) && frameworkTag == frameworkTagList[1]) {
+        if (!Array.isArray(level2) && frameworkTag && (frameworkTag.label == frameworkTagList[1].label)) {
             const { SDGList } = this.props;
             let frameworkList = JSON.parse(JSON.stringify(SDGList));
             let selectedFramework;
@@ -234,7 +241,7 @@ class AppliedOrgFiltersList extends React.Component {
                 level1: { value: selectedFramework.level1Id, label: selectedFramework.level1 },
                 level2: { value: selectedFramework.id, label: selectedFramework.level2 }
             });
-        } else if (!Array.isArray(level2) && frameworkTag == frameworkTagList[0]) {
+        } else if (!Array.isArray(level2) && frameworkTag && (frameworkTag.label == frameworkTagList[0].label)) {
             this.setState({
                 level1: '',
                 level2: level2,
@@ -271,19 +278,15 @@ class AppliedOrgFiltersList extends React.Component {
         this.setState({ [field]: value });
     }
 
-    onUserChange(userMod) {
-        this.setState({ userMod });
-    }
-
-    onIndustryClsChange(industryCls) {
-        this.setState({ industryCls });
+    onSelectChange(field, value) {
+        this.setState({ [field]: value });
     }
 
     onFrameworkTagChange(value) {
         const { SPIList, SDGList } = this.props;
-        let frameworkList = (value === frameworkTagList[0]) ? JSON.parse(JSON.stringify(SPIList)) : JSON.parse(JSON.stringify(SDGList))
+        let frameworkList = (value && (value.label == frameworkTagList[0].label)) ? JSON.parse(JSON.stringify(SPIList)) : JSON.parse(JSON.stringify(SDGList))
         let level1 = [], level2 = [], level3 = [];
-        if (value === frameworkTagList[0]) {
+        if (value && (value.label == frameworkTagList[0].label)) {
             level3 = frameworkList.map(l3 => {
                 level1[(level1.length - 1)] && (level1[(level1.length - 1)].label == l3.level1) ? '' : level1.push({ value: l3.level1Id, label: l3.level1 });
                 level2[(level2.length - 1)] && (level2[(level2.length - 1)].label == l3.level2) ? '' : level2.push({ value: l3.level2Id, label: l3.level2 });
@@ -332,20 +335,23 @@ class AppliedOrgFiltersList extends React.Component {
     }
 
     clearAppliedFilters() {
-        this.props.setAppliedFilters([]);
+        this.props.setAppliedFilters(null);
         this.setState({
-            userMod: userList[0],
-            industryCls: industryClassification[0],
-            subIndustryCls: SubIndustryClassification[0],
-            frameworkTag: userList[0],
-            level1: userList[0],
-            level2: userList[0],
-            level3: userList[0],
+            userMod: [],
+            industryCls: '',
+            subIndustryCls: '',
+            frameworkTag: '',
+            level1: '',
+            level2: '',
+            level3: '',
             sector: [],
             status: [],
             priority: '',
             revenueRange: { min: 0, max: 100 },
-            assetsRange: { min: 0, max: 100 }
+            assetsRange: { min: 0, max: 100 },
+            level1List: [],
+            level2List: [],
+            level3List: []
         });
     }
 

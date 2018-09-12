@@ -1,10 +1,12 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { setAppliedFilters } from '../../../actions/orgLanding/orgFilterAction';
 
 class AppliedOrgFilters extends React.Component {
     constructor(props) {
         super(props);
+        this.removeFilter = this.removeFilter.bind(this);
     }
 
 
@@ -29,31 +31,36 @@ class AppliedOrgFilters extends React.Component {
 
     calculateTagCount(valueArr) {
         const { appliedFilterList } = this.props;
-        return appliedFilterList['status'] && appliedFilterList['sector'] ?
-            valueArr.length + appliedFilterList['status'].length + appliedFilterList['sector'].length : valueArr.length;
+        return valueArr.length + appliedFilterList['status'].length + appliedFilterList['sector'].length + appliedFilterList['userMod'].length;
     }
 
     createTag(valueArr) {
         const { appliedFilterList } = this.props;
         let count = 0;
-        let tagValues = appliedFilterList['status'] && appliedFilterList['sector'] ? [...valueArr, ...appliedFilterList['status'], ...appliedFilterList['sector']] : valueArr;
+        let flatUserModArray = appliedFilterList['userMod'].map(user => { return { type: 'userMod', value: user.label }; });
+        let flatStatusArray = appliedFilterList['status'].map(status => { return { type: 'status', value: status }; });
+        let flatSectorArray = appliedFilterList['sector'].map(sector => { return { type: 'sector', value: sector }; });
+        let tagValues = flatUserModArray && flatStatusArray && flatSectorArray ? [...valueArr, ...flatUserModArray, ...flatStatusArray, ...flatSectorArray] : valueArr;
         return tagValues.map((val, idx) => {
             if (val && count <= 2) {
                 count++;
-                return (<span key={idx} className="badge badge-pill badge-secondary"> {val}
-                    <a href="javascript:;" className=""><i className="icon-close"></i></a></span>)
+                return (<span key={idx} className="badge badge-pill badge-secondary"> {val.value}
+                    <a href="javascript:;" className="" onClick={() => this.removeFilter(val.type, val.value)}><i className="icon-close"></i></a></span>)
             }
         })
     }
     createMoreTag(valueArr) {
         const { appliedFilterList } = this.props;
         let count = 0;
-        let tagValues = appliedFilterList['status'] && appliedFilterList['sector'] ? [...valueArr, ...appliedFilterList['status'], ...appliedFilterList['sector']] : valueArr;
+        let flatUserModArray = appliedFilterList['userMod'].map(user => { return { type: 'userMod', value: user.label }; });
+        let flatStatusArray = appliedFilterList['status'].map(status => { return { type: 'status', value: status }; });
+        let flatSectorArray = appliedFilterList['sector'].map(sector => { return { type: 'sector', value: sector }; });
+        let tagValues = flatUserModArray && flatStatusArray && flatSectorArray ? [...valueArr, ...flatUserModArray, ...flatStatusArray, ...flatSectorArray] : valueArr;
         return tagValues.map((val, idx) => {
             if (val) {
                 if (count > 2) {
-                    return (<span key={idx} className="badge badge-pill badge-secondary"> {val}
-                    <a href="javascript:;" className=""><i className="icon-close"></i></a></span>)
+                    return (<span key={idx} className="badge badge-pill badge-secondary"> {val.value}
+                        <a href="javascript:;" className="" onClick={() => this.removeFilter(val.type, val.value)}><i className="icon-close"></i></a></span>)
                 }
                 count++;
             }
@@ -65,31 +72,81 @@ class AppliedOrgFilters extends React.Component {
         return Object.keys(appliedFilterList).map((filterKey, idx) => {
             switch (filterKey) {
                 case 'priority':
-                    return !appliedFilterList[filterKey] ? null : appliedFilterList[filterKey];
-                case 'userMod':
+                    return !appliedFilterList[filterKey] ? null : { type: filterKey, value: appliedFilterList[filterKey] };
                 case 'subIndustryCls':
                 case 'industryCls':
                 case 'frameworkTag':
                 case 'level1':
                 case 'level2':
                 case 'level3':
-                    return !appliedFilterList[filterKey] ? null : appliedFilterList[filterKey].label;
+                    return !appliedFilterList[filterKey] ? null : { type: filterKey, value: appliedFilterList[filterKey].label };
                 case 'revenueRange':
                 case 'assetsRange':
-                    return appliedFilterList[filterKey]['min'] + '- $' + appliedFilterList[filterKey]['max'];
+                    return { type: filterKey, value: `$ ${appliedFilterList[filterKey]['min']} - $ ${appliedFilterList[filterKey]['max']}` };
                 default:
                     break;
 
             }
         }).filter(key => key);
     }
+
+    removeFilter(type, value) {
+        const { appliedFilterList } = this.props;
+        let filterList = Object.assign({}, appliedFilterList);
+        Object.keys(filterList).map((filterKey, idx) => {
+            if (type == filterKey) {
+                switch (type) {
+                    case 'frameworkTag':
+                        filterList[type] = '';
+                        filterList['level1'] = '';
+                        filterList['level2'] = '';
+                        filterList['level3'] = '';
+                        break;
+                    case 'level1':
+                        filterList[type] = '';
+                        filterList['level2'] = '';
+                        filterList['level3'] = '';
+                    case 'level2':
+                        filterList[type] = '';
+                        filterList['level3'] = '';
+                    case 'level3':
+                    case 'priority':
+                    case 'subIndustryCls':
+                    case 'industryCls':
+                        filterList[type] = '';
+                        break;
+                    case 'revenueRange':
+                    case 'assetsRange':
+                        filterList[type] = { min: 0, max: 100 };
+                        break;
+                    case 'userMod':
+                        filterList[type] = filterList[type].filter(item => item.label !== value);
+                        break;
+                    case 'status':
+                    case 'sector':
+                        filterList[type].splice(filterList[type].indexOf(value), 1);
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+        });
+        this.props.setAppliedFilters(filterList);
+        console.log(type, value);
+
+    }
 }
 const mapStateToProps = state => ({
     appliedFilterList: state.orgFilter.appliedFilterList
 })
 
+const mapDispatchToProps = dispatch => bindActionCreators({
+    setAppliedFilters
+}, dispatch)
+
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
 )(AppliedOrgFilters);
 

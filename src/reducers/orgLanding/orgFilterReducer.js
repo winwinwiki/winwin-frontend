@@ -2,7 +2,7 @@ import {SET_APPLIED_FILTER,
     SET_APPLIED_FILTER_FLAG, SET_FILTERED_LIST_ERROR, SET_FILTERED_LIST_SUCCESS, SET_FILTERED_LIST_PENDING} from '../../constants/dispatch';
   
   const initialState = {
-    appliedFilterList: [],
+    appliedFilterList: null,
     isFilteredListPending: false,
     isFilteredListSuccess: false,
     isFilteredListError: null,

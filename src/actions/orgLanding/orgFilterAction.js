@@ -4,7 +4,7 @@ import {callFilterOrgApi} from '../../api/orgLanding/orgFilterAction';
 
 export const setAppliedFilters = (filterList) => {
     return dispatch => {
-        dispatch(setAplliedFiltersList(filterList));
+        dispatch(setAppliedFiltersList(filterList));
         fetchOrgList(dispatch, filterList);
     }
 }
@@ -37,7 +37,7 @@ export const showAppliedFilterModal = (isAppliedFilterVisible) => {
 }
 
 
-function setAplliedFiltersList(appliedFilterList) {
+function setAppliedFiltersList(appliedFilterList) {
     return {
         type: SET_APPLIED_FILTER,
         appliedFilterList

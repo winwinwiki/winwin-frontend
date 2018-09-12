@@ -99,7 +99,7 @@ class OrgList extends React.Component {
 
     render() {
         const { entity, orgList, activeButton, searchText } = this.state;
-        const { isFetchOrgSuccess } = this.props;
+        const { isFetchOrgSuccess, appliedFilterList } = this.props;
         if (!isFetchOrgSuccess || !orgList) {
             return null;
         }
@@ -118,9 +118,9 @@ class OrgList extends React.Component {
                         {orgList.length} organizations found
             </div>
                     <AppliedOrgFilters />
-                    <div className="clear-filters">
+                    {appliedFilterList && <div className="clear-filters">
                         <a href="javascript:;" onClick={this.resetAllFilters} className="text-primary">Clear All Filters</a>
-                    </div>
+                    </div>}
                 </div>
                 <div>
                     <ReactTable
@@ -242,7 +242,7 @@ class OrgList extends React.Component {
 
     resetAllFilters() {
         this.props.fetchFilteredOrgList([]);
-        this.props.setAppliedFilters([]);
+        this.props.setAppliedFilters(null);
         this.setState({
             activeButton: ['All']
         });
