@@ -54,8 +54,8 @@ class RegionsServed extends React.Component {
                                         fixtures={[]}
                                         onSuggestSelect={this.onSuggestSelect} />
                                 }
-                                {isEdited && regionsServedList.map(region =>
-                                    <div className="row mt-2">
+                                {isEdited && regionsServedList.map((region, idx) =>
+                                    <div className="row mt-2" key={idx}>
                                         <div className="col-sm-22">
                                             {region.city}, {region.state}, {region.country}
                                         </div>
@@ -64,7 +64,7 @@ class RegionsServed extends React.Component {
                                         </div>
                                     </div>)
                                 }
-                                {!isEdited && regionsServedList.map(region => <li className="mt-2"> {region.city}, {region.state}, {region.country} </li>)}
+                                {!isEdited && regionsServedList.map((region, idx) => <li className="mt-2" key={idx}> {region.city}, {region.state}, {region.country} </li>)}
                             </ul>
                         </form>
 

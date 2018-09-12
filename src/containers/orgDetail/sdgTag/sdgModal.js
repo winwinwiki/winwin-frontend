@@ -15,7 +15,7 @@ class SDGModal extends React.Component {
         const { searchText } = this.state;
         const { SDGList, SDGData } = this.props;
         let localSDGList = this.desiredSDGList();
-        if(!SDGList || !SDGData) { return null}
+        if (!SDGList || !SDGData) { return null }
         return (
             <div className="modal progress-index-modal fade bd-example-modal-lg" id="sdgModal" tabIndex="-1"
                 role="dialog" aria-labelledby="sdgModalLabel" aria-hidden="true">
@@ -46,14 +46,19 @@ class SDGModal extends React.Component {
                             <div className="modal-body dashboard-content progress-index-options">
                                 <div className="d-flex flex-column h-100 pt-4">
                                     <div className="row d-flex">
-                                        {Object.keys(localSDGList).map(level1 =>
-                                            <React.Fragment>
+                                        {Object.keys(localSDGList).map((level1, idx1) =>
+                                            <React.Fragment key={idx1}>
                                                 <div className="col-sm-8">
                                                     <p className="border-bottom pb-3">{level1}</p>
                                                     <div className="item-list mb-4">
-                                                        {localSDGList[level1].map(level2 =>
-                                                            <div className="custom-control custom-checkbox">
-                                                                <input id={level2.id} type="checkbox" className="custom-control-input" checked={this.isChecked(level2.value)} />
+                                                        {localSDGList[level1].map((level2, idx2) =>
+                                                            <div className="custom-control custom-checkbox" key={idx2}>
+                                                                <input
+                                                                    id={level2.id}
+                                                                    type="checkbox"
+                                                                    className="custom-control-input"
+                                                                    checked={this.isChecked(level2.value)}
+                                                                    onChange={this.onChange} />
                                                                 <label htmlFor={level2.id} className="custom-control-label"> {level2.value}</label>
                                                             </div>
                                                         )}
@@ -70,12 +75,12 @@ class SDGModal extends React.Component {
             </div>
         );
     }
-    desiredSDGList(){
+    desiredSDGList() {
         const { SDGList } = this.props;
         let sdg = {};
         SDGList.map(data => {
             sdg[data.level1] ? '' : sdg[data.level1] = [];
-            sdg[data.level1].push({id:data.id, value:data.level2});
+            sdg[data.level1].push({ id: data.id, value: data.level2 });
         });
         return sdg;
     }

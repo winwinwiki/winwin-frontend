@@ -2,7 +2,7 @@ import React from 'react';
 
 const ResourceModal = (props) => {
     return (
-        <div className="modal fade" id="resourceModal" tabindex="-1" role="dialog" aria-labelledby="resourceModalLabel" aria-hidden="true">
+        <div className="modal fade" id="resourceModal" tabIndex="-1" role="dialog" aria-labelledby="resourceModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered" role="document">
                 <div className="modal-content">
                     <div className="dashboard-container">

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 class SPIModal extends React.Component {
     constructor(props) {
         super(props);
-        this.state={
+        this.state = {
             searchText: ''
         }
         this.onChange = this.onChange.bind(this);
@@ -16,7 +16,7 @@ class SPIModal extends React.Component {
         const { searchText } = this.state;
         const { SPIList, SPIData } = this.props;
         let localSPIList = this.desiredSPIList();
-        if(!SPIList || !SPIData) {return null;}
+        if (!SPIList || !SPIData) { return null; }
         return (
             <div className="modal progress-index-modal fade bd-example-modal-lg" id="spiModal" tabIndex="-1"
                 role="dialog" aria-labelledby="spiModalLabel" aria-hidden="true">
@@ -47,18 +47,23 @@ class SPIModal extends React.Component {
                             <div className="modal-body dashboard-content progress-index-options">
                                 <div className="d-flex flex-column h-100 pt-4">
                                     <div className="row d-flex">
-                                        {Object.keys(localSPIList).map(level1 =>
-                                            <React.Fragment>
+                                        {Object.keys(localSPIList).map((level1, idx1) =>
+                                            <React.Fragment key={idx1}>
                                                 <div className="col-sm-24 mb-3">
                                                     <h3>{level1}</h3>
                                                 </div>
-                                                {Object.keys(localSPIList[level1]).map(level2 =>
-                                                    <div className="col">
+                                                {Object.keys(localSPIList[level1]).map((level2, idx2) =>
+                                                    <div className="col" key={idx2}>
                                                         <p className="border-bottom pb-3">{level2}</p>
                                                         <div className="item-list mb-4">
-                                                            {localSPIList[level1][level2].map(level3 =>
-                                                                <div className="custom-control custom-checkbox">
-                                                                    <input id={level3.id} type="checkbox" className="custom-control-input" checked={this.isChecked(level3.value)}/>
+                                                            {localSPIList[level1][level2].map((level3, idx3) =>
+                                                                <div className="custom-control custom-checkbox" key={idx3}>
+                                                                    <input
+                                                                        id={level3.id}
+                                                                        type="checkbox"
+                                                                        className="custom-control-input"
+                                                                        checked={this.isChecked(level3.value)}
+                                                                        onChange={this.onChange} />
                                                                     <label htmlFor={level3.id} className="custom-control-label"> {level3.value}</label>
                                                                 </div>
                                                             )}
@@ -77,20 +82,20 @@ class SPIModal extends React.Component {
             </div>
         );
     }
-    desiredSPIList(){
+    desiredSPIList() {
         const { SPIList } = this.props;
         let spi = {};
         SPIList.map(data => {
             spi[data.level1] ? '' : spi[data.level1] = {};
             spi[data.level1][data.level2] ? '' : spi[data.level1][data.level2] = [];
-            spi[data.level1][data.level2].push({id:data.id, value:data.level3});
+            spi[data.level1][data.level2].push({ id: data.id, value: data.level3 });
         });
         return spi;
     }
-    isChecked(spiTag){
+    isChecked(spiTag) {
         const { SPIData } = this.props;
-        let filterExist =  SPIData.filter(tag => tag["level3"].toLowerCase() == spiTag.toLowerCase());
-        return filterExist? filterExist.length > 0: false;
+        let filterExist = SPIData.filter(tag => tag["level3"].toLowerCase() == spiTag.toLowerCase());
+        return filterExist ? filterExist.length > 0 : false;
     }
     onChange() {
 

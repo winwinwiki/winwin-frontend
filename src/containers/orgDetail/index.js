@@ -46,7 +46,7 @@ class OrgDetail extends React.Component {
             <React.Fragment>
                 <div className="py-4 border-bottom d-flex justify-content-between">
                     <div aria-label="breadcrumb" className="col breadcrumb-container pr-0">
-                        <ol class="breadcrumb row flex-row flex-nowrap pl-0">
+                        <ol className="breadcrumb row flex-row flex-nowrap pl-0">
                             <li className="breadcrumb-item pl-0 pr-4"><h1>A</h1></li>
                             <li className="breadcrumb-item col" title="Administration for children &amp; families">
                                 <h2 className="float-left">Administration for children &amp; families</h2>

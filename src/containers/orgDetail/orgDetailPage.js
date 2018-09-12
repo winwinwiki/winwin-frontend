@@ -52,7 +52,7 @@ class OrgDetailPage extends React.Component {
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="orgdescription">Organization Description</label>
-                                        <textarea className="form-control" name="" id="orgdescription" readOnly={readOnly} rows="5">{description}</textarea>
+                                        <textarea className="form-control" name="" id="orgdescription" readOnly={readOnly} rows="5" value={description}></textarea>
                                     </div>
                                     <div className="section-title border-bottom pb-3 mb-3">Revenue</div>
                                     {totalRevenue.map((revenue, index) => <React.Fragment key={index}>
