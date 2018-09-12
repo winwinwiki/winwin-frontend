@@ -10,9 +10,12 @@ class RegionsServed extends React.Component {
         super(props);
         this._geoSuggest = null;
         this.state = {
-            location: null
+            location: null,
+            isEdited: false
         }
         this.onSuggestSelect = this.onSuggestSelect.bind(this);
+        this.deleteRegion = this.deleteRegion.bind(this);
+        this.onEdit = this.onEdit.bind(this);
     }
 
     componentDidMount() {
@@ -20,8 +23,9 @@ class RegionsServed extends React.Component {
     }
 
     render() {
-        const {regionsServedList, isRegionsServedSuccess} = this.props;
-        if(!isRegionsServedSuccess) { return null; }
+        const { isEdited } = this.state;
+        const { regionsServedList, isRegionsServedSuccess } = this.props;
+        if (!isRegionsServedSuccess) { return null; }
         return (
             <section className="dashboard-content p-0 py-3 org-details-container">
                 <div className="col-md-18 m-auto card">
@@ -33,23 +37,53 @@ class RegionsServed extends React.Component {
                             Regions Served
                         </div>
                         <form>
-                            <Geosuggest
-                                ref={el => this._geoSuggest = el}
-                                placeholder="Search regions"
-                                initialValue=""
-                                className="form-control position-relative"
-                                fixtures={[]}
-                                onSuggestSelect={this.onSuggestSelect} />
-                        </form>
-                        <div>
-                            <ul>
-                            {regionsServedList.map(region =><li> {region.city}, {region.state}, {region.country} </li> ) }
+                            <ul className="list-group list-group-flush">
+                                {!isEdited && <li className="list-group-item px-0">
+                                    <div className="row">
+                                        <ul className="action-icons">
+                                            <li><a href="javascript:;" onClick={this.onEdit}><i className="icon-edit"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </li>}
+                                {isEdited &&
+                                    <Geosuggest
+                                        ref={el => this._geoSuggest = el}
+                                        placeholder="Search regions"
+                                        initialValue=""
+                                        className="form-control position-relative mt-2"
+                                        fixtures={[]}
+                                        onSuggestSelect={this.onSuggestSelect} />
+                                }
+                                {isEdited && regionsServedList.map(region =>
+                                    <div className="row mt-2">
+                                        <div className="col-sm-22">
+                                            {region.city}, {region.state}, {region.country}
+                                        </div>
+                                        <div className="col-sm-2">
+                                            <a href="javascript:;" className="icon-close" onClick={() => this.deleteRegion(region.id)}> </a>
+                                        </div>
+                                    </div>)
+                                }
+                                {!isEdited && regionsServedList.map(region => <li className="mt-2"> {region.city}, {region.state}, {region.country} </li>)}
                             </ul>
-                        </div>
+                        </form>
+
+
+
                     </div>
                 </div>
             </section>
         )
+    }
+
+    onEdit(){
+        this.setState({
+            isEdited: true
+        });
+    }
+
+    deleteRegion(id) {
+
     }
 
     onSuggestSelect(suggest) {
