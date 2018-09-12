@@ -133,8 +133,6 @@ class AppliedOrgFilters extends React.Component {
             }
         });
         this.props.setAppliedFilters(filterList);
-        console.log(type, value);
-
     }
 }
 const mapStateToProps = state => ({

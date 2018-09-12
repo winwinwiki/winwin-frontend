@@ -144,7 +144,7 @@ class UserProfile extends React.Component {
                                         accept="image/*"
                                         onDrop={this.onDrop}
                                         text="Upload Photo"/>
-                                    : <div class="profilePhoto">Profile Photo</div>}
+                                    : <div className="profilePhoto">Profile Photo</div>}
                             </div>
                         </div>
                         {isEditable ? <div className="row justify-content-center footer-actions active">

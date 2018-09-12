@@ -49,7 +49,7 @@ class AppliedOrgFiltersList extends React.Component {
 
 
     componentWillReceiveProps(nextProps){
-        console.log('modal open');
+        // console.log('modal open');
         if (nextProps.appliedFilterList && (JSON.stringify(nextProps.appliedFilterList) !== JSON.stringify(this.state))) {
             this.setState(nextProps.appliedFilterList);
         }
@@ -145,7 +145,7 @@ class AppliedOrgFiltersList extends React.Component {
                                 formatLabel={value => `$ ${value}`}
                                 value={revenueRange}
                                 onChange={value => this.setState({ revenueRange: value })}
-                                onChangeComplete={value => console.log(value)} />
+                                onChangeComplete={value => {}} />
                         </div>
                         <h5>Assets</h5>
                         <div className="my-4">
@@ -156,7 +156,7 @@ class AppliedOrgFiltersList extends React.Component {
                                 formatLabel={value => `$ ${value}`}
                                 value={assetsRange}
                                 onChange={value => this.setState({ assetsRange: value })}
-                                onChangeComplete={value => console.log(value)} />
+                                onChangeComplete={value => {}} />
                         </div>
                     </div>
                     <div className="col">

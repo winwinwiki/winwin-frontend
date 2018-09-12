@@ -88,7 +88,7 @@ class RegionsServed extends React.Component {
 
     onSuggestSelect(suggest) {
         this.props.setOrgRegionsServed(suggest);
-        console.log(suggest)
+        // console.log(suggest)
         this.setState({
             location: suggest
         });
