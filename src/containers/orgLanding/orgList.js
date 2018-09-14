@@ -3,6 +3,7 @@ import { push } from 'react-router-redux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ReactTable from "react-table";
+// import matchSorter from 'match-sorter'
 import 'react-table/react-table.css'
 
 import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
@@ -19,7 +20,7 @@ const buttonList = [{ id: 'all', name: 'All' }, { id: 'public', name: 'Public' }
 const columns = [{
     id: 'select',
     Header: <span><input type="checkbox" /></span>,
-    accessor: 'name',
+    accessor: 'id',
     sortable: false,
     Cell: () => <div className="centerText"><input type="checkbox" /></div>,
     width: 50
@@ -27,8 +28,15 @@ const columns = [{
     id: 'org',
     Header: 'Organisation Name',
     accessor: 'name',
+    Cell: (row) => <div className="centerText">{row.value}</div>,
     sortable: true,
-    Cell: (row) => <div className="centerText">{row.value}</div>
+    // filterable: true, 
+    // filterMethod: (filter, rows) => {
+    //     console.log(filter),
+    //     console.log(rows);
+    //     return matchSorter(rows, filter.value, {keys: ['org']})
+    // },
+    // filterAll: true
 }, {
     id: 'sector',
     Header: 'Sector',
@@ -100,8 +108,8 @@ class OrgList extends React.Component {
     render() {
         const { entity, orgList, activeButton, searchText } = this.state;
         const { isFetchOrgPending, isFetchOrgSuccess, appliedFilterList } = this.props;
-        if(isFetchOrgPending){
-            return <LoadingSpinner/>
+        if (isFetchOrgPending) {
+            return <LoadingSpinner />
         }
         if (!isFetchOrgSuccess || !orgList) {
             return null;
@@ -186,10 +194,10 @@ class OrgList extends React.Component {
         if (filter['sector'] === "All") {
             newSectors = ["All"];
         } else {
-            newSectors.indexOf("All") > -1 ? newSectors.splice(newSectors.indexOf("All"),1): '';
+            newSectors.indexOf("All") > -1 ? newSectors.splice(newSectors.indexOf("All"), 1) : '';
             newSectors.indexOf(filter['sector']) > -1 ? newSectors.splice(newSectors.indexOf(filter['sector']), 1) : newSectors.push(filter['sector']);
         }
-        newSectors.length === 0 ? newSectors.push("All"): '';
+        newSectors.length === 0 ? newSectors.push("All") : '';
         this.props.fetchFilteredOrgList(newSectors);
         // const { orgList } = this.props;
         // let orgListCopy = JSON.parse(JSON.stringify(orgList));
