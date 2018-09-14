@@ -12,9 +12,8 @@ import Dropdown from '../ui/dropdown';
 import Search from '../ui/searchBar';
 import ButtonGroup from '../ui/buttonGroup';
 
-const actionList = ['Make Active', 'Make Inactive', 'Edit User', 'Delete User'];
+const actionList = ['Make Active', 'Make Inactive'];
 const buttonList = [{ id: 'all', name: 'All' }, { id: 'active', name: 'Active' }, { id: 'inactive', name: 'Inactive' }]
-const uploadOptions = ['Create Users', 'Update Users'];
 const columns = [{
     id: 'select',
     Header: <span><input type="checkbox" /></span>,
@@ -63,6 +62,7 @@ class UserList extends React.Component {
         this.onSingleRowSelect = this.onSingleRowSelect.bind(this);
         this.onColumnSelect = this.onColumnSelect.bind(this);
         this.onEditUser = this.onEditUser.bind(this);
+        this.onCreateUserDownload = this.onCreateUserDownload.bind(this);
     }
 
     componentDidMount() {
@@ -95,7 +95,7 @@ class UserList extends React.Component {
     }
 
     render() {
-        const { action, userList, activeButton, searchText, upload } = this.state;
+        const { userList, activeButton, searchText, upload } = this.state;
         const { isFetchUserSuccess } = this.props;
         if (!isFetchUserSuccess || !userList) {
             return null;
@@ -105,15 +105,19 @@ class UserList extends React.Component {
 
                 <div className="d-flex align-content-center border-bottom py-3">
                     <Search placeholder="Search by name or team" onChange={this.onChange} value={searchText} />
+
                     <ButtonGroup activeButton={activeButton} buttonList={buttonList} onChange={this.setActiveButton} />
+
                     <div className="dropdown ml-auto">
-                        <button id="uploadUsers" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-primary dropdown-toggle btn-block btn-sm">Upload Users</button>
+                        <button id="uploadUsers" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" className="btn btn-primary dropdown-toggle btn-block btn-sm">Create Users</button>
                         <div aria-labelledby="uploadUsers" className="dropdown-menu">
-                            {uploadOptions && uploadOptions.map((item, idx) => <a href="javascript:;" key={idx} data-toggle="modal" data-target="#uploadUsersModal" className="dropdown-item" onClick={() => this.onDropdownChange('upload', item)}>{item}</a>)}
+                            <a href="javascript:;" className="dropdown-item" onClick={this.onCreateUserDownload}>Download Template</a>
+                            <a href="javascript:;" data-toggle="modal" data-target="#uploadUsersModal" className="dropdown-item">Upload Template</a>
                         </div>
                     </div>
-                </div>
 
+
+                </div>
                 <div className="d-flex py-3 align-items-center applied-filters-container">
                     <Dropdown
                         placeholder="Actions"
@@ -130,7 +134,7 @@ class UserList extends React.Component {
                         pageSize={10}
                         data={userList}
                         columns={columns}
-                        className=""
+                        className="-highlight"
                         sortable={true}
                         multiSort={true}
                         defaultSorted={[{
@@ -169,7 +173,7 @@ class UserList extends React.Component {
                         }
                     />
                 </div>
-                <UploadUserModal action={upload} />
+                <UploadUserModal />
             </section>
         )
     }
@@ -207,6 +211,18 @@ class UserList extends React.Component {
         if (field == "action" && value == "Edit User") {
             this.onEditUser();
         }
+    }
+
+    onCreateUserDownload() {
+        let createUser = [{
+            "firstname": "",
+            "lastname": "",
+            "email": "",
+            "role": "",
+            "location": "",
+            "status": ""
+        }];
+        this.downloadCSVFile("Create-User.csv", createUser);
     }
 
     onEditUser() {

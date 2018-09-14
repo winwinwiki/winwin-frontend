@@ -1,8 +1,8 @@
 import CommonUtil from '../commonUtil';
 
 export function callFetchUserApi(callback) {
-    // let url = CommonUtil.createUrl('/user');
-    let url = "http://winwinapi.ramprasadg.com/user/1";
+    let url = CommonUtil.createUrl('/user');
+    // let url = "http://winwinapi.ramprasadg.com/user/1";
         // fetch(url, {
         //     method: 'GET',
         //     headers: CommonUtil.getToken()
