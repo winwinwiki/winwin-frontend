@@ -6,7 +6,7 @@ import ReactTable from "react-table";
 import 'react-table/react-table.css'
 
 import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
-
+import LoadingSpinner from '../common/loadingSpinner';
 import OrgFilters from './orgFilter';
 import AppliedOrgFilters from './appliedOrgFilters/index';
 import Dropdown from '../ui/dropdown';
@@ -99,7 +99,10 @@ class OrgList extends React.Component {
 
     render() {
         const { entity, orgList, activeButton, searchText } = this.state;
-        const { isFetchOrgSuccess, appliedFilterList } = this.props;
+        const { isFetchOrgPending, isFetchOrgSuccess, appliedFilterList } = this.props;
+        if(isFetchOrgPending){
+            return <LoadingSpinner/>
+        }
         if (!isFetchOrgSuccess || !orgList) {
             return null;
         }
@@ -180,13 +183,13 @@ class OrgList extends React.Component {
     filterOrgList(filter) {
         const { activeButton } = this.state;
         let newSectors = activeButton.slice();
-        if (filter['sector'] == "All") {
+        if (filter['sector'] === "All") {
             newSectors = ["All"];
         } else {
             newSectors.indexOf("All") > -1 ? newSectors.splice(newSectors.indexOf("All"),1): '';
             newSectors.indexOf(filter['sector']) > -1 ? newSectors.splice(newSectors.indexOf(filter['sector']), 1) : newSectors.push(filter['sector']);
         }
-        newSectors.length == 0 ? newSectors.push("All"): '';
+        newSectors.length === 0 ? newSectors.push("All"): '';
         this.props.fetchFilteredOrgList(newSectors);
         // const { orgList } = this.props;
         // let orgListCopy = JSON.parse(JSON.stringify(orgList));

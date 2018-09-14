@@ -82,7 +82,7 @@ class AppliedOrgFilters extends React.Component {
                     return !appliedFilterList[filterKey] ? null : { type: filterKey, value: appliedFilterList[filterKey].label };
                 case 'revenueRange':
                 case 'assetsRange':
-                    return { type: filterKey, value: `$ ${appliedFilterList[filterKey]['min']} - $ ${appliedFilterList[filterKey]['max']}` };
+                    return !appliedFilterList[filterKey]['max'] ? null : { type: filterKey, value: `$ ${appliedFilterList[filterKey]['min']} - $ ${appliedFilterList[filterKey]['max']}` };
                 default:
                     break;
 
@@ -117,7 +117,7 @@ class AppliedOrgFilters extends React.Component {
                         break;
                     case 'revenueRange':
                     case 'assetsRange':
-                        filterList[type] = { min: 0, max: 100 };
+                        filterList[type]['max'] = 0;
                         break;
                     case 'userMod':
                         filterList[type] = filterList[type].filter(item => item.label !== value);

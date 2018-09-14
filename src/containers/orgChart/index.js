@@ -15,7 +15,7 @@ class OrgChart extends React.Component {
         }
     }
     componentDidMount() {
-        const { orgChartData, visibleLevel } = this.state;
+        const { visibleLevel } = this.state;
         const { orgHierarchy } = this.props;
         this.props.fetchOrgHierarchy(this.props.match.params.id);
         if (Object.keys(orgHierarchy).length) {
