@@ -3,7 +3,7 @@ import { push } from 'react-router-redux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ReactTable from "react-table";
-// import matchSorter from 'match-sorter'
+import matchSorter from 'match-sorter'
 import 'react-table/react-table.css'
 
 import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
@@ -30,13 +30,13 @@ const columns = [{
     accessor: 'name',
     Cell: (row) => <div className="centerText">{row.value}</div>,
     sortable: true,
-    // filterable: true, 
-    // filterMethod: (filter, rows) => {
-    //     console.log(filter),
-    //     console.log(rows);
-    //     return matchSorter(rows, filter.value, {keys: ['org']})
-    // },
-    // filterAll: true
+    filterable: true, 
+    filterMethod: (filter, rows) => {
+        console.log(filter),
+        console.log(rows);
+        return matchSorter(rows, filter.value, {keys: [{threshold: matchSorter.rankings.CONTAINS, key: 'org'}]})
+    },
+    filterAll: true
 }, {
     id: 'sector',
     Header: 'Sector',
