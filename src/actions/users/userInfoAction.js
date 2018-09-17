@@ -7,14 +7,14 @@ export const fetchUserInfo = () => {
         dispatch(setUserInfoSuccess(false, []));
         dispatch(setUserInfoError(null));
 
-        callFetchUserApi((error, userInfo) => {
+        return callFetchUserApi().then(
+            response => {
             dispatch(setUserInfoPending(false));
-            if (!error) {
-                dispatch(setUserInfoSuccess(true, userInfo));
-            } else {
+                dispatch(setUserInfoSuccess(true, response));
+            }, error => {
                 dispatch(setUserInfoError(error));
             }
-        });
+        );
     }
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Home = (props) => {
+const Auth = (props) => {
     return (
       <div className="main-content d-flex flex-grow-1">
         <main className="section-login p-3 flex-fill d-flex align-items-center">
@@ -19,4 +19,4 @@ const Home = (props) => {
     )
 }
 
-export default Home;
+export default Auth;

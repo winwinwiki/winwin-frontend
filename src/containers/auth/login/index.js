@@ -8,6 +8,7 @@ import {
     onLogin,
     validateLoginForm
 } from '../../../actions/auth/loginAction';
+import {fetchUserInfo} from '../../../actions/users/userInfoAction';
 
 
 class Login extends React.Component {
@@ -83,6 +84,7 @@ class Login extends React.Component {
         // e.preventDefault();
         const {email, password} = this.state;
         const {formError} = this.props;
+        let _self = this;
         if(!email || !password) {
             this.props.validateLoginForm('email', email);
             this.props.validateLoginForm('password', password);
@@ -96,9 +98,23 @@ class Login extends React.Component {
                 password: ''
             });
             if(this.props.isLoginSuccess) { 
-                this.props.changePage();
+                this.props.fetchUserInfo().then(
+                res => {
+                    _self.changePage()
+                },
+                error => {}
+                );
             }
         });
+    }
+
+    changePage(){
+        const {userInfo} = this.props;
+        switch (userInfo.role) {
+            case 'admin':
+            case 'seeder':
+                this.props.changePage('/organizations');
+        }
     }
 }
 
@@ -106,13 +122,15 @@ const mapStateToProps = state => ({
     isLoginPending: state.login.isLoginPending,
     isLoginSuccess: state.login.isLoginSuccess,
     loginError: state.login.loginError,
-    formError: state.login.formError
+    formError: state.login.formError,
+    userInfo: state.userInfo.userInfo
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    changePage: () => push('/organizations'),
+    changePage: (page) => push(page),
     onLogin,
-    validateLoginForm
+    validateLoginForm,
+    fetchUserInfo
 }, dispatch)
 
 export default connect(

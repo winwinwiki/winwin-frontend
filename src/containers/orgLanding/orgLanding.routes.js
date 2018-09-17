@@ -1,6 +1,4 @@
 import React from 'react';
-import { Route, BrowserRouter } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Switch } from 'react-router';
 import PrivateRoute from '../privateRouter';
