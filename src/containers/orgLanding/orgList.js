@@ -32,8 +32,8 @@ const columns = [{
     sortable: true,
     filterable: true, 
     filterMethod: (filter, rows) => {
-        console.log(filter),
-        console.log(rows);
+        // console.log(filter),
+        // console.log(rows);
         return matchSorter(rows, filter.value, {keys: [{threshold: matchSorter.rankings.CONTAINS, key: 'org'}]})
     },
     filterAll: true

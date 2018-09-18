@@ -39,14 +39,14 @@ class Notes extends React.Component {
                         <h3>{this.props.type} Description</h3>
                         <p>Arts center conducts classes on any artistic or cultural topics ranging from ?crafts, dance, singing, painting. Camps for youth and adults and events ?open to the public. They also offer open space for private events.</p>
 
-                        <div className="section-title border-bottom pb-3 mb-3">
+                        {(notesList.length > 0) && <div className="section-title border-bottom pb-3 mb-3">
                             Notes
-                        </div>
+                        </div>}
                         <form>
                             <ul className="list-group list-group-flush">
                                 {notesList.map(note => <Note key={note.id} data={note} />)}
-                                <li className="list-group-item border-0 px-0 pt-4">
-                                    {!isAddNew ? <a href="javascript:;" onClick={this.addNewNote}><i className="icon-add mr-2"></i> Add Another</a>
+                                {(notesList.length === 0 ) && <li className="list-group-item border-0 px-0 pt-4">
+                                    {!isAddNew ? <a href="javascript:;" onClick={this.addNewNote}><i className="icon-add mr-2"></i> Add Note</a>
                                         : <React.Fragment>
                                             <div className="row">
                                                 <div className="col">
@@ -61,7 +61,7 @@ class Notes extends React.Component {
                                                 <button className="btn btn-sm btn-primary" onClick={() => this.saveNewNote()}>Save</button>
                                             </div>
                                         </React.Fragment>}
-                                </li>
+                                </li>}
                             </ul>
                         </form>
                     </div>
