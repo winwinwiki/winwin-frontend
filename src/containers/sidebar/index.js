@@ -18,6 +18,10 @@ const subNavOptions = [
     },{
         title: 'SDG Tag',
         path: 'sdg-tags'
+    },
+    {
+        title: 'New Page',
+        path: 'new-page'
     }
 ];
 
@@ -54,6 +58,8 @@ class SideBar extends React.Component{
             this.setState({activeNav: `${this.props.type}-details`, activeSubNav: "spi-tags"});
         } else if(this.props.history.location.pathname.indexOf('sdg-tags')>-1){
             this.setState({activeNav: `${this.props.type}-details`, activeSubNav: "sdg-tags"});
+        } else if(this.props.history.location.pathname.indexOf('new-page')>-1){
+            this.setState({activeNav: `${this.props.type}-details`, activeSubNav: "new-page"});
         }
 
     }

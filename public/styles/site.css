@@ -6463,7 +6463,7 @@ icon-font Webfont
 .dropdown-with-searchbox .dropdown-item.selected:before,
 .ReactTable .rt-thead .rt-th.-sort-asc:before,
 .ReactTable .rt-thead .rt-th.-sort-desc:before,
-.ReactTable.-highlight .rt-tbody .rt-tr:not(.-padRow):hover:after,
+.ReactTable.-highlight .rt-tbody .rt-tr:not(.-padRow):hover > .rt-td:last-child span:after,
 .table th.sortable:before,
 *[class^='icon-'] {
   font-family: 'icon-font';
@@ -7828,7 +7828,7 @@ textarea {
   position: relative; }
   .ReactTable.-highlight .rt-tbody .rt-tr:not(.-padRow):hover {
     background: #9DE2EF; }
-    .ReactTable.-highlight .rt-tbody .rt-tr:not(.-padRow):hover:after {
+    .ReactTable.-highlight .rt-tbody .rt-tr:not(.-padRow):hover > .rt-td:last-child span:after {
       content: "";
       position: absolute;
       right: 12px;
@@ -8004,6 +8004,17 @@ h5.modal-title {
     display: inline-block; }
     .action-icons li + li {
       margin-left: 10px; }
+
+.readOnlyTextarea {
+  background-color: #EBEBEC;
+  padding: 0.375rem 0.875rem;
+  background-clip: padding-box;
+  border: 1px solid #E6E6E6;
+  border-radius: 0.25rem;
+  line-height: 1.625rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #9C9C9C; }
 
 .program-details-container {
   background-color: #F2F2F2; }

@@ -43,6 +43,13 @@ const columns = [{
     accessor: 'team',
     sortable: false,
     Cell: (row) => <div className="centerText">{row.value}</div>
+},{
+    id: 'delete',
+    Header: '',
+    accessor: 'id',
+    sortable: false,
+    Cell: (row) => <span className="centerText"></span>,
+    width: 50
 }]
 
 class UserList extends React.Component {
@@ -144,10 +151,11 @@ class UserList extends React.Component {
                         getTdProps={(state, rowInfo, column) => {
                             return {
                                 onClick: (e) => {
-                                    if (column.id !== 'select') {
+                                    if (column.id !== 'select' && column.id !== 'delete') {
                                         this.changePage(rowInfo.original.id);
-                                    } else {
+                                    } else if(column.id !== 'select'){
                                         this.onSingleRowSelect(rowInfo.original.id, e.target.checked);
+                                    } else if(column.id !== 'delete'){
                                     }
                                 },
                                 style: {
@@ -159,7 +167,7 @@ class UserList extends React.Component {
                         getTheadThProps={(state, rowInfo, column) => {
                             return {
                                 onClick: (e) => {
-                                    if (column.id == 'select') {
+                                    if (column.id === 'select') {
                                         this.onColumnSelect(e.target.checked);
                                     }
                                 },

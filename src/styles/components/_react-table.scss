@@ -554,14 +554,16 @@ $border_left_color_2: #f7f7f7;
         &:hover {
           background: $table-hover-bg;
 
-          &:after{
-            @include icon-exit-contain;
-            position: absolute;
-            right: 12px;
-            cursor: pointer;
-            top: 50%;
-            @include transform(translate(0, -50%));
-            font-size: 12px;
+          &>.rt-td:last-child{
+            span:after{
+              @include icon-exit-contain;
+              position: absolute;
+              right: 12px;
+              cursor: pointer;
+              top: 50%;
+              @include transform(translate(0, -50%));
+              font-size: 12px;
+            }
           }
         }
       }

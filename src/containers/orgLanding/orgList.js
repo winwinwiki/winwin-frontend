@@ -63,6 +63,14 @@ const columns = [{
     accessor: 'industryCls',
     sortable: false,
     Cell: (row) => <div className="centerText">{row.value}</div>
+},
+{
+    id: 'delete',
+    Header: '',
+    accessor: 'id',
+    sortable: false,
+    Cell: (row) => <span className="centerText"></span>,
+    width: 50
 }]
 
 class OrgList extends React.Component {
@@ -148,7 +156,7 @@ class OrgList extends React.Component {
                         getTdProps={(state, rowInfo, column) => {
                             return {
                                 onClick: (e) => {
-                                    if (column.id !== 'select') {
+                                    if (column.id !== 'select' && column.id !== 'delete') {
                                         this.changePage(rowInfo.original.id);
                                     }
                                 },
