@@ -32,9 +32,7 @@ const columns = [{
         return (
             <React.Fragment>
                 <div class="org-tag orange card d-inline-block mr-1">
-                    <div class="px-2 py-0">
-                        <p class="m-0">A</p>
-                    </div>
+                    <div class="px-1 py-0">A</div>
                     <div class="org-tag-footer"></div>
                 </div>
                 <div className="centerText d-inline-block">{row.value}</div>
