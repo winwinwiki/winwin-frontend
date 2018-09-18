@@ -8016,6 +8016,13 @@ h5.modal-title {
   font-weight: 400;
   color: #9C9C9C; }
 
+.org-tag.orange {
+  border-color: #ffc107; }
+
+.org-tag .org-tag-footer {
+  padding: 0.1em 0em;
+  background-color: #ffc107; }
+
 .program-details-container {
   background-color: #F2F2F2; }
   .program-details-container .list-group-item .action-icons {

@@ -28,13 +28,25 @@ const columns = [{
     id: 'org',
     Header: 'Organisation Name',
     accessor: 'name',
-    Cell: (row) => <div className="centerText">{row.value}</div>,
+    Cell: (row) => {
+        return (
+            <React.Fragment>
+                <div class="org-tag orange card d-inline-block mr-1">
+                    <div class="px-2 py-0">
+                        <p class="m-0">A</p>
+                    </div>
+                    <div class="org-tag-footer"></div>
+                </div>
+                <div className="centerText d-inline-block">{row.value}</div>
+            </React.Fragment>
+        )
+    },
     sortable: true,
-    filterable: true, 
+    filterable: true,
     filterMethod: (filter, rows) => {
         // console.log(filter),
         // console.log(rows);
-        return matchSorter(rows, filter.value, {keys: [{threshold: matchSorter.rankings.CONTAINS, key: 'org'}]})
+        return matchSorter(rows, filter.value, { keys: [{ threshold: matchSorter.rankings.CONTAINS, key: 'org' }] })
     },
     filterAll: true
 }, {

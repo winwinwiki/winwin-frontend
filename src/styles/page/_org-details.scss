@@ -44,3 +44,13 @@
   font-weight: 400;
   color: #9C9C9C;
 }
+
+.org-tag{
+  &.orange{
+    border-color: #ffc107
+  }
+  .org-tag-footer{
+    padding: 0.1em 0em;
+    background-color: #ffc107
+  }
+}
