@@ -24,6 +24,7 @@ import programDetail from './program/programDetailReducer';
 import orgChart from './orgDetail/orgChartReducer';
 import programList from './program/programListReducer';
 import userManagement from './userManagement/userListReducer';
+import notes from './orgDetail/notesReducer';
 
 export default combineReducers({
     routing: routerReducer,
@@ -46,5 +47,6 @@ export default combineReducers({
     sectionHeader,
     orgHistory,
     orgChart,
-    userManagement
+    userManagement,
+    notes
 });

@@ -11,6 +11,7 @@ import NewPage from './newPage';
 import RegionsServed from './regionsServed';
 import Resources from './resources';
 import Programs from './programs';
+import Notes from './notes';
 import AddProgram from './programs/addProgram';
 import OrgChart from '../orgChart';
 import AddChildOrganisation from './childOrganization';
@@ -27,6 +28,7 @@ const OrgDetailRoutes = (props) => (
                 <PrivateRoute authenticated={true} exact path={`${props.match.path}/sdg-tags`} component={SdgTags} type={"Organization"}/>
                 <PrivateRoute authenticated={true} exact path={`${props.match.path}/new-page`} component={NewPage} type={"Organization"}/>
                 <PrivateRoute authenticated={true} exact path={`${props.match.path}/programs`} component={Programs} type={"Organization"}/>
+                <PrivateRoute authenticated={true} exact path={`${props.match.path}/notes`} component={Notes} type={"Organization"}/>
                 <PrivateRoute authenticated={true} exact path={`${props.match.path}/new-program`} component={AddProgram} type={"Organization"}/>
                 <PrivateRoute authenticated={true} exact path={`${props.match.path}/new-child-organization`} component={AddChildOrganisation} type={"Organization"}/>
                 <PrivateRoute authenticated={true} exact path={`${props.match.path}/organization-chart`} component={OrgChart} type={"Organization"}/>

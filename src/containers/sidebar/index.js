@@ -40,6 +40,8 @@ class SideBar extends React.Component{
         
         if(this.props.history.location.pathname.indexOf('programs')>-1 || this.props.history.location.pathname.indexOf('new-program') > -1){
             this.setState({activeNav: "programs", activeSubNav: ""});
+        } else if (this.props.history.location.pathname.indexOf("notes")>-1){
+            this.setState({activeNav: "notes", activeSubNav: ""});
         } else if (this.props.history.location.pathname.indexOf("organization-chart")>-1){
             this.setState({activeNav: "organization-chart", activeSubNav: ""});
         } else if(this.props.history.location.pathname.indexOf('data-sets')>-1){
@@ -82,6 +84,7 @@ class SideBar extends React.Component{
 
                     </li>
                     <li className="list-group-item"><Link className={this.state.activeNav === 'programs'?'active':''} to={`${this.props.match.url}/programs`} onClick={()=>{this.changeActiveNav(`programs`); this.setState({activeSubNav:''})}}>Programs</Link></li>
+                    <li className="list-group-item"><Link className={this.state.activeNav === 'notes'?'active':''} to={`${this.props.match.url}/notes`} onClick={()=>{this.changeActiveNav(`notes`); this.setState({activeSubNav:''})}}>Notes</Link></li>
                 </ul>
                 <div className="social-footer mt-auto">
                     <ul className="d-flex flex-row justify-content-between pl-1 pr-3">
