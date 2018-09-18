@@ -6,8 +6,7 @@ const initialState = {
     dataFeedFormError: {
       file: '',
       location: ''
-    },
-    userInfo: null
+    }
   };
   
   export default (state = initialState, action) => {

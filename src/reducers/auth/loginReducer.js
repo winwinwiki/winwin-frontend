@@ -8,7 +8,6 @@ const initialState = {
     email: '',
     password: ''
   },
-  userInfo: null,
   isAuthenticated: false
 };
 

@@ -20,7 +20,7 @@ const Header = (props) => {
                         <div aria-labelledby="navbarDropdownMenuLink" className="dropdown-menu dropdown-menu-right">
                             <AccessComponent role={props.userInfo.role} access={['admin', 'data-seeder']}> <Link to="/organizations" className="dropdown-item">Organization Management</Link></AccessComponent>
                             <AccessComponent role={props.userInfo.role} access={['admin']}> <Link to="/user-management" className="dropdown-item">User Management</Link></AccessComponent>
-                            <AccessComponent role={props.userInfo.role} access={['all']}> <Link to="/my-profile/12" className="dropdown-item">My Profile</Link></AccessComponent>
+                            <AccessComponent role={props.userInfo.role} access={['all']}> <Link to={`/my-profile/${props.userInfo.id}`} className="dropdown-item">My Profile</Link></AccessComponent>
                             <AccessComponent role={props.userInfo.role} access={['all']}> <Link to="/change-password" className="dropdown-item">Change Password</Link></AccessComponent>
                             <AccessComponent role={props.userInfo.role} access={['all']}> <a href="#" className="dropdown-item">Logout</a></AccessComponent>
                         </div>

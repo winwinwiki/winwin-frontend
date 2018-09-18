@@ -7,8 +7,7 @@ const initialState = {
   createOrgFormError: {
     orgName: '',
     location: ''
-  },
-  userInfo: null
+  }
 };
 
 export default (state = initialState, action) => {

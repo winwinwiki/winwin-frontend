@@ -2,25 +2,18 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
+import { fetchUserInfo } from '../../actions/users/userInfoAction';
 import Upload from '../ui/upload';
 
 class UserProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: 12,
-            username: "deckyR",
-            status: "Active",
-            firstname: "Decky",
-            lastname: "Redmond",
-            email: "decky.redmond-1233@cornell.edu",
-            role: "Data Seeder",
-            team: "Cornell University",
+            userInfo: null,
             isEditable: false,
             userProfileFormError: {
-                fullname: '',
-                role: '',
-                email: ''
+                name: '',
+                role: ''
             }
         }
 
@@ -28,6 +21,12 @@ class UserProfile extends React.Component {
         this.validateField = this.validateField.bind(this);
     }
     componentDidMount() {
+        const { userInfo } = this.props;
+        if(!userInfo){
+            this.props.fetchUserInfo();
+        } else {
+            this.setUserInfo();
+        }
         this.props.removeFromAppNavigation({
             title: "User Profile",
             path: this.props.match.url
@@ -41,9 +40,12 @@ class UserProfile extends React.Component {
             path: this.props.match.url
         });
     }
+    
     render() {
-        const { username, firstname, lastname, email, role, team, userProfileFormError, isEditable } = this.state;
+        const { userInfo, userProfileFormError, isEditable } = this.state;
+        const propUserInfo = this.props.userInfo;
         let readOnly = isEditable ? '' : 'readOnly';
+        if(!userInfo){ return null;}
         return (
             <div className="container">
                 <div className="row ">
@@ -53,21 +55,20 @@ class UserProfile extends React.Component {
                                 <li><a href="javascript:;" onClick={() => this.editUserInfo()}><i className="icon-edit"></i></a></li>
                             </ul>
                         </div>}
-                        <div className="mb-4"><h4>{firstname} {lastname}</h4></div>
+                        <div className="mb-4"><h4>{propUserInfo.name}</h4></div>
                         <div className="row">
                             <div className="col-13">
                                 <form>
                                     <div className="row">
                                         <div className="col">
                                             <div className="form-group">
-                                                <label htmlFor="username">Username</label>
-                                                <input id="username" type="text"
-                                                    placeholder="Username"
+                                                <label htmlFor="email">Email</label>
+                                                <input id="email" type="text"
+                                                    placeholder="email"
                                                     className="form-control"
-                                                    onBlur={this.validateField}
                                                     onChange={this.onChange}
-                                                    name="username"
-                                                    value={username}
+                                                    name="email"
+                                                    value={userInfo.email}
                                                     readOnly="readOnly" />
                                             </div>
                                         </div>
@@ -75,16 +76,16 @@ class UserProfile extends React.Component {
                                     <div className="row">
                                         <div className="col">
                                             <div className="form-group">
-                                                <label htmlFor="fullname">Full Name</label>
-                                                <input id="fullname" type="text"
+                                                <label htmlFor="name">Full Name</label>
+                                                <input id="name" type="text"
                                                     placeholder="Full Name"
                                                     className="form-control"
                                                     onBlur={this.validateField}
                                                     onChange={this.onChange}
-                                                    name="fullname"
-                                                    value={`${firstname} ${lastname}`}
+                                                    name="name"
+                                                    value={userInfo.name}
                                                     readOnly={readOnly} />
-                                                {userProfileFormError.fullname && <div className="text-danger small">{userProfileFormError.fullname}</div>}
+                                                {userProfileFormError.name && <div className="text-danger small">{userProfileFormError.name}</div>}
                                             </div>
                                         </div>
                                     </div>
@@ -98,25 +99,9 @@ class UserProfile extends React.Component {
                                                     onBlur={this.validateField}
                                                     onChange={this.onChange}
                                                     name="role"
-                                                    value={role}
+                                                    value={userInfo.role}
                                                     readOnly={readOnly} />
                                                 {userProfileFormError.role && <div className="text-danger small">{userProfileFormError.role}</div>}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col">
-                                            <div className="form-group">
-                                                <label htmlFor="email">Email</label>
-                                                <input id="email" type="text"
-                                                    placeholder="Email"
-                                                    className="form-control"
-                                                    onBlur={this.validateField}
-                                                    onChange={this.onChange}
-                                                    name="email"
-                                                    value={email}
-                                                    readOnly={readOnly} />
-                                                {userProfileFormError.email && <div className="text-danger small">{userProfileFormError.email}</div>}
                                             </div>
                                         </div>
                                     </div>
@@ -130,7 +115,7 @@ class UserProfile extends React.Component {
                                                     onBlur={this.validateField}
                                                     onChange={this.onChange}
                                                     name="team"
-                                                    value={team}
+                                                    value={userInfo.team}
                                                     readOnly={readOnly} />
                                             </div>
                                         </div>
@@ -157,8 +142,16 @@ class UserProfile extends React.Component {
         )
     }
 
+    setUserInfo() {
+        const { userInfo } = this.props;
+        this.setState({
+            userInfo : userInfo
+        })
+    }
+
     onChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
+        let userInfo = Object.assign({}, this.state.userInfo, { [e.target.name]: e.target.value });
+        this.setState({ userInfo: userInfo });
     }
 
     validateField(e) {
@@ -178,8 +171,10 @@ class UserProfile extends React.Component {
     }
 
     cancelUserInfo() {
+        const { userInfo } = this.props;
         this.setState({
-            isEditable: false
+            isEditable: false,
+            userInfo : userInfo
         })
     }
 
@@ -210,12 +205,17 @@ class UserProfile extends React.Component {
     }
 }
 
+const mapStateToProps = state => ({
+    userInfo: state.userInfo.userInfo
+})
+
 const mapDispatchToProps = dispatch => bindActionCreators({
     addToAppNavigation,
-    removeFromAppNavigation
+    removeFromAppNavigation,
+    fetchUserInfo
 }, dispatch)
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(UserProfile);
