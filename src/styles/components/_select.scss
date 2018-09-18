@@ -1,0 +1,70 @@
+.react-select__control {
+  background: transparent !important;
+
+  border:1px solid #E6E6E6 !important;
+  box-shadow: none !important;
+
+  &:hover {
+    border-color: #E6E6E6 !important;
+    box-shadow: none !important;
+  }
+  > div {
+
+
+    * {
+      font-weight: 300;
+      color: #343537;
+    }
+  }
+
+  .css-1rtrksz {
+    > div {
+      white-space: nowrap;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .css-d8oujb {
+    display: none;
+  }
+
+  .css-1ep9fjw svg,
+  .css-1sjym57 svg{
+    width: 14px;
+  }
+
+  Menu {
+    div {
+      &:hover {
+        background: #CCC;
+      }
+    }
+  }
+
+  + div {
+    .react-select__menu {
+      margin-top: 0;
+    }
+    .react-select__option {
+      font-weight: 300;
+      &:hover,
+      &.selected {
+        background-color: $smoke-white;
+      }
+
+      &.react-select__option--is-focused {
+        background-color: $smoke-white;
+      }
+    }
+  }
+
+  .react-select__value-container--has-value {
+    min-width: 150px;
+
+    .react-select__multi-value {
+      justify-content: space-between;
+    }
+  }
+}
