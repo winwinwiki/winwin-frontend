@@ -7062,6 +7062,28 @@ textarea {
   padding: 0.5rem 0.625rem !important;
   word-break: keep-all !important; }
 
+.dropdown-menu.org-levels {
+  padding: 0.4rem 0;
+  box-shadow: none !important;
+  border: none;
+  width: 1000px !important;
+  overflow: hidden;
+  margin-left: -100px;
+  height: 36px; }
+  .dropdown-menu.org-levels .dropdown-container {
+    overflow-y: hidden;
+    overflow-x: auto;
+    height: 100%;
+    box-sizing: content-box;
+    padding-bottom: 17px; }
+  .dropdown-menu.org-levels a.dropdown-item {
+    color: #9C9C9C;
+    font-size: 14px;
+    display: inline;
+    padding: 0.4rem 0.625rem !important; }
+    .dropdown-menu.org-levels a.dropdown-item:hover {
+      background-color: transparent; }
+
 .dropdown .dropdown-item,
 .dropdown a.dropdown-item {
   font-size: 1rem;

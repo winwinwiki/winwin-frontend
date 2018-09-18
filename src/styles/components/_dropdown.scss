@@ -1,9 +1,37 @@
-.dropdown-menu > .dropdown-item{
-  font-size: rem(14px);
-  line-height: 18px;
-  font-weight: 300;
-  padding: rem(8px 10px) !important;
-  word-break: keep-all !important;
+.dropdown-menu {
+  > .dropdown-item {
+    font-size: rem(14px);
+    line-height: 18px;
+    font-weight: 300;
+    padding: rem(8px 10px) !important;
+    word-break: keep-all !important;
+  }
+
+  &.org-levels {
+    padding: 0.4rem 0;
+    box-shadow: none !important;
+    border: none;
+    width: 1000px !important;
+    overflow: hidden;
+    margin-left: -100px;
+    height: 36px;
+    .dropdown-container {
+      overflow-y: hidden;
+      overflow-x: auto;
+      height: 100%;
+      box-sizing: content-box;
+      padding-bottom: 17px;
+    }
+    a.dropdown-item {
+      color: #9C9C9C;
+      font-size: 14px;
+      display: inline;
+      padding: 0.4rem 0.625rem !important;
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
 }
 
 .dropdown{

@@ -55,15 +55,22 @@ class OrgDetail extends React.Component {
                             <li className="breadcrumb-item col" title="Administration for children &amp; families">
                                 <div className="dropdown">
                                     <a href="javascript:;"  className="mr-1 dropdown-toggle plain" href="#" role="button"
-                                       id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                       id="orgLevels" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         ..... <i className="icon icon-arrow float-right"></i>
                                     </a>
-                                    <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink1">
-                                        <a className="dropdown-item" href="#">Change Status</a>
-                                        <Link className="dropdown-item" to={`${this.props.match.url}/new-program`}>Add Program</Link>
-                                        <a className="dropdown-item" href="#">Add Child Organization</a>
-                                        <a className="dropdown-item" href="#">Edit Organization Name</a>
-                                        <a className="dropdown-item" href="#">View History</a>
+                                    <div className="dropdown-menu dropdown-menu-left org-levels" aria-labelledby="orgLevels">
+                                        <div className="dropdown-container">
+                                            <a className="dropdown-item" href="#"><i
+                                                className="icon icon-arrow"></i> Administration for children &amp; families</a>
+                                            <Link className="dropdown-item" to={`${this.props.match.url}/new-program`}><i
+                                                className="icon icon-arrow"></i> Administration for children &amp; families</Link>
+                                            <a className="dropdown-item" href="#"><i
+                                                className="icon icon-arrow"></i> Administration for children &amp; families</a>
+                                            <a className="dropdown-item" href="#"><i
+                                                className="icon icon-arrow"></i> Administration for children &amp; families</a>
+                                            <a className="dropdown-item" href="#"><i
+                                                className="icon icon-arrow"></i> Administration for children &amp; families</a>
+                                        </div>
                                     </div>
                                 </div>
                             </li>
