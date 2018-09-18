@@ -106,18 +106,20 @@ class AppliedOrgFiltersList extends React.Component {
                         <ReactSelect
                             name="userMod"
                             className="mb-3"
+                            classNamePrefix="react-select"
                             isMulti="true"
                             placeholder="Select User"
                             value={userMod}
                             onChange={(selectedOption) => this.onSelectChange('userMod', selectedOption)}
                             options={userList}
-                            closeMenuOnSelect={false}
+                            closeMenuOnSelect="false"
                         />
 
                         {!isIndustryClsShow && <h5>Industry Classification</h5>}
                         {!isIndustryClsShow && <ReactSelect
                             name="industryCls"
                             className="mb-3"
+                            classNamePrefix="react-select"
                             isMulti={false}
                             placeholder="Select Industry Classification"
                             value={industryCls}
@@ -128,6 +130,7 @@ class AppliedOrgFiltersList extends React.Component {
                         {!isIndustryClsShow && <ReactSelect
                             name="subIndustryCls"
                             className="mb-3"
+                            classNamePrefix="react-select"
                             isMulti={false}
                             placeholder="Select Sub Industry Classification"
                             value={subIndustryCls}
@@ -164,6 +167,7 @@ class AppliedOrgFiltersList extends React.Component {
                         <ReactSelect
                             name="frameworkTag"
                             className="mb-3"
+                            classNamePrefix="react-select"
                             isMulti={false}
                             placeholder="Select Framework Tag"
                             value={frameworkTag}
@@ -175,6 +179,7 @@ class AppliedOrgFiltersList extends React.Component {
                         {frameworkTag && (frameworkTag.label == frameworkTagList[0].label) && <ReactSelect
                             name="level3"
                             className="mb-3"
+                            classNamePrefix="react-select"
                             isMulti={false}
                             placeholder="Select Level3"
                             value={level3}
@@ -187,6 +192,7 @@ class AppliedOrgFiltersList extends React.Component {
                         {frameworkTag && <ReactSelect
                             name="level2"
                             className="mb-3"
+                            classNamePrefix="react-select"
                             isMulti={false}
                             placeholder="Select Level2"
                             value={level2}
@@ -198,6 +204,7 @@ class AppliedOrgFiltersList extends React.Component {
                         {frameworkTag && <ReactSelect
                             name="level1"
                             className="mb-3"
+                            classNamePrefix="react-select"
                             isMulti={false}
                             placeholder="Select Level1"
                             value={level1}

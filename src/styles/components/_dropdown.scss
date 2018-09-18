@@ -2,7 +2,8 @@
   font-size: rem(14px);
   line-height: 18px;
   font-weight: 300;
-  padding: rem(8px 30px);
+  padding: rem(8px 10px) !important;
+  word-break: keep-all !important;
 }
 
 .dropdown{

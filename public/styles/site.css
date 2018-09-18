@@ -7059,7 +7059,8 @@ textarea {
   font-size: 0.875rem;
   line-height: 18px;
   font-weight: 300;
-  padding: 0.5rem 1.875rem; }
+  padding: 0.5rem 0.625rem !important;
+  word-break: keep-all !important; }
 
 .dropdown .dropdown-item,
 .dropdown a.dropdown-item {
@@ -7973,6 +7974,41 @@ textarea {
   border-radius: 3px; }
   .file-dragger-box .button-browse {
     border-radius: 23px; }
+
+.react-select__control {
+  background: transparent !important;
+  border: 1px solid #E6E6E6 !important;
+  box-shadow: none !important; }
+  .react-select__control:hover {
+    border-color: #E6E6E6 !important;
+    box-shadow: none !important; }
+  .react-select__control > div * {
+    font-weight: 300;
+    color: #343537; }
+  .react-select__control .css-1rtrksz > div {
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+  .react-select__control .css-d8oujb {
+    display: none; }
+  .react-select__control .css-1ep9fjw svg,
+  .react-select__control .css-1sjym57 svg {
+    width: 14px; }
+  .react-select__control Menu div:hover {
+    background: #CCC; }
+  .react-select__control + div .react-select__menu {
+    margin-top: 0; }
+  .react-select__control + div .react-select__option {
+    font-weight: 300; }
+    .react-select__control + div .react-select__option:hover, .react-select__control + div .react-select__option.selected {
+      background-color: #F5F5F6; }
+    .react-select__control + div .react-select__option.react-select__option--is-focused {
+      background-color: #F5F5F6; }
+  .react-select__control .react-select__value-container--has-value {
+    min-width: 150px; }
+    .react-select__control .react-select__value-container--has-value .react-select__multi-value {
+      justify-content: space-between; }
 
 h5.modal-title {
   font-size: 1.5rem !important; }
