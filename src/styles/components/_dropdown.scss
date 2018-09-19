@@ -8,7 +8,7 @@
   }
 
   &.org-levels {
-    padding: 0.4rem 0;
+    padding: 0.4rem 0 0;
     box-shadow: none !important;
     border: none;
     width: 1000px !important;
@@ -20,7 +20,7 @@
       overflow-x: auto;
       height: 100%;
       box-sizing: content-box;
-      padding-bottom: 17px;
+      padding-bottom: 20px;
     }
     a.dropdown-item {
       color: #9C9C9C;
