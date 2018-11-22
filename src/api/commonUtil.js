@@ -1,24 +1,34 @@
 
+import apiConfig from '../buildConfig/apiConfig';   
 const url = "https://demo8782246.mockable.io";
 const url1 = "https://demo4705881.mockable.io";
+
+
+const serverUrl = apiConfig.protocol+"://"+apiConfig.host; 
+
 class CommonUtil {
     static createUrl(endPoints) {
         return endPoints == '/program1' || endPoints == '/data-sets' || endPoints == '/sdgList' || endPoints == '/spiList' || endPoints == '/notes' ? (url1 + endPoints):(url + endPoints);
+        // return (serverUrl+endPoints);
     }
 
     static createAuthUrl(endPoints, accessToken) {
-        return url + endPoints + accessToken;
+        return serverUrl + endPoints + accessToken;
     }
 
     static getHeaders() {
-        return { 'Content-Type': 'application/x-www-form-urlencoded' };
+        return { 'Content-Type': 'application/json', 'Accept': 'application/json' };
     }
 
     static getToken() {
         let token = localStorage.getItem('_token') ? localStorage.getItem('_token') : null;
-        return { Authorization: 'Bearer ' + token, 'Content-Type': 'application/x-www-form-urlencoded' };
+        return { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' };
     }
 
+    static getAuthId() {
+        let authId = localStorage.getItem('_authId') ? localStorage.getItem('_authId') : null;
+        return { "user-auth-id": authId, 'Content-Type': 'application/json', 'Accept': 'application/json' };
+    }
 }
 
 export default CommonUtil;

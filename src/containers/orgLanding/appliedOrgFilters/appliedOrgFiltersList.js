@@ -3,11 +3,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Dropdown from '../../ui/dropdown';
 import Checkbox from '../../ui/checkbox';
-import { setAppliedFilters, showAppliedFilterModal } from '../../../actions/orgLanding/orgFilterAction';
+import { setAppliedFilters } from '../../../actions/orgLanding/orgLandingAction';
 import InputRange from 'react-input-range';
 import ReactSelect from 'react-select';
 import 'react-input-range/lib/css/index.css';
-
+import { modifiyFilterList } from '../../../util/util';
 var classNames = require('classnames');
 
 const Priority = ['normal', 'high'];
@@ -48,7 +48,7 @@ class AppliedOrgFiltersList extends React.Component {
     }
 
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         // console.log('modal open');
         if (nextProps.appliedFilterList && (JSON.stringify(nextProps.appliedFilterList) !== JSON.stringify(this.state))) {
             this.setState(nextProps.appliedFilterList);
@@ -58,9 +58,9 @@ class AppliedOrgFiltersList extends React.Component {
     render() {
         const { userMod, sector, status, revenueRange, assetsRange, priority,
             industryCls, subIndustryCls, frameworkTag, level1, level2, level3, level1List, level2List, level3List } = this.state;
-        const { isAppliedFilterVisible, activeOrg } = this.props;
+        const { isFilterModalVisible, activeOrg } = this.props;
 
-        let showFilterCls = classNames({ show: isAppliedFilterVisible }, { 'dropdown-menu': true }, { 'px-3': true });
+        let showFilterCls = classNames({ show: isFilterModalVisible }, { 'dropdown-menu': true }, { 'px-3': true });
         let isIndustryClsShow = (activeOrg.indexOf("Public") > -1) && (activeOrg.length == 1);
         let isSectorLevelShow = (activeOrg.indexOf("Public") > -1) || (activeOrg.indexOf("All") > -1);
         return (
@@ -148,7 +148,7 @@ class AppliedOrgFiltersList extends React.Component {
                                 formatLabel={value => `$ ${value}`}
                                 value={revenueRange}
                                 onChange={value => this.setState({ revenueRange: value })}
-                                onChangeComplete={value => {}} />
+                                onChangeComplete={value => { }} />
                         </div>
                         <h5>Assets</h5>
                         <div className="my-4">
@@ -159,7 +159,7 @@ class AppliedOrgFiltersList extends React.Component {
                                 formatLabel={value => `$ ${value}`}
                                 value={assetsRange}
                                 onChange={value => this.setState({ assetsRange: value })}
-                                onChangeComplete={value => {}} />
+                                onChangeComplete={value => { }} />
                         </div>
                     </div>
                     <div className="col">
@@ -267,11 +267,11 @@ class AppliedOrgFiltersList extends React.Component {
             const { SPIList } = this.props;
             let frameworkList = JSON.parse(JSON.stringify(SPIList));
             let selectedFramework;
-            selectedFramework = frameworkList.find(l3 => l3.level3 == level3.label);
+            selectedFramework = frameworkList.find(l3 => l3.indicator == level3.label);
             this.setState({
-                level3: { value: selectedFramework.id, label: selectedFramework.level3 },
-                level1: { value: selectedFramework.level1Id, label: selectedFramework.level1 },
-                level2: { value: selectedFramework.level2Id, label: selectedFramework.level2 }
+                level3: { value: selectedFramework.id, label: selectedFramework.indicator },
+                level1: { value: selectedFramework.dimension, label: selectedFramework.dimension },
+                level2: { value: selectedFramework.component, label: selectedFramework.component }
             });
         } else {
             this.setState({
@@ -295,9 +295,9 @@ class AppliedOrgFiltersList extends React.Component {
         let level1 = [], level2 = [], level3 = [];
         if (value && (value.label == frameworkTagList[0].label)) {
             level3 = frameworkList.map(l3 => {
-                level1[(level1.length - 1)] && (level1[(level1.length - 1)].label == l3.level1) ? '' : level1.push({ value: l3.level1Id, label: l3.level1 });
-                level2[(level2.length - 1)] && (level2[(level2.length - 1)].label == l3.level2) ? '' : level2.push({ value: l3.level2Id, label: l3.level2 });
-                return { "value": l3.id, "label": l3.level3 };
+                level1[(level1.length - 1)] && (level1[(level1.length - 1)].label == l3.dimension) ? '' : level1.push({ value: l3.dimension, label: l3.dimension });
+                level2[(level2.length - 1)] && (level2[(level2.length - 1)].label == l3.component) ? '' : level2.push({ value: l3.component, label: l3.component });
+                return { "value": l3.id, "label": l3.indicator };
             });
         } else if (!Array.isArray(value)) {
             level2 = frameworkList.map(l2 => {
@@ -335,14 +335,13 @@ class AppliedOrgFiltersList extends React.Component {
     }
 
     addFiltersTag() {
-        const { isAppliedFilterVisible } = this.props;
-        let filters = JSON.parse(JSON.stringify(this.state));
-        this.props.setAppliedFilters(this.state);
-        this.props.showAppliedFilterModal(!isAppliedFilterVisible);
+        let filters = modifiyFilterList(this.state);
+        this.props.setAppliedFilters(this.state, filters);
+        this.props.toggleAppliedFilterModal();
     }
 
     clearAppliedFilters() {
-        this.props.setAppliedFilters(null);
+        this.props.setAppliedFilters(null, {});
         this.setState({
             userMod: [],
             industryCls: '',
@@ -354,8 +353,8 @@ class AppliedOrgFiltersList extends React.Component {
             sector: [],
             status: [],
             priority: '',
-            revenueRange: { min: 0, max: 100 },
-            assetsRange: { min: 0, max: 100 },
+            revenueRange: { min: 0, max: 0 },
+            assetsRange: { min: 0, max: 0 },
             level1List: [],
             level2List: [],
             level3List: []
@@ -374,15 +373,13 @@ class AppliedOrgFiltersList extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    appliedFilterList: state.orgFilter.appliedFilterList,
-    isAppliedFilterVisible: state.orgFilter.isAppliedFilterVisible,
-    SDGList: state.orgLanding.sdgList,
-    SPIList: state.orgLanding.spiList
+    appliedFilterList: state.orgList.appliedFilterList,
+    SDGList: state.orgList.sdgList,
+    SPIList: state.orgList.spiList
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    setAppliedFilters,
-    showAppliedFilterModal
+    setAppliedFilters
 }, dispatch)
 
 export default connect(

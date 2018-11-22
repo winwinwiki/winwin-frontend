@@ -1,4 +1,5 @@
 import CommonUtil from '../commonUtil';
+import { api } from '../api';
 
 export function callLoginApi(email, password, callback) {
   let url = CommonUtil.createUrl('/users');

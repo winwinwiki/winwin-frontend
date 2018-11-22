@@ -27,7 +27,7 @@ class UserProfile extends React.Component {
         });
     }
     render() {
-        const { username, firstname, lastname, email, role, team, userProfileFormError } = this.state;
+        const { firstname, lastname  } = this.state;
         return (
             <div className="container">
                 <div className="row ">

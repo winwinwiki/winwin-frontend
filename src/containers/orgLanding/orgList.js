@@ -7,12 +7,11 @@ import matchSorter from 'match-sorter'
 import 'react-table/react-table.css'
 
 import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
-import LoadingSpinner from '../common/loadingSpinner';
 import OrgFilters from './orgFilter';
 import AppliedOrgFilters from './appliedOrgFilters/index';
 import Dropdown from '../ui/dropdown';
-import { fetchOrganisationsList, filterOrganisationsList } from '../../actions/orgLanding/orgLandingAction';
-import { fetchFilteredOrgList, setAppliedFilters } from '../../actions/orgLanding/orgFilterAction';
+import { fetchOrganisationsList, setAppliedFilters } from '../../actions/orgLanding/orgLandingAction';
+import { startLoaderAction, stopLoaderAction } from '../../actions/common/loaderActions';
 
 
 const filterList = ["Set Priority High", "Set Priority Normal", "Mark 'Ready for Tagging'"];
@@ -31,9 +30,9 @@ const columns = [{
     Cell: (row) => {
         return (
             <React.Fragment>
-                <div class="org-tag orange card d-inline-block mr-1">
-                    <div class="px-1 py-0">A</div>
-                    <div class="org-tag-footer"></div>
+                <div className="org-tag orange card d-inline-block mr-1">
+                    <div className="px-1 py-0">A</div>
+                    <div className="org-tag-footer"></div>
                 </div>
                 <div className="centerText d-inline-block">{row.value}</div>
             </React.Fragment>
@@ -100,6 +99,7 @@ class OrgList extends React.Component {
     }
 
     componentDidMount() {
+        this.props.startLoaderAction();
         this.props.fetchOrganisationsList();
         this.props.removeFromAppNavigation({
             title: "Organisation Management",
@@ -116,20 +116,23 @@ class OrgList extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (JSON.stringify(nextProps.orgList) !== JSON.stringify(this.props.orgList)) {
-            this.setState({
-                orgList: nextProps.orgList
-            });
+        const { orgList } = this.props;
+        if (nextProps && JSON.stringify(nextProps.orgList) !== JSON.stringify(orgList) && nextProps.orgList.data) {
+            if (!nextProps.orgList.error) {
+                this.setState({
+                    orgList: nextProps.orgList.data
+                });
+            } else {
+
+            }
+            this.props.stopLoaderAction();
         }
     }
 
     render() {
         const { entity, orgList, activeButton, searchText } = this.state;
-        const { isFetchOrgPending, isFetchOrgSuccess, appliedFilterList } = this.props;
-        if (isFetchOrgPending) {
-            return <LoadingSpinner />
-        }
-        if (!isFetchOrgSuccess || !orgList) {
+        const { appliedFilterList } = this.props;
+        if (!orgList || !orgList.length) {
             return null;
         }
         return (
@@ -216,14 +219,7 @@ class OrgList extends React.Component {
             newSectors.indexOf(filter['sector']) > -1 ? newSectors.splice(newSectors.indexOf(filter['sector']), 1) : newSectors.push(filter['sector']);
         }
         newSectors.length === 0 ? newSectors.push("All") : '';
-        this.props.fetchFilteredOrgList(newSectors);
-        // const { orgList } = this.props;
-        // let orgListCopy = JSON.parse(JSON.stringify(orgList));
-        //  let filteredList = orgListCopy.filter((org => {
-        //     return Object.keys(filter).map((key) => {
-        //        return (filter[key].toLowerCase() === org[key].toLowerCase() || filter[key] === 'All');
-        //     })[0];
-        // }));
+        this.props.fetchOrganisationsList({newSectors});
 
         this.setState({
             activeButton: newSectors
@@ -270,8 +266,8 @@ class OrgList extends React.Component {
     }
 
     resetAllFilters() {
-        this.props.fetchFilteredOrgList([]);
-        this.props.setAppliedFilters(null);
+        this.props.fetchOrganisationsList({});
+        this.props.setAppliedFilters(null,{});
         this.setState({
             activeButton: ['All']
         });
@@ -279,11 +275,8 @@ class OrgList extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    isFetchOrgPending: state.orgLanding.isFetchOrgPending,
-    isFetchOrgSuccess: state.orgLanding.isFetchOrgSuccess,
-    fetchOrgError: state.orgLanding.fetchOrgError,
-    orgList: state.orgLanding.orgList,
-    appliedFilterList: state.orgFilter.appliedFilterList
+    orgList: state.orgList,
+    appliedFilterList: state.orgList.appliedFilterList
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -291,9 +284,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     addToAppNavigation,
     removeFromAppNavigation,
     fetchOrganisationsList,
-    filterOrganisationsList,
-    fetchFilteredOrgList,
-    setAppliedFilters
+    setAppliedFilters,
+    startLoaderAction,
+    stopLoaderAction
 }, dispatch)
 
 export default connect(

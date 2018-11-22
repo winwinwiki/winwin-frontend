@@ -1,87 +1,90 @@
 import {
-    SET_FETCHORG_PENDING, SET_FETCHORG_SUCCESS, SET_FECTHORG_ERROR, FILTER_ORG_LIST,
-    SET_APPLIED_FILTER_FLAG,
+    FETCHORG_REQUEST, FETCHORG_SUCCESS, FECTHORG_ERROR,
     SET_SDGLIST,
-    SET_SPILIST
+    SET_SPILIST,
+    SET_APPLIED_FILTER
 } from '../../constants/dispatch';
 import { callFetchOrgApi, callFetchSdgListApi, callFetchSpiListApi } from '../../api/orgLanding/orgLandingApi';
 
-export const fetchOrganisationsList = () => {
+export const fetchOrganisationsList = (params) => {
     return dispatch => {
-        dispatch(setFetchOrgPending(true));
-        dispatch(setFetchOrgSuccess(false, []));
-        dispatch(setFetchOrgError(null));
-
+        dispatch(fetchOrgRequest());
         callFetchSdgListApi((error, sdgList) => {
             if (!error) {
                 dispatch(setSdgList(sdgList));
                 callFetchSpiListApi((error, spiList) => {
                     if (!error) {
                         dispatch(setSpiList(spiList));
-                        callFetchOrgApi((error, orgList) => {
-                            dispatch(setFetchOrgPending(false));
+                        callFetchOrgApi(params, (error, orgList) => {
                             if (!error) {
-                                dispatch(setFetchOrgSuccess(true, orgList));
+                                dispatch(fetchOrgSuccess(orgList));
                             } else {
-                                dispatch(setFetchOrgError(error));
+                                dispatch(fetchOrgError(error));
                             }
                         });
                     } else {
-                        dispatch(setFetchOrgError(error));
+                        dispatch(fetchOrgError(error));
                     }
                 });
             } else {
-                dispatch(setFetchOrgError(error));
+                dispatch(fetchOrgError(error));
             }
         });
     }
 }
 
-export const filterOrganisationsList = (newList) => {
+export const setAppliedFilters = (appliedFilterList, params) => {
     return dispatch => {
-        dispatch(updateOrganisationsList(newList));
+        dispatch(setAppliedFiltersList(appliedFilterList));
+        dispatch(fetchOrgRequest());
+        callFetchOrgApi(params, (error, orgList) => {
+            if (!error) {
+                dispatch(fetchOrgSuccess(orgList));
+            } else {
+                dispatch(fetchOrgError(error));
+            }
+        });
+
     }
 }
 
-function setFetchOrgPending(isFetchOrgPending) {
+function fetchOrgRequest() {
     return {
-        type: SET_FETCHORG_PENDING,
-        isFetchOrgPending
+        type: FETCHORG_REQUEST
     };
 }
 
-function setFetchOrgSuccess(isFetchOrgSuccess, orgList) {
+function fetchOrgSuccess(response) {
     return {
-        type: SET_FETCHORG_SUCCESS,
-        isFetchOrgSuccess,
-        orgList
+        type: FETCHORG_SUCCESS,
+        response
     };
 }
 
-function setFetchOrgError(fetchOrgError) {
+function fetchOrgError(error) {
     return {
-        type: SET_FECTHORG_ERROR,
-        fetchOrgError
+        type: FECTHORG_ERROR,
+        error
     }
 }
 
-function updateOrganisationsList(filteredOrgList) {
-    return {
-        type: FILTER_ORG_LIST,
-        filteredOrgList
-    }
-}
-
-function setSdgList(sdgList){
+function setSdgList(sdgList) {
     return {
         type: SET_SDGLIST,
         sdgList
     }
 }
 
-function setSpiList(spiList){
+function setSpiList(spiList) {
     return {
         type: SET_SPILIST,
         spiList
+    }
+}
+
+function setAppliedFiltersList(appliedFilterList) {
+    return {
+        type: SET_APPLIED_FILTER,
+        appliedFilterList
     }
 }

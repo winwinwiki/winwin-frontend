@@ -1,28 +1,31 @@
-import { SET_USERINFO_PENDING, SET_USERINFO_SUCCESS, SET_USERINFO_ERROR } from '../../constants/dispatch';
+import { USERINFO_REQUEST, USERINFO_SUCCESS, USERINFO_ERROR } from '../../constants/dispatch';
 
 const initialState = {
-  isUserInfoSuccess: false,
-  isUserInfoPending: false,
-  userInfoError: null,
-  userInfo: null
+  loading: false,
+  data: null,
+  error: false
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case SET_USERINFO_PENDING:
+    case USERINFO_REQUEST:
       return Object.assign({}, state, {
-        isUserInfoPending: action.isUserInfoPending
+        loading: false,
+        data: null,
+        error: false,
       });
 
-    case SET_USERINFO_SUCCESS:
+    case USERINFO_SUCCESS:
       return Object.assign({}, state, {
-        isUserInfoSuccess: action.isUserInfoSuccess,
-        userInfo: action.userInfo
+        loading: false,
+        error: false,
       });
 
-    case SET_USERINFO_ERROR:
+    case USERINFO_ERROR:
       return Object.assign({}, state, {
-        userInfoError: action.userInfoError
+        loading: false,
+        data: action.error,
+        error: true,
       });
 
     default:

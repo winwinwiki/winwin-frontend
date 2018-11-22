@@ -12,17 +12,25 @@ class UserManagement extends React.Component {
     }
 
     componentDidMount() {
-        const { userInfo } = this.props;
-        if (!userInfo) {
-            this.props.fetchUserInfo();
+        const { session } = this.props;
+        if (!session || !session.user || !session.isAuthenticated) {
+            this.props.history.push("/");
         }
     }
+
+    componentWillReceiveProps(nextProps){
+        const { session } = this.props;
+        if(nextProps  && nextProps.session !== session && !nextProps.session.user){
+            this.props.history.push("/");
+        }
+    }
+
     render() {
-        const { userInfo } = this.props;
-        if (!userInfo) { return null; }
+        const { session, userInfo } = this.props;
+        if (!session || !session.user || !userInfo || userInfo.error) { return null; }
         return (
             <div className="d-flex flex-column h-100 w-100">
-                <Header userInfo={userInfo} />
+                <Header />
                 <main role="main" className="dashboard-container">
                     <React.Fragment>
                         <SectionHeader />
@@ -35,7 +43,8 @@ class UserManagement extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    userInfo: state.userInfo.userInfo
+    userInfo: state.userInfo,
+    session: state.session
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({

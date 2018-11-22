@@ -1,60 +1,37 @@
-import { SET_FP_PENDING, SET_FP_SUCCESS, SET_FP_ERROR, SET_FPFORM_ERROR } from '../../constants/dispatch';
+import { FP_REQUEST, FP_SUCCESS, FP_ERROR } from '../../constants/dispatch';
 import { callFpApi } from '../../api/auth/forgetPasswordApi';
-import validate from '../../util/validation';
 
 export const onSubmit = (email, cb) => {
     return dispatch => {
-        dispatch(setFpPending(true));
-        dispatch(setFpSuccess(false));
-        dispatch(setFpError(null));
-
+        dispatch(fpRequest());
         callFpApi(email, (error, res) => {
-            dispatch(setFpPending(false));
             if (!error) {
-                dispatch(setFpSuccess(true));
+                dispatch(fpSuccess(res));
                 cb();
             } else {
-                dispatch(setFpError(error));
+                dispatch(fpError(error));
             }
         });
     }
 }
 
-export const validateFpForm = (value) => {
-    return dispatch => {
-        dispatch(setFpFormError({email: ''}));
-        if(!value) { dispatch(setFpFormError({email: 'email is required.'} )); return; }
-        let isValid = validate.email(value);
-        if(!isValid) { dispatch(setFpFormError({email: 'enter valid email.'}));}
-        return;
-    }
-}
-
-
-function setFpPending(isFpPending) {
+function fpRequest() {
     return {
-        type: SET_FP_PENDING,
-        isFpPending
+        type: FP_REQUEST
     };
 }
 
-function setFpSuccess(isFpSuccess) {
+function fpSuccess(response) {
     return {
-        type: SET_FP_SUCCESS,
-        isFpSuccess
+        type: FP_SUCCESS,
+        response
     };
 }
 
-function setFpError(isFpError) {
+function fpError(error) {
     return {
-        type: SET_FP_ERROR,
-        isFpError
+        type: FP_ERROR,
+        error
     };
 }
 
-function setFpFormError(fpFormError) {
-    return {
-        type: SET_FPFORM_ERROR,
-        fpFormError
-    };
-}

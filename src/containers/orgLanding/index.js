@@ -1,10 +1,8 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
 import Header from '../header';
 import SectionHeader from '../section-header/';
-import { fetchUserInfo } from '../../actions/users/userInfoAction';
 
 class OrgLanding extends React.Component {
     constructor(props) {
@@ -12,17 +10,23 @@ class OrgLanding extends React.Component {
     }
 
     componentDidMount() {
-        const { userInfo } = this.props;
-        if (!userInfo) {
-            this.props.fetchUserInfo();
+        const { session, history } = this.props;
+        if (!session || !session.user) {
+            history.push("/");
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        const { session, history } = this.props;
+        if(nextProps && nextProps.session !== session && !nextProps.session.user){
+            history.push("/");
         }
     }
     render() {
-        const { userInfo } = this.props;
-        if (!userInfo) { return null; }
+        const { session } = this.props;
+        if (!session || !session.user) { return null; }
         return (
             <div className="d-flex flex-column h-100 w-100">
-                <Header userInfo={userInfo} />
+                <Header />
                 <main role="main" className="dashboard-container">
                     <React.Fragment>
                         <SectionHeader />
@@ -35,11 +39,10 @@ class OrgLanding extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    userInfo: state.userInfo.userInfo
+    session: state.session
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchUserInfo
 }, dispatch)
 
 export default connect(

@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
+
+import loader from './common/loaderReducer';
+
 import login from './auth/loginReducer';
 import forgetPassword from './auth/forgetPasswordReducer';
 import resetPassword from './auth/resetPasswordReducer';
@@ -11,7 +14,6 @@ import sectionHeader from './sectionHeader/sectionHeaderReducer';
 import createOrg from './createOrg/createOrgReducer';
 import dataFeed from './dataFeed/dataFeedReducer';
 import orgLanding from './orgLanding/orgLandingReducer';
-import orgFilter from './orgLanding/orgFilterReducer';
 
 import spiTags from './orgDetail/spiTagsReducer';
 import sdgTags from './orgDetail/sdgTagsReducer';
@@ -28,13 +30,13 @@ import notes from './orgDetail/notesReducer';
 
 export default combineReducers({
     routing: routerReducer,
-    login,
+    loader,
+    session: login,
     forgetPassword,
     resetPassword,
     createOrg,
     dataFeed,
-    orgLanding,
-    orgFilter,
+    orgList:orgLanding,
     spiTags,
     sdgTags,
     regionsServed,

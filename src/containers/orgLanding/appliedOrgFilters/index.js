@@ -1,7 +1,8 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { setAppliedFilters } from '../../../actions/orgLanding/orgFilterAction';
+import { setAppliedFilters } from '../../../actions/orgLanding/orgLandingAction';
+import { modifiyFilterList } from '../../../util/util';
 
 class AppliedOrgFilters extends React.Component {
     constructor(props) {
@@ -132,11 +133,11 @@ class AppliedOrgFilters extends React.Component {
                 }
             }
         });
-        this.props.setAppliedFilters(filterList);
+        this.props.setAppliedFilters(filterList, modifiyFilterList(filterList));
     }
 }
 const mapStateToProps = state => ({
-    appliedFilterList: state.orgFilter.appliedFilterList
+    appliedFilterList: state.orgList.appliedFilterList
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({

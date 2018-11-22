@@ -1,70 +1,49 @@
-import { SET_LOGIN_PENDING, SET_LOGIN_SUCCESS, SET_LOGIN_ERROR, SET_FORM_ERROR } from '../../constants/dispatch';
-import { callLoginApi } from '../../api/auth/loginApi';
-import validate from '../../util/validation';
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_ERROR, LOGOUT } from '../../constants/dispatch';
+import { api } from '../../api/api';
 
 export const onLogin = (user) => {
     return dispatch => {
-        dispatch(setLoginPending(true));
-        dispatch(setLoginSuccess(false));
-        dispatch(setLoginError(null));
-
-        return callLoginApi(user.email, user.password).then((res) => {
-            dispatch(setLoginPending(false));
-            if (res) {
-                dispatch(setLoginSuccess(true));
-                localStorage.setItem('_token', res._token);
+        dispatch(loginRequest());
+        return api("/users", "POST", { username: user.email, password: user.password }, false).then((response) => {
+            if (response) {
+                dispatch(loginSuccess(response));
+                localStorage.setItem('_authId', response);
             }
         }, (error) => {
-            dispatch(setLoginError(error));
+            dispatch(loginError(error));
         }
         );
     }
 }
 
-export const validateLoginForm = (field, value) => {
+export const logoutAction = () => {
     return dispatch => {
-        return new Promise((resolve, reject) => {
-            if (field === 'email') {
-                dispatch(setFormError({ email: '' }));
-                if (!value) { dispatch(setFormError({ email: 'email is required.' })); return;}
-                let isValid = validate.email(value);
-                if (!isValid) { dispatch(setFormError({ email: 'enter valid email.' })); } else{
-                    resolve();
-                }
-                return;
-            }
-            dispatch(setFormError({ password: '' }));
-            if (!value) { dispatch(setFormError({ password: 'password is required.' })); return;}
-            let isValidPwd = validate.password(value);
-            if (!isValidPwd) { dispatch(setFormError({ password: 'enter valid password' }));} else {resolve();}
-        });
+        dispatch(logout());
     }
 }
 
-function setLoginPending(isLoginPending) {
+function loginRequest() {
     return {
-        type: SET_LOGIN_PENDING,
-        isLoginPending
+        type: LOGIN_REQUEST
     };
 }
 
-function setLoginSuccess(isLoginSuccess) {
+function loginSuccess(response) {
     return {
-        type: SET_LOGIN_SUCCESS,
-        isLoginSuccess
+        type: LOGIN_SUCCESS,
+        response
     };
 }
 
-function setLoginError(loginError) {
+function loginError(error) {
     return {
-        type: SET_LOGIN_ERROR,
-        loginError
+        type: LOGIN_ERROR,
+        error
     }
 }
 
-function setFormError(formError) {
+function logout() {
     return {
-        type: SET_FORM_ERROR,
-        formError
-    }
+        type: LOGOUT
+    };
 }

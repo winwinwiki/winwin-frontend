@@ -1,20 +1,43 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import LoadingSpinner from '../common/loadingSpinner';
+import { loadUserFromStorageAction } from '../../actions/common/localStorageAction';
 
-import AuthRoutes from '../auth/auth.routes';
-import OrgLandingRoutes from '../orgLanding/orgLanding.routes';
-import UserManagementRoutes from '../userManagement/userManagement.routes';
+class App extends React.Component {
 
-const App = () => (
-    <div className="main-content d-flex container">
-     <Switch>
-        <Route path="/organizations" component={OrgLandingRoutes} />
-        <Route path="/user-management" component={UserManagementRoutes} />
-        <Route path="/change-password" component={UserManagementRoutes} />
-        <Route path="/my-profile" component={UserManagementRoutes} />
-        <Route path="/" component={AuthRoutes} />
-      </Switch>
-    </div>
-)
+  componentDidMount() {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('storage', this.handleLocalStorageChange);
+    }
+  }
 
-export default App;
+  handleLocalStorageChange = () => {
+    const user = localStorage.user ? JSON.parse(localStorage.user) : null;
+    this.props.loadUserFromStorageAction({ user });
+  }
+
+  render() {
+    const { loader } = this.props;
+    return (
+      <React.Fragment>
+        {loader.loading && <LoadingSpinner message={loader.message} fullscreen={true} />}
+        <div className="main-content d-flex container">
+          {this.props.children}
+        </div>
+      </React.Fragment>
+    );
+  }
+}
+const mapStateToProps = state => ({
+  loader: state.loader
+})
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  loadUserFromStorageAction
+}, dispatch)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)

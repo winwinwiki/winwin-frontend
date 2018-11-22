@@ -1,36 +1,67 @@
-import {SET_LOGIN_PENDING, SET_LOGIN_SUCCESS, SET_LOGIN_ERROR, SET_FORM_ERROR} from '../../constants/dispatch';
+import {
+  LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_ERROR,
+  LOAD_USER_FROM_STORAGE, USERINFO_SUCCESS, LOGOUT
+} from '../../constants/dispatch';
 
 const initialState = {
-  isLoginSuccess: false,
-  isLoginPending: false,
-  loginError: null,
-  formError: {
-    email: '',
-    password: ''
-  },
-  isAuthenticated: false
+  loading: false,
+  data: null,
+  error: false,
+  user: localStorage.user ? JSON.parse(localStorage.user) : null,
+  isAuthenticated: localStorage._authId && localStorage.user ? localStorage._authId && !!JSON.parse(localStorage.user).email : false
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case SET_LOGIN_PENDING:
+    case LOGIN_REQUEST:
       return Object.assign({}, state, {
-        isLoginPending: action.isLoginPending
+        loading: true,
+        data: null,
+        error: false,
+        isAuthenticated: false
       });
 
-    case SET_LOGIN_SUCCESS:
+    case LOGIN_SUCCESS:
       return Object.assign({}, state, {
-        isLoginSuccess: action.isLoginSuccess,
+        loading: false,
+        data: action.response,
+        error: false,
         isAuthenticated: true
       });
 
-    case SET_LOGIN_ERROR:
+    case LOGIN_ERROR:
       return Object.assign({}, state, {
-        loginError: action.loginError
+        loading: false,
+        data: action.error,
+        error: true,
+        isAuthenticated: false
       });
-    case SET_FORM_ERROR:
-      let formErrorVal = Object.assign({}, state.formError, action.formError);
-      return Object.assign({}, state, {formError: formErrorVal});
+    case USERINFO_SUCCESS:
+      localStorage.setItem("user", JSON.stringify(action.response));
+      return Object.assign({}, state, {
+        user: action.response,
+        isAuthenticated: true
+      });
+
+    case LOAD_USER_FROM_STORAGE: {
+      const user = action.data.user;
+      const isAuthenticated = user && user.email ? true : false;
+      return Object.assign({}, state, {
+        isAuthenticated, user
+      });
+    }
+
+    case LOGOUT: {
+      localStorage.removeItem("user");
+      localStorage.removeItem("_authId");
+      return Object.assign({}, state, {
+        loading: false,
+        data: null,
+        error: false,
+        user: null,
+        isAuthenticated: false
+      });
+    }
 
     default:
       return state;

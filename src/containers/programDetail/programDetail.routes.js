@@ -67,7 +67,7 @@ class ProgramDetailRoutes extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.login.isAuthenticated,
+    isAuthenticated: state.session.isAuthenticated,
     isFetchProgDetailPending: state.programDetail.isFetchProgDetailPending,
     isFetchProgDetailSuccess: state.programDetail.isFetchProgDetailSuccess,
     fetchProgDetailError: state.programDetail.fetchProgDetailError,

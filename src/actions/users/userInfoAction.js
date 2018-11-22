@@ -1,41 +1,37 @@
-import { SET_USERINFO_PENDING, SET_USERINFO_SUCCESS, SET_USERINFO_ERROR} from '../../constants/dispatch';
+import { USERINFO_REQUEST, USERINFO_SUCCESS, USERINFO_ERROR} from '../../constants/dispatch';
 import { callFetchUserApi } from '../../api/users/userApi';
+import { api } from '../../api/api';
 
 export const fetchUserInfo = () => {
     return dispatch => {
-        dispatch(setUserInfoPending(true));
-        dispatch(setUserInfoSuccess(false, []));
-        dispatch(setUserInfoError(null));
+        dispatch(userInfoRequest());
 
-        return callFetchUserApi().then(
+        return api('/user','GET', {}, true).then(
             response => {
-            dispatch(setUserInfoPending(false));
-                dispatch(setUserInfoSuccess(true, response));
+                dispatch(userInfoSuccess(response));
             }, error => {
-                dispatch(setUserInfoError(error));
+                dispatch(userInfoError(error));
             }
         );
     }
 }
 
-function setUserInfoPending(isUserInfoPending) {
+function userInfoRequest() {
     return {
-        type: SET_USERINFO_PENDING,
-        isUserInfoPending
+        type: USERINFO_REQUEST
     };
 }
 
-function setUserInfoSuccess(isUserInfoSuccess, userInfo) {
+function userInfoSuccess(response) {
     return {
-        type: SET_USERINFO_SUCCESS,
-        isUserInfoSuccess,
-        userInfo
+        type: USERINFO_SUCCESS,
+        response
     };
 }
 
-function setUserInfoError(userInfoError) {
+function userInfoError(error) {
     return {
-        type: SET_USERINFO_ERROR,
-        userInfoError
+        type: USERINFO_ERROR,
+        error
     }
 }

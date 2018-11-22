@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './containers/app';
+import AppRoutes from './containers/app/app';
 import registerServiceWorker from './registerServiceWorker';
 import { ConnectedRouter } from 'react-router-redux';
 import { routerMiddleware } from 'react-router-redux'
@@ -36,7 +36,7 @@ const store = createStore(reducer, initialState, compose(
 ReactDOM.render(
     <Provider store={store}>
         <ConnectedRouter history={history}>
-            <App />
+            <AppRoutes />
         </ConnectedRouter>
     </Provider>
   , document.getElementById('root')
@@ -49,7 +49,7 @@ if (module.hot) {
       ReactDOM.render(
           <Provider store={store}>
           <ConnectedRouter history={history}>
-                <App />
+                <AppRoutes />
             </ConnectedRouter>
           </Provider>
         , document.getElementById('root')

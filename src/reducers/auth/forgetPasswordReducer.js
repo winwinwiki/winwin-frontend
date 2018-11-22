@@ -1,33 +1,33 @@
-import {SET_FP_PENDING, SET_FP_SUCCESS, SET_FP_ERROR, SET_FPFORM_ERROR} from '../../constants/dispatch';
+import { FP_REQUEST, FP_SUCCESS, FP_ERROR } from '../../constants/dispatch';
 
 const initialState = {
-  isFpSuccess: false,
-  isFpPending: false,
-  fpError: null,
-  fpFormError: {
-    email: ''
-  }
+  loading: false,
+  data: null,
+  error: false
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case SET_FP_PENDING:
+    case FP_REQUEST:
       return Object.assign({}, state, {
-        isFpSuccess: action.isFpSuccess
+        loading: false,
+        data: null,
+        error: false
       });
 
-    case SET_FP_SUCCESS:
+    case FP_SUCCESS:
       return Object.assign({}, state, {
-        isFpSuccess: action.isFpSuccess
+        loading: false,
+        data: action.response,
+        error: false
       });
 
-    case SET_FP_ERROR:
+    case FP_ERROR:
       return Object.assign({}, state, {
-        fpError: action.fpError
+        loading: false,
+        data: action.error,
+        error: true
       });
-    case SET_FPFORM_ERROR:
-      let formErrorVal = Object.assign({}, state.fpFormError, action.fpFormError);
-      return Object.assign({}, state, {fpFormError: formErrorVal});
 
     default:
       return state;

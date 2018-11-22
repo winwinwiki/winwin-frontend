@@ -94,7 +94,7 @@ class SDGModal extends React.Component {
     }
 }
 const mapStateToProps = state => ({
-    SDGList: state.orgLanding.sdgList
+    SDGList: state.orgList.sdgList
 });
 
 export default connect(

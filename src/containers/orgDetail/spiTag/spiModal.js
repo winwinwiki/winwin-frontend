@@ -86,9 +86,9 @@ class SPIModal extends React.Component {
         const { SPIList } = this.props;
         let spi = {};
         SPIList.map(data => {
-            spi[data.level1] ? '' : spi[data.level1] = {};
-            spi[data.level1][data.level2] ? '' : spi[data.level1][data.level2] = [];
-            spi[data.level1][data.level2].push({ id: data.id, value: data.level3 });
+            spi[data.dimension] ? '' : spi[data.dimension] = {};
+            spi[data.dimension][data.component] ? '' : spi[data.dimension][data.component] = [];
+            spi[data.dimension][data.component].push({ id: data.id, value: data.indicator });
         });
         return spi;
     }
@@ -103,7 +103,7 @@ class SPIModal extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    SPIList: state.orgLanding.spiList
+    SPIList: state.orgList.spiList
 })
 
 export default connect(

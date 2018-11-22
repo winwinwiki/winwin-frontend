@@ -1,36 +1,39 @@
-export const SET_LOGIN_PENDING = 'auth/SET_LOGIN_PENDING';
-export const SET_LOGIN_SUCCESS = 'auth/SET_LOGIN_SUCCESS';
-export const SET_LOGIN_ERROR = 'auth/SET_LOGIN_ERROR';
+//loading
+export const LOADER_START = 'loader/LOADER_START';
+export const LOADER_STOP = 'loader/LOADER_STOP';
+//login
+export const LOGIN_REQUEST = 'auth/LOGIN_REQUEST';
+export const LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS';
+export const LOGIN_ERROR = 'auth/LOGIN_ERROR';
 export const SET_FORM_ERROR = 'auth/SET_FORM_ERROR';
+export const LOAD_USER_FROM_STORAGE = 'auth/LOAD_USER_FROM_STORAGE';
+export const LOGOUT = 'auth/LOGOUT'
 //reset password
-export const SET_RESETPASSWORD_PENDING = 'auth/SET_RESETPASSWORD_PENDING';
-export const SET_RESETPASSWORD_SUCCESS = 'auth/SET_RESETPASSWORD_SUCCESS';
-export const SET_RESETPASSWORD_ERROR = 'auth/SET_RESETPASSWORD_ERROR';
-export const SET_RESETFORM_ERROR = 'auth/SET_RESETFORM_ERROR';
+export const RESETPASSWORD_REQUEST = 'auth/RESETPASSWORD_REQUEST';
+export const RESETPASSWORD_SUCCESS = 'auth/RESETPASSWORD_SUCCESS';
+export const RESETPASSWORD_ERROR = 'auth/RESETPASSWORD_ERROR';
 //forget password
-export const SET_FP_PENDING = 'auth/SET_FP_PENDING';
-export const SET_FP_SUCCESS = 'auth/SET_FFP_SUCCESS';
-export const SET_FP_ERROR = 'auth/SET_FP_ERROR';
-export const SET_FPFORM_ERROR = 'auth/SET_FPFORM_ERROR';
+export const FP_REQUEST = 'auth/FP_REQUEST';
+export const FP_SUCCESS = 'auth/FP_SUCCESS';
+export const FP_ERROR = 'auth/FP_ERROR';
 //users
-export const SET_USERINFO_PENDING = 'user/SET_USERINFO_PENDING';
-export const SET_USERINFO_SUCCESS = 'user/SET_USERINFO_SUCCESS';
-export const SET_USERINFO_ERROR = 'user/SET_USERINFO_ERROR';
+export const USERINFO_REQUEST = 'user/USERINFO_REQUEST';
+export const USERINFO_SUCCESS = 'user/USERINFO_SUCCESS';
+export const USERINFO_ERROR = 'user/USERINFO_ERROR';
 //create org
 export const SET_CREATEORG_PENDING = 'org/SET_CREATEORG_PENDING';
 export const SET_CREATEORG_SUCCESS = 'org/SET_CREATEORG_SUCCESS';
 export const SET_CREATEORG_ERROR = 'org/SET_CREATEORG_ERROR';
 export const SET_CREATEORGFORM_ERROR = 'org/SET_CREATEORGFORM_ERROR';
 //org landing
-export const SET_FETCHORG_PENDING = 'org/SET_FETCHORG_PENDING';
-export const SET_FETCHORG_SUCCESS = 'org/SET_FETCHORG_SUCCESS';
-export const SET_FECTHORG_ERROR = 'org/SET_FECTHORG_ERROR';
+export const FETCHORG_REQUEST = 'org/FETCHORG_REQUEST';
+export const FETCHORG_SUCCESS = 'org/FETCHORG_SUCCESS';
+export const FECTHORG_ERROR = 'org/FECTHORG_ERROR';
 export const FILTER_ORG_LIST = 'org/FILTER_ORG_LIST';
 export const SET_SDGLIST = 'org/SET_SDGLIST';
 export const SET_SPILIST = 'org/SET_SPILIST';
-//filter org
 export const SET_APPLIED_FILTER = 'org/SET_APPLIED_FILTER';
-export const SET_APPLIED_FILTER_FLAG = 'org/SET_APPLIED_FILTER_FLAG';
+//filter org
 export const SET_FILTERED_LIST_ERROR = 'org/SET_FILTERED_LIST_ERROR';
 export const SET_FILTERED_LIST_PENDING = 'org/SET_FILTERED_LIST_PENDING';
 export const SET_FILTERED_LIST_SUCCESS = 'org/SET_FILTERED_LIST_SUCCESS';

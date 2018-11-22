@@ -2,7 +2,6 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
-import { fetchUserInfo } from '../../actions/users/userInfoAction';
 import Upload from '../ui/upload';
 
 class UserProfile extends React.Component {
@@ -21,9 +20,9 @@ class UserProfile extends React.Component {
         this.validateField = this.validateField.bind(this);
     }
     componentDidMount() {
-        const { userInfo } = this.props;
-        if(!userInfo){
-            this.props.fetchUserInfo();
+        const { session } = this.props;
+        if (!session || !session.user || !session.isAuthenticated) {
+            this.props.history.push("/");
         } else {
             this.setUserInfo();
         }
@@ -40,12 +39,26 @@ class UserProfile extends React.Component {
             path: this.props.match.url
         });
     }
-    
+
+    componentWillReceiveProps(nextProps){
+        const { session } = this.props;
+        if(nextProps  && nextProps.session && session.user !== nextProps.session.user && nextProps.session.user){
+            this.setState({
+                userInfo: nextProps.session.user
+            });
+        }
+
+        if(nextProps  && nextProps.session !== session && !nextProps.session.user){
+            this.props.history.push("/");
+        }
+    }
+
     render() {
         const { userInfo, userProfileFormError, isEditable } = this.state;
-        const propUserInfo = this.props.userInfo;
+        const { session } = this.props;
         let readOnly = isEditable ? '' : 'readOnly';
-        if(!userInfo){ return null;}
+        if (!session || !session.user || !userInfo) { return null; }
+        const propUserInfo = this.props.session.user;
         return (
             <div className="container">
                 <div className="row ">
@@ -123,12 +136,12 @@ class UserProfile extends React.Component {
                                 </form>
                             </div>
                             <div className="col-8 ml-auto">
-                                { isEditable ?
-                                    <Upload 
-                                        type="image" 
+                                {isEditable ?
+                                    <Upload
+                                        type="image"
                                         accept="image/*"
                                         onDrop={this.onDrop}
-                                        text="Upload Photo"/>
+                                        text="Upload Photo" />
                                     : <div className="profilePhoto">Profile Photo</div>}
                             </div>
                         </div>
@@ -143,10 +156,12 @@ class UserProfile extends React.Component {
     }
 
     setUserInfo() {
-        const { userInfo } = this.props;
-        this.setState({
-            userInfo : userInfo
-        })
+        const { session } = this.props;
+        if (session && session.user) {
+            this.setState({
+                userInfo: session.user
+            })
+        }
     }
 
     onChange(e) {
@@ -171,10 +186,10 @@ class UserProfile extends React.Component {
     }
 
     cancelUserInfo() {
-        const { userInfo } = this.props;
+        const { session } = this.props;
         this.setState({
             isEditable: false,
-            userInfo : userInfo
+            userInfo: session.user
         })
     }
 
@@ -197,7 +212,7 @@ class UserProfile extends React.Component {
         // });
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.props.removeFromAppNavigation({
             title: "User Profile",
             path: this.props.match.url
@@ -206,13 +221,13 @@ class UserProfile extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    userInfo: state.userInfo.userInfo
+    userInfo: state.userInfo,
+    session: state.session
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     addToAppNavigation,
-    removeFromAppNavigation,
-    fetchUserInfo
+    removeFromAppNavigation
 }, dispatch)
 
 export default connect(

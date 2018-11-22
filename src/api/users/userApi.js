@@ -1,15 +1,12 @@
 import CommonUtil from '../commonUtil';
-import { resolve } from 'path';
 
 export function callFetchUserApi() {
-    let url = CommonUtil.createUrl('/user');
-    // let url = "http://winwinapi.ramprasadg.com/user/1";
+    let url = CommonUtil.createUrl('/user/1');
     return new Promise((resolve, reject) => {    
-    // fetch(url, {
-        //     method: 'GET',
-        //     headers: CommonUtil.getToken()
-        // })
-        fetch(url)
+    fetch(url, {
+            method: 'GET',
+            headers: CommonUtil.getAuthId()
+        })
         .then((response) => response.json())
         .then((responseJson) => resolve(responseJson))
         .catch((error) => reject(error));

@@ -1,37 +1,33 @@
-import {SET_RESETPASSWORD_SUCCESS, 
-        SET_RESETPASSWORD_PENDING, 
-        SET_RESETFORM_ERROR, 
-        SET_RESETPASSWORD_ERROR} from '../../constants/dispatch';
+import { RESETPASSWORD_REQUEST, RESETPASSWORD_SUCCESS, RESETPASSWORD_ERROR } from '../../constants/dispatch';
 
 const initialState = {
-  isResetPwdSuccess: false,
-  isResetPwdPending: false,
-  resetPwdError: null,
-  resetFormError: {
-    password: '',
-    confirmPassword: ''
-  }
+  loading: false,
+  data: null,
+  error: false
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case SET_RESETPASSWORD_PENDING:
+    case RESETPASSWORD_REQUEST:
       return Object.assign({}, state, {
-        isResetPwdPending: action.isResetPwdPending
+        loading: false,
+        data: null,
+        error: false
       });
 
-    case SET_RESETPASSWORD_SUCCESS:
+    case RESETPASSWORD_SUCCESS:
       return Object.assign({}, state, {
-        isResetPwdSuccess: action.isResetPwdSuccess
+        loading: false,
+        data: action.response,
+        error: false
       });
 
-    case SET_RESETPASSWORD_ERROR:
+    case RESETPASSWORD_ERROR:
       return Object.assign({}, state, {
-        resetPwdError: action.resetPwdError
+        loading: false,
+        data: action.error,
+        error: true
       });
-    case SET_RESETFORM_ERROR:
-      let resetFormErrorVal = Object.assign({}, state.resetFormError, action.resetFormError);
-      return Object.assign({}, state, {resetFormError: resetFormErrorVal});
 
     default:
       return state;
