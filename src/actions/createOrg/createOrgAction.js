@@ -1,65 +1,35 @@
-import { SET_CREATEORG_PENDING, SET_CREATEORG_SUCCESS, SET_CREATEORG_ERROR, SET_CREATEORGFORM_ERROR } from '../../constants/dispatch';
-import {REQ_ORG_NAME, VALID_ORG_NAME, REQ_ORG_LOCATION} from '../../constants/error';
-
+import { CREATEORG_REQUEST, CREATEORG_SUCCESS, CREATEORG_ERROR } from '../../constants/dispatch';
 import { callCreateOrgApi } from '../../api/createOrg/createOrgApi';
-import validate from '../../util/validation';
 
-export const onCreateOrg = (org, cb) => {
+export const onCreateOrg = (org) => {
     return dispatch => {
-        dispatch(setCreateOrgPending(true));
-        dispatch(setCreateOrgSuccess(false));
-        dispatch(setCreateOrgError(null));
-
+        dispatch(createOrgRequest());
         callCreateOrgApi(org, (error, res) => {
-            dispatch(setCreateOrgPending(false));
             if (!error) {
-                dispatch(setCreateOrgSuccess(true));
-                cb();
+                dispatch(createOrgSuccess(res));
             } else {
-                dispatch(setCreateOrgError(error));
+                dispatch(createOrgError(error));
             }
         });
     }
 }
 
-export const validateCreateOrgForm = (field, value) => {
-    return dispatch => {
-        if(field === 'orgName') {
-            dispatch(setCreateOrgFormError({orgName: ''}));
-            if(!value) { dispatch(setCreateOrgFormError({orgName: REQ_ORG_NAME} )); return; }
-            let isValid = validate.name(value);
-            if(!isValid) { dispatch(setCreateOrgFormError({orgName: VALID_ORG_NAME}));}
-           return;
-       } 
-       dispatch(setCreateOrgFormError({location: ''}));
-       if(!value) { dispatch(setCreateOrgFormError({location: REQ_ORG_LOCATION})); return; }
-    }
-}
-
-function setCreateOrgPending(isCreateOrgPending) {
+function createOrgRequest() {
     return {
-        type: SET_CREATEORG_PENDING,
-        isCreateOrgPending
+        type: CREATEORG_REQUEST
     };
 }
 
-function setCreateOrgSuccess(isCreateOrgSuccess) {
+function createOrgSuccess(response) {
     return {
-        type: SET_CREATEORG_SUCCESS,
-        isCreateOrgSuccess
+        type: CREATEORG_SUCCESS,
+        response
     };
 }
 
-function setCreateOrgError(createOrgError) {
+function createOrgError(error) {
     return {
-        type: SET_CREATEORG_ERROR,
-        createOrgError
-    }
-}
-
-function setCreateOrgFormError(createOrgFormError) {
-    return {
-        type: SET_CREATEORGFORM_ERROR,
-        createOrgFormError
+        type: CREATEORG_ERROR,
+        error
     }
 }

@@ -3,14 +3,11 @@ import { push } from 'react-router-redux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Geosuggest from 'react-geosuggest';
-
 import Dropdown from '../ui/dropdown';
-import {
-    onCreateOrg,
-    validateCreateOrgForm
-} from '../../actions/createOrg/createOrgAction';
+import { onCreateOrg } from '../../actions/createOrg/createOrgAction';
 import './createOrg.css';
 import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
+import validate from '../../util/validation';
 
 const sectoryList = ['Public', 'Private', 'Social'];
 const entityList = ['Federal', 'State', 'County', 'City', 'District'];
@@ -23,7 +20,11 @@ class CreateOrg extends React.Component {
             orgName: '',
             sector: sectoryList[0],
             entity: entityList[0],
-            location: null
+            location: null,
+            formError: {
+                orgName: '',
+                location: ''
+            }
         }
         this._geoSuggest = null;
         this.onChange = this.onChange.bind(this);
@@ -42,9 +43,23 @@ class CreateOrg extends React.Component {
             path: this.props.match.url
         });
     }
+    componentWillReceiveProps(nextProps){
+        const { createOrg } = this.props;
+         if(nextProps && nextProps.createOrg !== createOrg && nextProps.createOrg.data){
+             if(!nextProps.createOrg.error){
+                this.setState({
+                    orgName: '',
+                    sector: sectoryList[0],
+                    entity: entityList[0],
+                    location: null
+                });
+                this.props.changePage();
+             }
+         }
+    }
     render() {
-        const { orgName, sector, entity } = this.state;
-        let { createOrgFormError } = this.props;
+        const { orgName, sector, entity, formError } = this.state;
+        let { createOrg } = this.props;
         return (
             <div className="container">
                 <div className="row ">
@@ -62,7 +77,7 @@ class CreateOrg extends React.Component {
                                             name="orgName"
                                             value={orgName} />
                                         <small id="orgNameDesc" className="sr-only">Org Name</small>
-                                        {createOrgFormError.orgName && <div className="text-danger small">{createOrgFormError.orgName}</div>}
+                                        {formError.orgName && <div className="text-danger small">{formError.orgName}</div>}
                                     </div>
                                 </div>
                             </div>
@@ -103,7 +118,7 @@ class CreateOrg extends React.Component {
                                             fixtures={[]}
                                             onBlur={this.validateLocationField}
                                             onSuggestSelect={this.onSuggestSelect} />
-                                        {createOrgFormError.location && <div className="text-danger small">{createOrgFormError.location}</div>}
+                                        {formError.location && <div className="text-danger small">{formError.location}</div>}
                                     </div>
                                 </div>
                             </div>
@@ -126,33 +141,53 @@ class CreateOrg extends React.Component {
     }
 
     validateField(e) {
-        this.props.validateCreateOrgForm(e.target.name, e.target.value);
+        this.validateCreateOrgForm(e.target.name, e.target.value);
     }
 
     validateLocationField(location) {
-        this.props.validateCreateOrgForm('location', location);
+        this.validateCreateOrgForm('location', location);
+    }
+
+    validateCreateOrgForm = (field, value) => {
+        const { formError } = this.state;
+        if (field === 'orgName') {
+            if (!value) {
+                formError.orgName = "Org name is required.";
+                this.setState({ formError });
+                return;
+            }
+            let isValid = validate.name(value);
+            if (!isValid) {
+                formError.orgName = "Enter valid org name.";
+                this.setState({ formError });
+                return;
+            }
+            formError.orgName = "";
+            this.setState({ formError });
+            return;
+        }
+        if (!value) {
+            formError.location = "Location is required.";
+            this.setState({ formError });
+            return;
+        }
+        formError.location = "";
+        this.setState({ formError });
+        return;
     }
 
     onCreateOrg() {
-        const { orgName, location } = this.state;
+        const { orgName, location, sector, entity } = this.state;
         if (!orgName || !location) {
-            this.props.validateCreateOrgForm('orgName', orgName);
-            this.props.validateCreateOrgForm('location', location);
+            this.validateCreateOrgForm('orgName', orgName);
+            this.validateCreateOrgForm('location', location);
             return;
         }
-        this.props.onCreateOrg(this.state, () => {
-            this.setState({
-                orgName: '',
-                sector: sectoryList[0],
-                entity: entityList[0],
-                location: null
-            });
-            this.props.changePage();
-        });
+        this.props.onCreateOrg({orgName, location, sector, entity});
     }
 
     onSuggestSelect(suggest) {
-        this.props.validateCreateOrgForm('location', suggest);
+        this.validateCreateOrgForm('location', suggest);
         this.setState({
             location: suggest
         });
@@ -160,18 +195,14 @@ class CreateOrg extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    isCreateOrgPending: state.createOrg.isCreateOrgPending,
-    isCreateOrgSuccess: state.createOrg.isCreateOrgSuccess,
-    createOrgError: state.createOrg.createOrgError,
-    createOrgFormError: state.createOrg.createOrgFormError
+    createOrg: state.createOrg
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     changePage: () => push('/organizations'),
     addToAppNavigation,
     removeFromAppNavigation,
-    onCreateOrg,
-    validateCreateOrgForm
+    onCreateOrg
 }, dispatch)
 
 export default connect(

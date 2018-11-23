@@ -1,34 +1,33 @@
-import {SET_CREATEORG_PENDING, SET_CREATEORG_SUCCESS, SET_CREATEORG_ERROR, SET_CREATEORGFORM_ERROR} from '../../constants/dispatch';
+import { CREATEORG_REQUEST, CREATEORG_SUCCESS, CREATEORG_ERROR } from '../../constants/dispatch';
 
 const initialState = {
-  isCreateOrgSuccess: false,
-  isCreateOrgPending: false,
-  createOrgError: null,
-  createOrgFormError: {
-    orgName: '',
-    location: ''
-  }
+  loading: false,
+  data: null,
+  error: false
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case SET_CREATEORG_PENDING:
+    case CREATEORG_REQUEST:
       return Object.assign({}, state, {
-        isCreateOrgPending: action.isCreateOrgPending
+        loading: true,
+        data: null,
+        error: false
       });
 
-    case SET_CREATEORG_SUCCESS:
+    case CREATEORG_SUCCESS:
       return Object.assign({}, state, {
-        isCreateOrgSuccess: action.isCreateOrgSuccess
+        loading: false,
+        data: action.response,
+        error: false
       });
 
-    case SET_CREATEORG_ERROR:
+    case CREATEORG_ERROR:
       return Object.assign({}, state, {
-        createOrgError: action.createOrgError
+        loading: false,
+        data: action.error,
+        error: true
       });
-    case SET_CREATEORGFORM_ERROR:
-      let formErrorVal = Object.assign({}, state.createOrgFormError, action.createOrgFormError);
-      return Object.assign({}, state, {createOrgFormError: formErrorVal});
 
     default:
       return state;

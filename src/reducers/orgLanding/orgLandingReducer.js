@@ -17,7 +17,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case FETCHORG_REQUEST:
       return Object.assign({}, state, {
-        loading: false,
+        loading: true,
         data: null,
         error: false,
       });
