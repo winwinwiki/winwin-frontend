@@ -5,12 +5,10 @@ import { connect } from 'react-redux';
 import ReactTable from "react-table";
 import matchSorter from 'match-sorter'
 import 'react-table/react-table.css'
-
-import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
 import OrgFilters from './orgFilter';
 import AppliedOrgFilters from './appliedOrgFilters/index';
 import Dropdown from '../ui/dropdown';
-import { fetchOrganisationsList, setAppliedFilters } from '../../actions/orgLanding/orgLandingAction';
+import { fetchOrganisationsList, fetchSdgTagsList, fetchSpiTagsList, setAppliedFilters } from '../../actions/orgLanding/orgLandingAction';
 import { startLoaderAction, stopLoaderAction } from '../../actions/common/loaderActions';
 
 
@@ -101,18 +99,8 @@ class OrgList extends React.Component {
     componentDidMount() {
         this.props.startLoaderAction();
         this.props.fetchOrganisationsList();
-        this.props.removeFromAppNavigation({
-            title: "Organisation Management",
-            path: "/organizations"
-        });
-        this.props.removeFromAppNavigation({
-            title: "User Management",
-            path: "/user-management"
-        });
-        this.props.addToAppNavigation({
-            title: "Organisation Management",
-            path: "/organizations"
-        });
+        this.props.fetchSdgTagsList();
+        this.props.fetchSpiTagsList();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -281,9 +269,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     changePage: (id) => push('/organizations/' + id),
-    addToAppNavigation,
-    removeFromAppNavigation,
     fetchOrganisationsList,
+    fetchSdgTagsList,
+    fetchSpiTagsList,
     setAppliedFilters,
     startLoaderAction,
     stopLoaderAction

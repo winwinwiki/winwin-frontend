@@ -6,7 +6,6 @@ import Geosuggest from 'react-geosuggest';
 import Dropdown from '../ui/dropdown';
 import { onCreateOrg } from '../../actions/createOrg/createOrgAction';
 import './createOrg.css';
-import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
 import validate from '../../util/validation';
 
 const sectoryList = ['Public', 'Private', 'Social'];
@@ -32,16 +31,6 @@ class CreateOrg extends React.Component {
         this.onCreateOrg = this.onCreateOrg.bind(this);
         this.onSuggestSelect = this.onSuggestSelect.bind(this);
         this.validateLocationField = this.validateLocationField.bind(this);
-    }
-    componentDidMount() {
-        this.props.removeFromAppNavigation({
-            title: "New Organisation",
-            path: this.props.match.url
-        });
-        this.props.addToAppNavigation({
-            title: "New Organisation",
-            path: this.props.match.url
-        });
     }
     componentWillReceiveProps(nextProps){
         const { createOrg } = this.props;
@@ -200,8 +189,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     changePage: () => push('/organizations'),
-    addToAppNavigation,
-    removeFromAppNavigation,
     onCreateOrg
 }, dispatch)
 

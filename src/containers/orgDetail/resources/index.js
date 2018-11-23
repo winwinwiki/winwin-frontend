@@ -3,7 +3,7 @@ import ResourceBlock from './resourceBlock';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { setOrgResources, fetchOrgResources } from '../../../actions/orgDetail/resourcesAction';
+import { saveOrgResources, fetchOrgResources } from '../../../actions/orgDetail/resourcesAction';
 import ResourceModal from './resourceModal';
 
 class Resources extends React.Component {
@@ -25,8 +25,8 @@ class Resources extends React.Component {
 
     render() {
         const { selectedData, modalTitle } = this.state;
-        const { isResourcesSuccess, resourcesList } = this.props;
-        if (!isResourcesSuccess || !resourcesList) { return null; }
+        const { resources } = this.props;
+        if (!resources || !resources.data || resources.error) { return null; }
         return (
             <section className="dashboard-content p-0 py-3 org-details-container">
                 <div className="col-md-18 m-auto card">
@@ -39,7 +39,7 @@ class Resources extends React.Component {
                 </div>
                         <form>
                             <ul className="list-group list-group-flush">
-                                {resourcesList.map(resource => <ResourceBlock key={resource.id} data={resource} changeModalData={this.changeModalData} />)}
+                                {resources.data.map(resource => <ResourceBlock key={resource.id} data={resource} changeModalData={this.changeModalData} />)}
                                 <li className="list-group-item px-0 pt-4">
                                     <a href="javascript:;" data-toggle="modal" data-target="#resourceModal" onClick={this.addNewDataSetModal}><i className="icon-add mr-2"></i> Add Another</a>
                                 </li>
@@ -79,9 +79,9 @@ class Resources extends React.Component {
         )
     }
     changeModalData = (resourceId) => {
-        const { resourcesList } = this.props;
+        const { resources } = this.props;
         this.setState({
-            selectedData: resourcesList.filter(resource => resource.id == resourceId)[0],
+            selectedData: resources.data.filter(resource => resource.id == resourceId)[0],
             modalTitle: 'Edit Resource'
         })
     }
@@ -99,12 +99,11 @@ class Resources extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    resourcesList: state.resources.resourcesList,
-    isResourcesSuccess: state.resources.isResourcesSuccess
+    resources: state.resources
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    setOrgResources,
+    saveOrgResources,
     fetchOrgResources
 }, dispatch)
 

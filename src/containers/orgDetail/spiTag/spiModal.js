@@ -15,8 +15,8 @@ class SPIModal extends React.Component {
     render() {
         const { searchText } = this.state;
         const { SPIList, SPIData } = this.props;
-        let localSPIList = this.desiredSPIList();
         if (!SPIList || !SPIData) { return null; }
+        let localSPIList = this.desiredSPIList();
         return (
             <div className="modal progress-index-modal fade bd-example-modal-lg" id="spiModal" tabIndex="-1"
                 role="dialog" aria-labelledby="spiModalLabel" aria-hidden="true">

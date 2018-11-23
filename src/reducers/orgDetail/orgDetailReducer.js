@@ -1,31 +1,35 @@
-import { SET_FETCHORGDETAIL_PENDING, SET_FETCHORGDETAIL_SUCCESS, SET_FECTHORGDETAIL_ERROR} from '../../constants/dispatch';
-  
-  const initialState = {
-    isFetchOrgDetailSuccess: false,
-    isFetchOrgDetailPending: false,
-    fetchOrgDetailError: null,
-    orgDetail: {}
-  };
-  
-  export default (state = initialState, action) => {
-    switch (action.type) {
-      case SET_FETCHORGDETAIL_PENDING:
-        return Object.assign({}, state, {
-            isFetchOrgDetailPending: action.isFetchOrgDetailPending
-        });
-  
-      case SET_FETCHORGDETAIL_SUCCESS:
-        return Object.assign({}, state, {
-            isFetchOrgDetailSuccess: action.isFetchOrgDetailSuccess,
-            orgDetail: action.orgDetail
-        });
-  
-      case SET_FECTHORGDETAIL_ERROR:
-        return Object.assign({}, state, {
-            fetchOrgDetailError: action.fetchOrgDetailError
-        });
-  
-      default:
-        return state;
-    }
-  };
+import { FETCH_ORGDETAIL_REQUEST, FETCH_ORGDETAIL_SUCCESS, FETCH_ORGDETAIL_ERROR } from '../../constants/dispatch';
+
+const initialState = {
+  loading: false,
+  data: null,
+  error: false
+};
+
+export default (state = initialState, action) => {
+  switch (action.type) {
+    case FETCH_ORGDETAIL_REQUEST:
+      return Object.assign({}, state, {
+        loading: true,
+        data: null,
+        error: false
+      });
+
+    case FETCH_ORGDETAIL_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false,
+        data: action.response,
+        error: false
+      });
+
+    case FETCH_ORGDETAIL_ERROR:
+      return Object.assign({}, state, {
+        loading: false,
+        data: action.error,
+        error: true
+      });
+
+    default:
+      return state;
+  }
+};

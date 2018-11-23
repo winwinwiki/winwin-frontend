@@ -1,8 +1,6 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
-import Upload from '../ui/upload';
+import { connect } from 'react-redux';import Upload from '../ui/upload';
 
 class UserProfile extends React.Component {
     constructor(props) {
@@ -26,18 +24,6 @@ class UserProfile extends React.Component {
         } else {
             this.setUserInfo();
         }
-        this.props.removeFromAppNavigation({
-            title: "User Profile",
-            path: this.props.match.url
-        });
-        this.props.removeFromAppNavigation({
-            title: "Organisation Management",
-            path: '/organizations'
-        });
-        this.props.addToAppNavigation({
-            title: "User Profile",
-            path: this.props.match.url
-        });
     }
 
     componentWillReceiveProps(nextProps){
@@ -211,13 +197,6 @@ class UserProfile extends React.Component {
         //     reader.readAsDataURL(recievedFiles[key]);
         // });
     }
-
-    componentWillUnmount() {
-        this.props.removeFromAppNavigation({
-            title: "User Profile",
-            path: this.props.match.url
-        });
-    }
 }
 
 const mapStateToProps = state => ({
@@ -226,8 +205,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    addToAppNavigation,
-    removeFromAppNavigation
 }, dispatch)
 
 export default connect(

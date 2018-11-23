@@ -1,19 +1,16 @@
-import { FETCH_RESOURCES_PENDING, FETCH_RESOURCES_SUCCESS, FETCH_RESOURCES_ERROR,
-    SET_RESOURCES_PENDING, SET_RESOURCES_SUCCESS, SET_RESOURCES_ERROR  } from '../../constants/dispatch';
+import { FETCH_RESOURCES_REQUEST, FETCH_RESOURCES_SUCCESS, FETCH_RESOURCES_ERROR,
+    SAVE_RESOURCES_REQUEST, SAVE_RESOURCES_SUCCESS, SAVE_RESOURCES_ERROR  } from '../../constants/dispatch';
 import { setResourcesApi, fetchResourcesApi } from '../../api/orgDetail/resourcesApi';
 
-export const setOrgResources = (regions) => {
+export const saveOrgResources = (regions) => {
     return dispatch => {
-        dispatch(setResourcesPending(true));
-        dispatch(setResourcesSuccess(false, []));
-        dispatch(setResourcesError(null));
+        dispatch(saveResourcesReq());
 
-        setResourcesApi(regions, (error, resourcesList) => {
-            dispatch(setResourcesPending(false));
+        setResourcesApi(regions, (error, response) => {
             if (!error) {
-                dispatch(setResourcesSuccess(true, resourcesList));
+                dispatch(saveResourcesSuccess(response));
             } else {
-                dispatch(setResourcesError(error));
+                dispatch(saveResourcesError(error));
             }
         });
     }
@@ -22,14 +19,11 @@ export const setOrgResources = (regions) => {
 
 export const fetchOrgResources = () => {
     return dispatch => {
-        dispatch(fetchResourcesPending(true));
-        dispatch(fetchResourcesSuccess(false, []));
-        dispatch(fetchResourcesError(null));
+        dispatch(fetchResourcesReq());
 
-        fetchResourcesApi((error, resourcesList) => {
-            dispatch(fetchResourcesPending(false));
+        fetchResourcesApi((error, response) => {
             if (!error) {
-                dispatch(fetchResourcesSuccess(true, resourcesList));
+                dispatch(fetchResourcesSuccess(response));
             } else {
                 dispatch(fetchResourcesError(error));
             }
@@ -37,46 +31,42 @@ export const fetchOrgResources = () => {
     }
 }
 
-function fetchResourcesPending(isResourcesPending) {
+function fetchResourcesReq() {
     return {
-        type: FETCH_RESOURCES_PENDING,
-        isResourcesPending
+        type: FETCH_RESOURCES_REQUEST
     }
 }
 
-function fetchResourcesSuccess(isResourcesSuccess, resourcesList) {
+function fetchResourcesSuccess(response) {
     return {
         type: FETCH_RESOURCES_SUCCESS,
-        isResourcesSuccess,
-        resourcesList
+        response
     }
 }
 
-function fetchResourcesError(isResourcesError) {
+function fetchResourcesError(error) {
     return {
         type: FETCH_RESOURCES_ERROR,
-        isResourcesError
+        error
     }
 }
 
-function setResourcesPending(isResourcesPending) {
+function saveResourcesReq() {
     return {
-        type: SET_RESOURCES_PENDING,
-        isResourcesPending
+        type: SAVE_RESOURCES_REQUEST
     }
 }
 
-function setResourcesSuccess(isResourcesSuccess, resourcesList) {
+function saveResourcesSuccess(response) {
     return {
-        type: SET_RESOURCES_SUCCESS,
-        isResourcesSuccess,
-        resourcesList
+        type: SAVE_RESOURCES_SUCCESS,
+        response
     }
 }
 
-function setResourcesError(isResourcesError) {
+function saveResourcesError(error) {
     return {
-        type: SET_RESOURCES_ERROR,
-        isResourcesError
+        type: SAVE_RESOURCES_ERROR,
+        error
     }
 }

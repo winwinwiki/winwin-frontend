@@ -1,7 +1,4 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { addToAppNavigation, removeFromAppNavigation } from '../../../actions/sectionHeader/sectionHeaderAction';
 
 class UserProfile extends React.Component {
     constructor(props) {
@@ -13,18 +10,6 @@ class UserProfile extends React.Component {
         this.validateField = this.validateField.bind(this);
     }
     componentDidMount() {
-        this.props.removeFromAppNavigation({
-            title: "Change Password",
-            path: this.props.match.url
-        });
-        this.props.removeFromAppNavigation({
-            title: "Organisation Management",
-            path: '/organizations'
-        });
-        this.props.addToAppNavigation({
-            title: "Change Password",
-            path: this.props.match.url
-        });
     }
     render() {
         const { firstname, lastname  } = this.state;
@@ -120,21 +105,6 @@ class UserProfile extends React.Component {
             isEditable: false
         })
     }
-
-    componentWillUnmount() {
-        this.props.removeFromAppNavigation({
-            title: "Change Password",
-            path: this.props.match.url
-        });
-    }
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    addToAppNavigation,
-    removeFromAppNavigation
-}, dispatch)
-
-export default connect(
-    null,
-    mapDispatchToProps
-)(UserProfile);
+export default UserProfile;

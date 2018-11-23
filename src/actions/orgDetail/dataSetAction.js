@@ -1,19 +1,16 @@
-import { FETCH_DATASET_PENDING, FETCH_DATASET_SUCCESS, FETCH_DATASET_ERROR,
-    SET_DATASET_PENDING, SET_DATASET_SUCCESS, SET_DATASET_ERROR  } from '../../constants/dispatch';
+import { FETCH_DATASET_REQUEST, FETCH_DATASET_SUCCESS, FETCH_DATASET_ERROR,
+    SAVE_DATASET_REQUEST, SAVE_DATASET_SUCCESS, SAVE_DATASET_ERROR  } from '../../constants/dispatch';
 import { setDataSetApi, fetchDataSetApi } from '../../api/orgDetail/dataSetApi';
 
-export const setOrgDataSets = (regions) => {
+export const saveOrgDataSets = (regions) => {
     return dispatch => {
-        dispatch(setDataSetPending(true));
-        dispatch(setDataSetSuccess(false, []));
-        dispatch(setDataSetError(null));
+        dispatch(saveDataSetReq());
 
-        setDataSetApi(regions, (error, dataSetList) => {
-            dispatch(setDataSetPending(false));
+        setDataSetApi(regions, (error, response) => {
             if (!error) {
-                dispatch(setDataSetSuccess(true, dataSetList));
+                dispatch(saveDataSetSuccess(response));
             } else {
-                dispatch(setDataSetError(error));
+                dispatch(saveDataSetError(error));
             }
         });
     }
@@ -22,14 +19,11 @@ export const setOrgDataSets = (regions) => {
 
 export const fetchOrgDataSets = () => {
     return dispatch => {
-        dispatch(fetchDataSetPending(true));
-        dispatch(fetchDataSetSuccess(false, []));
-        dispatch(fetchDataSetError(null));
+        dispatch(fetchDataSetReq());
 
-        fetchDataSetApi((error, dataSetList) => {
-            dispatch(fetchDataSetPending(false));
+        fetchDataSetApi((error, response) => {
             if (!error) {
-                dispatch(fetchDataSetSuccess(true, dataSetList));
+                dispatch(fetchDataSetSuccess(response));
             } else {
                 dispatch(fetchDataSetError(error));
             }
@@ -37,46 +31,42 @@ export const fetchOrgDataSets = () => {
     }
 }
 
-function fetchDataSetPending(isDataSetPending) {
+function fetchDataSetReq() {
     return {
-        type: FETCH_DATASET_PENDING,
-        isDataSetPending
+        type: FETCH_DATASET_REQUEST
     }
 }
 
-function fetchDataSetSuccess(isDataSetSuccess, dataSetList) {
+function fetchDataSetSuccess(response) {
     return {
         type: FETCH_DATASET_SUCCESS,
-        isDataSetSuccess,
-        dataSetList
+        response
     }
 }
 
-function fetchDataSetError(isDataSetError) {
+function fetchDataSetError(error) {
     return {
         type: FETCH_DATASET_ERROR,
-        isDataSetError
+        error
     }
 }
 
-function setDataSetPending(isDataSetPending) {
+function saveDataSetReq() {
     return {
-        type: SET_DATASET_PENDING,
-        isDataSetPending
+        type: SAVE_DATASET_REQUEST
     }
 }
 
-function setDataSetSuccess(isDataSetSuccess, dataSetList) {
+function saveDataSetSuccess(response) {
     return {
-        type: SET_DATASET_SUCCESS,
-        isDataSetSuccess,
-        dataSetList
+        type: SAVE_DATASET_SUCCESS,
+        response
     }
 }
 
-function setDataSetError(isDataSetError) {
+function saveDataSetError(error) {
     return {
-        type: SET_DATASET_ERROR,
-        isDataSetError
+        type: SAVE_DATASET_ERROR,
+        error
     }
 }

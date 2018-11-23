@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { connect } from 'react-redux';
 
 const subNavOptions = [
     {
@@ -9,23 +9,23 @@ const subNavOptions = [
     }, {
         title: 'Data Sets',
         path: 'data-sets'
-    },{
+    }, {
         title: 'Resources',
         path: 'resources'
-    },{
+    }, {
         title: 'Regions Served',
         path: 'regions-served'
-    },{
+    }, {
         title: 'SPI Tag',
         path: 'spi-tags'
-    },{
+    }, {
         title: 'SDG Tag',
         path: 'sdg-tags'
     }
 ];
 
-class ProgramSidebar extends React.Component{
-    constructor(props){
+class ProgramSidebar extends React.Component {
+    constructor(props) {
         super(props)
         this.state = {
             activeSubNav: ''
@@ -33,31 +33,33 @@ class ProgramSidebar extends React.Component{
     }
 
     componentWillReceiveProps() {
-        // console.log(this.props.history.location.pathname);
-        
-        if(this.props.history.location.pathname.indexOf('data-sets')>-1){
-            this.setState({activeSubNav: "data-sets"});
-        } else if(this.props.history.location.pathname.indexOf('resources')>-1){
-            this.setState({activeSubNav: "resources"});
-        } else if(this.props.history.location.pathname.indexOf('regions-served')>-1){
-            this.setState({activeSubNav: "regions-served"});
-        } else if(this.props.history.location.pathname.indexOf('spi-tags')>-1){
-            this.setState({activeSubNav: "spi-tags"});
-        } else if(this.props.history.location.pathname.indexOf('sdg-tags')>-1){
-            this.setState({activeSubNav: "sdg-tags"});
+        const { history } = this.props;
+        let pathname = history.location.pathname;
+        if (pathname.indexOf('data-sets') > -1) {
+            this.setState({ activeSubNav: "data-sets" });
+        } else if (pathname.indexOf('resources') > -1) {
+            this.setState({ activeSubNav: "resources" });
+        } else if (pathname.indexOf('regions-served') > -1) {
+            this.setState({ activeSubNav: "regions-served" });
+        } else if (pathname.indexOf('spi-tags') > -1) {
+            this.setState({ activeSubNav: "spi-tags" });
+        } else if (pathname.indexOf('sdg-tags') > -1) {
+            this.setState({ activeSubNav: "sdg-tags" });
         } else {
-            this.setState({activeSubNav: ""});
+            this.setState({ activeSubNav: "" });
         }
 
     }
 
-    render(){
+    render() {
+        const { programDetail, history } = this.props;
+        if (!programDetail || !programDetail.data) { return null; }
         return (
             <div id="mySidenav" className="sidenav d-flex flex-column">
-            <div className="py-3 d-flex justify-content-between">
-                <Link className="d-flex" to={this.props.history.location.pathname.replace(/\/programs\/(.)*$/ig,'/programs')}><i className="icon-chevron-left mr-1"></i>
-                <h4>{this.props.programDetail.name}</h4></Link>
-            </div>
+                <div className="py-3 d-flex justify-content-between">
+                    <Link className="d-flex" to={history.location.pathname.replace(/\/programs\/(.)*$/ig, '/programs')}><i className="icon-chevron-left mr-1"></i>
+                        <h4>{programDetail.data.name}</h4></Link>
+                </div>
                 <ul className="list-group list-group-flush pr-3">
                     <li className="list-group-item">
                         <div>
@@ -81,11 +83,17 @@ class ProgramSidebar extends React.Component{
         )
     }
 
-    renderSubNavOptions(){
-        return subNavOptions.map(option => <li onClick={()=>this.setState({activeSubNav:option.path})} key={option.path}><Link className={this.state.activeSubNav === option.path?'active':''} to={option.path ? `${this.props.match.url}/${option.path}`:`${this.props.match.url}`}><i></i>{option.title}</Link></li>)
+    renderSubNavOptions() {
+        return subNavOptions.map(option => <li onClick={() => this.setState({ activeSubNav: option.path })} key={option.path}><Link className={this.state.activeSubNav === option.path ? 'active' : ''} to={option.path ? `${this.props.match.url}/${option.path}` : `${this.props.match.url}`}><i></i>{option.title}</Link></li>)
     }
 }
 
+const mapStateToProps = state => ({
+    programDetail: state.programDetail,
+})
 
-export default ProgramSidebar;
+export default connect(
+    mapStateToProps,
+    null
+)(ProgramSidebar);
 

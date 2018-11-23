@@ -8193,11 +8193,11 @@ h5.modal-title {
   position: absolute;
   right: 10px; }
 
-.app-breadcrumb .breadcrumb {
+.app-breadcrumb .breadcrumbs__crumb {
   background-color: transparent;
   padding: 0.25rem 0.25rem;
   margin-bottom: 0.25rem; }
-  .app-breadcrumb .breadcrumb > .breadcrumb-item.active > a {
+  .app-breadcrumb .breadcrumbs__crumb.breadcrumbs__crumb--active {
     color: #29ABE2; }
 
 .profilePhoto {

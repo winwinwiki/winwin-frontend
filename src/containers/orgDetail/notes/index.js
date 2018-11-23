@@ -51,7 +51,7 @@ class Notes extends React.Component {
                                             <div className="row">
                                                 <div className="col">
                                                     <div className="form-group">
-                                                        <label htmlFor="note" class="sr-only">Added by</label>
+                                                        <label htmlFor="note" className="sr-only">Added by</label>
                                                         <textarea row="5" className="form-control" id="note" placeholder="Enter New Note" />
                                                     </div>
                                                 </div>

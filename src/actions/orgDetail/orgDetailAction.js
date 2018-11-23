@@ -1,74 +1,64 @@
-import { SET_FETCHORGDETAIL_PENDING, SET_FETCHORGDETAIL_SUCCESS, SET_FECTHORGDETAIL_ERROR, SET_FETCHPROGDETAIL_PENDING, SET_FETCHPROGDETAIL_SUCCESS, SET_FECTHPROGDETAIL_ERROR } from '../../constants/dispatch';
+import { FETCH_ORGDETAIL_REQUEST, FETCH_ORGDETAIL_SUCCESS, FETCH_ORGDETAIL_ERROR, 
+    FETCH_PROGDETAIL_REQUEST, FETCH_PROGDETAIL_SUCCESS, FECTH_PROGDETAIL_ERROR } from '../../constants/dispatch';
 import { callFetchOrgDetailApi } from '../../api/orgDetail/orgDetailApi';
 
-export const fetchOrganisationDetail = (orgId, programId, callback) => {
+export const fetchOrganisationDetail = (orgId, programId) => {
     return dispatch => {
         if (programId) {
-            dispatch(setFetchProgDetailPending(true));
-            dispatch(setFetchProgDetailSuccess(false, {}));
-            dispatch(setFetchProgDetailError(null));
+            dispatch(fetchProgDetailReq(true));
         } else {
-            dispatch(setFetchOrgDetailPending(true));
-            dispatch(setFetchOrgDetailSuccess(false, {}));
-            dispatch(setFetchOrgDetailError(null));
+            dispatch(fetchOrgDetailReq());
         }
-
-        callFetchOrgDetailApi(orgId, programId, (error, orgDetail) => {
-            programId ? dispatch(setFetchProgDetailPending(false)) : dispatch(setFetchOrgDetailPending(false));
+        callFetchOrgDetailApi(orgId, programId, (error, response) => {
             if (!error) {
                 programId
-                    ? dispatch(setFetchProgDetailSuccess(true, orgDetail))
-                    : dispatch(setFetchOrgDetailSuccess(true, orgDetail));
-                callback();
+                    ? dispatch(fetchProgDetailSuccess(response))
+                    : dispatch(fetchOrgDetailSuccess(response));
             } else {
-                programId ? dispatch(setFetchProgDetailError(error)) : dispatch(setFetchOrgDetailError(error));
+                programId ? dispatch(fetchProgDetailError(error)) : dispatch(fetchOrgDetailError(error));
             }
         });
     }
 }
 
 //Org Detail
-function setFetchOrgDetailPending(isFetchOrgDetailPending) {
+function fetchOrgDetailReq() {
     return {
-        type: SET_FETCHORGDETAIL_PENDING,
-        isFetchOrgDetailPending
+        type: FETCH_ORGDETAIL_REQUEST
     };
 }
 
-function setFetchOrgDetailSuccess(isFetchOrgDetailSuccess, orgDetail) {
+function fetchOrgDetailSuccess(response) {
     return {
-        type: SET_FETCHORGDETAIL_SUCCESS,
-        isFetchOrgDetailSuccess,
-        orgDetail
+        type: FETCH_ORGDETAIL_SUCCESS,
+        response
     };
 }
 
-function setFetchOrgDetailError(fetchOrgDetailError) {
+function fetchOrgDetailError(error) {
     return {
-        type: SET_FECTHORGDETAIL_ERROR,
-        fetchOrgDetailError
+        type: FETCH_ORGDETAIL_ERROR,
+        error
     }
 }
 
 //Prog Detail
-function setFetchProgDetailPending(isFetchProgDetailSuccess) {
+function fetchProgDetailReq() {
     return {
-        type: SET_FETCHPROGDETAIL_PENDING,
-        isFetchProgDetailSuccess
+        type: FETCH_PROGDETAIL_REQUEST
     };
 }
 
-function setFetchProgDetailSuccess(isFetchProgDetailSuccess, progDetail) {
+function fetchProgDetailSuccess(response) {
     return {
-        type: SET_FETCHPROGDETAIL_SUCCESS,
-        isFetchProgDetailSuccess,
-        progDetail
+        type: FETCH_PROGDETAIL_SUCCESS,
+        response
     };
 }
 
-function setFetchProgDetailError(fetchProgDetailError) {
+function fetchProgDetailError(error) {
     return {
-        type: SET_FECTHPROGDETAIL_ERROR,
-        fetchProgDetailError
+        type: FECTH_PROGDETAIL_ERROR,
+        error
     }
 }

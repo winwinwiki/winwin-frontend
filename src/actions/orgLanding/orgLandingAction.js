@@ -1,7 +1,7 @@
 import {
     FETCHORG_REQUEST, FETCHORG_SUCCESS, FECTHORG_ERROR,
-    SET_SDGLIST,
-    SET_SPILIST,
+    SET_SDGLIST_REQUEST, SET_SDGLIST_SUCCESS, SET_SDGLIST_ERROR,
+    SET_SPILIST_REQUEST, SET_SPILIST_SUCCESS, SET_SPILIST_ERROR,
     SET_APPLIED_FILTER
 } from '../../constants/dispatch';
 import { callFetchOrgApi, callFetchSdgListApi, callFetchSpiListApi } from '../../api/orgLanding/orgLandingApi';
@@ -9,23 +9,9 @@ import { callFetchOrgApi, callFetchSdgListApi, callFetchSpiListApi } from '../..
 export const fetchOrganisationsList = (params) => {
     return dispatch => {
         dispatch(fetchOrgRequest());
-        callFetchSdgListApi((error, sdgList) => {
+        callFetchOrgApi(params, (error, orgList) => {
             if (!error) {
-                dispatch(setSdgList(sdgList));
-                callFetchSpiListApi((error, spiList) => {
-                    if (!error) {
-                        dispatch(setSpiList(spiList));
-                        callFetchOrgApi(params, (error, orgList) => {
-                            if (!error) {
-                                dispatch(fetchOrgSuccess(orgList));
-                            } else {
-                                dispatch(fetchOrgError(error));
-                            }
-                        });
-                    } else {
-                        dispatch(fetchOrgError(error));
-                    }
-                });
+                dispatch(fetchOrgSuccess(orgList));
             } else {
                 dispatch(fetchOrgError(error));
             }
@@ -45,6 +31,32 @@ export const setAppliedFilters = (appliedFilterList, params) => {
             }
         });
 
+    }
+}
+
+export const fetchSdgTagsList = () => {
+    return dispatch => {
+        dispatch(setSdgListReq());
+        callFetchSdgListApi((error, response) => {
+            if (!error) {
+                dispatch(setSdgListSuccess(response));
+            } else {
+                dispatch(setSdgListError(error));
+            }
+        });
+    }
+}
+
+export const fetchSpiTagsList = () => {
+    return dispatch => {
+        dispatch(setSpiListReq());
+        callFetchSpiListApi((error, response) => {
+            if (!error) {
+                dispatch(setSpiListSuccess(response));
+            } else {
+                dispatch(setSpiListError(error));
+            }
+        });
     }
 }
 
@@ -68,17 +80,39 @@ function fetchOrgError(error) {
     }
 }
 
-function setSdgList(sdgList) {
+function setSdgListReq() {
     return {
-        type: SET_SDGLIST,
-        sdgList
+        type: SET_SDGLIST_REQUEST
+    }
+}
+function setSdgListSuccess(response) {
+    return {
+        type: SET_SDGLIST_SUCCESS,
+        response
+    }
+}
+function setSdgListError(error) {
+    return {
+        type: SET_SDGLIST_ERROR,
+        error
     }
 }
 
-function setSpiList(spiList) {
+function setSpiListReq() {
     return {
-        type: SET_SPILIST,
-        spiList
+        type: SET_SPILIST_REQUEST
+    }
+}
+function setSpiListSuccess(response) {
+    return {
+        type: SET_SPILIST_SUCCESS,
+        response
+    }
+}
+function setSpiListError(error) {
+    return {
+        type: SET_SPILIST_ERROR,
+        error
     }
 }
 

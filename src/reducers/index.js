@@ -9,8 +9,6 @@ import resetPassword from './auth/resetPasswordReducer';
 
 import userInfo from './users/userInfoReducer';
 
-import sectionHeader from './sectionHeader/sectionHeaderReducer';
-
 import createOrg from './createOrg/createOrgReducer';
 import dataFeed from './dataFeed/dataFeedReducer';
 import orgLanding from './orgLanding/orgLandingReducer';
@@ -46,7 +44,6 @@ export default combineReducers({
     programDetail,
     programList,
     userInfo,
-    sectionHeader,
     orgHistory,
     orgChart,
     userManagement,

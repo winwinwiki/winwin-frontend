@@ -2,7 +2,6 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { fetchOrgHistory } from '../../../actions/orgDetail/orgHistoryAction';
-import { addToAppNavigation, removeFromAppNavigation } from '../../../actions/sectionHeader/sectionHeaderAction';
 
 class OrgHistory extends React.Component {
     constructor(props) {
@@ -10,16 +9,7 @@ class OrgHistory extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchOrgHistory(this.props.match.params.id, () => {
-            this.props.removeFromAppNavigation({
-                title: 'View History',
-                path: this.props.match.url
-            });
-            this.props.addToAppNavigation({
-                title: 'View History',
-                path: this.props.match.url
-            });
-        });
+        this.props.fetchOrgHistory(this.props.match.params.id, () => {});
     }
 
     componentWillReceiveProps(nextProps) {
@@ -69,13 +59,6 @@ class OrgHistory extends React.Component {
         });
     }
 
-    componentWillUnmount(){
-        this.props.removeFromAppNavigation({
-            title: 'View History',
-            path: this.props.match.url
-        });
-    }
-
 }
 
 const mapStateToProps = state => ({
@@ -86,9 +69,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchOrgHistory,
-    addToAppNavigation,
-    removeFromAppNavigation
+    fetchOrgHistory
 }, dispatch)
 
 export default connect(

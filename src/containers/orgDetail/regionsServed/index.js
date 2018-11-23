@@ -3,7 +3,7 @@ import Geosuggest from 'react-geosuggest';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { setOrgRegionsServed, fetchOrgRegionsServed } from '../../../actions/orgDetail/regionsServedAction';
+import { saveOrgRegionsServed, fetchOrgRegionsServed } from '../../../actions/orgDetail/regionsServedAction';
 
 class RegionsServed extends React.Component {
     constructor(props) {
@@ -24,8 +24,8 @@ class RegionsServed extends React.Component {
 
     render() {
         const { isEdited } = this.state;
-        const { regionsServedList, isRegionsServedSuccess } = this.props;
-        if (!isRegionsServedSuccess) { return null; }
+        const { regionsServed } = this.props;
+        if (!regionsServed || !regionsServed.data || regionsServed.error) { return null; }
         return (
             <section className="dashboard-content p-0 py-3 org-details-container">
                 <div className="col-md-18 m-auto card">
@@ -54,7 +54,7 @@ class RegionsServed extends React.Component {
                                         fixtures={[]}
                                         onSuggestSelect={this.onSuggestSelect} />
                                 }
-                                {isEdited && regionsServedList.map((region, idx) =>
+                                {isEdited && regionsServed.data.map((region, idx) =>
                                     <div className="row mt-2" key={idx}>
                                         <div className="col-sm-22">
                                             {region.city}, {region.state}, {region.country}
@@ -64,7 +64,7 @@ class RegionsServed extends React.Component {
                                         </div>
                                     </div>)
                                 }
-                                {!isEdited && regionsServedList.map((region, idx) => <li className="mt-2" key={idx}> {region.city}, {region.state}, {region.country} </li>)}
+                                {!isEdited && regionsServed.data.map((region, idx) => <li className="mt-2" key={idx}> {region.city}, {region.state}, {region.country} </li>)}
                             </ul>
                         </form>
 
@@ -87,7 +87,7 @@ class RegionsServed extends React.Component {
     }
 
     onSuggestSelect(suggest) {
-        this.props.setOrgRegionsServed(suggest);
+        this.props.saveOrgRegionsServed(suggest);
         // console.log(suggest)
         this.setState({
             location: suggest
@@ -96,12 +96,11 @@ class RegionsServed extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    regionsServedList: state.regionsServed.regionsServedList,
-    isRegionsServedSuccess: state.regionsServed.isRegionsServedSuccess
+    regionsServed: state.regionsServed
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    setOrgRegionsServed,
+    saveOrgRegionsServed,
     fetchOrgRegionsServed
 }, dispatch)
 

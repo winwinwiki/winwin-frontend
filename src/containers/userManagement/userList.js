@@ -4,8 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ReactTable from "react-table";
 import 'react-table/react-table.css'
-
-import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
 import { fetchUsersList } from '../../actions/userManagement/userListAction';
 import UploadUserModal from './uploadUsersModal';
 import Dropdown from '../ui/dropdown';
@@ -74,18 +72,6 @@ class UserList extends React.Component {
 
     componentDidMount() {
         this.props.fetchUsersList();
-        this.props.removeFromAppNavigation({
-            title: "User Management",
-            path: "/user-management"
-        });
-        this.props.removeFromAppNavigation({
-            title: "Organisation Management",
-            path: "/organizations"
-        });
-        this.props.addToAppNavigation({
-            title: "User Management",
-            path: "/user-management"
-        });
         if (this.props.userList.length > 0) {
             this.setState({
                 userList: this.props.userList
@@ -307,8 +293,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     changePage: (id) => push('/user-management/' + id),
-    addToAppNavigation,
-    removeFromAppNavigation,
     fetchUsersList
 }, dispatch)
 

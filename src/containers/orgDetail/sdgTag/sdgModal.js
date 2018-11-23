@@ -14,8 +14,8 @@ class SDGModal extends React.Component {
     render() {
         const { searchText } = this.state;
         const { SDGList, SDGData } = this.props;
+        if (!SDGList || !SDGData) { return null; }
         let localSDGList = this.desiredSDGList();
-        if (!SDGList || !SDGData) { return null }
         return (
             <div className="modal progress-index-modal fade bd-example-modal-lg" id="sdgModal" tabIndex="-1"
                 role="dialog" aria-labelledby="sdgModalLabel" aria-hidden="true">

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Switch } from 'react-router';
 import PrivateRoute from '../privateRouter';
-
+import CrumbRoute from '../common/crumbRoute';
 import UserManagement from './';
 import UserList from './userList';
 import UserProfile from './userProfile';
@@ -13,7 +13,7 @@ const OrgLandingRoutes = (props) => (
         <Switch>
             <PrivateRoute authenticated={props.isAuthenticated} exact path="/user-management" component={UserList} />
             <PrivateRoute authenticated={props.isAuthenticated} path="/change-password" component={ChangePassword} />
-            <PrivateRoute authenticated={props.isAuthenticated} path="/user-management/:id" component={UserProfile} />
+            <CrumbRoute title="User Details" path="/user-management/:id" component={UserProfile} />
             <PrivateRoute authenticated={props.isAuthenticated} path="/my-profile/:id" component={UserProfile} />
         </Switch>
     </UserManagement>

@@ -1,33 +1,56 @@
-import { FETCH_DATASET_PENDING, FETCH_DATASET_SUCCESS, FETCH_DATASET_ERROR,
-    SET_DATASET_PENDING, SET_DATASET_SUCCESS, SET_DATASET_ERROR  } from '../../constants/dispatch';
+import {
+  FETCH_DATASET_REQUEST, FETCH_DATASET_SUCCESS, FETCH_DATASET_ERROR,
+  SAVE_DATASET_REQUEST, SAVE_DATASET_SUCCESS, SAVE_DATASET_ERROR
+} from '../../constants/dispatch';
 
-  const initialState = {
-    dataSetList: [],
-    isDataSetPending: false,
-    isDataSetSuccess: false,
-    isDataSetError: null
-  };
-  
-  export default (state = initialState, action) => {
-    switch (action.type) {
-      case FETCH_DATASET_PENDING:
-      case SET_DATASET_PENDING:
-        return Object.assign({}, state, {
-            isDataSetPending: action.isDataSetPending
-        });
-      case FETCH_DATASET_SUCCESS:
-      case SET_DATASET_SUCCESS:
-        return Object.assign({}, state, {
-            isDataSetSuccess: action.isDataSetSuccess,
-            dataSetList: action.dataSetList
-        });
-      case FETCH_DATASET_ERROR:
-      case SET_DATASET_ERROR:
-        return Object.assign({}, state, {
-            isDataSetError: action.isDataSetError
-        });
-  
-      default:
-        return state;
-    }
-  };
+const initialState = {
+  loading: false,
+  data: null,
+  error: false,
+  saveData: null,
+  saveError: false
+};
+
+export default (state = initialState, action) => {
+  switch (action.type) {
+    case FETCH_DATASET_REQUEST:
+      return Object.assign({}, state, {
+        loading: true,
+        data: null,
+        error: false
+      });
+    case FETCH_DATASET_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false,
+        data: action.response,
+        error: false
+      });
+    case FETCH_DATASET_ERROR:
+      return Object.assign({}, state, {
+        loading: false,
+        data: action.error,
+        error: true
+      });
+    case SAVE_DATASET_REQUEST:
+      return Object.assign({}, state, {
+        loading: true,
+        saveData: null,
+        saveError: false
+      });
+    case SAVE_DATASET_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false,
+        saveData: action.response,
+        saveError: false
+      });
+    case SAVE_DATASET_ERROR:
+      return Object.assign({}, state, {
+        loading: false,
+        saveData: action.error,
+        saveError: true
+      });
+
+    default:
+      return state;
+  }
+};

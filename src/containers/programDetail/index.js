@@ -5,7 +5,7 @@ const ProgramDetail = (props) => {
     return (
         <React.Fragment>
             <div className="d-flex h-100">
-                <SideBar match={props.match} history={props.history} type={'Programs'} programDetail={props.programDetail} />
+                <SideBar match={props.match} history={props.history} type={'Programs'} />
                 {props.children}
             </div>
         </React.Fragment>

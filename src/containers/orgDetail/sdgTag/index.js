@@ -2,7 +2,8 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import SDGModal from './sdgModal';
-import { fetchSdgTagsList } from '../../../actions/orgDetail/sdgTagsAction';
+import { fetchSdgTags } from '../../../actions/orgDetail/sdgTagsAction';
+import { fetchSdgTagsList } from '../../../actions/orgLanding/orgLandingAction';
 
 class SdgTags extends React.Component {
     constructor(props) {
@@ -10,12 +11,13 @@ class SdgTags extends React.Component {
     }
 
     componentDidMount() {
+        this.props.fetchSdgTags();
         this.props.fetchSdgTagsList();
     }
 
     render() {
-        const { isSdgTagsSuccess, sdgTagsList } = this.props;
-        if (!isSdgTagsSuccess || !sdgTagsList) { return null; }
+        const { sdgTags } = this.props;
+        if (!sdgTags || !sdgTags.data || sdgTags.error) { return null; }
         return (
             <section className="dashboard-content p-0 py-3 org-details-container">
                 <div className="col-md-18 m-auto card">
@@ -33,17 +35,19 @@ class SdgTags extends React.Component {
                                         </ul>
                                     </div>
                                 </li>
-                                {this.createSdgBox(sdgTagsList)}
+                                {this.createSdgBox()}
                             </ul>
                         </form>
                     </div>
                 </div>
-                <SDGModal SDGData={sdgTagsList}/>
+                <SDGModal SDGData={sdgTags.data} />
             </section>
         )
     }
 
-    createSdgBox(sdgTagsList) {
+    createSdgBox() {
+        const { sdgTags } = this.props;
+        let sdgTagsList = sdgTags.data;
         let desiredTagsList = {};
         sdgTagsList.map(tags => {
             !desiredTagsList[tags["level1"]] ? desiredTagsList[tags["level1"]] = [] : '';
@@ -69,13 +73,11 @@ class SdgTags extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    sdgTagsList: state.sdgTags.sdgTagsList,
-    isSdgTagsPending: state.sdgTags.isSdgTagsPending,
-    isSdgTagsSuccess: state.sdgTags.isSdgTagsSuccess,
-    isSdgTagsError: state.sdgTags.isSdgTagsError
+    sdgTags: state.sdgTags
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+    fetchSdgTags,
     fetchSdgTagsList
 }, dispatch)
 

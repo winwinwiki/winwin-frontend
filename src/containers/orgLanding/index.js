@@ -22,11 +22,11 @@ class OrgLanding extends React.Component {
         }
     }
     render() {
-        const { session } = this.props;
+        const { session, history } = this.props;
         if (!session || !session.user) { return null; }
         return (
             <div className="d-flex flex-column h-100 w-100">
-                <Header />
+                <Header history={history}/>
                 <main role="main" className="dashboard-container">
                     <React.Fragment>
                         <SectionHeader />

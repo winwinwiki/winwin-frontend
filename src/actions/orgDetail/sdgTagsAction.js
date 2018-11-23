@@ -1,41 +1,35 @@
-import { FETCH_SDGTAGS_PENDING, FETCH_SDGTAGS_SUCCESS, FETCH_SDGTAGS_ERROR } from '../../constants/dispatch';
+import { FETCH_SDGTAGS_REQUEST, FETCH_SDGTAGS_SUCCESS, FETCH_SDGTAGS_ERROR } from '../../constants/dispatch';
 import { fetchOrgSdgTags } from '../../api/orgDetail/sdgTagsApi';
 
-export const fetchSdgTagsList = (orgId, progId) => {
+export const fetchSdgTags = (orgId, progId) => {
     return dispatch => {
-        dispatch(setSdgTagsPending(true));
-        dispatch(setSdgTagsSuccess(false, []));
-        dispatch(setSdgTagsError(null));
-
-        fetchOrgSdgTags(orgId, progId, (error, spiTagsList) => {
-            dispatch(setSdgTagsPending(false));
+        dispatch(sdgTagsRequest());
+        fetchOrgSdgTags(orgId, progId, (error, response) => {
             if (!error) {
-                dispatch(setSdgTagsSuccess(true, spiTagsList));
+                dispatch(sdgTagsSuccess(response));
             } else {
-                dispatch(setSdgTagsError(error));
+                dispatch(sdgTagsError(error));
             }
         });
     }
 }
 
-function setSdgTagsPending(isSdgTagsPending) {
+function sdgTagsRequest() {
     return {
-        type: FETCH_SDGTAGS_PENDING,
-        isSdgTagsPending
+        type: FETCH_SDGTAGS_REQUEST
     }
 }
 
-function setSdgTagsSuccess(isSdgTagsSuccess, sdgTagsList) {
+function sdgTagsSuccess(response) {
     return {
         type: FETCH_SDGTAGS_SUCCESS,
-        isSdgTagsSuccess,
-        sdgTagsList
+        response
     }
 }
 
-function setSdgTagsError(isSdgTagsError) {
+function sdgTagsError(error) {
     return {
         type: FETCH_SDGTAGS_ERROR,
-        isSdgTagsError
+        error
     }
 }

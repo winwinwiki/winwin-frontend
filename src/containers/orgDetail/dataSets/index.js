@@ -4,7 +4,7 @@ import DataSetModal from './dataSetModal';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { setOrgDataSets, fetchOrgDataSets } from '../../../actions/orgDetail/dataSetAction'
+import { saveOrgDataSets, fetchOrgDataSets } from '../../../actions/orgDetail/dataSetAction'
 class DataSets extends React.Component {
     constructor(props) {
         super(props);
@@ -25,17 +25,20 @@ class DataSets extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (JSON.stringify(nextProps.dataSetList) !== JSON.stringify(this.props.dataSetList)) {
-            this.setState({
-                dataSetList: nextProps.dataSetList
-            });
+        const { dataset } = this.props;
+        if (nextProps.dataset !== dataset && nextProps.dataset.data) {
+            if (!nextProps.dataset.error) {
+                this.setState({
+                    dataSetList: nextProps.dataset.data
+                });
+            }
         }
     }
 
     render() {
         const { dataSetList, selectedData, modalTitle } = this.state;
-        const { isDataSetSuccess } = this.props;
-        if (!isDataSetSuccess || !dataSetList) { return null; }
+        const { dataset } = this.props;
+        if (dataset.error || !dataSetList) { return null; }
         return (
             <section className="dashboard-content p-0 py-3 org-details-container">
                 <div className="col-md-18 m-auto card">
@@ -111,12 +114,11 @@ class DataSets extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    dataSetList: state.dataset.dataSetList,
-    isDataSetSuccess: state.dataset.isDataSetSuccess
+    dataset: state.dataset
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    setOrgDataSets,
+    saveOrgDataSets,
     fetchOrgDataSets
 }, dispatch)
 

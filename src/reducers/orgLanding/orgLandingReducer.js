@@ -1,5 +1,7 @@
 import {
-  FETCHORG_REQUEST, FETCHORG_SUCCESS, FECTHORG_ERROR, FILTER_ORG_LIST, SET_SDGLIST, SET_SPILIST,
+  FETCHORG_REQUEST, FETCHORG_SUCCESS, FECTHORG_ERROR,
+  SET_SDGLIST_REQUEST, SET_SDGLIST_SUCCESS, SET_SDGLIST_ERROR,
+  SET_SPILIST_REQUEST, SET_SPILIST_SUCCESS, SET_SPILIST_ERROR,
   SET_APPLIED_FILTER
 } from '../../constants/dispatch';
 
@@ -31,28 +33,41 @@ export default (state = initialState, action) => {
 
     case FECTHORG_ERROR:
       return Object.assign({}, state, {
-        fetchOrgError: action.fetchOrgError
+        loading: true,
+        data: action.error,
+        error: true,
       });
 
-    case FILTER_ORG_LIST:
+    case SET_SDGLIST_REQUEST:
       return Object.assign({}, state, {
-        orgList: action.filteredOrgList
       });
 
-    case SET_SDGLIST:
+    case SET_SDGLIST_SUCCESS:
       return Object.assign({}, state, {
-        sdgList: action.sdgList["SDG"]
+        sdgList: action.response["SDG"]
       });
 
-    case SET_SPILIST:
+    case SET_SDGLIST_ERROR:
       return Object.assign({}, state, {
-        spiList: action.spiList
+      });
+
+    case SET_SPILIST_REQUEST:
+      return Object.assign({}, state, {
+      });
+
+    case SET_SPILIST_SUCCESS:
+      return Object.assign({}, state, {
+        spiList: action.response
+      });
+
+    case SET_SPILIST_ERROR:
+      return Object.assign({}, state, {
       });
 
     case SET_APPLIED_FILTER:
       return Object.assign({}, state, {
         appliedFilterList: action.appliedFilterList
-    });
+      });
 
     default:
       return state;

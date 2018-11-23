@@ -2,7 +2,8 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import SPIModal from './spiModal';
-import { fetchSpiTagsList } from '../../../actions/orgDetail/spiTagsAction';
+import { fetchSpiTags } from '../../../actions/orgDetail/spiTagsAction';
+import { fetchSpiTagsList } from '../../../actions/orgLanding/orgLandingAction';
 
 class SpiTags extends React.Component {
     constructor(props) {
@@ -10,12 +11,13 @@ class SpiTags extends React.Component {
     }
 
     componentDidMount() {
+        this.props.fetchSpiTags();
         this.props.fetchSpiTagsList();
     }
 
     render() {
-        const { isSpiTagsSuccess, spiTagsList } = this.props;
-        if (!isSpiTagsSuccess || !spiTagsList) { return null; }
+        const { spiTags } = this.props;
+        if (!spiTags || !spiTags.data || spiTags.error) { return null; }
         return (
             <section className="dashboard-content p-0 py-3 org-details-container">
                 <div className="col-md-18 m-auto card">
@@ -33,17 +35,19 @@ class SpiTags extends React.Component {
                                         </ul>
                                     </div>
                                 </li>
-                                {this.createSpiBox(spiTagsList)}
+                                {this.createSpiBox()}
                             </ul>
                         </form>
                     </div>
                 </div>
-                <SPIModal SPIData={spiTagsList}/>
+                <SPIModal SPIData={spiTags.data}/>
             </section>
         )
     }
 
-    createSpiBox(spiTagsList) {
+    createSpiBox() {
+        const { spiTags } = this.props;
+        let spiTagsList = spiTags.data;
         let desiredTagsList = {};
         spiTagsList.map(tags => {
             !desiredTagsList[tags["level1"]] ? desiredTagsList[tags["level1"]] = {} : '';
@@ -73,13 +77,11 @@ class SpiTags extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    spiTagsList: state.spiTags.spiTagsList,
-    isSpiTagsPending: state.spiTags.isSpiTagsPending,
-    isSpiTagsSuccess: state.spiTags.isSpiTagsSuccess,
-    isSpiTagsError: state.spiTags.isSpiTagsError
+    spiTags: state.spiTags
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+    fetchSpiTags,
     fetchSpiTagsList
 }, dispatch)
 

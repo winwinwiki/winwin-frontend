@@ -7,8 +7,6 @@ import Geosuggest from 'react-geosuggest';
 import Dropdown from '../ui/dropdown';
 import Upload from '../ui/upload';
 import { onDataFeed, validateDataFeedForm } from '../../actions/dataFeed/dataFeedAction';
-import { addToAppNavigation, removeFromAppNavigation } from '../../actions/sectionHeader/sectionHeaderAction';
-
 const sectoryList = ['Public', 'Private', 'Social'];
 const fileSourceList = ['IRS', 'Other'];
 
@@ -30,14 +28,7 @@ class UploadDataFeed extends React.Component {
         this.validateLocationField = this.validateLocationField.bind(this);
     }
     componentDidMount() {
-        this.props.removeFromAppNavigation({
-            title: "Upload Data Feed",
-            path: this.props.match.url
-        });
-        this.props.addToAppNavigation({
-            title: "Upload Data Feed",
-            path: this.props.match.url
-        });
+        
     }
     render() {
         const { file, sector, fileSource } = this.state;
@@ -180,8 +171,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     changePage: () => push('/organizations'),
-    addToAppNavigation,
-    removeFromAppNavigation,
     validateDataFeedForm,
     onDataFeed
 }, dispatch)

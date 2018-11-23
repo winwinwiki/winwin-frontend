@@ -1,19 +1,15 @@
-import { FETCH_REGIONSERVED_PENDING, FETCH_REGIONSERVED_SUCCESS, FETCH_REGIONSERVED_ERROR,
-    SET_REGIONSERVED_PENDING, SET_REGIONSERVED_SUCCESS, SET_REGIONSERVED_ERROR  } from '../../constants/dispatch';
+import { FETCH_REGIONSERVED_REQUEST, FETCH_REGIONSERVED_SUCCESS, FETCH_REGIONSERVED_ERROR,
+    SAVE_REGIONSERVED_REQUEST, SAVE_REGIONSERVED_SUCCESS, SAVE_REGIONSERVED_ERROR  } from '../../constants/dispatch';
 import { setRegionsServedApi, fetchRegionsServedApi } from '../../api/orgDetail/regionsServedApi';
 
-export const setOrgRegionsServed = (regions) => {
+export const saveOrgRegionsServed = (regions) => {
     return dispatch => {
-        dispatch(setRegionsServedPending(true));
-        dispatch(setRegionsServedSuccess(false, []));
-        dispatch(setRegionsServedError(null));
-
-        setRegionsServedApi(regions, (error, regionsServedList) => {
-            dispatch(setRegionsServedPending(false));
+        dispatch(saveRegionsServedReq());
+        setRegionsServedApi(regions, (error, response) => {
             if (!error) {
-                dispatch(setRegionsServedSuccess(true, regionsServedList));
+                dispatch(saveRegionsServedSuccess(response));
             } else {
-                dispatch(setRegionsServedError(error));
+                dispatch(saveRegionsServedError(error));
             }
         });
     }
@@ -22,14 +18,10 @@ export const setOrgRegionsServed = (regions) => {
 
 export const fetchOrgRegionsServed = () => {
     return dispatch => {
-        dispatch(fetchRegionsServedPending(true));
-        dispatch(fetchRegionsServedSuccess(false, []));
-        dispatch(fetchRegionsServedError(null));
-
-        fetchRegionsServedApi((error, regionsServedList) => {
-            dispatch(fetchRegionsServedPending(false));
+        dispatch(fetchRegionsServedReq());
+        fetchRegionsServedApi((error, response) => {
             if (!error) {
-                dispatch(fetchRegionsServedSuccess(true, regionsServedList));
+                dispatch(fetchRegionsServedSuccess(response));
             } else {
                 dispatch(fetchRegionsServedError(error));
             }
@@ -37,46 +29,42 @@ export const fetchOrgRegionsServed = () => {
     }
 }
 
-function fetchRegionsServedPending(isRegionsServedPending) {
+function fetchRegionsServedReq() {
     return {
-        type: FETCH_REGIONSERVED_PENDING,
-        isRegionsServedPending
+        type: FETCH_REGIONSERVED_REQUEST
     }
 }
 
-function fetchRegionsServedSuccess(isRegionsServedSuccess, regionsServedList) {
+function fetchRegionsServedSuccess(response) {
     return {
         type: FETCH_REGIONSERVED_SUCCESS,
-        isRegionsServedSuccess,
-        regionsServedList
+        response
     }
 }
 
-function fetchRegionsServedError(isRegionsServedError) {
+function fetchRegionsServedError(error) {
     return {
         type: FETCH_REGIONSERVED_ERROR,
-        isRegionsServedError
+        error
     }
 }
 
-function setRegionsServedPending(isRegionsServedPending) {
+function saveRegionsServedReq() {
     return {
-        type: SET_REGIONSERVED_PENDING,
-        isRegionsServedPending
+        type: SAVE_REGIONSERVED_REQUEST
     }
 }
 
-function setRegionsServedSuccess(isRegionsServedSuccess, regionsServedList) {
+function saveRegionsServedSuccess(response) {
     return {
-        type: SET_REGIONSERVED_SUCCESS,
-        isRegionsServedSuccess,
-        regionsServedList
+        type: SAVE_REGIONSERVED_SUCCESS,
+        response
     }
 }
 
-function setRegionsServedError(isRegionsServedError) {
+function saveRegionsServedError(error) {
     return {
-        type: SET_REGIONSERVED_ERROR,
-        isRegionsServedError
+        type: SAVE_REGIONSERVED_ERROR,
+        error
     }
 }

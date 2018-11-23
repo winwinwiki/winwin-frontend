@@ -25,9 +25,9 @@ class Note extends React.Component {
                 <div className="row">
                     <div className="col">
                         <div className="form-group">
-                            <label htmlFor="note" class="sr-only">Added by {data.createdBy}</label>
+                            <label htmlFor="note" className="sr-only">Added by {data.createdBy}</label>
                             { isEditable ? <textarea row="5" className="form-control" id="note" placeholder="Enter Note" value={data.note} />
-                            : <p class="mt-3 readOnlyTextarea">{data.note}</p>}
+                            : <p className="mt-3 readOnlyTextarea">{data.note}</p>}
                         </div>
                     </div>
                 </div>
