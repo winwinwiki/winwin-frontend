@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 import Header from '../header';
 import SectionHeader from '../section-header/';
-import { fetchUserInfo } from '../../actions/users/userInfoAction';
 
 class UserManagement extends React.Component {
     constructor(props) {
@@ -48,7 +47,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchUserInfo
 }, dispatch)
 
 export default connect(

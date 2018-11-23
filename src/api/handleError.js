@@ -1,19 +1,21 @@
 
 class HandleError {
-    static checkResponse(response, cb) {
-        if(response.status === 200) {
-            cb(null, response);
-        } else if(response.status === 401) {
-
-        } else if(response.status === 404) {
-            
-        }  else if (response.status === 429) {
-
-        } else if (response.status === 502) {
-
-        }  else {
-            cb(null, response);
-        }
+    static checkResponse(response) {
+        return new Promise((resolve, reject) => {
+            if (response.status === 200) {
+                resolve(response);
+            } else if (response.status === 401) {
+                reject(response);
+            } else if (response.status === 404) {
+                reject(response);
+            } else if (response.status === 429) {
+                reject(response);
+            } else if (response.status === 502) {
+                reject(response);
+            } else {
+                resolve(response);
+            }
+        });
     }
 }
 

@@ -1,12 +1,10 @@
 import { USERINFO_REQUEST, USERINFO_SUCCESS, USERINFO_ERROR} from '../../constants/dispatch';
-import { callFetchUserApi } from '../../api/users/userApi';
 import { api } from '../../api/api';
 
 export const fetchUserInfo = () => {
     return dispatch => {
         dispatch(userInfoRequest());
-
-        return api('/user','GET', {}, true).then(
+        return api('/user/1','GET', {}, true).then(
             response => {
                 dispatch(userInfoSuccess(response));
             }, error => {

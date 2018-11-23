@@ -1,18 +1,3 @@
-import CommonUtil from '../commonUtil';
-
-export function callFetchUserApi() {
-    let url = CommonUtil.createUrl('/user/1');
-    return new Promise((resolve, reject) => {    
-    fetch(url, {
-            method: 'GET',
-            headers: CommonUtil.getAuthId()
-        })
-        .then((response) => response.json())
-        .then((responseJson) => resolve(responseJson))
-        .catch((error) => reject(error));
-    });
-}
-
 export function callFetchUserListApi(callback) {
     // let url = CommonUtil.createUrl('/users');
     //     // fetch(url, {

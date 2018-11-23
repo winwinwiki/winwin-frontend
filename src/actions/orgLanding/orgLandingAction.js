@@ -4,17 +4,16 @@ import {
     SET_SPILIST_REQUEST, SET_SPILIST_SUCCESS, SET_SPILIST_ERROR,
     SET_APPLIED_FILTER
 } from '../../constants/dispatch';
-import { callFetchOrgApi, callFetchSdgListApi, callFetchSpiListApi } from '../../api/orgLanding/orgLandingApi';
-
+import { api } from '../../api/api';
+import qs from 'query-string';
 export const fetchOrganisationsList = (params) => {
     return dispatch => {
         dispatch(fetchOrgRequest());
-        callFetchOrgApi(params, (error, orgList) => {
-            if (!error) {
-                dispatch(fetchOrgSuccess(orgList));
-            } else {
-                dispatch(fetchOrgError(error));
-            }
+        let queryString = qs.stringify(params);
+        api(`/organisations${queryString ? "?"+queryString: ''}`, "GET", {}, true).then((response) => {
+            dispatch(fetchOrgSuccess(response));
+        }, (error) => {
+            dispatch(fetchOrgError(error));
         });
     }
 }
@@ -23,12 +22,11 @@ export const setAppliedFilters = (appliedFilterList, params) => {
     return dispatch => {
         dispatch(setAppliedFiltersList(appliedFilterList));
         dispatch(fetchOrgRequest());
-        callFetchOrgApi(params, (error, orgList) => {
-            if (!error) {
-                dispatch(fetchOrgSuccess(orgList));
-            } else {
-                dispatch(fetchOrgError(error));
-            }
+        let queryString = qs.stringify(params);
+        api(`/organisations${queryString ? "?"+queryString: ''}`, "GET", {}, true).then((response) => {
+            dispatch(fetchOrgSuccess(response));
+        }, (error) => {
+            dispatch(fetchOrgError(error));
         });
 
     }
@@ -37,12 +35,10 @@ export const setAppliedFilters = (appliedFilterList, params) => {
 export const fetchSdgTagsList = () => {
     return dispatch => {
         dispatch(setSdgListReq());
-        callFetchSdgListApi((error, response) => {
-            if (!error) {
-                dispatch(setSdgListSuccess(response));
-            } else {
-                dispatch(setSdgListError(error));
-            }
+        api("/sdgList", "GET", {}, true).then((response) => {
+            dispatch(setSdgListSuccess(response));
+        }, (error) => {
+            dispatch(setSdgListError(error));
         });
     }
 }
@@ -50,12 +46,10 @@ export const fetchSdgTagsList = () => {
 export const fetchSpiTagsList = () => {
     return dispatch => {
         dispatch(setSpiListReq());
-        callFetchSpiListApi((error, response) => {
-            if (!error) {
-                dispatch(setSpiListSuccess(response));
-            } else {
-                dispatch(setSpiListError(error));
-            }
+        api("/spiList", "GET", {}, true).then((response) => {
+            dispatch(setSpiListSuccess(response));
+        }, (error) => {
+            dispatch(setSpiListError(error));
         });
     }
 }

@@ -35,7 +35,7 @@ class Login extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         const { session } = this.props;
-        if (nextProps && nextProps.session !== session && nextProps.session.data && !nextProps.session.error) {
+        if (nextProps && nextProps.session !== session && nextProps.session.data && !nextProps.session.user && !nextProps.session.error) {
             this.setState({
                 email: '',
                 password: ''
