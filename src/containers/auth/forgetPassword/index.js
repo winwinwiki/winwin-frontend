@@ -20,6 +20,11 @@ class ForgetPassword extends React.Component {
     componentWillReceiveProps(nextProps) {
         const { forgetPassword } = this.props;
         if (nextProps && nextProps.forgetPassword !== forgetPassword && nextProps.forgetPassword.data) {
+            if(!nextProps.forgetPassword.error){
+                this.setState({
+                    email: ''
+                });
+            }
         }
     }
 
@@ -76,11 +81,7 @@ class ForgetPassword extends React.Component {
             this.validateFpForm('email', email);
             return;
         }
-        this.props.onSubmit(this.state.email, () => {
-            this.setState({
-                email: ''
-            });
-        });
+        this.props.onSubmit({email});
     }
 }
 

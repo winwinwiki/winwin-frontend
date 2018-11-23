@@ -1,65 +1,33 @@
-import { SET_DATAFEED_PENDING, SET_DATAFEED_SUCCESS, SET_DATAFEED_ERROR, SET_DATAFEEDFORM_ERROR } from '../../constants/dispatch';
-import {REQ_DATA_FEED_FILE, VALID_DATA_FEED_FILE, REQ_ORG_LOCATION} from '../../constants/error';
+import { DATA_FEED_REQUEST,  DATA_FEED_SUCCESS,  DATA_FEED_ERROR} from '../../constants/dispatch';
+import { api } from '../../api/api';
 
-import { callCreateOrgApi } from '../../api/createOrg/createOrgApi';
-import validate from '../../util/validation';
-
-export const onDataFeed = (org, cb) => {
+export const onDataFeed = (params) => {
     return dispatch => {
-        dispatch(setDataFeedPending(true));
-        dispatch(setDataFeedSuccess(false));
-        dispatch(setDataFeedError(null));
-
-        callCreateOrgApi(org, (error, res) => {
-            dispatch(setDataFeedPending(false));
-            if (!error) {
-                dispatch(setDataFeedSuccess(true));
-                cb();
-            } else {
-                dispatch(setDataFeedError(error));
-            }
+        dispatch(dataFeedReq());
+        api("/users", "POST", params, true).then((response) => {
+            dispatch(dataFeedSuccess(response));
+        }, (error) => {
+            dispatch(dataFeedError(error));
         });
     }
 }
 
-export const validateDataFeedForm = (field, value) => {
-    return dispatch => {
-        if(field === 'file') {
-            dispatch(setDataFeedFormError({file: ''}));
-            if(!value) { dispatch(setDataFeedFormError({file: REQ_DATA_FEED_FILE} )); return; }
-            let isValid = validate.file(value);
-            if(!isValid) { dispatch(setDataFeedFormError({file: VALID_DATA_FEED_FILE}));}
-           return;
-       } 
-       dispatch(setDataFeedFormError({location: ''}));
-       if(!value) { dispatch(setDataFeedFormError({location: REQ_ORG_LOCATION})); return; }
-    }
-}
-
-function setDataFeedPending(isDataFeedPending) {
+function dataFeedReq() {
     return {
-        type: SET_DATAFEED_PENDING,
-        isDataFeedPending
+        type: DATA_FEED_REQUEST
     };
 }
 
-function setDataFeedSuccess(isDataFeedSuccess) {
+function dataFeedSuccess(response) {
     return {
-        type: SET_DATAFEED_SUCCESS,
-        isDataFeedSuccess
+        type: DATA_FEED_SUCCESS,
+        response
     };
 }
 
-function setDataFeedError(dataFeedError) {
+function dataFeedError(error) {
     return {
-        type: SET_DATAFEED_ERROR,
-        dataFeedError
-    }
-}
-
-function setDataFeedFormError(dataFeedFormError) {
-    return {
-        type: SET_DATAFEEDFORM_ERROR,
-        dataFeedFormError
+        type: DATA_FEED_ERROR,
+        error
     }
 }

@@ -22,6 +22,7 @@ export default (state = initialState, action) => {
       });
 
     case LOGIN_SUCCESS:
+      localStorage.setItem('_authId', action.response);
       return Object.assign({}, state, {
         loading: false,
         data: action.response,

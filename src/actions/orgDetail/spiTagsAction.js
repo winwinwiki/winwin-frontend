@@ -1,15 +1,13 @@
 import { FETCH_SPITAGS_REQUEST, FETCH_SPITAGS_SUCCESS, FETCH_SPITAGS_ERROR } from '../../constants/dispatch';
-import { fetchOrgSpiTags } from '../../api/orgDetail/spiTagsApi';
+import { api } from '../../api/api';
 
-export const fetchSpiTags = (orgId, progId) => {
+export const fetchSpiTags = () => {
     return dispatch => {
         dispatch(spiTagsRequest());
-        fetchOrgSpiTags(orgId, progId, (error, response) => {
-            if (!error) {
-                dispatch(spiTagsSuccess(response));
-            } else {
-                dispatch(spiTagsError(error));
-            }
+        api("/spi-tags", "GET", {}, true).then((response) => {
+            dispatch(spiTagsSuccess(response));
+        }, (error) => {
+            dispatch(spiTagsError(error));
         });
     }
 }

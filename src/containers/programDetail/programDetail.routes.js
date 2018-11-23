@@ -26,7 +26,7 @@ class ProgramDetailRoutes extends React.Component {
 
     componentDidMount() {
         const { match } = this.props;
-        this.props.fetchOrganisationDetail(match.params.id, match.params.programId);
+        this.props.fetchOrganisationDetail({orgId:match.params.id, programId:match.params.programId});
     }
 
     componentWillReceiveProps(nextProps) {

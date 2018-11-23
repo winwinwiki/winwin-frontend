@@ -16,7 +16,7 @@ class OrgDetail extends React.Component {
 
     componentDidMount() {
         const { match } = this.props;
-        this.props.fetchOrganisationDetail(match.params.id, null);
+        this.props.fetchOrganisationDetail({orgId:match.params.id});
     }
 
     componentWillReceiveProps(nextProps) {

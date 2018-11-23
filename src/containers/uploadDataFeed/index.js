@@ -6,7 +6,8 @@ import Geosuggest from 'react-geosuggest';
 
 import Dropdown from '../ui/dropdown';
 import Upload from '../ui/upload';
-import { onDataFeed, validateDataFeedForm } from '../../actions/dataFeed/dataFeedAction';
+import { onDataFeed } from '../../actions/dataFeed/dataFeedAction';
+import validate from '../../util/validation';
 const sectoryList = ['Public', 'Private', 'Social'];
 const fileSourceList = ['IRS', 'Other'];
 
@@ -18,7 +19,11 @@ class UploadDataFeed extends React.Component {
             file: null,
             sector: sectoryList[0],
             fileSource: fileSourceList[0],
-            location: null
+            location: null,
+            formError: {
+                file: null,
+                location: null
+            }
         }
         this._geoSuggest = null;
         this.onChange = this.onChange.bind(this);
@@ -28,11 +33,25 @@ class UploadDataFeed extends React.Component {
         this.validateLocationField = this.validateLocationField.bind(this);
     }
     componentDidMount() {
-        
+
     }
+    componentWillReceiveProps(nextProps) {
+        const { dataFeed } = this.props;
+        if(nextProps.dataFeed !== dataFeed && nextProps.dataFeed.data){
+            if(!nextProps.dataFeed.error){
+                this.setState({
+                    file: null,
+                    sector: sectoryList[0],
+                    fileSource: fileSourceList[0],
+                    location: null
+                });
+                this.props.changePage();
+            }
+        }
+    }
+
     render() {
-        const { file, sector, fileSource } = this.state;
-        let { dataFeedFormError } = this.props;
+        const { file, sector, fileSource, formError } = this.state;
         return (
             <div className="container">
                 <div className="row ">
@@ -46,7 +65,7 @@ class UploadDataFeed extends React.Component {
                             fixtures={[]}
                             onBlur={this.validateLocationField}
                             onSuggestSelect={this.onSuggestSelect} />
-                        {dataFeedFormError.location && <div className="text-danger small">{dataFeedFormError.location}</div>}
+                        {formError.location && <div className="text-danger small">{formError.location}</div>}
                         <div className="my-3">
                             <Dropdown
                                 selectedItem={sector}
@@ -56,12 +75,12 @@ class UploadDataFeed extends React.Component {
                                 items={sectoryList} />
                         </div>
                         <p>File Selection</p><hr />
-                        <Upload 
+                        <Upload
                             type="file"
-                            onDrop={this.onDrop} 
+                            onDrop={this.onDrop}
                             accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                            text=".csv or .xls files only"/> 
-                        {dataFeedFormError.file && <div className="text-danger small">{dataFeedFormError.file}</div>}
+                            text=".csv or .xls files only" />
+                        {formError.file && <div className="text-danger small">{formError.file}</div>}
                         {this.renderSelectedFile()}
                         <div className="my-3">
                             <Dropdown
@@ -129,29 +148,47 @@ class UploadDataFeed extends React.Component {
     }
 
     validateField(e) {
-        this.props.validateDataFeedForm(e.target.name, e.target.value);
+        this.validateDataFeedForm(e.target.name, e.target.value);
     }
 
     validateLocationField(location) {
-        this.props.validateDataFeedForm('location', location);
+        this.validateDataFeedForm('location', location);
+    }
+
+    validateDataFeedForm = (field, value) => {
+        const { formError } = this.props;
+        if (field === 'file') {
+            if (!value) {
+                formError.file = "File is required.";
+                this.setState({ formError });
+                return;
+            }
+            let isValid = validate.file(value);
+            if (!isValid) {
+                formError.file = "Please select .csv or .xls file only.";
+                this.setState({ formError });
+                return;
+            }
+        }
+        if (!value) {
+            formError.location = "Location is required.";
+            this.setState({ formError });
+            return;
+        }
+        formError.location = "";
+        this.setState({ formError });
+        return;
+
     }
 
     onDataFeed() {
-        const { file, location } = this.state;
+        const { file, location, sector, fileSource } = this.state;
         if (!file || !location) {
-            this.props.validateDataFeedForm('file', file);
-            this.props.validateDataFeedForm('location', location);
+            this.validateDataFeedForm('file', file);
+            this.validateDataFeedForm('location', location);
             return;
         }
-        this.props.onDataFeed(this.state, () => {
-            this.setState({
-                file: null,
-                sector: sectoryList[0],
-                fileSource: fileSourceList[0],
-                location: null
-            });
-            this.props.changePage();
-        });
+        this.props.onDataFeed({ file, location, sector, fileSource });
     }
 
     onSuggestSelect(suggest) {
@@ -163,15 +200,11 @@ class UploadDataFeed extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    isDataFeedPending: state.dataFeed.isDataFeedPending,
-    isDataFeedSuccess: state.dataFeed.isDataFeedSuccess,
-    dataFeedError: state.dataFeed.dataFeedError,
-    dataFeedFormError: state.dataFeed.dataFeedFormError
+    dataFeed: state.dataFeed
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     changePage: () => push('/organizations'),
-    validateDataFeedForm,
     onDataFeed
 }, dispatch)
 

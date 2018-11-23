@@ -1,16 +1,13 @@
 import { RESETPASSWORD_REQUEST, RESETPASSWORD_SUCCESS, RESETPASSWORD_ERROR } from '../../constants/dispatch';
-import { callResetPwdApi } from '../../api/auth/resetPasswordApi';
+import { api } from '../../api/api';
 
-export const onResetPassword = (password) => {
+export const onResetPassword = (params) => {
     return dispatch => {
         dispatch(rpRequest());
-
-        callResetPwdApi(password, (error, res) => {
-            if (!error) {
-                dispatch(rpSuccess(res));
-            } else {
-                dispatch(rpError(error));
-            }
+        api("/users", "POST", params, true).then((response) => {
+            dispatch(rpSuccess(response));
+        }, (error) => {
+            dispatch(rpError(error));
         });
     }
 }

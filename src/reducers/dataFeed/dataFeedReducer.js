@@ -1,35 +1,34 @@
-import { SET_DATAFEED_PENDING, SET_DATAFEED_SUCCESS, SET_DATAFEED_ERROR, SET_DATAFEEDFORM_ERROR } from '../../constants/dispatch';
+import { DATA_FEED_REQUEST, DATA_FEED_SUCCESS, DATA_FEED_ERROR } from '../../constants/dispatch';
 const initialState = {
-    isDataFeedSuccess: false,
-    isDataFeedPending: false,
-    dataFeedError: null,
-    dataFeedFormError: {
-      file: '',
-      location: ''
-    }
-  };
-  
-  export default (state = initialState, action) => {
-    switch (action.type) {
-      case SET_DATAFEED_PENDING:
-        return Object.assign({}, state, {
-          isDataFeedPending: action.isDataFeedPending
-        });
-  
-      case SET_DATAFEED_SUCCESS:
-        return Object.assign({}, state, {
-          isDataFeedSuccess: action.isDataFeedSuccess
-        });
-  
-      case SET_DATAFEED_ERROR:
-        return Object.assign({}, state, {
-          dataFeedError: action.dataFeedError
-        });
-      case SET_DATAFEEDFORM_ERROR:
-        let formErrorVal = Object.assign({}, state.dataFeedFormError, action.dataFeedFormError);
-        return Object.assign({}, state, {dataFeedFormError: formErrorVal});
-  
-      default:
-        return state;
-    }
-  };
+  loading: false,
+  data: null,
+  error: false
+};
+
+export default (state = initialState, action) => {
+  switch (action.type) {
+    case DATA_FEED_REQUEST:
+      return Object.assign({}, state, {
+        loading: true,
+        data: null,
+        error: false
+      });
+
+    case DATA_FEED_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false,
+        data: action.response,
+        error: false
+      });
+
+    case DATA_FEED_ERROR:
+      return Object.assign({}, state, {
+        loading: false,
+        data: action.error,
+        error: true
+      });
+
+    default:
+      return state;
+  }
+};

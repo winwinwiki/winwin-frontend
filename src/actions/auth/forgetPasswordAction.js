@@ -1,16 +1,13 @@
 import { FP_REQUEST, FP_SUCCESS, FP_ERROR } from '../../constants/dispatch';
-import { callFpApi } from '../../api/auth/forgetPasswordApi';
+import { api } from '../../api/api';
 
-export const onSubmit = (email, cb) => {
+export const onSubmit = (params) => {
     return dispatch => {
         dispatch(fpRequest());
-        callFpApi(email, (error, res) => {
-            if (!error) {
-                dispatch(fpSuccess(res));
-                cb();
-            } else {
-                dispatch(fpError(error));
-            }
+        api("/users", "POST", params, true).then((response) => {
+            dispatch(fpSuccess(response));
+        }, (error) => {
+            dispatch(fpError(error));
         });
     }
 }

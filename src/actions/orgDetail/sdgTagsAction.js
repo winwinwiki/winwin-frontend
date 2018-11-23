@@ -1,15 +1,13 @@
 import { FETCH_SDGTAGS_REQUEST, FETCH_SDGTAGS_SUCCESS, FETCH_SDGTAGS_ERROR } from '../../constants/dispatch';
-import { fetchOrgSdgTags } from '../../api/orgDetail/sdgTagsApi';
+import { api } from '../../api/api';
 
-export const fetchSdgTags = (orgId, progId) => {
+export const fetchSdgTags = () => {
     return dispatch => {
         dispatch(sdgTagsRequest());
-        fetchOrgSdgTags(orgId, progId, (error, response) => {
-            if (!error) {
-                dispatch(sdgTagsSuccess(response));
-            } else {
-                dispatch(sdgTagsError(error));
-            }
+        api("/sdg-tags", "GET", {}, true).then((response) => {
+            dispatch(sdgTagsSuccess(response));
+        }, (error) => {
+            dispatch(sdgTagsError(error));
         });
     }
 }

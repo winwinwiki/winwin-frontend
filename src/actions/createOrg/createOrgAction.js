@@ -1,15 +1,13 @@
 import { CREATEORG_REQUEST, CREATEORG_SUCCESS, CREATEORG_ERROR } from '../../constants/dispatch';
-import { callCreateOrgApi } from '../../api/createOrg/createOrgApi';
+import { api } from '../../api/api';
 
-export const onCreateOrg = (org) => {
+export const onCreateOrg = (params) => {
     return dispatch => {
         dispatch(createOrgRequest());
-        callCreateOrgApi(org, (error, res) => {
-            if (!error) {
-                dispatch(createOrgSuccess(res));
-            } else {
-                dispatch(createOrgError(error));
-            }
+        api("/users", "POST", params, true).then((response) => {
+            dispatch(createOrgSuccess(response));
+        }, (error) => {
+            dispatch(createOrgError(error));
         });
     }
 }

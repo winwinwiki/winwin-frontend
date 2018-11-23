@@ -143,7 +143,7 @@ class Login extends React.Component {
             return;
         }
         this.props.startLoaderAction("Logging in...");
-        this.props.onLogin({email, password});
+        this.props.onLogin({username: email, password: password});
     }
 
     changePage(userInfo) {

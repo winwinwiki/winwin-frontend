@@ -1,17 +1,16 @@
-import { FETCH_RESOURCES_REQUEST, FETCH_RESOURCES_SUCCESS, FETCH_RESOURCES_ERROR,
-    SAVE_RESOURCES_REQUEST, SAVE_RESOURCES_SUCCESS, SAVE_RESOURCES_ERROR  } from '../../constants/dispatch';
-import { setResourcesApi, fetchResourcesApi } from '../../api/orgDetail/resourcesApi';
+import {
+    FETCH_RESOURCES_REQUEST, FETCH_RESOURCES_SUCCESS, FETCH_RESOURCES_ERROR,
+    SAVE_RESOURCES_REQUEST, SAVE_RESOURCES_SUCCESS, SAVE_RESOURCES_ERROR
+} from '../../constants/dispatch';
+import { api } from '../../api/api';
 
-export const saveOrgResources = (regions) => {
+export const saveOrgResources = (params) => {
     return dispatch => {
         dispatch(saveResourcesReq());
-
-        setResourcesApi(regions, (error, response) => {
-            if (!error) {
-                dispatch(saveResourcesSuccess(response));
-            } else {
-                dispatch(saveResourcesError(error));
-            }
+        api("/resources", "POST", params, true).then((response) => {
+            dispatch(saveResourcesSuccess(response));
+        }, (error) => {
+            dispatch(saveResourcesError(error));
         });
     }
 }
@@ -20,13 +19,10 @@ export const saveOrgResources = (regions) => {
 export const fetchOrgResources = () => {
     return dispatch => {
         dispatch(fetchResourcesReq());
-
-        fetchResourcesApi((error, response) => {
-            if (!error) {
-                dispatch(fetchResourcesSuccess(response));
-            } else {
-                dispatch(fetchResourcesError(error));
-            }
+        api("/resources", "GET", {}, true).then((response) => {
+            dispatch(fetchResourcesSuccess(response));
+        }, (error) => {
+            dispatch(fetchResourcesError(error));
         });
     }
 }

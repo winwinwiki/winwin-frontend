@@ -119,7 +119,7 @@ class ResetPassword extends React.Component {
             this.validateResetPasswordForm('password', password);
             return;
         }
-        this.props.onResetPassword(this.state);
+        this.props.onResetPassword({ password });
     }
 }
 

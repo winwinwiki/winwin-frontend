@@ -1,16 +1,16 @@
-import { FETCH_REGIONSERVED_REQUEST, FETCH_REGIONSERVED_SUCCESS, FETCH_REGIONSERVED_ERROR,
-    SAVE_REGIONSERVED_REQUEST, SAVE_REGIONSERVED_SUCCESS, SAVE_REGIONSERVED_ERROR  } from '../../constants/dispatch';
-import { setRegionsServedApi, fetchRegionsServedApi } from '../../api/orgDetail/regionsServedApi';
+import {
+    FETCH_REGIONSERVED_REQUEST, FETCH_REGIONSERVED_SUCCESS, FETCH_REGIONSERVED_ERROR,
+    SAVE_REGIONSERVED_REQUEST, SAVE_REGIONSERVED_SUCCESS, SAVE_REGIONSERVED_ERROR
+} from '../../constants/dispatch';
+import { api } from '../../api/api';
 
-export const saveOrgRegionsServed = (regions) => {
+export const saveOrgRegionsServed = (params) => {
     return dispatch => {
         dispatch(saveRegionsServedReq());
-        setRegionsServedApi(regions, (error, response) => {
-            if (!error) {
-                dispatch(saveRegionsServedSuccess(response));
-            } else {
-                dispatch(saveRegionsServedError(error));
-            }
+        api("/regions-served", "POST", params, true).then((response) => {
+            dispatch(saveRegionsServedSuccess(response));
+        }, (error) => {
+            dispatch(saveRegionsServedError(error));
         });
     }
 }
@@ -19,12 +19,10 @@ export const saveOrgRegionsServed = (regions) => {
 export const fetchOrgRegionsServed = () => {
     return dispatch => {
         dispatch(fetchRegionsServedReq());
-        fetchRegionsServedApi((error, response) => {
-            if (!error) {
-                dispatch(fetchRegionsServedSuccess(response));
-            } else {
-                dispatch(fetchRegionsServedError(error));
-            }
+        api("/regions-served", "GET", {}, true).then((response) => {
+            dispatch(fetchRegionsServedSuccess(response));
+        }, (error) => {
+            dispatch(fetchRegionsServedError(error));
         });
     }
 }

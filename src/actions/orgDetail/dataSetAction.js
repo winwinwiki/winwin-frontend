@@ -1,17 +1,14 @@
 import { FETCH_DATASET_REQUEST, FETCH_DATASET_SUCCESS, FETCH_DATASET_ERROR,
     SAVE_DATASET_REQUEST, SAVE_DATASET_SUCCESS, SAVE_DATASET_ERROR  } from '../../constants/dispatch';
-import { setDataSetApi, fetchDataSetApi } from '../../api/orgDetail/dataSetApi';
+import { api } from '../../api/api';
 
-export const saveOrgDataSets = (regions) => {
+export const saveOrgDataSets = (params) => {
     return dispatch => {
         dispatch(saveDataSetReq());
-
-        setDataSetApi(regions, (error, response) => {
-            if (!error) {
-                dispatch(saveDataSetSuccess(response));
-            } else {
-                dispatch(saveDataSetError(error));
-            }
+        api("/data-sets", "POST", params, true).then((response) => {
+            dispatch(saveDataSetSuccess(response));
+        }, (error) => {
+            dispatch(saveDataSetError(error));
         });
     }
 }
@@ -20,13 +17,10 @@ export const saveOrgDataSets = (regions) => {
 export const fetchOrgDataSets = () => {
     return dispatch => {
         dispatch(fetchDataSetReq());
-
-        fetchDataSetApi((error, response) => {
-            if (!error) {
-                dispatch(fetchDataSetSuccess(response));
-            } else {
-                dispatch(fetchDataSetError(error));
-            }
+        api("/data-sets", "GET", {}, true).then((response) => {
+            dispatch(fetchDataSetSuccess(response));
+        }, (error) => {
+            dispatch(fetchDataSetError(error));
         });
     }
 }
