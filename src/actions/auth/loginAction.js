@@ -4,7 +4,9 @@ import { api } from '../../api/api';
 export const onLogin = (params) => {
     return dispatch => {
         dispatch(loginRequest());
-        return api("/users", "POST", params, false).then((response) => {
+        //Temp
+        // return api("/users", "POST", params, false).then((response) => {
+        return api("/login", "POST", params, false).then((response) => {
             dispatch(loginSuccess(response));
         }, (error) => {
             dispatch(loginError(error));

@@ -1,5 +1,6 @@
 
 import apiConfig from '../buildConfig/apiConfig';   
+//Temp
 const url = "https://demo8782246.mockable.io";
 const url1 = "https://demo4705881.mockable.io";
 
@@ -8,8 +9,9 @@ const serverUrl = apiConfig.protocol+"://"+apiConfig.host;
 
 class CommonUtil {
     static createUrl(endPoints) {
-        return endPoints == '/program1' || endPoints == '/data-sets' || endPoints == '/sdgList' || endPoints == '/spiList' || endPoints == '/notes' ? (url1 + endPoints):(url + endPoints);
-        // return (serverUrl+endPoints);
+        //Temp
+        // return endPoints == '/program1' || endPoints == '/data-sets' || endPoints == '/sdgList' || endPoints == '/spiList' || endPoints == '/notes' ? (url1 + endPoints):(url + endPoints);
+        return (serverUrl+endPoints);
     }
 
     static createAuthUrl(endPoints, accessToken) {

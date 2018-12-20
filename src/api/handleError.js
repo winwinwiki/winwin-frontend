@@ -2,6 +2,8 @@
 class HandleError {
     static checkResponse(response) {
         return new Promise((resolve, reject) => {
+            console.log("status: "+response.status);
+            console.log("response", response);
             if (response.status === 200) {
                 resolve(response);
             } else if (response.status === 401) {
