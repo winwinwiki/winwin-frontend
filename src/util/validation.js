@@ -1,7 +1,8 @@
 export default {
     email: function(email) {
         // let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        let re = /^[a-zA-Z][a-zA-Z ]*$/;
+        //let re = /^[a-zA-Z][a-zA-Z ]*$/;
+        let re = /([\w\.\-_]+)?\w+@[\w-_]+(\.\w+){1,}/igm;
         return re.test(email);
     },
     password: function(pwd) {
