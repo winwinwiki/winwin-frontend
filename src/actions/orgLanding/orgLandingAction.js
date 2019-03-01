@@ -5,7 +5,8 @@ import {
     SET_APPLIED_FILTER
 } from '../../constants/dispatch';
 import { api } from '../../api/api';
-import qs from 'query-string';
+import qs from 'qs';
+
 export const fetchOrganisationsList = (params) => {
     return dispatch => {
         dispatch(fetchOrgRequest());
