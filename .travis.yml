@@ -15,7 +15,7 @@ deploy:
   access_key_id: "AKIAJ6VN6S2NGB6JQEFA"
   secret_access_key: "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"
   bucket: "winwin-frontend-bucket"
-  project: ./build/
+  local_dir: build
   region: "us-east-2"
   on:
     #all_branches: true
