@@ -6,18 +6,17 @@ cache:
     - node_modules
 script:
   - npm install
-  - unset CI
+  - unset CI #To avoid build failure due to warnings
   - npm run build
 before_deploy: "echo 'Deploying to dev...'"
 deploy:
   provider: s3
-  skip_cleanup: true
+  skip_cleanup: true #Skip cleaning up the build folder before deploy/upload
   access_key_id: "AKIAJ6VN6S2NGB6JQEFA"
   secret_access_key: "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"
   bucket: "winwin-frontend-bucket"
-  local_dir: build
+  local_dir: build #Upload only this directory
   region: "us-east-2"
   on:
-    #all_branches: true
     branch: dev
 after_deploy: "echo 'Deployment to dev is complete.'"
