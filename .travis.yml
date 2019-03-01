@@ -17,7 +17,7 @@ deploy:
   bucket: "winwin-frontend-bucket"
   project: ./build/
   region: "us-east-2"
+  on:
+    #all_branches: true
+    branch: dev
 after_deploy: "echo 'Deployment to dev is complete.'"
-on:
-  all_branches: true
-  #branch: dev
