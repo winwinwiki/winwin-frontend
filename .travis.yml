@@ -19,4 +19,5 @@ deploy:
   region: "us-east-2"
 after_deploy: "echo 'Deployment to dev is complete.'"
 on:
-  branch: dev
+  all_branches: true
+  #branch: dev
