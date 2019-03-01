@@ -6,6 +6,7 @@ cache:
     - node_modules
 script:
   - npm install
+  - unset CI
   - npm run build
 before_deploy: "echo 'Deploying to dev...'"
 deploy:
