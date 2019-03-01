@@ -13,7 +13,7 @@ deploy:
   provider: s3
   skip_cleanup: true
   access_key_id: "AKIAJ6VN6S2NGB6JQEFA"
-  secret_access_key: "sSmB/idE1kT+FMpC5t4X8/PGObQhhHKI6a5SJqmB4Gvbne2dghLHn47u8IPDqxXU1ZFuI0ebcBpioiJ9ADK4LZ03+NbczmwZcxbqPJksFgQaVgNCVMWFy6YbShBZlId3zqbEkrWvteEgBCa7cIP9mFMa3eTOhLD++XKXu6s4FzsqEjJC5EulfVU4WLx0ISjPWCh7cJeZSkcWfVDOQHyLL366RNTegIRC3QvFhDluvINzxO46EyQqkzPMHnGHpTlCDbPNp+YhGoqTdCU1xWsg9xivcXYYA6CrrzHx0xxVk09VsSk5cikT40QmYK8OaEmTqZR3gHGYq/+3eHSk+j7WZWuaGejXK/U/IrWlPl5XpR4YgHiVknrYboeIOa6F8/Ri4VhEum6Sl8k8KkMpEftgjS1Vn6Z6W2J++kg1z/wt12SOLQSEGR7j3uBVAty6edu26ERRwIkWj7F/17pQdlm0Z9Z4GJ2kNjgGYDpZ7DZJPkf4mY95bhKww3TeDHSVIK2vkiB3fZ06yLLEavUId6l01E84zb3kYwPYHqIwaWEXDGseAuIEI6FO8fB7cLjSQVhezeTBnw1D3jYMfkB0L2nruRCSzSjf1iv71OAJE+gaNG+Z471AJcmSuSpcIMOrfjauGd8oNOyPXqHoE1KXrNz0OJjXRy2ODDCpgEcRZHOEVgw="
+  secret_access_key: "85nwEN59qZ3GE9PxehM+8XqSGAcJXOdCX7z+a64R"
   bucket: "winwin-frontend-bucket"
   project: ./build/
   region: "us-east-2"
