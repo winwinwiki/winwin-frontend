@@ -8,7 +8,8 @@ script:
   - npm install
   - unset CI #To avoid build failure due to warnings
   - npm run build
-before_deploy: "echo 'Deployment in progress on $TRAVIS_BRANCH...'"
+before_deploy: 
+  - echo "Deployment in progress on "&$TRAVIS_BRANCH
 
 -: &s3_deploy
     provider: s3
@@ -32,4 +33,5 @@ deploy:
     on:
       branch: master
     bucket: "winwin-frontend-bucket-prod"
-after_deploy: "echo 'Deployment is complete on $TRAVIS_BRANCH.'"
+after_deploy: 
+  - echo "Deployment is complete on "&$TRAVIS_BRANCH
