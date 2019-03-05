@@ -1,6 +1,6 @@
 WINWIN frontend App
 
-![alt text](https://travis-ci.com/winwinwiki/winwin-frontend.svg?branch=master "Travis-CI build status")
+![alt text](https://travis-ci.com/winwinwiki/winwin-frontend.svg?branch=dev "Travis-CI dev build status")
 
 ### Running the service
 
