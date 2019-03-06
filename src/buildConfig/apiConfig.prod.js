@@ -1,4 +1,4 @@
 export const apiConfig = {
-    protocol: 'http',
-    host: '54.209.46.206',
+    protocol: 'https',
+    host: 'demo8782246.mockable.io',
 }
