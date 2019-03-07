@@ -5,6 +5,7 @@
   "dependencies": {
     "ajv": "^6.10.0",
     "autoprefixer": "7.1.6",
+    "aws-amplify": "^1.1.22",
     "babel-core": "^6.26.3",
     "babel-eslint": "7.2.3",
     "babel-jest": "20.0.3",
