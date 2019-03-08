@@ -6579,6 +6579,9 @@ icon-font Webfont
 .overflow-scroll {
   overflow: scroll; }
 
+.cursor-pointer {
+  cursor: pointer; }
+
 .f-36 {
   font-size: 2.25rem !important; }
 

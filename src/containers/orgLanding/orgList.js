@@ -50,18 +50,31 @@ const columns = [
   {
     id: "org",
     Header: "Organisation Name",
-    accessor: "name",
-    Cell: row => {
-      return (
-        <React.Fragment>
-          <div className="org-tag orange card d-inline-block mr-1">
-            <div className="px-1 py-0">A</div>
-            <div className="org-tag-footer" />
-          </div>
-          <div className="centerText d-inline-block">{row.value}</div>
-        </React.Fragment>
-      );
-    },
+    accessor: row => (
+      <React.Fragment>
+        <div className="org-tag orange card d-inline-block mr-1">
+          <div className="px-1 py-0">A</div>
+          <div className="org-tag-footer" />
+        </div>
+        <a
+          href={"organizations/" + row.id}
+          className="centerText d-inline-block"
+        >
+          {row.name}
+        </a>
+      </React.Fragment>
+    ),
+    // Cell: row => {
+    //   return (
+    //     <React.Fragment>
+    //       <div className="org-tag orange card d-inline-block mr-1">
+    //         <div className="px-1 py-0">A</div>
+    //         <div className="org-tag-footer" />
+    //       </div>
+    //       <a href={row.id} className="centerText d-inline-block">{row.value}</a>
+    //     </React.Fragment>
+    //   );
+    // },
     sortable: true,
     filterable: true,
     filterMethod: (filter, rows) => {
@@ -71,7 +84,10 @@ const columns = [
         keys: [{ threshold: matchSorter.rankings.CONTAINS, key: "org" }]
       });
     },
-    filterAll: true
+    filterAll: true,
+    style: {
+      height: 50
+    }
   },
   {
     id: "sector",
@@ -193,7 +209,8 @@ class OrgList extends React.Component {
         </div>
         <div>
           <ReactTable
-            pageSize={10}
+            pageSize={orgList.length > 10 ? 10 : orgList.length}
+            minRows={0}
             data={orgList}
             columns={columns}
             className="-highlight"
@@ -205,18 +222,6 @@ class OrgList extends React.Component {
                 asc: true
               }
             ]}
-            getTdProps={(state, rowInfo, column) => {
-              return {
-                onClick: e => {
-                  if (column.id !== "select" && column.id !== "delete") {
-                    this.changePage(rowInfo.original.id);
-                  }
-                },
-                style: {
-                  height: 50
-                }
-              };
-            }}
             getTheadThProps={(state, rowInfo) => {
               return {
                 style: {
