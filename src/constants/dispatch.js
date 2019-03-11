@@ -28,6 +28,10 @@ export const USERINFO_ERROR = "user/USERINFO_ERROR";
 export const CREATEORG_REQUEST = "org/CREATEORG_REQUEST";
 export const CREATEORG_SUCCESS = "org/CREATEORG_SUCCESS";
 export const CREATEORG_ERROR = "org/CREATEORG_ERROR";
+//create user
+export const CREATEUSER_REQUEST = "org/CREATEUSER_REQUEST";
+export const CREATEUSER_SUCCESS = "org/CREATEUSER_SUCCESS";
+export const CREATEUSER_ERROR = "org/CREATEUSER_ERROR";
 //org landing
 export const FETCHORG_REQUEST = "org/FETCHORG_REQUEST";
 export const FETCHORG_SUCCESS = "org/FETCHORG_SUCCESS";

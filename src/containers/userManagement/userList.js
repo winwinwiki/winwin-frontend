@@ -138,7 +138,7 @@ class UserList extends React.Component {
           />
 
           <div className="dropdown ml-auto">
-            <button
+            {/* <button
               id="uploadUsers"
               type="button"
               data-toggle="dropdown"
@@ -147,7 +147,15 @@ class UserList extends React.Component {
               className="btn btn-primary dropdown-toggle btn-block btn-sm"
             >
               Create Users
-            </button>
+            </button> */}
+            <a
+              href="javascript:;"
+              onClick={() => this.changePage("new")}
+              className="btn btn-link"
+            >
+              <i className="icon-add mr-1" /> Create
+            </a>
+
             <div aria-labelledby="uploadUsers" className="dropdown-menu">
               <a
                 href="javascript:;"

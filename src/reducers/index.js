@@ -26,6 +26,7 @@ import orgChart from "./orgDetail/orgChartReducer";
 import programList from "./program/programListReducer";
 import userManagement from "./userManagement/userListReducer";
 import notes from "./orgDetail/notesReducer";
+import createUser from "./createUser/createUserReducer";
 
 export default combineReducers({
   routing: routerReducer,
@@ -35,6 +36,7 @@ export default combineReducers({
   resetPassword,
   changePassword,
   createOrg,
+  createUser,
   dataFeed,
   orgList: orgLanding,
   spiTags,
