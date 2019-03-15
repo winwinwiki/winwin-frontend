@@ -11,9 +11,19 @@ export const onLogin = params => {
     dispatch(loginRequest());
     //Temp
     Auth.signIn(params.username, params.password).then(
-      response => {
+      () => {
         //return api("/login", "POST", params, false).then((response) => {
-        dispatch(loginSuccess(response));
+        Auth.currentAuthenticatedUser().then(user => {
+          const { attributes } = user;
+          const userObj = {
+            id: attributes.sub,
+            name: attributes["custom:fullName"],
+            email: attributes.email,
+            role: attributes["custom:role"],
+            team: attributes["custom:team"]
+          };
+          dispatch(loginSuccess(userObj));
+        });
       },
       error => {
         dispatch(loginError(error));

@@ -26,3 +26,17 @@ export function modifiyFilterList(list) {
   }
   return desiredList;
 }
+
+//Updating JavaScript object-attributes from another object
+export function updateObject(obj /*, …*/) {
+  for (var i = 1; i < arguments.length; i++) {
+    for (var prop in arguments[i]) {
+      var val = arguments[i][prop];
+      if (typeof val == "object")
+        // this also applies to arrays or null!
+        updateObject(obj[prop], val);
+      else obj[prop] = val;
+    }
+  }
+  return obj;
+}
