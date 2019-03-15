@@ -146,33 +146,44 @@ class OrgList extends React.Component {
   componentDidMount() {
     this.props.startLoaderAction();
     this.props.fetchOrganisationsList();
-    this.props.fetchSdgTagsList();
-    this.props.fetchSpiTagsList();
+    //this.props.fetchSdgTagsList();
+    //this.props.fetchSpiTagsList();
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { orgList } = this.props;
-    if (
-      nextProps &&
-      JSON.stringify(nextProps.orgList) !== JSON.stringify(orgList) &&
-      nextProps.orgList.data
-    ) {
-      if (!nextProps.orgList.error) {
+  componentDidUpdate(prevProps){
+    if (prevProps.orgList !== this.props.orgList &&
+      this.props.orgList.data) {
+      console.log("new org list received 2",this.props.orgList);
+      //if (!this.props.orgList.error) {
         this.setState({
-          orgList: nextProps.orgList.data
+          orgList: this.props.orgList.data.response
         });
-      } else {
-      }
+      //} else {
+      //}
       this.props.stopLoaderAction();
     }
   }
 
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps &&
+  //     nextProps.orgList !== this.props.orgList) {
+  //       console.log("new org list received 1",nextProps.orgList);
+  //     if (!nextProps.orgList.error) {
+  //       this.setState({
+  //         orgList: nextProps.orgList.data
+  //       });
+  //     } else {
+  //     }
+  //     this.props.stopLoaderAction();
+  //   }
+  // }
+
   render() {
     const { entity, orgList, activeButton, searchText } = this.state;
     const { appliedFilterList } = this.props;
-    if (!orgList || !orgList.length) {
-      return null;
-    }
+    // if (!orgList || !orgList.length) {
+    //   return null;
+    // }
     return (
       <section className="dashboard-content p-0">
         <OrgFilters
@@ -210,7 +221,8 @@ class OrgList extends React.Component {
         <div>
           <ReactTable
             pageSize={orgList.length > 10 ? 10 : orgList.length}
-            minRows={0}
+            minRows={3}
+            noDataText="No organization found"
             data={orgList}
             columns={columns}
             className="-highlight"
