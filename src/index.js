@@ -29,7 +29,7 @@ Amplify.configure({
   API: {
     endpoints: [
       {
-        name: "winwin",
+        name: "image",
         endpoint: apiConfig.apiGateway.URL,
         region: apiConfig.apiGateway.REGION
       }

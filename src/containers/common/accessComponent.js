@@ -5,7 +5,7 @@ const AccessComponent = props => {
     <React.Fragment>
       {props.access.includes("all") ||
       (props.access.includes("data-seeder") && props.role === "data-seeder") ||
-      (props.access.includes("admin") && props.role === "admin")
+      (props.access.includes("Administrator") && props.role === "Administrator")
         ? props.children
         : null}
     </React.Fragment>

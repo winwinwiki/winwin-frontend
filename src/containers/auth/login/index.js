@@ -192,7 +192,8 @@ class Login extends React.Component {
 
   changePage(userInfo) {
     switch (userInfo.role) {
-      case "admin":
+      case "Administrator":
+        return this.props.changePage("/organizations");
       case "seeder":
         return this.props.changePage("/organizations");
       default:

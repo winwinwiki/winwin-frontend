@@ -23,5 +23,9 @@ export default {
   number: function(num) {
     let regx = /^[0-9]*$/;
     return regx.test(num);
+  },
+  image: function(file) {
+    let regx = /\.(gif|jpg|jpeg|tiff|png)$/i;
+    return regx.test(file);
   }
 };
