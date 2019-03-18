@@ -7,16 +7,14 @@ import Dropdown from "../ui/dropdown";
 import { onCreateOrg } from "../../actions/createOrg/createOrgAction";
 import "./createOrg.css";
 import validate from "../../util/validation";
-
-const sectoryList = ["Public", "Private", "Social"];
-const entityList = ["Federal", "State", "County", "City", "District"];
+import { sectorsList, entityList } from "../../constants";
 
 class CreateOrg extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       orgName: "",
-      sector: sectoryList[0],
+      sector: sectorsList[0],
       entity: entityList[0],
       country: "",
       city: "",
@@ -51,7 +49,7 @@ class CreateOrg extends React.Component {
       if (!nextProps.createOrg.error) {
         this.setState({
           orgName: "",
-          sector: sectoryList[0],
+          sector: sectorsList[0],
           entity: entityList[0],
           location: null
         });
@@ -111,7 +109,7 @@ class CreateOrg extends React.Component {
                       name="sector"
                       containerClass="dropdown dropdown-with-searchbox"
                       onChange={this.onDropdownChange.bind(this)}
-                      items={sectoryList}
+                      items={sectorsList}
                     />
                   </div>
                 </div>
