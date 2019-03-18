@@ -38,7 +38,7 @@ class DataSetBlock extends React.Component {
                 id="dataSetName"
                 readOnly="readOnly"
                 placeholder="Enter Category"
-                value={data.name}
+                value={data.organizationDataSetCategory.categoryName}
               />
             </div>
           </div>

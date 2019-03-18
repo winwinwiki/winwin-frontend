@@ -24,7 +24,7 @@ class DataSets extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchOrgDataSets();
+    this.props.fetchOrgDataSets(this.props.orgId);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -32,7 +32,7 @@ class DataSets extends React.Component {
     if (nextProps.dataset !== dataset && nextProps.dataset.data) {
       if (!nextProps.dataset.error) {
         this.setState({
-          dataSetList: nextProps.dataset.data
+          dataSetList: nextProps.dataset.data.response
         });
       }
     }

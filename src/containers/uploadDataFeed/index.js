@@ -8,7 +8,7 @@ import Dropdown from "../ui/dropdown";
 import Upload from "../ui/upload";
 import { onDataFeed } from "../../actions/dataFeed/dataFeedAction";
 import validate from "../../util/validation";
-const sectoryList = ["Public", "Private", "Social"];
+const sectorsList = ["Public", "Private", "Social"];
 const fileSourceList = ["IRS", "Other"];
 
 class UploadDataFeed extends React.Component {
@@ -16,7 +16,7 @@ class UploadDataFeed extends React.Component {
     super(props);
     this.state = {
       file: null,
-      sector: sectoryList[0],
+      sector: sectorsList[0],
       fileSource: fileSourceList[0],
       location: null,
       formError: {
@@ -38,7 +38,7 @@ class UploadDataFeed extends React.Component {
       if (!nextProps.dataFeed.error) {
         this.setState({
           file: null,
-          sector: sectoryList[0],
+          sector: sectorsList[0],
           fileSource: fileSourceList[0],
           location: null
         });
@@ -73,7 +73,7 @@ class UploadDataFeed extends React.Component {
                 name="sector"
                 containerClass="dropdown dropdown-with-searchbox"
                 onChange={this.onDropdownChange.bind(this)}
-                items={sectoryList}
+                items={sectorsList}
               />
             </div>
             <p>File Selection</p>

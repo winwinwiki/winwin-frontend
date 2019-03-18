@@ -1,4 +1,11 @@
-import { FETCH_ORGDETAIL_REQUEST, FETCH_ORGDETAIL_SUCCESS, FETCH_ORGDETAIL_ERROR } from '../../constants/dispatch';
+import {
+  FETCH_ORGDETAIL_REQUEST,
+  FETCH_ORGDETAIL_SUCCESS,
+  FETCH_ORGDETAIL_ERROR,
+  SAVE_ORGDETAIL_BASIC_INFO_REQUEST,
+  SAVE_ORGDETAIL_BASIC_INFO_SUCCESS,
+  SAVE_ORGDETAIL_BASIC_INFO_ERROR
+} from "../../constants/dispatch";
 
 const initialState = {
   loading: false,
@@ -28,7 +35,24 @@ export default (state = initialState, action) => {
         data: action.error,
         error: true
       });
-
+    case SAVE_ORGDETAIL_BASIC_INFO_REQUEST:
+      return Object.assign({}, state, {
+        loading: true,
+        saveData: null,
+        saveError: false
+      });
+    case SAVE_ORGDETAIL_BASIC_INFO_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false,
+        saveData: action.response,
+        saveError: false
+      });
+    case SAVE_ORGDETAIL_BASIC_INFO_ERROR:
+      return Object.assign({}, state, {
+        loading: false,
+        saveData: action.error,
+        saveError: true
+      });
     default:
       return state;
   }
