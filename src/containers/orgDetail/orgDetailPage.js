@@ -33,7 +33,7 @@ class OrgDetailPage extends React.Component {
     ) {
       if (!nextProps.organizationDetail.error) {
         this.setState({
-          orgDetail: nextProps.organizationDetail.data
+          orgDetail: nextProps.organizationDetail.data.response
         });
       }
     }

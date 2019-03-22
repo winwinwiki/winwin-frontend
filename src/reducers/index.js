@@ -10,7 +10,7 @@ import changePassword from "./auth/changePasswordReducer";
 
 import userInfo from "./users/userInfoReducer";
 
-import createOrg from "./createOrg/createOrgReducer";
+import createOrg from "./organization/createOrgReducer";
 import dataFeed from "./dataFeed/dataFeedReducer";
 import orgLanding from "./orgLanding/orgLandingReducer";
 
@@ -28,6 +28,7 @@ import userManagement from "./userManagement/userListReducer";
 import notes from "./orgDetail/notesReducer";
 import createUser from "./createUser/createUserReducer";
 import saveUserInfo from "./users/saveUserInfoReducer";
+import datasetCategories from "./orgDetail/dataSetCategoriesReducer";
 
 export default combineReducers({
   routing: routerReducer,
@@ -53,5 +54,6 @@ export default combineReducers({
   orgChart,
   userManagement,
   notes,
-  saveUserInfo
+  saveUserInfo,
+  datasetCategories
 });

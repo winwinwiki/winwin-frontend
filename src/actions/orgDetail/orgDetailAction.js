@@ -39,7 +39,7 @@ export const fetchOrganisationDetail = params => {
 export const onSaveOrgBasicInfo = params => {
   return dispatch => {
     dispatch(saveOrgBasicInfoReq());
-    api("/organization/update", "PUT", JSON.stringify(params), true).then(
+    api("/organization", "PUT", JSON.stringify(params), true).then(
       response => {
         dispatch(saveOrgBasicInfoSuccess(response));
       },

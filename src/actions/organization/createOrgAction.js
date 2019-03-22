@@ -8,7 +8,7 @@ import { api } from "../../api/api";
 export const onCreateOrg = params => {
   return dispatch => {
     dispatch(createOrgRequest());
-    api("/organization/create", "POST", JSON.stringify(params), true).then(
+    api("/organization", "POST", JSON.stringify(params), true).then(
       response => {
         dispatch(createOrgSuccess(response));
       },

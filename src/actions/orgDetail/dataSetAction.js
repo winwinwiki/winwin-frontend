@@ -11,21 +11,42 @@ import { api } from "../../api/api";
 export const saveOrgDataSets = params => {
   return dispatch => {
     dispatch(saveDataSetReq());
-    api("/data-sets", "POST", params, true).then(
-      response => {
-        dispatch(saveDataSetSuccess(response));
-      },
-      error => {
-        dispatch(saveDataSetError(error));
-      }
-    );
+    if (!params.id) {
+      api(
+        `/organization/${params.organizationId}/dataset`,
+        "POST",
+        JSON.stringify(params),
+        true
+      ).then(
+        response => {
+          dispatch(saveDataSetSuccess(response));
+        },
+        error => {
+          dispatch(saveDataSetError(error));
+        }
+      );
+    } else {
+      api(
+        `/organization/${params.organizationId}/dataset`,
+        "PUT",
+        JSON.stringify(params),
+        true
+      ).then(
+        response => {
+          dispatch(saveDataSetSuccess(response));
+        },
+        error => {
+          dispatch(saveDataSetError(error));
+        }
+      );
+    }
   };
 };
 
 export const fetchOrgDataSets = params => {
   return dispatch => {
     dispatch(fetchDataSetReq());
-    api("/orgdataset/list/" + params, "GET", {}, true).then(
+    api(`/organization/${params}/datasets`, "GET", {}, true).then(
       response => {
         dispatch(fetchDataSetSuccess(response));
       },

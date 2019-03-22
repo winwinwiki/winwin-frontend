@@ -40,3 +40,27 @@ export function updateObject(obj /*, …*/) {
   }
   return obj;
 }
+
+//check if string a contains string b in it
+export const compareStrings = (a, b) => {
+  //contains is not supported in Chrome, but you could use a polyfill
+  if (!String.prototype.contains) {
+    String.prototype.contains = function(s) {
+      return this.indexOf(s) > -1;
+    };
+  }
+  return (
+    a != null &&
+    b != null &&
+    a
+      .toString()
+      .toLowerCase()
+      .replace(/\s/g, "")
+      .contains(
+        b
+          .toString()
+          .toLowerCase()
+          .replace(/\s/g, "")
+      )
+  );
+};

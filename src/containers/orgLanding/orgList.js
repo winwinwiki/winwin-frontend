@@ -19,6 +19,8 @@ import {
   stopLoaderAction
 } from "../../actions/common/loaderActions";
 
+import { onDeleteOrg } from "../../actions/organization/deleteOrgAction";
+
 const filterList = [
   "Set Priority High",
   "Set Priority Normal",
@@ -29,102 +31,6 @@ const buttonList = [
   { id: "public", name: "Public" },
   { id: "private", name: "Private" },
   { id: "social", name: "Social" }
-];
-const columns = [
-  {
-    id: "select",
-    Header: (
-      <span>
-        <input type="checkbox" />
-      </span>
-    ),
-    accessor: "id",
-    sortable: false,
-    Cell: () => (
-      <div className="centerText">
-        <input type="checkbox" />
-      </div>
-    ),
-    width: 50
-  },
-  {
-    id: "org",
-    Header: "Organisation Name",
-    accessor: row => (
-      <React.Fragment>
-        <div className="org-tag orange card d-inline-block mr-1">
-          <div className="px-1 py-0">A</div>
-          <div className="org-tag-footer" />
-        </div>
-        <a
-          href={"organizations/" + row.id}
-          className="centerText d-inline-block"
-        >
-          {row.name}
-        </a>
-      </React.Fragment>
-    ),
-    // Cell: row => {
-    //   return (
-    //     <React.Fragment>
-    //       <div className="org-tag orange card d-inline-block mr-1">
-    //         <div className="px-1 py-0">A</div>
-    //         <div className="org-tag-footer" />
-    //       </div>
-    //       <a href={row.id} className="centerText d-inline-block">{row.value}</a>
-    //     </React.Fragment>
-    //   );
-    // },
-    sortable: true,
-    filterable: true,
-    filterMethod: (filter, rows) => {
-      // console.log(filter),
-      // console.log(rows);
-      return matchSorter(rows, filter.value, {
-        keys: [{ threshold: matchSorter.rankings.CONTAINS, key: "org" }]
-      });
-    },
-    filterAll: true,
-    style: {
-      height: 50
-    }
-  },
-  {
-    id: "sector",
-    Header: "Sector",
-    accessor: "sector",
-    sortable: false,
-    Cell: row => <div className="centerText">{row.value}</div>
-  },
-  {
-    id: "revenue",
-    Header: "Total Revenue",
-    accessor: "totalRevenue[0][value]",
-    sortable: true,
-    Cell: row => <div className="centerText">{row.value}</div>
-  },
-  {
-    id: "city",
-    Header: "City",
-    accessor: "address[city]",
-    sortable: false,
-    Cell: row => <div className="centerText">{row.value}</div>
-  },
-  {
-    id: "industryClassification",
-    Header: "Industry Classification",
-    accessor: "industryCls",
-    sortable: false,
-    Cell: row => <div className="centerText">{row.value}</div>
-  },
-  {
-    id: "delete",
-    Header: "",
-    accessor: "id",
-    sortable: false,
-    Cell: row => <span className="centerText" />,
-    width: 50
-  }
 ];
 
 class OrgList extends React.Component {
@@ -150,14 +56,22 @@ class OrgList extends React.Component {
     //this.props.fetchSpiTagsList();
   }
 
-  componentDidUpdate(prevProps){
-    if (prevProps.orgList !== this.props.orgList &&
-      this.props.orgList.data) {
-      console.log("new org list received 2",this.props.orgList);
+  handleOrgDelete = orgId => {
+    this.props.onDeleteOrg(orgId);
+    const { orgList } = this.state;
+    const filteredList = orgList.filter(x => x.id !== orgId);
+    this.setState({
+      orgList: filteredList
+    });
+  };
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.orgList !== this.props.orgList && this.props.orgList.data) {
+      console.log("new org list received 2", this.props.orgList);
       //if (!this.props.orgList.error) {
-        this.setState({
-          orgList: this.props.orgList.data.response
-        });
+      this.setState({
+        orgList: this.props.orgList.data.response
+      });
       //} else {
       //}
       this.props.stopLoaderAction();
@@ -177,6 +91,108 @@ class OrgList extends React.Component {
   //     this.props.stopLoaderAction();
   //   }
   // }
+
+  columns = [
+    {
+      id: "select",
+      Header: (
+        <span>
+          <input type="checkbox" />
+        </span>
+      ),
+      accessor: "id",
+      sortable: false,
+      Cell: () => (
+        <div className="centerText">
+          <input type="checkbox" />
+        </div>
+      ),
+      width: 50
+    },
+    {
+      id: "org",
+      Header: "Organisation Name",
+      accessor: row => (
+        <React.Fragment>
+          <div className="org-tag orange card d-inline-block mr-1">
+            <div className="px-1 py-0">A</div>
+            <div className="org-tag-footer" />
+          </div>
+          <a
+            href={"organizations/" + row.id}
+            className="centerText d-inline-block"
+          >
+            {row.name}
+          </a>
+        </React.Fragment>
+      ),
+      // Cell: row => {
+      //   return (
+      //     <React.Fragment>
+      //       <div className="org-tag orange card d-inline-block mr-1">
+      //         <div className="px-1 py-0">A</div>
+      //         <div className="org-tag-footer" />
+      //       </div>
+      //       <a href={row.id} className="centerText d-inline-block">{row.value}</a>
+      //     </React.Fragment>
+      //   );
+      // },
+      sortable: true,
+      filterable: true,
+      filterMethod: (filter, rows) => {
+        // console.log(filter),
+        // console.log(rows);
+        return matchSorter(rows, filter.value, {
+          keys: [{ threshold: matchSorter.rankings.CONTAINS, key: "org" }]
+        });
+      },
+      filterAll: true,
+      style: {
+        height: 50
+      }
+    },
+    {
+      id: "sector",
+      Header: "Sector",
+      accessor: "sector",
+      sortable: false,
+      Cell: row => <div className="centerText">{row.value}</div>
+    },
+    {
+      id: "revenue",
+      Header: "Total Revenue",
+      accessor: "totalRevenue[0][value]",
+      sortable: true,
+      Cell: row => <div className="centerText">{row.value}</div>
+    },
+    {
+      id: "city",
+      Header: "City",
+      accessor: "address[city]",
+      sortable: false,
+      Cell: row => <div className="centerText">{row.value}</div>
+    },
+    {
+      id: "industryClassification",
+      Header: "Industry Classification",
+      accessor: "industryCls",
+      sortable: false,
+      Cell: row => <div className="centerText">{row.value}</div>
+    },
+    {
+      id: "delete",
+      Header: "",
+      accessor: "id",
+      sortable: false,
+      Cell: row => (
+        <span
+          className="centerText"
+          onClick={() => this.handleOrgDelete(row.original.id)}
+        />
+      ),
+      width: 50
+    }
+  ];
 
   render() {
     const { entity, orgList, activeButton, searchText } = this.state;
@@ -224,7 +240,7 @@ class OrgList extends React.Component {
             minRows={3}
             noDataText="No organization found"
             data={orgList}
-            columns={columns}
+            columns={this.columns}
             className="-highlight"
             sortable={true}
             multiSort={true}
@@ -341,7 +357,8 @@ const mapDispatchToProps = dispatch =>
       fetchSpiTagsList,
       setAppliedFilters,
       startLoaderAction,
-      stopLoaderAction
+      stopLoaderAction,
+      onDeleteOrg
     },
     dispatch
   );

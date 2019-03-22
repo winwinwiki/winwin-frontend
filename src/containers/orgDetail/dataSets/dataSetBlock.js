@@ -22,6 +22,7 @@ class DataSetBlock extends React.Component {
                 href="javascript:;"
                 data-toggle="modal"
                 data-target="#deleteModal"
+                onClick={() => this.props.selectedDataSetId(data.id)}
               >
                 <i className="icon-delete" />
               </a>
@@ -38,7 +39,10 @@ class DataSetBlock extends React.Component {
                 id="dataSetName"
                 readOnly="readOnly"
                 placeholder="Enter Category"
-                value={data.organizationDataSetCategory.categoryName}
+                value={
+                  data.organizationDataSetCategory &&
+                  data.organizationDataSetCategory.categoryName
+                }
               />
             </div>
           </div>
