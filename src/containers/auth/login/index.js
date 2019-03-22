@@ -32,6 +32,7 @@ class Login extends React.Component {
   componentDidMount() {
     const { session } = this.props;
     if (session && session.isAuthenticated && session.user) {
+      console.log("User session is already active, moving to landing page",session.user);
       this.changePage(session.user);
     }
   }
@@ -49,6 +50,7 @@ class Login extends React.Component {
         email: "",
         password: ""
       });
+      console.log("User logged in, fetching user info");
       this.props.fetchUserInfo();
     }
 
@@ -58,6 +60,7 @@ class Login extends React.Component {
       nextProps.session &&
       nextProps.session.user
     ) {
+      console.log("User logged in, user info received, moving to landing page",nextProps.session.user);
       this.changePage(nextProps.session.user);
     }
   }
@@ -191,13 +194,13 @@ class Login extends React.Component {
   }
 
   changePage(userInfo) {
+    this.props.stopLoaderAction();
     switch (userInfo.role) {
       case "Administrator":
-        return this.props.changePage("/organizations");
       case "seeder":
         return this.props.changePage("/organizations");
       default:
-        return this.props.stopLoaderAction();
+        return this.props.changePage("/organizations");
     }
   }
 }
