@@ -32,7 +32,7 @@ class DataSets extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { dataset } = this.props;
-    if (nextProps.dataset !== dataset && nextProps.dataset.data) {
+    if (nextProps.dataset.data !== dataset.data && nextProps.dataset.data) {
       if (!nextProps.dataset.error) {
         this.setState({
           dataSetList: nextProps.dataset.data.response
