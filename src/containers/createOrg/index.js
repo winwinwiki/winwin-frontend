@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Geosuggest from "react-geosuggest";
 import Dropdown from "../ui/dropdown";
-import { onCreateOrg } from "../../actions/createOrg/createOrgAction";
+import { onCreateOrg } from "../../actions/organization/createOrgAction";
 import "./createOrg.css";
 import validate from "../../util/validation";
 import { sectorsList, entityList } from "../../constants";

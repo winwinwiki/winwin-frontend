@@ -4,15 +4,17 @@ import DataSetModal from "./dataSetModal";
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { fetchOrgDataSets } from "../../../actions/orgDetail/dataSetAction";
 import {
-  saveOrgDataSets,
-  fetchOrgDataSets
-} from "../../../actions/orgDetail/dataSetAction";
+  fetchDataSetCategories,
+  deleteOrgDataSet
+} from "../../../actions/orgDetail/dataSetCategoriesAction";
 class DataSets extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       dataSetList: null,
+      dataSetToBeDeleted: "",
       selectedData: {
         name: "",
         description: "",
@@ -25,6 +27,7 @@ class DataSets extends React.Component {
 
   componentDidMount() {
     this.props.fetchOrgDataSets(this.props.orgId);
+    this.props.fetchDataSetCategories();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,7 +43,7 @@ class DataSets extends React.Component {
 
   render() {
     const { dataSetList, selectedData, modalTitle } = this.state;
-    const { dataset } = this.props;
+    const { dataset, datasetCategories } = this.props;
     if (dataset.error || !dataSetList) {
       return null;
     }
@@ -66,6 +69,7 @@ class DataSets extends React.Component {
                     key={dataSet.id}
                     data={dataSet}
                     changeModalData={this.changeModalData}
+                    selectedDataSetId={this.selectedDataSetId}
                   />
                 ))}
                 <li className="list-group-item px-0 pt-4">
@@ -83,7 +87,13 @@ class DataSets extends React.Component {
           </div>
         </div>
 
-        <DataSetModal modalData={selectedData} title={modalTitle} />
+        <DataSetModal
+          orgId={this.props.orgId}
+          modalData={selectedData}
+          title={modalTitle}
+          categoriesList={datasetCategories}
+          newModalData={this.handleNewModalData}
+        />
 
         <div
           className="modal fade"
@@ -127,7 +137,12 @@ class DataSets extends React.Component {
                   >
                     Close
                   </button>
-                  <button type="button" className="btn btn-primary">
+                  <button
+                    type="button"
+                    data-dismiss="modal"
+                    className="btn btn-primary"
+                    onClick={() => this.handleDelete()}
+                  >
                     Delete
                   </button>
                 </div>
@@ -138,6 +153,26 @@ class DataSets extends React.Component {
       </section>
     );
   }
+
+  handleNewModalData = newModalData => {
+    const { dataSetList, selectedData } = this.state;
+    const newList = [...dataSetList, newModalData];
+    this.setState({
+      dataSetList: newList
+    });
+  };
+
+  selectedDataSetId = id => {
+    this.setState({ dataSetToBeDeleted: id });
+  };
+
+  handleDelete = () => {
+    const { dataSetToBeDeleted: dataSetId, dataSetList } = this.state;
+    const { orgId } = this.props;
+    this.props.deleteOrgDataSet({ orgId, dataSetId });
+    const filteredList = dataSetList.filter(x => x.id !== dataSetId);
+    this.setState({ dataSetList: filteredList });
+  };
 
   changeModalData = dataSetId => {
     const { dataSetList } = this.state;
@@ -150,7 +185,7 @@ class DataSets extends React.Component {
   addNewDataSetModal = () => {
     this.setState({
       selectedData: {
-        name: "",
+        organizationDataSetCategory: { categoryName: "" },
         description: "",
         type: "",
         url: ""
@@ -161,14 +196,16 @@ class DataSets extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  dataset: state.dataset
+  dataset: state.dataset,
+  datasetCategories: state.datasetCategories
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      saveOrgDataSets,
-      fetchOrgDataSets
+      fetchOrgDataSets,
+      fetchDataSetCategories,
+      deleteOrgDataSet
     },
     dispatch
   );

@@ -1,9 +1,15 @@
 import {
-  FETCHORG_REQUEST, FETCHORG_SUCCESS, FECTHORG_ERROR,
-  SET_SDGLIST_REQUEST, SET_SDGLIST_SUCCESS, SET_SDGLIST_ERROR,
-  SET_SPILIST_REQUEST, SET_SPILIST_SUCCESS, SET_SPILIST_ERROR,
+  FETCHORG_REQUEST,
+  FETCHORG_SUCCESS,
+  FECTHORG_ERROR,
+  SET_SDGLIST_REQUEST,
+  SET_SDGLIST_SUCCESS,
+  SET_SDGLIST_ERROR,
+  SET_SPILIST_REQUEST,
+  SET_SPILIST_SUCCESS,
+  SET_SPILIST_ERROR,
   SET_APPLIED_FILTER
-} from '../../constants/dispatch';
+} from "../../constants/dispatch";
 
 const initialState = {
   loading: false,
@@ -21,26 +27,25 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         loading: true,
         data: null,
-        error: false,
+        error: false
       });
 
     case FETCHORG_SUCCESS:
       return Object.assign({}, state, {
         loading: false,
         data: action.response,
-        error: false,
+        error: false
       });
 
     case FECTHORG_ERROR:
       return Object.assign({}, state, {
         loading: true,
         data: action.error,
-        error: true,
+        error: true
       });
 
     case SET_SDGLIST_REQUEST:
-      return Object.assign({}, state, {
-      });
+      return Object.assign({}, state, {});
 
     case SET_SDGLIST_SUCCESS:
       return Object.assign({}, state, {
@@ -48,12 +53,10 @@ export default (state = initialState, action) => {
       });
 
     case SET_SDGLIST_ERROR:
-      return Object.assign({}, state, {
-      });
+      return Object.assign({}, state, {});
 
     case SET_SPILIST_REQUEST:
-      return Object.assign({}, state, {
-      });
+      return Object.assign({}, state, {});
 
     case SET_SPILIST_SUCCESS:
       return Object.assign({}, state, {
@@ -61,8 +64,7 @@ export default (state = initialState, action) => {
       });
 
     case SET_SPILIST_ERROR:
-      return Object.assign({}, state, {
-      });
+      return Object.assign({}, state, {});
 
     case SET_APPLIED_FILTER:
       return Object.assign({}, state, {
