@@ -4,15 +4,19 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 import {
-  saveOrgResources,
-  fetchOrgResources
+  fetchOrgResources,
+  deleteOrgResource
 } from "../../../actions/orgDetail/resourcesAction";
+import { fetchResourceCategories } from "../../../actions/orgDetail/resourceCategoriesAction";
 import ResourceModal from "./resourceModal";
 
 class Resources extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
+      resourcesList: null,
+      resourceToBeDeleted: "",
       selectedData: {
         category: "",
         count: "",
@@ -22,14 +26,50 @@ class Resources extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.props.fetchOrgResources();
+  async componentDidMount() {
+    const orgId = await this.props.orgId;
+    await this.props.fetchOrgResources(orgId);
+    await this.props.fetchResourceCategories(orgId);
   }
 
-  render() {
-    const { selectedData, modalTitle } = this.state;
+  componentWillReceiveProps(nextProps) {
     const { resources } = this.props;
-    if (!resources || !resources.data || resources.error) {
+    if (
+      nextProps.resources.data !== resources.data &&
+      nextProps.resources.data
+    ) {
+      if (!nextProps.resources.error) {
+        this.setState({
+          resourcesList: nextProps.resources.data.response
+        });
+      }
+    }
+  }
+
+  handleNewModalData = newModalData => {
+    const { resourcesList } = this.state;
+    const newList = [...resourcesList, newModalData];
+    this.setState({
+      resourcesList: newList
+    });
+  };
+
+  selectedResourceId = id => {
+    this.setState({ resourceToBeDeleted: id });
+  };
+
+  handleDelete = () => {
+    const { resourceToBeDeleted: resourceId, resourcesList } = this.state;
+    const { orgId } = this.props;
+    this.props.deleteOrgResource({ orgId, resourceId });
+    const filteredList = resourcesList.filter(x => x.id !== resourceId);
+    this.setState({ resourcesList: filteredList });
+  };
+
+  render() {
+    const { selectedData, modalTitle, resourcesList } = this.state;
+    const { resources, resourceCategories } = this.props;
+    if (!resources || !resources.data || resources.error || !resourcesList) {
       return null;
     }
     return (
@@ -49,11 +89,12 @@ class Resources extends React.Component {
             </div>
             <form>
               <ul className="list-group list-group-flush">
-                {resources.data.map(resource => (
+                {resourcesList.map(resource => (
                   <ResourceBlock
                     key={resource.id}
                     data={resource}
                     changeModalData={this.changeModalData}
+                    selectedResourceId={this.selectedResourceId}
                   />
                 ))}
                 <li className="list-group-item px-0 pt-4">
@@ -61,7 +102,7 @@ class Resources extends React.Component {
                     href="javascript:;"
                     data-toggle="modal"
                     data-target="#resourceModal"
-                    onClick={this.addNewDataSetModal}
+                    onClick={this.addNewResourceModal}
                   >
                     <i className="icon-add mr-2" /> Add Another
                   </a>
@@ -70,7 +111,13 @@ class Resources extends React.Component {
             </form>
           </div>
         </div>
-        <ResourceModal modalData={selectedData} title={modalTitle} />
+        <ResourceModal
+          orgId={this.props.orgId}
+          modalData={selectedData}
+          categoriesList={resourceCategories}
+          title={modalTitle}
+          newModalData={this.handleNewModalData}
+        />
 
         <div
           className="modal fade"
@@ -114,7 +161,12 @@ class Resources extends React.Component {
                   >
                     Close
                   </button>
-                  <button type="button" className="btn btn-primary">
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    data-dismiss="modal"
+                    onClick={() => this.handleDelete()}
+                  >
                     Delete
                   </button>
                 </div>
@@ -126,19 +178,19 @@ class Resources extends React.Component {
     );
   }
   changeModalData = resourceId => {
-    const { resources } = this.props;
+    const { resourcesList } = this.state;
     this.setState({
-      selectedData: resources.data.filter(
+      selectedData: resourcesList.filter(
         resource => resource.id === resourceId
       )[0],
       modalTitle: "Edit Resource"
     });
   };
 
-  addNewDataSetModal = () => {
+  addNewResourceModal = () => {
     this.setState({
       selectedData: {
-        category: "",
+        organizationResourceCategory: { categoryName: "" },
         count: "",
         description: ""
       },
@@ -148,14 +200,16 @@ class Resources extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  resources: state.resources
+  resources: state.resources,
+  resourceCategories: state.resourceCategories
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      saveOrgResources,
-      fetchOrgResources
+      fetchOrgResources,
+      fetchResourceCategories,
+      deleteOrgResource
     },
     dispatch
   );
