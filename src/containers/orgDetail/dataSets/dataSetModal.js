@@ -99,10 +99,12 @@ class DataSetModal extends Component {
     modalData.organizationDataSetCategory.categoryName = newValue;
 
     //find id in categories list to be updated
-    let catId = categoriesList.find(x => {
+    let filteredCategory = categoriesList.find(x => {
       return compareStrings(x.categoryName, newValue) ? x : "";
-    }).id;
-    modalData.organizationDataSetCategory.id = catId;
+    });
+    if (filteredCategory && filteredCategory.id)
+      modalData.organizationDataSetCategory.id = filteredCategory.id;
+    modalData.organizationDataSetCategory.id = -1;
     this.setState({ modalData, value: newValue });
   };
 
