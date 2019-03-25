@@ -1,60 +1,249 @@
-import React from 'react';
+import React, { Component } from "react";
+import Autosuggest from "react-autosuggest";
+import { compareStrings } from "../../../util/util";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { saveOrgResource } from "../../../actions/orgDetail/resourcesAction";
 
-const ResourceModal = (props) => {
+const getSuggestionValue = suggestion => suggestion.categoryName;
+
+// Use your imagination to render suggestions.
+const renderSuggestion = suggestion => <div>{suggestion.categoryName}</div>;
+class ResourceModal extends Component {
+  state = {
+    value: "",
+    suggestions: [],
+    modalData: {
+      count: "",
+      description: "",
+      organizationResourceCategory: { categoryName: "" }
+    }
+  };
+
+  componentWillReceiveProps(nextProps) {
+    const { modalData } = this.props;
+    if (
+      nextProps.modalData !== modalData &&
+      nextProps.modalData &&
+      nextProps.categoriesList
+    ) {
+      if (!nextProps.modalData.error) {
+        this.setState({
+          modalData: nextProps.modalData,
+          categories: nextProps.categoriesList.data.response
+        });
+      }
+    }
+  }
+
+  onSuggestionsClearRequested = () => {
+    this.setState({
+      suggestions: []
+    });
+  };
+
+  onSuggestionsFetchRequested = ({ value }) => {
+    this.setState({
+      suggestions: this.getSuggestions(value)
+    });
+  };
+
+  getSuggestions = value => {
+    console.log(value);
+    const inputValue = value.trim().toLowerCase();
+    const inputLength = inputValue.length;
+    const {
+      categoriesList: { data: { response: categoriesList = [] } = {} } = {}
+    } = this.props;
+
+    return inputLength === 0
+      ? []
+      : categoriesList.filter(
+          category =>
+            category.categoryName.toLowerCase().slice(0, inputLength) ===
+            inputValue
+        );
+  };
+
+  //onchange for autosuggest
+  onChange = (event, { newValue }) => {
+    const { modalData } = this.state;
+    const {
+      categoriesList: { data: { response: categoriesList = [] } = {} } = {}
+    } = this.props;
+
+    modalData.organizationResourceCategory.categoryName = newValue;
+
+    //find id in categories list to be updated
+    let filteredCategory = categoriesList.find(x => {
+      return compareStrings(x.categoryName, newValue) ? x : "";
+    });
+    if (filteredCategory && filteredCategory.id)
+      modalData.organizationResourceCategory.id = filteredCategory.id;
+    else modalData.organizationResourceCategory.id = -1;
+    this.setState({ modalData, value: newValue });
+  };
+
+  // input fields onchange method
+  handleChange = event => {
+    const target = event.target;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    let name = target.name;
+    const { modalData } = this.state;
+    if (name === "categoryName")
+      modalData.organizationDataSetCategory[name] = value;
+    else modalData[name] = value;
+    this.setState({ modalData });
+  };
+
+  saveResource = e => {
+    e.preventDefault();
+    const { modalData } = this.state;
+    const { orgId } = this.props;
+    if (!modalData.organizationId) {
+      modalData.organizationId = orgId;
+      this.props.newModalData(modalData);
+    }
+    this.props.saveOrgResource(modalData);
+  };
+
+  render() {
+    const { title } = this.props;
+    const {
+      suggestions,
+      modalData: {
+        description,
+        count,
+        organizationResourceCategory: { categoryName, id } = {}
+      } = {}
+    } = this.state;
+    const inputProps = {
+      id,
+      placeholder: "Enter Resource Name",
+      value: categoryName || "", //input prop value should always be string
+      onChange: this.onChange
+    };
     return (
-        <div className="modal fade" id="resourceModal" tabIndex="-1" role="dialog" aria-labelledby="resourceModalLabel" aria-hidden="true">
-            <div className="modal-dialog modal-dialog-centered" role="document">
-                <div className="modal-content">
-                    <div className="dashboard-container">
-                        <div className="dashboard-header">
-                            <div className="modal-header flex-column">
-                                <div className="d-flex w-100 p-3">
-                                    <h5 className="modal-title" id="resourceModalLabel">{props.title}</h5>
-                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="modal-body dashboard-content">
-                            <form action="">
-                                <ul className="list-group list-group-flush">
-                                    <li className="list-group-item px-0">
-                                        <div className="row">
-                                            <div className="col">
-                                                <div className="form-group">
-                                                    <label htmlFor="new-category">Category</label>
-                                                    <input type="text" className="form-control" id="new-category" placeholder="Enter Category" value={props.modalData.category}/>
-                                                </div>
-                                            </div>
-                                            <div className="col">
-                                                <div className="form-group">
-                                                    <label htmlFor="new-count">Count</label>
-                                                    <input type="text" className="form-control" id="new-count" placeholder="Enter Count" value={props.modalData.count}/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col">
-                                                <div className="form-group">
-                                                    <label htmlFor="description">Description</label>
-                                                    <textarea className="form-control" placeholder="A desription about the resource will go here" name="" id="description" rows="5" value={props.modalData.description}></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </form>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary">Save changes</button>
-                        </div>
-                    </div>
+      <div
+        className="modal fade"
+        id="resourceModal"
+        tabIndex="-1"
+        role="dialog"
+        aria-labelledby="resourceModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <div className="dashboard-container">
+              <div className="dashboard-header">
+                <div className="modal-header flex-column">
+                  <div className="d-flex w-100 p-3">
+                    <h5 className="modal-title" id="resourceModalLabel">
+                      {title}
+                    </h5>
+                    <button
+                      type="button"
+                      className="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
                 </div>
+              </div>
+              <div className="modal-body dashboard-content">
+                <form action="">
+                  <ul className="list-group list-group-flush">
+                    <li className="list-group-item px-0">
+                      <div className="row">
+                        <div className="col">
+                          <div className="form-group">
+                            <label htmlFor="new-category">Category</label>
+                            <Autosuggest
+                              id="categoryName"
+                              suggestions={suggestions}
+                              onSuggestionsFetchRequested={
+                                this.onSuggestionsFetchRequested
+                              }
+                              onSuggestionsClearRequested={
+                                this.onSuggestionsClearRequested
+                              }
+                              getSuggestionValue={getSuggestionValue}
+                              renderSuggestion={renderSuggestion}
+                              inputProps={inputProps}
+                            />
+                          </div>
+                        </div>
+                        <div className="col">
+                          <div className="form-group">
+                            <label htmlFor="new-count">Count</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="new-count"
+                              name="count"
+                              placeholder="Enter Count"
+                              value={count}
+                              onChange={this.handleChange}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col">
+                          <div className="form-group">
+                            <label htmlFor="description">Description</label>
+                            <textarea
+                              className="form-control"
+                              placeholder="A desription about the resource will go here"
+                              id="description"
+                              name="description"
+                              rows="5"
+                              value={description}
+                              onChange={this.handleChange}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          data-dismiss="modal"
+                        >
+                          Close
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-primary"
+                          data-dismiss="modal"
+                          onClick={this.saveResource}
+                        >
+                          Save changes
+                        </button>
+                      </div>
+                    </li>
+                  </ul>
+                </form>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     );
+  }
 }
 
-export default ResourceModal;
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      saveOrgResource
+    },
+    dispatch
+  );
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(ResourceModal);

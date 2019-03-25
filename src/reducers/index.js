@@ -29,6 +29,7 @@ import notes from "./orgDetail/notesReducer";
 import createUser from "./createUser/createUserReducer";
 import saveUserInfo from "./users/saveUserInfoReducer";
 import datasetCategories from "./orgDetail/dataSetCategoriesReducer";
+import resourceCategories from "./orgDetail/resourceCategoriesReducer";
 
 export default combineReducers({
   routing: routerReducer,
@@ -55,5 +56,6 @@ export default combineReducers({
   userManagement,
   notes,
   saveUserInfo,
-  datasetCategories
+  datasetCategories,
+  resourceCategories
 });
