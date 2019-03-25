@@ -102,9 +102,9 @@ class DataSetModal extends Component {
     let filteredCategory = categoriesList.find(x => {
       return compareStrings(x.categoryName, newValue) ? x : "";
     });
-    if (filteredCategory && filteredCategory.id)
+    if (filteredCategory && filteredCategory.id && filteredCategory.id !== -1)
       modalData.organizationDataSetCategory.id = filteredCategory.id;
-    modalData.organizationDataSetCategory.id = -1;
+    else modalData.organizationDataSetCategory.id = -1;
     this.setState({ modalData, value: newValue });
   };
 
@@ -129,7 +129,6 @@ class DataSetModal extends Component {
     const inputProps = {
       id,
       placeholder: "Enter Data Set Name",
-
       value: categoryName,
       onChange: this.onChange
     };
