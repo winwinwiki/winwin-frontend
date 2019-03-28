@@ -1,12 +1,19 @@
-import React from "react";
+import React, { Component, Fragment } from "react";
 import Geosuggest from "react-geosuggest";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import filter from "lodash/filter";
+import {
+  startLoaderAction,
+  stopLoaderAction
+} from "../../../actions/common/loaderActions";
 
 import {
   saveOrgRegionsServed,
   fetchOrgRegionsServed,
-  removeOrgRegionsServed
+  removeRegionAction,
+  resetRegionsAction,
+  updateRegionsAction
 } from "../../../actions/orgDetail/regionsServedAction";
 
 const addressComponents = {
@@ -19,31 +26,42 @@ const addressComponents = {
   postal_code: "short_name"
 };
 
-class RegionsServed extends React.Component {
-  constructor(props) {
-    super(props);
-    this._geoSuggest = null;
-    this.state = {
-      location: null,
-      isEdited: false,
-      addressObj: {}
-    };
-    this.onSuggestSelect = this.onSuggestSelect.bind(this);
-    this.deleteRegion = this.deleteRegion.bind(this);
-    this.onEdit = this.onEdit.bind(this);
-  }
+class RegionsServed extends Component {
+  state = {
+    location: null,
+    isEdited: false,
+    newRegions: [],
+    regionsServed: {
+      data: {}
+    }
+  };
 
   componentDidMount() {
+    this.props.startLoaderAction();
     this.props.fetchOrgRegionsServed(this.props.orgId);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.regionsServed !== this.props.regionsServed &&
+      this.props.regionsServed.data
+    ) {
+      this.props.stopLoaderAction();
+    }
   }
 
   render() {
     const { isEdited } = this.state;
-    const { regionsServed } = this.props;
-    if (!regionsServed || !regionsServed.data || regionsServed.error) {
+    if (
+      !this.props.regionsServed ||
+      !this.props.regionsServed.data ||
+      this.props.regionsServed.error
+    ) {
       return null;
     }
-    const { data: { response: regionsServedList } = {} } = regionsServed;
+    const {
+      data: { response: regionsServedList } = {}
+    } = this.props.regionsServed;
     return (
       <section className="dashboard-content p-0 py-3 org-details-container">
         <div className="col-md-18 m-auto card">
@@ -84,8 +102,11 @@ class RegionsServed extends React.Component {
                 )}
                 {isEdited &&
                   regionsServedList.map((region, idx) => {
-                    const { address: { city, state, country } = {} } = region;
-                    return (
+                    const {
+                      address: { city, state, country } = {},
+                      isActive
+                    } = region;
+                    return isActive ? (
                       <div className="row mt-2" key={idx}>
                         <div className="col-sm-22">
                           {city}, {state}, {country}
@@ -100,19 +121,45 @@ class RegionsServed extends React.Component {
                           </a>
                         </div>
                       </div>
+                    ) : (
+                      ""
                     );
                   })}
                 {!isEdited &&
                   regionsServedList.map((region, idx) => {
-                    const { address: { city, state, country } = {} } = region;
-
-                    return (
+                    const {
+                      address: { city, state, country } = {},
+                      isActive
+                    } = region;
+                    return isActive ? (
                       <li className="mt-2" key={idx}>
                         {" "}
                         {city}, {state}, {country}{" "}
                       </li>
+                    ) : (
+                      ""
                     );
                   })}
+                {isEdited && (
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-dismiss="modal"
+                      onClick={this.onClose}
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="submit"
+                      onClick={this.saveRegions}
+                      data-dismiss="modal"
+                      className="btn btn-primary"
+                    >
+                      Save changes
+                    </button>
+                  </div>
+                )}
               </ul>
             </form>
           </div>
@@ -121,25 +168,39 @@ class RegionsServed extends React.Component {
     );
   }
 
-  onEdit() {
+  onClose = () => {
+    this.props.resetRegionsAction();
+    this.setState({ isEdited: false });
+  };
+
+  saveRegions = e => {
+    e.preventDefault();
+    const {
+      orgId,
+      regionsServed: { data: { response: updatedRegions } = {} } = {}
+    } = this.props;
+    this.props.saveOrgRegionsServed({ updatedRegions, orgId });
+  };
+
+  onEdit = () => {
     this.setState({
       isEdited: true
     });
-  }
+  };
 
-  deleteRegion(id) {
-    const { orgId } = this.props;
-    const apiObj = {
-      id,
-      isActive: false
-    };
-    this.props.removeOrgRegionsServed({ apiObj, orgId });
-  }
+  deleteRegion = id => {
+    this.props.removeRegionAction(id);
+  };
 
-  onSuggestSelect(place) {
-    let { addressObj } = this.state;
+  onSuggestSelect = place => {
+    this._geoSuggest.clear(); //clear inputtext
+    const {
+      regionsServed: { data: { response: regionsServedList } = {} } = {}
+    } = this.props;
     let placesObj = {};
-    const { gmaps: { address_components } = {} } = place;
+
+    //convert places api response to extract address properties
+    const { gmaps: { address_components } = {}, placeId } = place;
     for (let i = 0; i < address_components.length; i++) {
       let addressType = address_components[i].types[0];
       if (addressComponents[addressType]) {
@@ -157,9 +218,11 @@ class RegionsServed extends React.Component {
       route
     } = placesObj;
 
-    const apiObj = {
+    let apiObj = {
       organizationId: this.props.orgId,
+      isActive: true,
       address: {
+        placeId,
         street:
           street_number && !route
             ? street_number
@@ -175,12 +238,15 @@ class RegionsServed extends React.Component {
         zip: postal_code || null
       }
     };
-    this.props.saveOrgRegionsServed(apiObj);
+
+    //add only unique addresses according to placeId
+    if (!regionsServedList.filter(x => x.address.placeId === placeId).length) {
+      this.props.updateRegionsAction(apiObj);
+    }
     this.setState({
-      location: place,
-      addressObj
+      location: place
     });
-  }
+  };
 }
 
 const mapStateToProps = state => ({
@@ -192,7 +258,11 @@ const mapDispatchToProps = dispatch =>
     {
       saveOrgRegionsServed,
       fetchOrgRegionsServed,
-      removeOrgRegionsServed
+      removeRegionAction,
+      resetRegionsAction,
+      updateRegionsAction,
+      startLoaderAction,
+      stopLoaderAction
     },
     dispatch
   );

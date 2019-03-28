@@ -1,7 +1,14 @@
 import {
-  FETCH_REGIONSERVED_REQUEST, FETCH_REGIONSERVED_SUCCESS, FETCH_REGIONSERVED_ERROR,
-  SAVE_REGIONSERVED_REQUEST, SAVE_REGIONSERVED_SUCCESS, SAVE_REGIONSERVED_ERROR
-} from '../../constants/dispatch';
+  FETCH_REGIONSERVED_REQUEST,
+  FETCH_REGIONSERVED_SUCCESS,
+  FETCH_REGIONSERVED_ERROR,
+  SAVE_REGIONSERVED_REQUEST,
+  SAVE_REGIONSERVED_SUCCESS,
+  SAVE_REGIONSERVED_ERROR,
+  REMOVE_REGIONSERVED_SUCCESS,
+  RESET_REGIONSERVED_SUCCESS,
+  UPDATE_REGIONSERVED_SUCCESS
+} from "../../constants/dispatch";
 
 const initialState = {
   loading: false,
@@ -23,6 +30,7 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         loading: false,
         data: action.response,
+        saveData: action.response,
         error: false
       });
     case FETCH_REGIONSERVED_ERROR:
@@ -49,6 +57,42 @@ export default (state = initialState, action) => {
         saveData: action.error,
         saveError: true
       });
+
+    // add new regions
+    case UPDATE_REGIONSERVED_SUCCESS:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          response: [...state.data.response, action.response]
+        }
+      };
+
+    // NOTE: should not mutate state directly
+    case REMOVE_REGIONSERVED_SUCCESS:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          response: state.data.response.map(item => {
+            if (item.id === action.response) {
+              return {
+                ...item,
+                isActive: false
+              };
+            }
+            return item;
+          })
+        }
+      };
+
+    case RESET_REGIONSERVED_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false,
+        data: state.saveData,
+        error: false
+      });
+
     default:
       return state;
   }

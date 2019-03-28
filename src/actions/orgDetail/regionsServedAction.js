@@ -7,17 +7,22 @@ import {
   SAVE_REGIONSERVED_ERROR,
   REMOVE_REGIONSERVED_REQUEST,
   REMOVE_REGIONSERVED_SUCCESS,
-  REMOVE_REGIONSERVED_ERROR
+  REMOVE_REGIONSERVED_ERROR,
+  RESET_REGIONSERVED_SUCCESS,
+  RESET_REGIONSERVED_ERROR,
+  UPDATE_REGIONSERVED_SUCCESS,
+  UPDATE_REGIONSERVED_ERROR
 } from "../../constants/dispatch";
 import { api } from "../../api/api";
 
-export const saveOrgRegionsServed = params => {
+//change method
+export const saveOrgRegionsServed = ({ updatedRegions, orgId }) => {
   return dispatch => {
     dispatch(saveRegionsServedReq());
     api(
-      `/organization/${params.organizationId}/region`,
+      `/organization/${orgId}/region`,
       "POST",
-      JSON.stringify(JSON.parse(params)),
+      JSON.stringify(updatedRegions),
       true
     ).then(
       response => {
@@ -30,17 +35,35 @@ export const saveOrgRegionsServed = params => {
   };
 };
 
-export const removeOrgRegionsServed = (apiObj, orgId) => {
-  return dispatch => {
-    dispatch(removeRegionsServedReq());
-    api(`/organization/${orgId}/region`, "PUT", apiObj, true).then(
-      response => {
-        dispatch(removeRegionsServedSuccess(response));
-      },
-      error => {
-        dispatch(removeRegionsServedError(error));
-      }
-    );
+export const updateRegionsAction = params => {
+  return async dispatch => {
+    try {
+      dispatch(updateRegionsServedSuccess(params));
+    } catch (err) {
+      updateRegionsServedError();
+    }
+  };
+};
+
+// Action to remove region from store
+export const removeRegionAction = id => {
+  return async dispatch => {
+    try {
+      dispatch(removeRegionsServedReq());
+      dispatch(removeRegionsServedSuccess(id));
+    } catch (err) {
+      removeRegionsServedError();
+    }
+  };
+};
+
+export const resetRegionsAction = () => {
+  return async dispatch => {
+    try {
+      dispatch(resetRegionsServedSuccess());
+    } catch (err) {
+      resetRegionsServedError();
+    }
   };
 };
 
@@ -114,6 +137,34 @@ function removeRegionsServedSuccess(response) {
 function removeRegionsServedError(error) {
   return {
     type: REMOVE_REGIONSERVED_ERROR,
+    error
+  };
+}
+
+function resetRegionsServedSuccess(response) {
+  return {
+    type: RESET_REGIONSERVED_SUCCESS,
+    response
+  };
+}
+
+function resetRegionsServedError(error) {
+  return {
+    type: RESET_REGIONSERVED_ERROR,
+    error
+  };
+}
+
+function updateRegionsServedSuccess(response) {
+  return {
+    type: UPDATE_REGIONSERVED_SUCCESS,
+    response
+  };
+}
+
+function updateRegionsServedError(error) {
+  return {
+    type: UPDATE_REGIONSERVED_ERROR,
     error
   };
 }
