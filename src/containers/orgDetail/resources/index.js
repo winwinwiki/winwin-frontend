@@ -9,7 +9,10 @@ import {
 } from "../../../actions/orgDetail/resourcesAction";
 import { fetchResourceCategories } from "../../../actions/orgDetail/resourceCategoriesAction";
 import ResourceModal from "./resourceModal";
-
+import {
+  startLoaderAction,
+  stopLoaderAction
+} from "../../../actions/common/loaderActions";
 class Resources extends React.Component {
   constructor(props) {
     super(props);
@@ -27,6 +30,7 @@ class Resources extends React.Component {
   }
 
   async componentDidMount() {
+    this.props.startLoaderAction();
     const orgId = await this.props.orgId;
     await this.props.fetchOrgResources(orgId);
     await this.props.fetchResourceCategories(orgId);
@@ -43,6 +47,15 @@ class Resources extends React.Component {
           resourcesList: nextProps.resources.data.response
         });
       }
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.resources !== this.props.resources &&
+      this.props.resources.data
+    ) {
+      this.props.stopLoaderAction();
     }
   }
 
@@ -209,7 +222,9 @@ const mapDispatchToProps = dispatch =>
     {
       fetchOrgResources,
       fetchResourceCategories,
-      deleteOrgResource
+      deleteOrgResource,
+      startLoaderAction,
+      stopLoaderAction
     },
     dispatch
   );
