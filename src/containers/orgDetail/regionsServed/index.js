@@ -180,6 +180,7 @@ class RegionsServed extends Component {
       regionsServed: { data: { response: updatedRegions } = {} } = {}
     } = this.props;
     this.props.saveOrgRegionsServed({ updatedRegions, orgId });
+    this.setState({ isEdited: false });
   };
 
   onEdit = () => {

@@ -9,6 +9,10 @@ import {
   fetchDataSetCategories,
   deleteOrgDataSet
 } from "../../../actions/orgDetail/dataSetCategoriesAction";
+import {
+  startLoaderAction,
+  stopLoaderAction
+} from "../../../actions/common/loaderActions";
 class DataSets extends React.Component {
   constructor(props) {
     super(props);
@@ -26,6 +30,7 @@ class DataSets extends React.Component {
   }
 
   componentDidMount() {
+    this.props.startLoaderAction();
     this.props.fetchOrgDataSets(this.props.orgId);
     this.props.fetchDataSetCategories();
   }
@@ -38,6 +43,12 @@ class DataSets extends React.Component {
           dataSetList: nextProps.dataset.data.response
         });
       }
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.dataset !== this.props.dataset && this.props.dataset.data) {
+      this.props.stopLoaderAction();
     }
   }
 
@@ -205,7 +216,9 @@ const mapDispatchToProps = dispatch =>
     {
       fetchOrgDataSets,
       fetchDataSetCategories,
-      deleteOrgDataSet
+      deleteOrgDataSet,
+      startLoaderAction,
+      stopLoaderAction
     },
     dispatch
   );
