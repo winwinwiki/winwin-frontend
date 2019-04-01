@@ -169,7 +169,8 @@ class RegionsServed extends Component {
   }
 
   onClose = () => {
-    this.props.resetRegionsAction();
+    this.props.startLoaderAction();
+    this.props.fetchOrgRegionsServed(this.props.orgId);
     this.setState({ isEdited: false });
   };
 
