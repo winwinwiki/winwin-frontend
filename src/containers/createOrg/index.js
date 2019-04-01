@@ -351,6 +351,8 @@ class CreateOrg extends React.Component {
       name: orgName,
       sector: sector,
       sectorLevel: entity,
+      parentId: null, // since it is org
+      type: "organization", // since it is org
       address: {
         country: country,
         state: state,
