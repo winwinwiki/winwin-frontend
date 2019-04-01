@@ -70,7 +70,7 @@ export const resetRegionsAction = () => {
 export const fetchOrgRegionsServed = params => {
   return dispatch => {
     dispatch(fetchRegionsServedReq());
-    api(`/organization/${params.id}/regions`, "GET", {}, true).then(
+    api(`/organization/${params}/regions`, "GET", {}, true).then(
       response => {
         dispatch(fetchRegionsServedSuccess(response));
       },
