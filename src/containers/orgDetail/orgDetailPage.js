@@ -285,6 +285,78 @@ class OrgDetailPage extends React.Component {
                       value={orgDetail.socialUrl}
                     />
                   </div>
+                  <div className="section-title border-bottom pb-3 mb-3">
+                    Self Interest
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="category">Key Activities</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="keyActivities"
+                      id="keyActivities"
+                      onChange={this.onChange.bind(this)}
+                      readOnly={readOnly}
+                      placeholder="Enter Key Activities"
+                      value={orgDetail.keyActivities}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="category">Organization Driver</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="orgDriver"
+                      id="orgDriver"
+                      onChange={this.onChange.bind(this)}
+                      readOnly={readOnly}
+                      placeholder="Enter Organizational Drivers"
+                      value={orgDetail.orgDriver}
+                    />
+                  </div>
+                  <div className="section-title border-bottom pb-3 mb-3">
+                    Other
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="category">Business Model</label>
+                    <textarea
+                      className="form-control"
+                      id="businessModel"
+                      name="businessModel"
+                      onChange={this.onChange.bind(this)}
+                      readOnly={readOnly}
+                      placeholder="Enter Business Model"
+                      value={orgDetail.businessModel}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="category">Population Served</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="populationServed"
+                      name="populationServed"
+                      onChange={this.onChange.bind(this)}
+                      readOnly={readOnly}
+                      placeholder="Enter Population Served"
+                      value={orgDetail.populationServed}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="category">Mission Statement</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="missionStatement"
+                      name="missionStatement"
+                      onChange={this.onChange.bind(this)}
+                      readOnly={readOnly}
+                      placeholder="Enter Mission Statement"
+                      value={orgDetail.missionStatement}
+                    />
+                  </div>
                   {isEditable ? (
                     <div className="row justify-content-center footer-actions active">
                       <button
