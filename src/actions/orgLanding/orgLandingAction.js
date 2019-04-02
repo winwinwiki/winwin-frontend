@@ -49,10 +49,10 @@ export const setAppliedFilters = (appliedFilterList, params) => {
   };
 };
 
-export const fetchSdgTagsList = () => {
+export const fetchSdgTagsList = orgId => {
   return dispatch => {
     dispatch(setSdgListReq());
-    api("/sdgList", "GET", {}, true).then(
+    api(`/organization/${orgId}/sdgdata`, "GET", {}, true).then(
       response => {
         dispatch(setSdgListSuccess(response));
       },
@@ -63,10 +63,10 @@ export const fetchSdgTagsList = () => {
   };
 };
 
-export const fetchSpiTagsList = () => {
+export const fetchSpiTagsList = params => {
   return dispatch => {
     dispatch(setSpiListReq());
-    api("/spiList", "GET", {}, true).then(
+    api(`/organization/${params}/spidata`, "GET", {}, true).then(
       response => {
         dispatch(setSpiListSuccess(response));
       },

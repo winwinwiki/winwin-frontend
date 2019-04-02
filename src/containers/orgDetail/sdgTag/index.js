@@ -4,15 +4,26 @@ import { connect } from "react-redux";
 import SDGModal from "./sdgModal";
 import { fetchSdgTags } from "../../../actions/orgDetail/sdgTagsAction";
 import { fetchSdgTagsList } from "../../../actions/orgLanding/orgLandingAction";
-
+import {
+  startLoaderAction,
+  stopLoaderAction
+} from "../../../actions/common/loaderActions";
 class SdgTags extends React.Component {
   componentDidMount() {
-    this.props.fetchSdgTags();
-    this.props.fetchSdgTagsList();
+    const { orgId } = this.props;
+    this.props.startLoaderAction();
+    this.props.fetchSdgTags(orgId);
+    this.props.fetchSdgTagsList(orgId);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.sdgTags !== this.props.sdgTags && this.props.sdgTags.data) {
+      this.props.stopLoaderAction();
+    }
   }
 
   render() {
-    const { sdgTags } = this.props;
+    const { sdgTags, orgId } = this.props;
     if (!sdgTags || !sdgTags.data || sdgTags.error) {
       return null;
     }
@@ -53,32 +64,32 @@ class SdgTags extends React.Component {
             </form>
           </div>
         </div>
-        <SDGModal SDGData={sdgTags.data} />
+        <SDGModal orgId={orgId} checkedSDGTags={sdgTags.data.response} />
       </section>
     );
   }
 
   createSdgBox() {
     const { sdgTags } = this.props;
-    let sdgTagsList = sdgTags.data;
+    let sdgTagsList = sdgTags.data.response;
     let desiredTagsList = {};
     sdgTagsList.map(tags => {
-      if (!desiredTagsList[tags["level1"]])
-        desiredTagsList[tags["level1"]] = [];
+      if (!desiredTagsList[tags["goalName"]])
+        desiredTagsList[tags["goalName"]] = [];
 
-      desiredTagsList[tags["level1"]].push(tags["level2"]);
+      desiredTagsList[tags["goalName"]].push(tags["subGoalName"]);
       return desiredTagsList;
     });
-    return Object.keys(desiredTagsList).map((level1, idx) => (
+    return Object.keys(desiredTagsList).map((goalName, idx) => (
       <div key={idx} className="card custom-list-container mt-2">
-        <div className="card-header">{level1}</div>
+        <div className="card-header">{goalName}</div>
         <div className="card-body">
           <ul className="">
             <li>
               <ul>
-                {desiredTagsList[level1].map((level2, idx2) => (
+                {desiredTagsList[goalName].map((subGoalName, idx2) => (
                   <li key={idx2}>
-                    <span>{level2}</span>
+                    <span>{subGoalName}</span>
                   </li>
                 ))}
               </ul>
@@ -98,7 +109,9 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       fetchSdgTags,
-      fetchSdgTagsList
+      fetchSdgTagsList,
+      startLoaderAction,
+      stopLoaderAction
     },
     dispatch
   );

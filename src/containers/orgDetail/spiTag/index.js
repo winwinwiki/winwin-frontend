@@ -4,15 +4,27 @@ import { connect } from "react-redux";
 import SPIModal from "./spiModal";
 import { fetchSpiTags } from "../../../actions/orgDetail/spiTagsAction";
 import { fetchSpiTagsList } from "../../../actions/orgLanding/orgLandingAction";
-
+import {
+  startLoaderAction,
+  stopLoaderAction
+} from "../../../actions/common/loaderActions";
+import { updateSPIData } from "../../../actions/orgDetail/spiTagsAction";
 class SpiTags extends React.Component {
   componentDidMount() {
-    this.props.fetchSpiTags();
-    this.props.fetchSpiTagsList();
+    const { orgId } = this.props;
+    this.props.startLoaderAction();
+    this.props.fetchSpiTags(orgId);
+    this.props.fetchSpiTagsList(orgId);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.spiTags !== this.props.spiTags && this.props.spiTags.data) {
+      this.props.stopLoaderAction();
+    }
   }
 
   render() {
-    const { spiTags } = this.props;
+    const { spiTags, orgId } = this.props;
     if (!spiTags || !spiTags.data || spiTags.error) {
       return null;
     }
@@ -51,42 +63,58 @@ class SpiTags extends React.Component {
             </form>
           </div>
         </div>
-        <SPIModal SPIData={spiTags.data} />
+        <SPIModal
+          orgId={orgId}
+          checkedSPITags={spiTags.data.response}
+          updateSPIData={updateSPIData}
+          onCancel={this.onCancel}
+        />
       </section>
     );
   }
 
+  onCancel = () => {
+    this.props.startLoaderAction();
+    this.props.fetchSpiTagsList(this.props.orgId);
+  };
+
   createSpiBox() {
     const { spiTags } = this.props;
-    let spiTagsList = spiTags.data;
+    let spiTagsList = spiTags.data.response;
     let desiredTagsList = {};
     spiTagsList.map(tags => {
-      if (!desiredTagsList[tags["level1"]])
-        desiredTagsList[tags["level1"]] = {};
+      if (!desiredTagsList[tags["dimensionName"]])
+        desiredTagsList[tags["dimensionName"]] = {};
 
-      if (!desiredTagsList[tags["level1"]][tags["level2"]])
-        desiredTagsList[tags["level1"]][tags["level2"]] = [];
+      if (!desiredTagsList[tags["dimensionName"]][tags["componentName"]])
+        desiredTagsList[tags["dimensionName"]][tags["componentName"]] = [];
 
-      desiredTagsList[tags["level1"]][tags["level2"]].push(tags["level3"]);
+      desiredTagsList[tags["dimensionName"]][tags["componentName"]].push(
+        tags["indicatorName"]
+      );
       return desiredTagsList;
     });
-    return Object.keys(desiredTagsList).map((level1, idx) => (
+    return Object.keys(desiredTagsList).map((dimensionName, idx) => (
       <div key={idx} className="card custom-list-container mt-2">
-        <div className="card-header">{level1}</div>
+        <div className="card-header">{dimensionName}</div>
         <div className="card-body">
           <ul className="">
-            {Object.keys(desiredTagsList[level1]).map((level2, idx2) => (
-              <li key={idx2}>
-                <span>{level2}</span>
-                <ul>
-                  {desiredTagsList[level1][level2].map((level3, idx3) => (
-                    <li key={idx3}>
-                      <span>{level3}</span>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))}
+            {Object.keys(desiredTagsList[dimensionName]).map(
+              (componentName, idx2) => (
+                <li key={idx2}>
+                  <span>{componentName}</span>
+                  <ul>
+                    {desiredTagsList[dimensionName][componentName].map(
+                      (indicatorName, idx3) => (
+                        <li key={idx3}>
+                          <span>{indicatorName}</span>
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </li>
+              )
+            )}
           </ul>
         </div>
       </div>
@@ -102,7 +130,10 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       fetchSpiTags,
-      fetchSpiTagsList
+      fetchSpiTagsList,
+      startLoaderAction,
+      stopLoaderAction,
+      updateSPIData
     },
     dispatch
   );
