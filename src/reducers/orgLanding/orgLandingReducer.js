@@ -49,7 +49,7 @@ export default (state = initialState, action) => {
 
     case SET_SDGLIST_SUCCESS:
       return Object.assign({}, state, {
-        sdgList: action.response["SDG"]
+        sdgList: action.response
       });
 
     case SET_SDGLIST_ERROR:

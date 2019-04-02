@@ -1,4 +1,9 @@
-import { FETCH_SDGTAGS_REQUEST, FETCH_SDGTAGS_SUCCESS, FETCH_SDGTAGS_ERROR } from '../../constants/dispatch';
+import {
+  FETCH_SDGTAGS_REQUEST,
+  FETCH_SDGTAGS_SUCCESS,
+  FETCH_SDGTAGS_ERROR,
+  UPDATE_SDGDATA_SUCCESS
+} from "../../constants/dispatch";
 
 const initialState = {
   loading: false,
@@ -27,6 +32,13 @@ export default (state = initialState, action) => {
         error: true
       });
 
+    case UPDATE_SDGDATA_SUCCESS:
+      return {
+        ...state,
+        data: {
+          response: action.filteredObj
+        }
+      };
     default:
       return state;
   }

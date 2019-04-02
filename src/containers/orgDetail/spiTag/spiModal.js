@@ -1,24 +1,21 @@
-import React from "react";
+import React, { Component, Fragment } from "react";
 import Search from "../../ui/searchBar";
 import { connect } from "react-redux";
-
-class SPIModal extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      searchText: ""
-    };
-    this.onChange = this.onChange.bind(this);
-    this.isChecked = this.isChecked.bind(this);
-  }
+import { bindActionCreators } from "redux";
+import { updateSPIData } from "../../../actions/orgDetail/spiTagsAction";
+class SPIModal extends Component {
+  state = {
+    searchText: "",
+    checkedSPITags: this.props.checkedSPITags
+  };
 
   render() {
-    const { searchText } = this.state;
-    const { SPIList, SPIData } = this.props;
-    if (!SPIList || !SPIData) {
+    const { searchText, checkedSPITags } = this.state;
+    const { SPIList } = this.props;
+    if (!SPIList || !checkedSPITags) {
       return null;
     }
-    let localSPIList = this.desiredSPIList();
+    let localSPIList = SPIList.response;
     return (
       <div
         className="modal progress-index-modal fade bd-example-modal-lg"
@@ -61,10 +58,16 @@ class SPIModal extends React.Component {
                           type="button"
                           className="btn btn-link"
                           data-dismiss="modal"
+                          onClick={this.props.onCancel}
                         >
                           Cancel
                         </button>
-                        <button type="button" className="btn btn-primary">
+                        <button
+                          type="button"
+                          data-dismiss="modal"
+                          className="btn btn-primary"
+                          onClick={this.onSave}
+                        >
                           Save
                         </button>
                       </div>
@@ -75,45 +78,47 @@ class SPIModal extends React.Component {
               <div className="modal-body dashboard-content progress-index-options">
                 <div className="d-flex flex-column h-100 pt-4">
                   <div className="row d-flex">
-                    {Object.keys(localSPIList).map((level1, idx1) => (
-                      <React.Fragment key={idx1}>
+                    {localSPIList.map((spiObj, idx1) => (
+                      <Fragment key={idx1}>
                         <div className="col-sm-24 mb-3">
-                          <h3>{level1}</h3>
+                          <h3>{spiObj.dimensionName}</h3>
                         </div>
-                        {Object.keys(localSPIList[level1]).map(
-                          (level2, idx2) => (
-                            <div className="col" key={idx2}>
-                              <p className="border-bottom pb-3">{level2}</p>
-                              <div className="item-list mb-4">
-                                {localSPIList[level1][level2].map(
-                                  (level3, idx3) => (
-                                    <div
-                                      className="custom-control custom-checkbox"
-                                      key={idx3}
+                        {spiObj.components.map((componentObj, idx2) => (
+                          <div className="col" key={idx2}>
+                            <p className="border-bottom pb-3">
+                              {componentObj.componentName}
+                            </p>
+                            <div className="item-list mb-4">
+                              {componentObj.indicators.map(
+                                (indicatorObj, idx3) => (
+                                  <div
+                                    className="custom-control custom-checkbox"
+                                    key={idx3}
+                                  >
+                                    <input
+                                      id={indicatorObj.indicatorId}
+                                      type="checkbox"
+                                      className="custom-control-input"
+                                      checked={this.isChecked(indicatorObj)}
+                                      onChange={e =>
+                                        this.onChange(e, indicatorObj)
+                                      }
+                                    />
+                                    <label
+                                      htmlFor={indicatorObj.indicatorId}
+                                      className="custom-control-label"
                                     >
-                                      <input
-                                        id={level3.id}
-                                        type="checkbox"
-                                        className="custom-control-input"
-                                        checked={this.isChecked(level3.value)}
-                                        onChange={this.onChange}
-                                      />
-                                      <label
-                                        htmlFor={level3.id}
-                                        className="custom-control-label"
-                                      >
-                                        {" "}
-                                        {level3.value}
-                                      </label>
-                                    </div>
-                                  )
-                                )}
-                              </div>
+                                      {" "}
+                                      {indicatorObj.indicatorName}
+                                    </label>
+                                  </div>
+                                )
+                              )}
                             </div>
-                          )
-                        )}
+                          </div>
+                        ))}
                         <div className="w-100" />
-                      </React.Fragment>
+                      </Fragment>
                     ))}
                   </div>
                 </div>
@@ -124,36 +129,83 @@ class SPIModal extends React.Component {
       </div>
     );
   }
-  desiredSPIList() {
-    const { SPIList } = this.props;
+
+  onSave = () => {
+    const { checkedSPITags } = this.state;
+    const filteredTags = checkedSPITags.filter(x => x.isChecked === true);
+    const { orgId } = this.props;
+    this.props.updateSPIData(checkedSPITags, orgId, filteredTags);
+  };
+
+  desiredSPIList = id => {
+    const { response: SPIList } = this.props.SPIList;
     let spi = {};
-    SPIList.map(data => {
-      if (!spi[data.dimension]) spi[data.dimension] = {};
-      if (!spi[data.dimension][data.component])
-        spi[data.dimension][data.component] = [];
-      spi[data.dimension][data.component].push({
-        id: data.id,
-        value: data.indicator
+
+    //1. checks spi master list if the selected id is valid and returns full path of the nested object
+    SPIList.forEach(({ dimensionId, dimensionName, components }) => {
+      components.forEach(({ indicators, componentId, componentName }) => {
+        let validIndicator = indicators.find(
+          ({ indicatorId }) => indicatorId === id
+        );
+        if (validIndicator) {
+          spi = {
+            dimensionId,
+            dimensionName,
+            componentId,
+            componentName,
+            isChecked: true,
+            ...validIndicator
+          };
+          return;
+        }
       });
-      return spi;
     });
-    return spi;
-  }
-  isChecked(spiTag) {
-    const { SPIData } = this.props;
-    let filterExist = SPIData.filter(
-      tag => tag["level3"].toLowerCase() === spiTag.toLowerCase()
+
+    //2. check if id selected is already present in checkedspitags list
+    const { checkedSPITags } = this.state;
+    let found = checkedSPITags.find(
+      ({ indicatorId }) => indicatorId === spi.indicatorId
     );
-    return filterExist ? filterExist.length > 0 : false;
+    //when found toggle isChecked
+    if (found) {
+      const newChecked = checkedSPITags.map(tag => {
+        if (tag.isChecked && tag.indicatorId === id) tag.isChecked = false;
+        else if (!tag.isChecked && tag.indicatorId === id) tag.isChecked = true;
+        return tag;
+      });
+      this.setState({
+        checkedSPITags: newChecked
+      });
+    }
+    //else add newly checked spi tag
+    else this.setState({ checkedSPITags: [...this.state.checkedSPITags, spi] });
+    return spi;
+  };
+
+  isChecked(spiTag) {
+    const { checkedSPITags } = this.state;
+    let filterExist = checkedSPITags.filter(
+      tag =>
+        tag["indicatorName"].toLowerCase() ===
+        spiTag.indicatorName.toLowerCase()
+    );
+    return filterExist
+      ? filterExist.length > 0 && filterExist[0].isChecked
+      : false;
   }
-  onChange() {}
+  onChange = (event, currentIndicator) => {
+    this.desiredSPIList(currentIndicator.indicatorId);
+  };
 }
 
 const mapStateToProps = state => ({
   SPIList: state.orgList.spiList
 });
 
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ updateSPIData }, dispatch);
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(SPIModal);

@@ -1,23 +1,21 @@
 import React from "react";
 import Search from "../../ui/searchBar";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { updateSDGData } from "../../../actions/orgDetail/sdgTagsAction";
 class SDGModal extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      searchText: ""
-    };
-    this.onChange = this.onChange.bind(this);
-    this.isChecked = this.isChecked.bind(this);
-  }
+  state = {
+    searchText: "",
+    checkedSDGTags: this.props.checkedSDGTags
+  };
 
   render() {
-    const { searchText } = this.state;
-    const { SDGList, SDGData } = this.props;
-    if (!SDGList || !SDGData) {
+    const { searchText, checkedSDGTags } = this.state;
+    const { SDGList } = this.props;
+    if (!SDGList || !checkedSDGTags) {
       return null;
     }
-    let localSDGList = this.desiredSDGList();
+    let localSDGList = SDGList.response;
     return (
       <div
         className="modal progress-index-modal fade bd-example-modal-lg"
@@ -63,7 +61,12 @@ class SDGModal extends React.Component {
                         >
                           Cancel
                         </button>
-                        <button type="button" className="btn btn-primary">
+                        <button
+                          type="button"
+                          className="btn btn-primary"
+                          data-dismiss="modal"
+                          onClick={this.onSave}
+                        >
                           Save
                         </button>
                       </div>
@@ -74,29 +77,31 @@ class SDGModal extends React.Component {
               <div className="modal-body dashboard-content progress-index-options">
                 <div className="d-flex flex-column h-100 pt-4">
                   <div className="row d-flex">
-                    {Object.keys(localSDGList).map((level1, idx1) => (
+                    {localSDGList.map((goalObj, idx1) => (
                       <React.Fragment key={idx1}>
                         <div className="col-sm-8">
-                          <p className="border-bottom pb-3">{level1}</p>
+                          <p className="border-bottom pb-3">
+                            {goalObj.goalName}
+                          </p>
                           <div className="item-list mb-4">
-                            {localSDGList[level1].map((level2, idx2) => (
+                            {goalObj.subGoals.map((subGoalObj, idx2) => (
                               <div
                                 className="custom-control custom-checkbox"
                                 key={idx2}
                               >
                                 <input
-                                  id={level2.id}
+                                  id={subGoalObj.subGoalCode}
                                   type="checkbox"
                                   className="custom-control-input"
-                                  checked={this.isChecked(level2.value)}
-                                  onChange={this.onChange}
+                                  checked={this.isChecked(subGoalObj)}
+                                  onChange={e => this.onChange(e, subGoalObj)}
                                 />
                                 <label
-                                  htmlFor={level2.id}
+                                  htmlFor={subGoalObj.subGoalCode}
                                   className="custom-control-label"
                                 >
                                   {" "}
-                                  {level2.value}
+                                  {subGoalObj.subGoalName}
                                 </label>
                               </div>
                             ))}
@@ -113,30 +118,73 @@ class SDGModal extends React.Component {
       </div>
     );
   }
-  desiredSDGList() {
-    const { SDGList } = this.props;
+
+  onSave = () => {
+    const { checkedSDGTags } = this.state;
+    const filteredTags = checkedSDGTags.filter(x => x.isChecked === true);
+    const { orgId } = this.props;
+    this.props.updateSDGData(checkedSDGTags, orgId, filteredTags);
+  };
+
+  desiredSDGList(id) {
+    const { response: SDGList } = this.props.SDGList;
+    const { checkedSDGTags } = this.state;
     let sdg = {};
-    SDGList.map(data => {
-      if (!sdg[data.level1]) sdg[data.level1] = [];
-      sdg[data.level1].push({ id: data.id, value: data.level2 });
-      return sdg;
+
+    //1. checks sdg master list if the selected id is valid and returns full path of the nested object
+    SDGList.forEach(({ goalCode, goalName, subGoals }) => {
+      let validGoal = subGoals.find(({ subGoalCode }) => subGoalCode === id);
+      if (validGoal) {
+        sdg = {
+          goalCode,
+          goalName,
+          isChecked: true,
+          ...validGoal
+        };
+        return;
+      }
     });
+    let found = checkedSDGTags.find(
+      ({ subGoalCode }) => subGoalCode === sdg.subGoalCode
+    );
+    //when found toggle isChecked
+    if (found) {
+      const newChecked = checkedSDGTags.map(tag => {
+        if (tag.isChecked && tag.subGoalCode === id) tag.isChecked = false;
+        else if (!tag.isChecked && tag.subGoalCode === id) tag.isChecked = true;
+        return tag;
+      });
+      this.setState({
+        checkedSDGTags: newChecked
+      });
+    }
+    //else add newly checked spi tag
+    else this.setState({ checkedSDGTags: [...this.state.checkedSDGTags, sdg] });
     return sdg;
   }
+
   isChecked(sdgTag) {
-    const { SDGData } = this.props;
-    let filterExist = SDGData.filter(
-      tag => tag["level2"].toLowerCase() === sdgTag.toLowerCase()
+    const { checkedSDGTags } = this.state;
+    let filterExist = checkedSDGTags.filter(
+      tag =>
+        tag["subGoalName"].toLowerCase() === sdgTag.subGoalName.toLowerCase()
     );
-    return filterExist ? filterExist.length > 0 : false;
+    return filterExist
+      ? filterExist.length > 0 && filterExist[0].isChecked
+      : false;
   }
-  onChange() {}
+  onChange(e, currentSubGoal) {
+    this.desiredSDGList(currentSubGoal.subGoalCode);
+  }
 }
 const mapStateToProps = state => ({
   SDGList: state.orgList.sdgList
 });
 
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ updateSDGData }, dispatch);
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(SDGModal);

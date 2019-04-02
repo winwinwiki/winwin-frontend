@@ -1,4 +1,9 @@
-import { FETCH_SPITAGS_REQUEST, FETCH_SPITAGS_SUCCESS, FETCH_SPITAGS_ERROR } from '../../constants/dispatch';
+import {
+  FETCH_SPITAGS_REQUEST,
+  FETCH_SPITAGS_SUCCESS,
+  FETCH_SPITAGS_ERROR,
+  UPDATE_SPIDATA_SUCCESS
+} from "../../constants/dispatch";
 
 const initialState = {
   loading: false,
@@ -27,6 +32,13 @@ export default (state = initialState, action) => {
         error: true
       });
 
+    case UPDATE_SPIDATA_SUCCESS:
+      return {
+        ...state,
+        data: {
+          response: action.filteredObj
+        }
+      };
     default:
       return state;
   }
