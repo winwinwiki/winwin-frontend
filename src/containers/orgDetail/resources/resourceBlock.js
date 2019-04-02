@@ -31,7 +31,7 @@ const ResourceBlock = props => {
       <div className="row">
         <div className="col">
           <div className="form-group">
-            <label htmlFor="category">Category</label>
+            <label htmlFor="category">Resource Name</label>
             <input
               type="text"
               className="form-control"
