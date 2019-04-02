@@ -159,7 +159,7 @@ class ResourceModal extends Component {
                       <div className="row">
                         <div className="col">
                           <div className="form-group">
-                            <label htmlFor="new-category">Category</label>
+                            <label htmlFor="new-category">Resource Name</label>
                             <Autosuggest
                               id="categoryName"
                               suggestions={suggestions}
