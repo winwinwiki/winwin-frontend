@@ -8,6 +8,7 @@ import OrgDetailRoutes from "../orgDetail/orgDetail.routes";
 import OrgList from "./orgList";
 import CreateOrg from "../createOrg";
 import UploadDataFeed from "../uploadDataFeed";
+import { titleCase } from "../../util/util";
 
 const OrgLandingRoutes = props => (
   <OrgLanding history={props.history} match={props.match}>
@@ -32,7 +33,9 @@ const OrgLandingRoutes = props => (
       />
       {/* <CrumbRoute title={"Organization Details"} path="/organizations/:id/programs/:programId" component={ProgramDetailRoutes} /> */}
       <CrumbRoute
-        title={"Organization Details"}
+        title={
+          props.organizationDetail && titleCase(props.organizationDetail.name)
+        }
         path="/organizations/:id"
         component={OrgDetailRoutes}
       />
@@ -41,7 +44,8 @@ const OrgLandingRoutes = props => (
 );
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.session.isAuthenticated
+  isAuthenticated: state.session.isAuthenticated,
+  organizationDetail: state.orgDetail.data && state.orgDetail.data.response
 });
 
 export default connect(
