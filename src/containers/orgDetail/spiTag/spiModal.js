@@ -58,7 +58,6 @@ class SPIModal extends Component {
                           type="button"
                           className="btn btn-link"
                           data-dismiss="modal"
-                          onClick={this.props.onCancel}
                         >
                           Cancel
                         </button>

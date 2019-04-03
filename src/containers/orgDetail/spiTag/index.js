@@ -67,16 +67,10 @@ class SpiTags extends React.Component {
           orgId={orgId}
           checkedSPITags={spiTags.data.response}
           updateSPIData={updateSPIData}
-          onCancel={this.onCancel}
         />
       </section>
     );
   }
-
-  onCancel = () => {
-    this.props.startLoaderAction();
-    this.props.fetchSpiTagsList(this.props.orgId);
-  };
 
   createSpiBox() {
     const { spiTags } = this.props;
