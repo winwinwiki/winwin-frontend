@@ -33,8 +33,8 @@ class Resources extends React.Component {
   async componentDidMount() {
     this.props.startLoaderAction();
     const orgId = await this.props.orgId;
-    await this.props.fetchOrgResources(orgId);
-    await this.props.fetchResourceCategories(orgId);
+    await this.props.fetchOrgResources(orgId, this.props.type);
+    await this.props.fetchResourceCategories(orgId, this.props.type);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -126,6 +126,7 @@ class Resources extends React.Component {
           </div>
         </div>
         <ResourceModal
+          type={this.props.type}
           orgId={this.props.orgId}
           modalData={selectedData}
           categoriesList={resourceCategories}

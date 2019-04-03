@@ -4,16 +4,16 @@ import {
   FETCH_RESOURCE_CATEGORIES_ERROR
 } from "../../constants/dispatch";
 import { api } from "../../api/api";
+import { PROGRAM } from "../../constants";
 
-export const fetchResourceCategories = params => {
+export const fetchResourceCategories = (orgId, type) => {
   return dispatch => {
     dispatch(fetchResourceCategoriesReq());
-    api(
-      `/organization/${params.orgId}/resource/categorylist`,
-      "GET",
-      {},
-      true
-    ).then(
+    let url =
+      type === PROGRAM
+        ? `/program/${orgId}/resource/categorylist`
+        : `/organization/${orgId}/resource/categorylist`;
+    api(url, "GET", {}, true).then(
       response => {
         dispatch(fetchResourceCategoriesSuccess(response));
       },
