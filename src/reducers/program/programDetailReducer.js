@@ -1,4 +1,9 @@
-import { FETCH_PROGDETAIL_REQUEST, FETCH_PROGDETAIL_SUCCESS, FECTH_PROGDETAIL_ERROR } from '../../constants/dispatch';
+import {
+  FETCH_PROGDETAIL_REQUEST,
+  FETCH_PROGDETAIL_SUCCESS,
+  FECTH_PROGDETAIL_ERROR,
+  SAVE_PROG_SUCCESS
+} from "../../constants/dispatch";
 
 const initialState = {
   loading: false,
@@ -16,6 +21,13 @@ export default (state = initialState, action) => {
       });
 
     case FETCH_PROGDETAIL_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false,
+        data: action.response,
+        error: false
+      });
+
+    case SAVE_PROG_SUCCESS:
       return Object.assign({}, state, {
         loading: false,
         data: action.response,

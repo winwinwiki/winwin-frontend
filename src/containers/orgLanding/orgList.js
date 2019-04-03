@@ -20,7 +20,7 @@ import {
 } from "../../actions/common/loaderActions";
 
 import { onDeleteOrg } from "../../actions/organization/deleteOrgAction";
-
+import { Link } from "react-router-dom";
 const filterList = [
   "Set Priority High",
   "Set Priority Normal",
@@ -118,12 +118,12 @@ class OrgList extends React.Component {
             <div className="px-1 py-0">A</div>
             <div className="org-tag-footer" />
           </div>
-          <a
-            href={"organizations/" + row.id}
+          <Link
             className="centerText d-inline-block"
+            to={"organizations/" + row.id}
           >
             {row.name}
-          </a>
+          </Link>
         </React.Fragment>
       ),
       // Cell: row => {

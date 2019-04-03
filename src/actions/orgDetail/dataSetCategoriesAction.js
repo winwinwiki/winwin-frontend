@@ -7,11 +7,16 @@ import {
   DELETE_DATASET_ERROR
 } from "../../constants/dispatch";
 import { api } from "../../api/api";
+import { PROGRAM } from "../../constants";
 
-export const fetchDataSetCategories = () => {
+export const fetchDataSetCategories = (orgId, type) => {
   return dispatch => {
     dispatch(fetchDataSetCategoriesReq());
-    api("/orgdataset/categorylist", "GET", {}, true).then(
+    let url =
+      type === PROGRAM
+        ? `/program/${orgId}/dataset/categorylist`
+        : `/organization/${orgId}/dataset/categorylist`;
+    api(url, "GET", {}, true).then(
       response => {
         dispatch(fetchDataSetCategoriesSuccess(response));
       },
@@ -22,18 +27,17 @@ export const fetchDataSetCategories = () => {
   };
 };
 
-export const deleteOrgDataSet = ({ orgId, dataSetId }) => {
+export const deleteOrgDataSet = ({ orgId, dataSetId, type }) => {
   return dispatch => {
     dispatch(deleteDataSetReq());
     const deleteObj = {
       id: dataSetId
     };
-    api(
-      `/organization/${orgId}/dataset`,
-      "DELETE",
-      JSON.stringify(deleteObj),
-      true
-    ).then(
+    let url =
+      type === PROGRAM
+        ? `/program/${orgId}/dataset`
+        : `/organization/${orgId}/dataset`;
+    api(url, "DELETE", JSON.stringify(deleteObj), true).then(
       response => {
         dispatch(deleteDataSetSuccess(response));
       },

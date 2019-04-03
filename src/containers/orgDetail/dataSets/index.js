@@ -30,9 +30,10 @@ class DataSets extends React.Component {
   }
 
   componentDidMount() {
+    const { orgId, type } = this.props;
     this.props.startLoaderAction();
-    this.props.fetchOrgDataSets(this.props.orgId);
-    this.props.fetchDataSetCategories();
+    this.props.fetchOrgDataSets(orgId, type);
+    this.props.fetchDataSetCategories(orgId, type);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -99,6 +100,7 @@ class DataSets extends React.Component {
         </div>
 
         <DataSetModal
+          type={this.props.type}
           orgId={this.props.orgId}
           modalData={selectedData}
           title={modalTitle}
@@ -174,13 +176,13 @@ class DataSets extends React.Component {
   };
 
   selectedDataSetId = id => {
-    this.setState({ dataSetToBeDeleted: id });
+    id && this.setState({ dataSetToBeDeleted: id });
   };
 
   handleDelete = () => {
     const { dataSetToBeDeleted: dataSetId, dataSetList } = this.state;
-    const { orgId } = this.props;
-    this.props.deleteOrgDataSet({ orgId, dataSetId });
+    const { orgId, type } = this.props;
+    this.props.deleteOrgDataSet({ orgId, dataSetId, type });
     const filteredList = dataSetList.filter(x => x.id !== dataSetId);
     this.setState({ dataSetList: filteredList });
   };

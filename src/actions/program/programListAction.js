@@ -1,41 +1,40 @@
-import { SET_FETCHPROGRAM_PENDING, SET_FETCHPROGRAM_SUCCESS, SET_FECTHPROGRAM_ERROR} from '../../constants/dispatch';
-import { callFetchProgramApi } from '../../api/program/programListApi';
+import {
+  FETCH_PROG_REQUEST,
+  FETCH_PROG_SUCCESS,
+  FETCH_PROG_ERROR
+} from "../../constants/dispatch";
+import { api } from "../../api/api";
 
-export const fetchProgramsList = (orgId) => {
-    return dispatch => {
-        dispatch(setFetchProgramPending(true));
-        dispatch(setFetchProgramSuccess(false, []));
-        dispatch(setFetchProgramError(null));
+export const fetchProgramsList = orgId => {
+  return dispatch => {
+    dispatch(fetchProgRequest());
+    api(`/organization/${orgId}/program`, "GET", {}, true).then(
+      response => {
+        dispatch(fetchProgSuccess(response));
+      },
+      error => {
+        dispatch(fetchProgError(error));
+      }
+    );
+  };
+};
 
-        callFetchProgramApi(orgId, (error, programList) => {
-            dispatch(setFetchProgramPending(false));
-            if (!error) {
-                dispatch(setFetchProgramSuccess(true, programList));
-            } else {
-                dispatch(setFetchProgramError(error));
-            }
-        });
-    }
+function fetchProgRequest() {
+  return {
+    type: FETCH_PROG_REQUEST
+  };
 }
 
-function setFetchProgramPending(isFetchProgramPending) {
-    return {
-        type: SET_FETCHPROGRAM_PENDING,
-        isFetchProgramPending
-    };
+function fetchProgSuccess(response) {
+  return {
+    type: FETCH_PROG_SUCCESS,
+    response
+  };
 }
 
-function setFetchProgramSuccess(isFetchProgramSuccess, programList) {
-    return {
-        type: SET_FETCHPROGRAM_SUCCESS,
-        isFetchProgramSuccess,
-        programList
-    };
-}
-
-function setFetchProgramError(fetchProgramError) {
-    return {
-        type: SET_FECTHPROGRAM_ERROR,
-        fetchProgramError
-    }
+function fetchProgError(error) {
+  return {
+    type: FETCH_PROG_ERROR,
+    error
+  };
 }

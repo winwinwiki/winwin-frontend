@@ -19,7 +19,7 @@ export const fetchOrganisationDetail = params => {
       dispatch(fetchOrgDetailReq());
     }
     let url = params.programId
-      ? "/" + params.programId
+      ? "/program/" + params.programId
       : "/organization/" + params.orgId;
     api(url, "GET", {}, true).then(
       response => {
