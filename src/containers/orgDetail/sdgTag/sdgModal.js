@@ -122,8 +122,8 @@ class SDGModal extends React.Component {
   onSave = () => {
     const { checkedSDGTags } = this.state;
     const filteredTags = checkedSDGTags.filter(x => x.isChecked === true);
-    const { orgId } = this.props;
-    this.props.updateSDGData(checkedSDGTags, orgId, filteredTags);
+    const { orgId, type } = this.props;
+    this.props.updateSDGData(checkedSDGTags, orgId, filteredTags, type);
   };
 
   desiredSDGList(id) {
