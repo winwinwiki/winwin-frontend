@@ -1,7 +1,10 @@
 import {
   FETCH_DATASET_CATEGORIES_REQUEST,
   FETCH_DATASET_CATEGORIES_SUCCESS,
-  FETCH_DATASET_CATEGORIES_ERROR
+  FETCH_DATASET_CATEGORIES_ERROR,
+  FETCH_PROG_DATASET_CATEGORIES_REQUEST,
+  FETCH_PROG_DATASET_CATEGORIES_SUCCESS,
+  FETCH_PROG_DATASET_CATEGORIES_ERROR
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -27,6 +30,26 @@ export default (state = initialState, action) => {
         error: false
       });
     case FETCH_DATASET_CATEGORIES_ERROR:
+      return Object.assign({}, state, {
+        loading: false,
+        data: action.error,
+        error: true
+      });
+
+    //PROGRAMS
+    case FETCH_PROG_DATASET_CATEGORIES_REQUEST:
+      return Object.assign({}, state, {
+        loading: true,
+        data: null,
+        error: false
+      });
+    case FETCH_PROG_DATASET_CATEGORIES_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false,
+        data: action.response,
+        error: false
+      });
+    case FETCH_PROG_DATASET_CATEGORIES_ERROR:
       return Object.assign({}, state, {
         loading: false,
         data: action.error,

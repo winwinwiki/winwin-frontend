@@ -7,17 +7,17 @@ import {
   SAVE_DATASET_ERROR
 } from "../../constants/dispatch";
 import { api } from "../../api/api";
+import { PROGRAM } from "../../constants";
 
-export const saveOrgDataSets = params => {
+export const saveOrgDataSets = (params, type) => {
   return dispatch => {
     dispatch(saveDataSetReq());
+    let url =
+      type === PROGRAM
+        ? `/program/${params.organizationId}/dataset`
+        : `/organization/${params.organizationId}/dataset`;
     if (!params.id) {
-      api(
-        `/organization/${params.organizationId}/dataset`,
-        "POST",
-        JSON.stringify(params),
-        true
-      ).then(
+      api(url, "POST", JSON.stringify(params), true).then(
         response => {
           dispatch(saveDataSetSuccess(response));
         },
@@ -26,12 +26,7 @@ export const saveOrgDataSets = params => {
         }
       );
     } else {
-      api(
-        `/organization/${params.organizationId}/dataset`,
-        "PUT",
-        JSON.stringify(params),
-        true
-      ).then(
+      api(url, "PUT", JSON.stringify(params), true).then(
         response => {
           dispatch(saveDataSetSuccess(response));
         },
@@ -43,10 +38,14 @@ export const saveOrgDataSets = params => {
   };
 };
 
-export const fetchOrgDataSets = params => {
+export const fetchOrgDataSets = (params, type) => {
   return dispatch => {
     dispatch(fetchDataSetReq());
-    api(`/organization/${params}/datasets`, "GET", {}, true).then(
+    let url =
+      type === PROGRAM
+        ? `/program/${params}/datasets`
+        : `/organization/${params}/datasets`;
+    api(url, "GET", {}, true).then(
       response => {
         dispatch(fetchDataSetSuccess(response));
       },

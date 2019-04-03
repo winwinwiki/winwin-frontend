@@ -9,3 +9,5 @@ export const addressFields = [
   "street",
   "zip"
 ];
+
+export const PROGRAM = "Program";

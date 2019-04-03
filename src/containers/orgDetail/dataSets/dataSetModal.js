@@ -39,12 +39,12 @@ class DataSetModal extends Component {
   saveDataSet = e => {
     e.preventDefault();
     const { modalData } = this.state;
-    const { orgId } = this.props;
+    const { orgId, type } = this.props;
     if (!modalData.organizationId) {
       modalData.organizationId = orgId;
       this.props.newModalData(modalData);
     }
-    this.props.saveOrgDataSets(modalData);
+    this.props.saveOrgDataSets(modalData, type);
   };
 
   // input fields onchange method
