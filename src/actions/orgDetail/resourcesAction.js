@@ -10,17 +10,17 @@ import {
   DELETE_RESOURCE_ERROR
 } from "../../constants/dispatch";
 import { api } from "../../api/api";
+import { PROGRAM } from "../../constants";
 
-export const saveOrgResource = params => {
+export const saveOrgResource = (params, type) => {
   return dispatch => {
     dispatch(saveResourcesReq());
+    let url =
+      type === PROGRAM
+        ? `/program/${params.organizationId}/resource`
+        : `/organization/${params.organizationId}/resource`;
     if (!params.id) {
-      api(
-        `/organization/${params.organizationId}/resource`,
-        "POST",
-        JSON.stringify(params),
-        true
-      ).then(
+      api(url, "POST", JSON.stringify(params), true).then(
         response => {
           dispatch(saveResourcesSuccess(response));
         },
@@ -29,12 +29,7 @@ export const saveOrgResource = params => {
         }
       );
     } else {
-      api(
-        `/organization/${params.organizationId}/resource`,
-        "PUT",
-        JSON.stringify(params),
-        true
-      ).then(
+      api(url, "PUT", JSON.stringify(params), true).then(
         response => {
           dispatch(saveResourcesSuccess(response));
         },
@@ -46,10 +41,14 @@ export const saveOrgResource = params => {
   };
 };
 
-export const fetchOrgResources = params => {
+export const fetchOrgResources = (params, type) => {
   return dispatch => {
     dispatch(fetchResourcesReq());
-    api(`/organization/${params}/resources`, "GET", {}, true).then(
+    let url =
+      type === PROGRAM
+        ? `/program/${params}/resources`
+        : `/organization/${params}/resources`;
+    api(url, "GET", {}, true).then(
       response => {
         dispatch(fetchResourcesSuccess(response));
       },
@@ -60,18 +59,17 @@ export const fetchOrgResources = params => {
   };
 };
 
-export const deleteOrgResource = ({ orgId, resourceId }) => {
+export const deleteOrgResource = ({ orgId, resourceId, type }) => {
   return dispatch => {
     dispatch(deleteResourceReq());
+    let url =
+      type === PROGRAM
+        ? `/program/${orgId}/resource`
+        : `/organization/${orgId}/resource`;
     const deleteObj = {
       id: resourceId
     };
-    api(
-      `/organization/${orgId}/resource`,
-      "DELETE",
-      JSON.stringify(deleteObj),
-      true
-    ).then(
+    api(url, "DELETE", JSON.stringify(deleteObj), true).then(
       response => {
         dispatch(deleteResourceSuccess(response));
       },

@@ -99,12 +99,12 @@ class ResourceModal extends Component {
   saveResource = e => {
     e.preventDefault();
     const { modalData } = this.state;
-    const { orgId } = this.props;
+    const { orgId, type } = this.props;
     if (!modalData.organizationId) {
       modalData.organizationId = orgId;
       this.props.newModalData(modalData);
     }
-    this.props.saveOrgResource(modalData);
+    this.props.saveOrgResource(modalData, type);
   };
 
   render() {
