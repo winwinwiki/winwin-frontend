@@ -38,7 +38,7 @@ class RegionsServed extends Component {
 
   componentDidMount() {
     this.props.startLoaderAction();
-    this.props.fetchOrgRegionsServed(this.props.orgId);
+    this.props.fetchOrgRegionsServed(this.props.orgId, this.props.type);
   }
 
   componentDidUpdate(prevProps) {
@@ -178,9 +178,10 @@ class RegionsServed extends Component {
     e.preventDefault();
     const {
       orgId,
+      type,
       regionsServed: { data: { response: updatedRegions } = {} } = {}
     } = this.props;
-    this.props.saveOrgRegionsServed({ updatedRegions, orgId });
+    this.props.saveOrgRegionsServed({ updatedRegions, orgId, type });
     this.setState({ isEdited: false });
   };
 
