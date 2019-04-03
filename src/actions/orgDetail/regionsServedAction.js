@@ -14,17 +14,17 @@ import {
   UPDATE_REGIONSERVED_ERROR
 } from "../../constants/dispatch";
 import { api } from "../../api/api";
+import { PROGRAM } from "../../constants";
 
 //change method
-export const saveOrgRegionsServed = ({ updatedRegions, orgId }) => {
+export const saveOrgRegionsServed = ({ updatedRegions, orgId, type }) => {
   return dispatch => {
     dispatch(saveRegionsServedReq());
-    api(
-      `/organization/${orgId}/region`,
-      "POST",
-      JSON.stringify(updatedRegions),
-      true
-    ).then(
+    let url =
+      type === PROGRAM
+        ? `/program/${orgId}/region`
+        : `/organization/${orgId}/region`;
+    api(url, "POST", JSON.stringify(updatedRegions), true).then(
       response => {
         dispatch(saveRegionsServedSuccess(response));
       },
@@ -67,10 +67,14 @@ export const resetRegionsAction = () => {
   };
 };
 
-export const fetchOrgRegionsServed = params => {
+export const fetchOrgRegionsServed = (organizationId, type) => {
   return dispatch => {
     dispatch(fetchRegionsServedReq());
-    api(`/organization/${params}/regions`, "GET", {}, true).then(
+    let url =
+      type === PROGRAM
+        ? `/program/${organizationId}/regions`
+        : `/organization/${organizationId}/regions`;
+    api(url, "GET", {}, true).then(
       response => {
         dispatch(fetchRegionsServedSuccess(response));
       },
