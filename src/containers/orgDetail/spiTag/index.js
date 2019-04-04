@@ -11,10 +11,10 @@ import {
 import { updateSPIData } from "../../../actions/orgDetail/spiTagsAction";
 class SpiTags extends React.Component {
   componentDidMount() {
-    const { orgId } = this.props;
+    const { orgId, type } = this.props;
     this.props.startLoaderAction();
-    this.props.fetchSpiTags(orgId);
-    this.props.fetchSpiTagsList(orgId);
+    this.props.fetchSpiTags(orgId, type);
+    this.props.fetchSpiTagsList(orgId, type);
   }
 
   componentDidUpdate(prevProps) {
@@ -24,7 +24,7 @@ class SpiTags extends React.Component {
   }
 
   render() {
-    const { spiTags, orgId } = this.props;
+    const { spiTags, orgId, type } = this.props;
     if (!spiTags || !spiTags.data || spiTags.error) {
       return null;
     }
@@ -64,6 +64,7 @@ class SpiTags extends React.Component {
           </div>
         </div>
         <SPIModal
+          type={type}
           orgId={orgId}
           checkedSPITags={spiTags.data.response}
           updateSPIData={updateSPIData}

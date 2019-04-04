@@ -7,11 +7,16 @@ import {
   UPDATE_SDGDATA_ERROR
 } from "../../constants/dispatch";
 import { api } from "../../api/api";
+import { PROGRAM } from "../../constants";
 
-export const fetchSdgTags = orgId => {
+export const fetchSdgTags = (orgId, type) => {
   return dispatch => {
     dispatch(sdgTagsRequest());
-    api(`/organization/${orgId}/sdgdata/selected`, "GET", {}, true).then(
+    let url =
+      type === PROGRAM
+        ? `/program/${orgId}/sdgdata/selected`
+        : `/organization/${orgId}/sdgdata/selected`;
+    api(url, "GET", {}, true).then(
       response => {
         response.response.map(x => (x.isChecked = true));
         dispatch(sdgTagsSuccess(response));
@@ -23,15 +28,14 @@ export const fetchSdgTags = orgId => {
   };
 };
 
-export const updateSDGData = (apiObj, orgId, filteredObj) => {
+export const updateSDGData = (apiObj, orgId, filteredObj, type) => {
   return dispatch => {
     dispatch(updateSDGDataReq());
-    api(
-      `/organization/${orgId}/sdgdata`,
-      "POST",
-      JSON.stringify(apiObj),
-      true
-    ).then(
+    let url =
+      type === PROGRAM
+        ? `/program/${orgId}/sdgdata`
+        : `/organization/${orgId}/sdgdata`;
+    api(url, "POST", JSON.stringify(apiObj), true).then(
       response => {
         dispatch(updateSDGDataSuccess(response, filteredObj));
       },

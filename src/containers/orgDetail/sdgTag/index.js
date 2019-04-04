@@ -10,10 +10,10 @@ import {
 } from "../../../actions/common/loaderActions";
 class SdgTags extends React.Component {
   componentDidMount() {
-    const { orgId } = this.props;
+    const { orgId, type } = this.props;
     this.props.startLoaderAction();
-    this.props.fetchSdgTags(orgId);
-    this.props.fetchSdgTagsList(orgId);
+    this.props.fetchSdgTags(orgId, type);
+    this.props.fetchSdgTagsList(orgId, type);
   }
 
   componentDidUpdate(prevProps) {
@@ -23,7 +23,7 @@ class SdgTags extends React.Component {
   }
 
   render() {
-    const { sdgTags, orgId } = this.props;
+    const { sdgTags, orgId, type } = this.props;
     if (!sdgTags || !sdgTags.data || sdgTags.error) {
       return null;
     }
@@ -64,7 +64,11 @@ class SdgTags extends React.Component {
             </form>
           </div>
         </div>
-        <SDGModal orgId={orgId} checkedSDGTags={sdgTags.data.response} />
+        <SDGModal
+          type={type}
+          orgId={orgId}
+          checkedSDGTags={sdgTags.data.response}
+        />
       </section>
     );
   }
