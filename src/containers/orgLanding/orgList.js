@@ -112,7 +112,8 @@ class OrgList extends React.Component {
     {
       id: "org",
       Header: "Organisation Name",
-      accessor: row => (
+      accessor: "name",
+      Cell: row => (
         <React.Fragment>
           <div className="org-tag orange card d-inline-block mr-1">
             <div className="px-1 py-0">A</div>
@@ -120,9 +121,9 @@ class OrgList extends React.Component {
           </div>
           <Link
             className="centerText d-inline-block"
-            to={"organizations/" + row.id}
+            to={"organizations/" + row.original.id}
           >
-            {row.name}
+            {row.value}
           </Link>
         </React.Fragment>
       ),
@@ -140,10 +141,13 @@ class OrgList extends React.Component {
       sortable: true,
       filterable: true,
       filterMethod: (filter, rows) => {
-        // console.log(filter),
-        // console.log(rows);
         return matchSorter(rows, filter.value, {
-          keys: [{ threshold: matchSorter.rankings.CONTAINS, key: "org" }]
+          keys: [
+            {
+              threshold: matchSorter.rankings.CONTAINS,
+              key: "org"
+            }
+          ]
         });
       },
       filterAll: true,
@@ -161,7 +165,7 @@ class OrgList extends React.Component {
     {
       id: "revenue",
       Header: "Total Revenue",
-      accessor: "totalRevenue[0][value]",
+      accessor: "revenue",
       sortable: true,
       Cell: row => <div className="centerText">{row.value}</div>
     },
