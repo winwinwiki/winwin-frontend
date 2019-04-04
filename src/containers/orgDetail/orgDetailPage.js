@@ -5,7 +5,11 @@ import { sectorsList, entityList, addressFields } from "../../constants";
 import { bindActionCreators } from "redux";
 import { push } from "react-router-redux";
 import { onSaveOrgBasicInfo } from "../../actions/orgDetail/orgDetailAction";
-
+import { fetchOrganisationDetail } from "../../actions/orgDetail/orgDetailAction";
+import {
+  startLoaderAction,
+  stopLoaderAction
+} from "../../actions/common/loaderActions";
 class OrgDetailPage extends React.Component {
   constructor(props) {
     super(props);
@@ -16,8 +20,20 @@ class OrgDetailPage extends React.Component {
   }
 
   componentDidMount() {
-    const { organizationDetail } = this.props;
-    if (organizationDetail && organizationDetail.data) {
+    const {
+      organizationDetail,
+      match: { params: { id: paramsOrgId } = {} } = {}
+    } = this.props;
+    const { data: { response: { id: orgId } = {} } = {} } = organizationDetail;
+    if (paramsOrgId !== orgId) {
+      this.props.startLoaderAction();
+      this.props.fetchOrganisationDetail({ orgId: this.props.match.params.id });
+    }
+    if (
+      organizationDetail &&
+      organizationDetail.data &&
+      paramsOrgId === orgId
+    ) {
       this.setState({
         orgDetail: organizationDetail.data.response
       });
@@ -36,6 +52,15 @@ class OrgDetailPage extends React.Component {
           orgDetail: nextProps.organizationDetail.data.response
         });
       }
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.organizationDetail !== this.props.organizationDetail &&
+      this.props.organizationDetail.data
+    ) {
+      this.props.stopLoaderAction();
     }
   }
 
@@ -427,7 +452,10 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       changePage: () => push("/organizations"),
-      onSaveOrgBasicInfo
+      onSaveOrgBasicInfo,
+      fetchOrganisationDetail,
+      startLoaderAction,
+      stopLoaderAction
     },
 
     dispatch
