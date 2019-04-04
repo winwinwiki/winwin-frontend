@@ -48,11 +48,14 @@ export default (state = initialState, action) => {
         saveError: false
       });
     case SAVE_DATASET_SUCCESS:
-      return Object.assign({}, state, {
-        loading: false,
-        saveData: action.response,
-        saveError: false
-      });
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          response: [...state.data.response, action.response.response]
+        }
+      };
+
     case SAVE_DATASET_ERROR:
       return Object.assign({}, state, {
         loading: false,
