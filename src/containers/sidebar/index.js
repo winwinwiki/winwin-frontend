@@ -138,7 +138,7 @@ class SideBar extends React.Component {
               aria-expanded="false"
               aria-controls="collapseExample"
             >
-              Organisation Details
+              Organization Details
             </a>
 
             <div className="collapse" id="collapseExample">
