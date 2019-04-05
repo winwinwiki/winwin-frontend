@@ -100,6 +100,7 @@ class DataSets extends React.Component {
         </div>
 
         <DataSetModal
+          dataSetList={dataSetList}
           type={this.props.type}
           orgId={this.props.orgId}
           modalData={selectedData}

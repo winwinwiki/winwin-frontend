@@ -39,12 +39,13 @@ class DataSetModal extends Component {
   saveDataSet = e => {
     e.preventDefault();
     const { modalData } = this.state;
-    const { orgId, type } = this.props;
+    const { orgId, type, dataSetList } = this.props;
     if (!modalData.organizationId) {
       modalData.organizationId = orgId;
       this.props.newModalData(modalData);
     }
-    this.props.saveOrgDataSets(modalData, type);
+    if (dataSetList.find(x => x.id !== modalData.id))
+      this.props.saveOrgDataSets(modalData, type);
   };
 
   // input fields onchange method
@@ -255,20 +256,24 @@ class DataSetModal extends Component {
                             </div>
                           </div>
                         </div>
-                        <div className="col">
-                          <div className="form-group">
-                            <label htmlFor="new-url">URL</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="new-url"
-                              name="url"
-                              onChange={this.handleChange}
-                              placeholder="Website URL"
-                              value={url}
-                            />
+                        {type.toLowerCase() === "open" ? (
+                          <div className="col">
+                            <div className="form-group">
+                              <label htmlFor="new-url">URL</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="new-url"
+                                name="url"
+                                onChange={this.handleChange}
+                                placeholder="Website URL"
+                                value={url}
+                              />
+                            </div>
                           </div>
-                        </div>
+                        ) : (
+                          ""
+                        )}
                       </div>
                       <div className="modal-footer">
                         <button
