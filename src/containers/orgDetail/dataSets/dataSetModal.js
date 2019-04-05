@@ -44,7 +44,7 @@ class DataSetModal extends Component {
       modalData.organizationId = orgId;
       this.props.newModalData(modalData);
     }
-    if (dataSetList.find(x => x.id !== modalData.id))
+    if (!dataSetList.find(x => x.id === modalData.id))
       this.props.saveOrgDataSets(modalData, type);
   };
 

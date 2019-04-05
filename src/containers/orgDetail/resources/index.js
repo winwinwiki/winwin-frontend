@@ -118,6 +118,7 @@ class Resources extends React.Component {
           </div>
         </div>
         <ResourceModal
+          resourcesList={resourcesList}
           type={this.props.type}
           orgId={this.props.orgId}
           modalData={selectedData}
