@@ -1,132 +1,201 @@
-import React from 'react';
-import Note from './note';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { fetchOrgNotes } from '../../../actions/orgDetail/notesAction';
+import React from "react";
+import Note from "./note";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import {
+  fetchOrgNotes,
+  deleteNote,
+  saveNote
+} from "../../../actions/orgDetail/notesAction";
+
+import { NoteModal } from "./noteModal";
 class Notes extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            newNote: null,
-            editNote: null,
-            isAddNew: false
-        }
-        this.addNewNote = this.addNewNote.bind(this);
-        this.cancelNewNote = this.cancelNewNote.bind(this);
-        this.saveNewNote = this.saveNewNote.bind(this);
+  state = {
+    modalTitle: "",
+    selectedNoteId: "",
+    note: "",
+    notesList: ""
+  };
+
+  componentDidMount() {
+    const { orgId } = this.props;
+    this.props.fetchOrgNotes(orgId);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      JSON.stringify(nextProps.notesList) !==
+      JSON.stringify(this.props.notesList)
+    ) {
+      this.setState({
+        notesList: nextProps.notesList.response
+      });
     }
+  }
 
-    componentDidMount() {
-        this.props.fetchOrgNotes();
+  render() {
+    const { modalTitle, notesList, note } = this.state;
+    const { isNotesSuccess } = this.props;
+    if (!isNotesSuccess || !notesList) {
+      return null;
     }
+    return (
+      <section className="dashboard-content p-0 py-3 org-details-container">
+        <div className="col-md-18 m-auto card">
+          <div className="col-md-18 m-auto d-flex flex-column py-3">
+            <h3>{this.props.type} Description</h3>
+            <p>
+              Arts center conducts classes on any artistic or cultural topics
+              ranging from ?crafts, dance, singing, painting. Camps for youth
+              and adults and events ?open to the public. They also offer open
+              space for private events.
+            </p>
 
-    componentWillReceiveProps(nextProps) {
-        // if (JSON.stringify(nextProps.notesList) !== JSON.stringify(this.props.dataSetList)) {
-        //     this.setState({
-        //         dataSetList: nextProps.dataSetList
-        //     });
-        // }
-    }
+            {notesList && notesList.length > 0 && (
+              <div className="section-title border-bottom pb-3 mb-3">Notes</div>
+            )}
+            <form>
+              <ul className="list-group list-group-flush">
+                {notesList &&
+                  notesList.map((note, index) => (
+                    <Note
+                      key={index}
+                      data={note}
+                      selectedNote={this.setNodeId}
+                    />
+                  ))}
+                <li className="list-group-item px-0 pt-4">
+                  <a
+                    href="javascript:;"
+                    data-toggle="modal"
+                    data-target="#noteModal"
+                    onClick={this.addNewNoteModal}
+                  >
+                    <i className="icon-add mr-2" /> Add Another
+                  </a>
+                </li>
+              </ul>
+            </form>
+          </div>
+        </div>
+        <NoteModal
+          note={note}
+          title={modalTitle}
+          handleChange={this.handleChange}
+          saveNote={this.saveNewNote}
+        />
 
-    render() {
-        const { isAddNew } = this.state;
-        const { isNotesSuccess, notesList } = this.props;
-        if (!isNotesSuccess || !notesList) { return null; }
-        return (
-            <section className="dashboard-content p-0 py-3 org-details-container">
-                <div className="col-md-18 m-auto card">
-                    <div className="col-md-18 m-auto d-flex flex-column py-3">
-                        <h3>{this.props.type} Description</h3>
-                        <p>Arts center conducts classes on any artistic or cultural topics ranging from ?crafts, dance, singing, painting. Camps for youth and adults and events ?open to the public. They also offer open space for private events.</p>
-
-                        {(notesList.length > 0) && <div className="section-title border-bottom pb-3 mb-3">
-                            Notes
-                        </div>}
-                        <form>
-                            <ul className="list-group list-group-flush">
-                                {notesList.map(note => <Note key={note.id} data={note} />)}
-                                {(notesList.length === 0 ) && <li className="list-group-item border-0 px-0 pt-4">
-                                    {!isAddNew ? <a href="javascript:;" onClick={this.addNewNote}><i className="icon-add mr-2"></i> Add Note</a>
-                                        : <React.Fragment>
-                                            <div className="row">
-                                                <div className="col">
-                                                    <div className="form-group">
-                                                        <label htmlFor="note" className="sr-only">Added by</label>
-                                                        <textarea row="5" className="form-control" id="note" placeholder="Enter New Note" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="row mx-0 justify-content-end footer-actions active">
-                                                <button className="btn btn-sm" onClick={() => this.cancelNewNote()}>Cancel</button>
-                                                <button className="btn btn-sm btn-primary" onClick={() => this.saveNewNote()}>Save</button>
-                                            </div>
-                                        </React.Fragment>}
-                                </li>}
-                            </ul>
-                        </form>
+        {/* Delete Modal */}
+        <div
+          className="modal fade"
+          id="deleteModal"
+          tabIndex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div
+            className="modal-dialog modal-sm modal-dialog-centered"
+            role="document"
+          >
+            <div className="modal-content">
+              <div className="dashboard-container">
+                <div className="dashboard-header">
+                  <div className="modal-header flex-column">
+                    <div className="d-flex w-100 p-3">
+                      <h5 className="modal-title" id="exampleModalLabel">
+                        Alert!
+                      </h5>
+                      <button
+                        type="button"
+                        className="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
                     </div>
+                  </div>
                 </div>
-
-                {/* Delete Modal */}
-                <div className="modal fade" id="deleteModal" tabIndex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div className="modal-dialog modal-sm modal-dialog-centered" role="document">
-                        <div className="modal-content">
-                            <div className="dashboard-container">
-                                <div className="dashboard-header">
-                                    <div className="modal-header flex-column">
-                                        <div className="d-flex w-100 p-3">
-                                            <h5 className="modal-title" id="exampleModalLabel">Alert!</h5>
-                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="modal-body dashboard-content">
-                                    Are you sure you want to delete this Note?
-                                </div>
-                                <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" className="btn btn-primary">Delete</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div className="modal-body dashboard-content">
+                  Are you sure you want to delete this Note?
                 </div>
-            </section>
-        )
-    }
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    data-dismiss="modal"
+                    onClick={this.onDeleteNote}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
-    addNewNote(){
-        this.setState({
-            isAddNew: true
-        })
-    }
+  handleChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
-    cancelNewNote(){
-        this.setState({
-            isAddNew: false
-        })
-    }
+  setNodeId = id => {
+    this.setState({
+      selectedNoteId: id
+    });
+  };
 
-    saveNewNote(){
-        this.setState({
-            isAddNew: false
-        })
-    }
+  //reset new note modal fields to null
+  addNewNoteModal = () => {
+    this.setState({
+      note: "",
+      modalTitle: "Add Note"
+    });
+  };
+
+  saveNewNote = () => {
+    this.props.saveNote({
+      organizationId: this.props.orgId,
+      note: this.state.note
+    });
+  };
+
+  onDeleteNote = () => {
+    const { selectedNoteId, notesList } = this.state;
+    const filteredNotesList = notesList.filter(
+      x => x.noteId !== selectedNoteId
+    );
+    this.setState({ notesList: filteredNotesList });
+    this.props.deleteNote({ noteId: selectedNoteId }, this.props.orgId);
+  };
 }
 
 const mapStateToProps = state => ({
-    notesList: state.notes.notesList,
-    isNotesSuccess: state.notes.isNotesSuccess
-})
+  notesList: state.notes.notesList,
+  isNotesSuccess: state.notes.isNotesSuccess
+});
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchOrgNotes
-}, dispatch)
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      fetchOrgNotes,
+      deleteNote,
+      saveNote
+    },
+    dispatch
+  );
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Notes);
