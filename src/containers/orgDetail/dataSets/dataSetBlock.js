@@ -105,19 +105,23 @@ class DataSetBlock extends React.Component {
               </div>
             </div>
           </div>
-          <div className="col">
-            <div className="form-group">
-              <label htmlFor="url">URL</label>
-              <input
-                type="text"
-                className="form-control"
-                id="url"
-                readOnly="readOnly"
-                placeholder="Website URL"
-                value={data.url}
-              />
+          {data.type === "open" ? (
+            <div className="col">
+              <div className="form-group">
+                <label htmlFor="url">URL</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="url"
+                  readOnly="readOnly"
+                  placeholder="Website URL"
+                  value={data.url}
+                />
+              </div>
             </div>
-          </div>
+          ) : (
+            ""
+          )}
         </div>
       </li>
     );
