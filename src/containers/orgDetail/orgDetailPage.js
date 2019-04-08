@@ -160,6 +160,32 @@ class OrgDetailPage extends React.Component {
                       value={orgDetail.description}
                     />
                   </div>
+                  <div className="form-group">
+                    <label htmlFor="naicsCode">NAICS Code</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="naicsCode"
+                      id="naicsCode"
+                      readOnly={readOnly}
+                      onChange={this.onChange.bind(this)}
+                      placeholder="Enter NAICS Code"
+                      value={orgDetail.naicsCode}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="nteeCode">NTEE Code</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="nteeCode"
+                      id="nteeCode"
+                      readOnly={readOnly}
+                      onChange={this.onChange.bind(this)}
+                      placeholder="Enter NTEE Code"
+                      value={orgDetail.nteeCode}
+                    />
+                  </div>
                   <div className="section-title border-bottom pb-3 mb-3">
                     Financial
                   </div>
@@ -302,16 +328,42 @@ class OrgDetailPage extends React.Component {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="description">Social Network</label>
+                    <label htmlFor="facebook">Facebook</label>
                     <input
                       type="text"
                       className="form-control"
-                      id="category"
-                      name="socialUrl"
+                      id="facebook"
+                      name="facebookUrl"
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
-                      placeholder="Enter social network url"
-                      value={orgDetail.socialUrl}
+                      placeholder="Enter Facebook url"
+                      value={orgDetail.facebookUrl}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="linkedIn">LinkedIn</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="linkedIn"
+                      name="linkedinUrl"
+                      onChange={this.onChange.bind(this)}
+                      readOnly={readOnly}
+                      placeholder="Enter LinkedIn url"
+                      value={orgDetail.linkedinUrl}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="twitter">Twitter</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="twitter"
+                      name="twitterUrl"
+                      onChange={this.onChange.bind(this)}
+                      readOnly={readOnly}
+                      placeholder="Enter Twitter url"
+                      value={orgDetail.twitterUrl}
                     />
                   </div>
                   <div className="form-group">
