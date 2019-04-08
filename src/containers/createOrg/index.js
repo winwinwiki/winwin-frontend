@@ -307,15 +307,16 @@ class CreateOrg extends React.Component {
         this.setState({ formError });
         return;
       }
-      let isValid = validate.name(value);
-      if (!isValid) {
-        formError.orgName = "Enter valid org name.";
-        this.setState({ formError });
-        return;
-      }
-      formError.orgName = "";
-      this.setState({ formError });
-      return;
+      // Keep a valid name
+      // let isValid = validate.name(value);
+      // if (!isValid) {
+      //   formError.orgName = "Enter valid org name.";
+      //   this.setState({ formError });
+      //   return;
+      // }
+      // formError.orgName = "";
+      // this.setState({ formError });
+      // return;
     }
     if (field === "zipcode") {
       let isValid = validate.number(value);
