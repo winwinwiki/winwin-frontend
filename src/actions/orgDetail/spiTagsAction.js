@@ -7,11 +7,16 @@ import {
   UPDATE_SPIDATA_ERROR
 } from "../../constants/dispatch";
 import { api } from "../../api/api";
+import { PROGRAM } from "../../constants";
 
-export const fetchSpiTags = params => {
+export const fetchSpiTags = (organizationId, type) => {
   return dispatch => {
     dispatch(spiTagsRequest());
-    api(`/organization/${params}/spidata/selected`, "GET", {}, true).then(
+    let url =
+      type === PROGRAM
+        ? `/program/${organizationId}/spidata/selected`
+        : `/organization/${organizationId}/spidata/selected`;
+    api(url, "GET", {}, true).then(
       response => {
         dispatch(spiTagsSuccess(response));
       },
@@ -22,15 +27,14 @@ export const fetchSpiTags = params => {
   };
 };
 
-export const updateSPIData = (apiObj, orgId, filteredObj) => {
+export const updateSPIData = (apiObj, orgId, filteredObj, type) => {
   return dispatch => {
     dispatch(updateSPIDataReq());
-    api(
-      `/organization/${orgId}/spidata`,
-      "POST",
-      JSON.stringify(apiObj),
-      true
-    ).then(
+    let url =
+      type === PROGRAM
+        ? `/program/${orgId}/spidata`
+        : `/organization/${orgId}/spidata`;
+    api(url, "POST", JSON.stringify(apiObj), true).then(
       response => {
         dispatch(updateSPIDataSuccess(response, filteredObj));
       },

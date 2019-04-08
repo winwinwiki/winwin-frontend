@@ -132,8 +132,8 @@ class SPIModal extends Component {
   onSave = () => {
     const { checkedSPITags } = this.state;
     const filteredTags = checkedSPITags.filter(x => x.isChecked === true);
-    const { orgId } = this.props;
-    this.props.updateSPIData(checkedSPITags, orgId, filteredTags);
+    const { orgId, type } = this.props;
+    this.props.updateSPIData(checkedSPITags, orgId, filteredTags, type);
   };
 
   desiredSPIList = id => {

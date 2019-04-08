@@ -12,6 +12,7 @@ import {
 } from "../../constants/dispatch";
 import { api } from "../../api/api";
 import qs from "qs";
+import { PROGRAM } from "../../constants";
 
 export const fetchOrganisationsList = params => {
   return dispatch => {
@@ -49,10 +50,14 @@ export const setAppliedFilters = (appliedFilterList, params) => {
   };
 };
 
-export const fetchSdgTagsList = orgId => {
+export const fetchSdgTagsList = (orgId, type) => {
   return dispatch => {
     dispatch(setSdgListReq());
-    api(`/organization/${orgId}/sdgdata`, "GET", {}, true).then(
+    let url =
+      type === PROGRAM
+        ? `/program/${orgId}/sdgdata`
+        : `/organization/${orgId}/sdgdata`;
+    api(url, "GET", {}, true).then(
       response => {
         dispatch(setSdgListSuccess(response));
       },
@@ -63,10 +68,14 @@ export const fetchSdgTagsList = orgId => {
   };
 };
 
-export const fetchSpiTagsList = params => {
+export const fetchSpiTagsList = (organizationId, type) => {
   return dispatch => {
     dispatch(setSpiListReq());
-    api(`/organization/${params}/spidata`, "GET", {}, true).then(
+    let url =
+      type === PROGRAM
+        ? `/program/${organizationId}/spidata`
+        : `/organization/${organizationId}/spidata`;
+    api(url, "GET", {}, true).then(
       response => {
         dispatch(setSpiListSuccess(response));
       },
