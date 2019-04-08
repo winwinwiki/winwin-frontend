@@ -168,6 +168,7 @@ class OrgDetailPage extends React.Component {
                       name="naicsCode"
                       id="naicsCode"
                       readOnly={readOnly}
+                      onChange={this.onChange.bind(this)}
                       placeholder="Enter NAICS Code"
                       value={orgDetail.naicsCode}
                     />
@@ -180,6 +181,7 @@ class OrgDetailPage extends React.Component {
                       name="nteeCode"
                       id="nteeCode"
                       readOnly={readOnly}
+                      onChange={this.onChange.bind(this)}
                       placeholder="Enter NTEE Code"
                       value={orgDetail.nteeCode}
                     />
@@ -331,11 +333,11 @@ class OrgDetailPage extends React.Component {
                       type="text"
                       className="form-control"
                       id="facebook"
-                      name="facebook"
+                      name="facebookUrl"
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter Facebook url"
-                      value={orgDetail.facebook}
+                      value={orgDetail.facebookUrl}
                     />
                   </div>
                   <div className="form-group">
@@ -344,11 +346,11 @@ class OrgDetailPage extends React.Component {
                       type="text"
                       className="form-control"
                       id="linkedIn"
-                      name="linkedIn"
+                      name="linkedinUrl"
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter LinkedIn url"
-                      value={orgDetail.linkedIn}
+                      value={orgDetail.linkedinUrl}
                     />
                   </div>
                   <div className="form-group">
@@ -357,11 +359,11 @@ class OrgDetailPage extends React.Component {
                       type="text"
                       className="form-control"
                       id="twitter"
-                      name="twitter"
+                      name="twitterUrl"
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter Twitter url"
-                      value={orgDetail.twitter}
+                      value={orgDetail.twitterUrl}
                     />
                   </div>
                   <div className="form-group">
