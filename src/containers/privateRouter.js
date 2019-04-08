@@ -1,24 +1,32 @@
-import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React from "react";
+import { Route, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import DocumentTitle from "react-document-title";
 
-const PrivateRoute = ({ component: Component, authenticated, ...rest }) => (
+const PrivateRoute = ({
+  component: Component,
+  authenticated,
+  title,
+  ...rest
+}) => (
   <Route
     {...rest}
     render={props => {
-      let combinedProps = {...rest, ...props};
+      let combinedProps = { ...rest, ...props };
       return authenticated === true ? (
-        <Component {...combinedProps}/>
+        <DocumentTitle title={title ? title + " - WinWin" : "WinWin"}>
+          <Component {...combinedProps} />
+        </DocumentTitle>
       ) : (
         <Redirect to="/" />
-      )}
-    }
+      );
+    }}
   />
 );
 
 PrivateRoute.propTypes = {
-    authenticated: PropTypes.bool.isRequired
+  authenticated: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({

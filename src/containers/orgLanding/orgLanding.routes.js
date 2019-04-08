@@ -14,6 +14,7 @@ const OrgLandingRoutes = props => (
   <OrgLanding history={props.history} match={props.match}>
     <Switch>
       <PrivateRoute
+        title={"Organizations - WinWin"}
         authenticated={props.isAuthenticated}
         exact
         path="/organizations"

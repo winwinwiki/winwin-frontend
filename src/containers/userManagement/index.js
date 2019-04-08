@@ -7,6 +7,7 @@ import SectionHeader from "../section-header/";
 
 class UserManagement extends React.Component {
   componentDidMount() {
+    document.title = "User Info - WinWin";
     const { session, history } = this.props;
     if (!session || !session.user || !session.isAuthenticated) {
       history.push("/");

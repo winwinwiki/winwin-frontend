@@ -47,11 +47,17 @@ class ProgramDetailRoutes extends React.Component {
   }
 
   render() {
-    const { isAuthenticated, match, history } = this.props;
+    const {
+      isAuthenticated,
+      match,
+      history,
+      programDetail: { data = {} } = {}
+    } = this.props;
     return (
       <ProgramDetail match={match} history={history}>
         <Switch>
           <PrivateRoute
+            title={data && data.response.name}
             orgId={match.params.programId}
             authenticated={isAuthenticated}
             exact
@@ -60,6 +66,7 @@ class ProgramDetailRoutes extends React.Component {
             type={PROGRAM}
           />
           <PrivateRoute
+            title={data && data.response.name}
             orgId={match.params.programId}
             authenticated={isAuthenticated}
             exact
@@ -68,6 +75,7 @@ class ProgramDetailRoutes extends React.Component {
             type={PROGRAM}
           />
           <PrivateRoute
+            title={data && data.response.name}
             orgId={match.params.programId}
             authenticated={isAuthenticated}
             exact
@@ -76,6 +84,7 @@ class ProgramDetailRoutes extends React.Component {
             type={PROGRAM}
           />
           <PrivateRoute
+            title={data && data.response.name}
             orgId={match.params.programId}
             authenticated={isAuthenticated}
             exact
@@ -84,6 +93,7 @@ class ProgramDetailRoutes extends React.Component {
             type={PROGRAM}
           />
           <PrivateRoute
+            title={data && data.response.name}
             orgId={match.params.programId}
             authenticated={isAuthenticated}
             exact
@@ -92,6 +102,7 @@ class ProgramDetailRoutes extends React.Component {
             type={PROGRAM}
           />
           <PrivateRoute
+            title={data && data.response.name}
             orgId={match.params.programId}
             authenticated={isAuthenticated}
             path={`${match.path}`}

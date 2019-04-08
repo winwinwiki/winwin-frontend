@@ -31,6 +31,7 @@ const OrgDetailRoutes = props => (
         type={"Organization"}
       />
       <PrivateRoute
+        title={props.title}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -39,6 +40,7 @@ const OrgDetailRoutes = props => (
         type={"Organization"}
       />
       <PrivateRoute
+        title={props.title}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -47,6 +49,7 @@ const OrgDetailRoutes = props => (
         type={"Organization"}
       />
       <PrivateRoute
+        title={props.title}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -55,6 +58,7 @@ const OrgDetailRoutes = props => (
         type={"Organization"}
       />
       <PrivateRoute
+        title={props.title}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -63,6 +67,7 @@ const OrgDetailRoutes = props => (
         type={"Organization"}
       />
       <PrivateRoute
+        title={props.title}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -71,6 +76,7 @@ const OrgDetailRoutes = props => (
         type={"Organization"}
       />
       <PrivateRoute
+        title={props.title}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -79,6 +85,7 @@ const OrgDetailRoutes = props => (
         type={"Organization"}
       />
       <PrivateRoute
+        title={props.title}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -87,6 +94,7 @@ const OrgDetailRoutes = props => (
         type={"Organization"}
       />
       <PrivateRoute
+        title={props.title}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -95,6 +103,7 @@ const OrgDetailRoutes = props => (
         type={"Organization"}
       />
       <PrivateRoute
+        title={props.title}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -103,6 +112,7 @@ const OrgDetailRoutes = props => (
         type={"Organization"}
       />
       <PrivateRoute
+        title={props.title}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -111,6 +121,7 @@ const OrgDetailRoutes = props => (
         type={"Organization"}
       />
       <PrivateRoute
+        title={props.title}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -125,6 +136,7 @@ const OrgDetailRoutes = props => (
         component={ProgramDetailRoutes}
       />
       <PrivateRoute
+        title={props.title}
         authenticated={true}
         orgId={props.match.params.id}
         exact
