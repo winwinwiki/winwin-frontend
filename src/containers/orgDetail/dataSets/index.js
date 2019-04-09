@@ -13,10 +13,15 @@ import {
   startLoaderAction,
   stopLoaderAction
 } from "../../../actions/common/loaderActions";
+import { PopupModal } from "../../ui/popupModal";
 class DataSets extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      dataSet: {
+        id: "",
+        name: ""
+      },
       dataSetList: null,
       dataSetToBeDeleted: "",
       selectedData: {
@@ -81,7 +86,7 @@ class DataSets extends React.Component {
                     key={dataSet.id}
                     data={dataSet}
                     changeModalData={this.changeModalData}
-                    selectedDataSetId={this.selectedDataSetId}
+                    selectedDataSet={this.selectedDataSet}
                   />
                 ))}
                 <li className="list-group-item px-0 pt-4">
@@ -108,62 +113,16 @@ class DataSets extends React.Component {
           categoriesList={datasetCategories}
           newModalData={this.handleNewModalData}
         />
-
-        <div
-          className="modal fade"
-          id="deleteModal"
-          tabIndex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div
-            className="modal-dialog modal-sm modal-dialog-centered"
-            role="document"
-          >
-            <div className="modal-content">
-              <div className="dashboard-container">
-                <div className="dashboard-header">
-                  <div className="modal-header flex-column">
-                    <div className="d-flex w-100 p-3">
-                      <h5 className="modal-title" id="exampleModalLabel">
-                        Alert!
-                      </h5>
-                      <button
-                        type="button"
-                        className="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="modal-body dashboard-content">
-                  Are you sure you want to delete this record?
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    data-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                  <button
-                    type="button"
-                    data-dismiss="modal"
-                    className="btn btn-primary"
-                    onClick={() => this.handleDelete()}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <PopupModal
+          modalId="deleteModal"
+          modalTitle="Alert!"
+          modalContent={`Are you sure you want to delete '${
+            this.state.dataSet.name
+          }' ?`}
+          primaryButtonText="Delete DataSet"
+          secondaryButtonText="Cancel"
+          handleDelete={() => this.handleDelete(this.state.orgId)}
+        />
       </section>
     );
   }
@@ -176,12 +135,18 @@ class DataSets extends React.Component {
     });
   };
 
-  selectedDataSetId = id => {
-    id && this.setState({ dataSetToBeDeleted: id });
+  selectedDataSet = dataSet => {
+    dataSet &&
+      this.setState({
+        dataSet: {
+          id: dataSet.id,
+          name: dataSet.organizationDataSetCategory.categoryName
+        }
+      });
   };
 
   handleDelete = () => {
-    const { dataSetToBeDeleted: dataSetId, dataSetList } = this.state;
+    const { dataSet: { id: dataSetId } = {}, dataSetList } = this.state;
     const { orgId, type } = this.props;
     this.props.deleteOrgDataSet({ orgId, dataSetId, type });
     const filteredList = dataSetList.filter(x => x.id !== dataSetId);

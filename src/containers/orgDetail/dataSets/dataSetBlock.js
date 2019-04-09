@@ -22,7 +22,7 @@ class DataSetBlock extends React.Component {
                 href="javascript:;"
                 data-toggle="modal"
                 data-target="#deleteModal"
-                onClick={() => this.props.selectedDataSetId(data.id)}
+                onClick={() => this.props.selectedDataSet(data)}
               >
                 <i className="icon-delete" />
               </a>

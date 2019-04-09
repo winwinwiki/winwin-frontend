@@ -21,7 +21,7 @@ const ResourceBlock = props => {
               href="javascript:;"
               data-toggle="modal"
               data-target="#deleteModal"
-              onClick={() => props.selectedResourceId(data.id)}
+              onClick={() => props.selectedResource(data)}
             >
               <i className="icon-delete" />
             </a>
