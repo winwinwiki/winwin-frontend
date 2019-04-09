@@ -508,8 +508,15 @@ class OrgDetailPage extends React.Component {
     });
     const { orgDetail: { sector } = {} } = this.state;
     if (sector.toLowerCase() !== "public")
-      this.setState({ sectorLevel: "", sectorLevelName: "" }, () =>
-        this.props.onSaveOrgBasicInfo(this.state.orgDetail)
+      this.setState(
+        {
+          orgDetail: {
+            ...this.state.orgDetail,
+            sectorLevel: "",
+            sectorLevelName: ""
+          }
+        },
+        () => this.props.onSaveOrgBasicInfo(this.state.orgDetail)
       );
   }
 

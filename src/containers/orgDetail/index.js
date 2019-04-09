@@ -169,9 +169,6 @@ class OrgDetail extends React.Component {
                   <a className="dropdown-item" href="#">
                     Add Child Organization
                   </a>
-                  <a className="dropdown-item" href="#">
-                    Edit Organization Name
-                  </a>
                   <Link
                     className="dropdown-item"
                     to={`${match.url}/view-history`}
