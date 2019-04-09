@@ -93,6 +93,19 @@ class OrgDetailPage extends React.Component {
                       </ul>
                     </div>
                   )}
+                  <div className="form-group">
+                    <label htmlFor="category">Organization Name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="name"
+                      id="name"
+                      readOnly={readOnly}
+                      onChange={this.onChange.bind(this)}
+                      placeholder="Enter Organization Name"
+                      value={orgDetail.name}
+                    />
+                  </div>
                   <div className="section-title border-bottom pb-3 mb-3">
                     Sector Detail
                   </div>
