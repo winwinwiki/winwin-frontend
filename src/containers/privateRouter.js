@@ -3,6 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import DocumentTitle from "react-document-title";
+import { titleCase } from "../util/util";
 
 const PrivateRoute = ({
   component: Component,
@@ -15,7 +16,9 @@ const PrivateRoute = ({
     render={props => {
       let combinedProps = { ...rest, ...props };
       return authenticated === true ? (
-        <DocumentTitle title={title ? title + " - WinWin" : "WinWin"}>
+        <DocumentTitle
+          title={title ? titleCase(title) + " - WinWin" : "WinWin"}
+        >
           <Component {...combinedProps} />
         </DocumentTitle>
       ) : (

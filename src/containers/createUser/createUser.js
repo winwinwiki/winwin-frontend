@@ -21,6 +21,10 @@ class CreateUser extends Component {
     }
   };
 
+  componentDidMount() {
+    document.title = "New User - WinWin";
+  }
+
   static getDerivedStateFromProps = (nextProps, prevState) => {
     if (
       nextProps &&
