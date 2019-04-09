@@ -31,7 +31,9 @@ class UploadDataFeed extends React.Component {
     this.onSuggestSelect = this.onSuggestSelect.bind(this);
     this.validateLocationField = this.validateLocationField.bind(this);
   }
-  componentDidMount() {}
+  componentDidMount() {
+    document.title = "Upload Data Feed - WinWin";
+  }
   componentWillReceiveProps(nextProps) {
     const { dataFeed } = this.props;
     if (nextProps.dataFeed !== dataFeed && nextProps.dataFeed.data) {
@@ -88,6 +90,7 @@ class UploadDataFeed extends React.Component {
               <div className="text-danger small">{formError.file}</div>
             )}
             {this.renderSelectedFile()}
+            <p>File Source</p>
             <div className="my-3">
               <Dropdown
                 selectedItem={fileSource}
