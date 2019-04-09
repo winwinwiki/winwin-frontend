@@ -111,15 +111,9 @@ class OrgDetailPage extends React.Component {
                   </div>
                   <div className="form-group">
                     <label htmlFor="category">Sector</label>
-                    {/* <input
-                      type="text"
-                      className="form-control"
-                      id="category"
-                      readOnly={readOnly}
-                      placeholder="Enter Sector"
-                      value={orgDetail.sector}
-                    /> */}
+
                     <Dropdown
+                      placeholder="Select Sector"
                       selectedItem={orgDetail.sector}
                       name="sector"
                       containerClass="dropdown dropdown-with-searchbox"
@@ -130,15 +124,9 @@ class OrgDetailPage extends React.Component {
                   </div>
                   <div className="form-group">
                     <label htmlFor="category">Sector Level</label>
-                    {/* <input
-                      type="text"
-                      className="form-control"
-                      id="category"
-                      readOnly={readOnly}
-                      placeholder="Enter Sector Level"
-                      value={orgDetail.sectorLevel}
-                    /> */}
+
                     <Dropdown
+                      placeholder="Select Sector Level"
                       selectedItem={orgDetail.sectorLevel}
                       name="sectorLevel"
                       containerClass="dropdown dropdown-with-searchbox"
@@ -155,7 +143,7 @@ class OrgDetailPage extends React.Component {
                       name="sectorLevelName"
                       id="category"
                       readOnly={readOnly}
-                      placeholder="Enter Level Name"
+                      placeholder="Enter Sector Level Name"
                       value={orgDetail.sectorLevelName}
                     />
                   </div>
@@ -168,6 +156,7 @@ class OrgDetailPage extends React.Component {
                       name="description"
                       id="orgdescription"
                       onChange={this.onChange.bind(this)}
+                      placeholder="Enter Description"
                       readOnly={readOnly}
                       rows="5"
                       value={orgDetail.description}
@@ -202,8 +191,7 @@ class OrgDetailPage extends React.Component {
                   <div className="section-title border-bottom pb-3 mb-3">
                     Financial
                   </div>
-                  {/* {orgDetail.totalRevenue.map((revenue, index) => (
-                    <React.Fragment key={index}> */}
+
                   <div className="form-group">
                     <label htmlFor="category">Revenue ($)</label>
                     <input
@@ -217,19 +205,7 @@ class OrgDetailPage extends React.Component {
                       value={orgDetail.revenue}
                     />
                   </div>
-                  {/* <div className="form-group">
-                        <label htmlFor="category">Year</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="category"
-                          readOnly={readOnly}
-                          placeholder="Enter Category"
-                          value={revenue.year}
-                        />
-                      </div> 
-                 </React.Fragment>
-                  ))} */}
+
                   <div className="form-group">
                     <label htmlFor="category">Assets</label>
                     <input
@@ -417,7 +393,7 @@ class OrgDetailPage extends React.Component {
                       id="values"
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
-                      placeholder="Enter Key Activities"
+                      placeholder="Enter Values"
                       value={orgDetail.values}
                     />
                   </div>
@@ -430,7 +406,7 @@ class OrgDetailPage extends React.Component {
                       id="purpose"
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
-                      placeholder="Enter Organizational Drivers"
+                      placeholder="Enter Purpose"
                       value={orgDetail.purpose}
                     />
                   </div>
@@ -443,7 +419,7 @@ class OrgDetailPage extends React.Component {
                       id="selfInterest"
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
-                      placeholder="Enter Organizational Drivers"
+                      placeholder="Enter Self-Interest"
                       value={orgDetail.selfInterest}
                     />
                   </div>
