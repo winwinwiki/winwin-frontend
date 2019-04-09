@@ -98,7 +98,6 @@ class UserList extends React.Component {
   }
 
   componentDidMount() {
-    document.title = "Users - WinWin";
     this.props.fetchUsersList();
     if (this.props.userList.length > 0) {
       this.setState({

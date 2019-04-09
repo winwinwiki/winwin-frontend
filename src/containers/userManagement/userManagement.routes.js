@@ -13,12 +13,14 @@ const OrgLandingRoutes = props => (
   <UserManagement history={props.history} match={props.match}>
     <Switch>
       <PrivateRoute
+        title="User Management"
         authenticated={props.isAuthenticated}
         exact
         path="/user-management"
         component={UserList}
       />
       <PrivateRoute
+        title="Change Password"
         authenticated={props.isAuthenticated}
         path="/change-password"
         component={ChangePassword}

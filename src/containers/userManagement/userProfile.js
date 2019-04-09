@@ -32,6 +32,7 @@ class UserProfile extends React.Component {
     this.validateField = this.validateField.bind(this);
   }
   async componentDidMount() {
+    document.title = "User Details - Winwin";
     const { session } = this.props;
     if (!session || !session.user || !session.isAuthenticated) {
       // try {
