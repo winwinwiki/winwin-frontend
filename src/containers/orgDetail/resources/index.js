@@ -19,6 +19,10 @@ class Resources extends React.Component {
     super(props);
 
     this.state = {
+      resource: {
+        id: "",
+        name: ""
+      },
       resourcesList: null,
       resourceToBeDeleted: "",
       selectedData: {
@@ -68,12 +72,17 @@ class Resources extends React.Component {
     });
   };
 
-  selectedResourceId = id => {
-    this.setState({ resourceToBeDeleted: id });
+  selectedResource = resource => {
+    this.setState({
+      resource: {
+        id: resource.id,
+        name: resource.organizationResourceCategory.categoryName
+      }
+    });
   };
 
   handleDelete = () => {
-    const { resourceToBeDeleted: resourceId, resourcesList } = this.state;
+    const { resource: { id: resourceId } = {}, resourcesList } = this.state;
     const { orgId } = this.props;
     this.props.deleteOrgResource({ orgId, resourceId });
     const filteredList = resourcesList.filter(x => x.id !== resourceId);
@@ -100,7 +109,7 @@ class Resources extends React.Component {
                     key={resource.id}
                     data={resource}
                     changeModalData={this.changeModalData}
-                    selectedResourceId={this.selectedResourceId}
+                    selectedResource={this.selectedResource}
                   />
                 ))}
                 <li className="list-group-item px-0 pt-4">
@@ -126,7 +135,16 @@ class Resources extends React.Component {
           title={modalTitle}
           newModalData={this.handleNewModalData}
         />
-        <PopupModal handleDelete={() => this.handleDelete()} />
+        <PopupModal
+          modalId="deleteModal"
+          modalTitle="Alert!"
+          modalContent={`Are you sure you want to delete '${
+            this.state.resource.name
+          }' ?`}
+          primaryButtonText="Delete Resource"
+          secondaryButtonText="Cancel"
+          handleDelete={() => this.handleDelete(this.state.resource.id)}
+        />
       </section>
     );
   }
