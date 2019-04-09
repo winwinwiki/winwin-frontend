@@ -3,6 +3,7 @@ import Autosuggest from "react-autosuggest";
 import { compareStrings } from "../../../util/util";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import validate from "../../../util/validation";
 import { saveOrgResource } from "../../../actions/orgDetail/resourcesAction";
 
 const getSuggestionValue = suggestion => suggestion.categoryName;
@@ -17,6 +18,9 @@ class ResourceModal extends Component {
       count: "",
       description: "",
       organizationResourceCategory: { categoryName: "" }
+    },
+    formError: {
+      count: ""
     }
   };
 
@@ -108,6 +112,26 @@ class ResourceModal extends Component {
       this.props.saveOrgResource(modalData, type);
   };
 
+  validateField = e => {
+    this.validateAddResourceForm(e.target.name, e.target.value);
+  };
+
+  validateAddResourceForm = (field, value) => {
+    const { formError } = this.state;
+
+    if (field === "count") {
+      let isValid = validate.number(value);
+      if (!isValid) {
+        formError.count = "Number is expected/required.";
+        this.setState({ formError });
+        return;
+      }
+      formError.count = "";
+      this.setState({ formError });
+      return;
+    }
+  };
+
   render() {
     const { title } = this.props;
     const {
@@ -116,7 +140,8 @@ class ResourceModal extends Component {
         description,
         count,
         organizationResourceCategory: { categoryName, id } = {}
-      } = {}
+      } = {},
+      formError
     } = this.state;
     const inputProps = {
       id,
@@ -186,8 +211,14 @@ class ResourceModal extends Component {
                               name="count"
                               placeholder="Enter Count"
                               value={count}
+                              onBlur={this.validateField}
                               onChange={this.handleChange}
                             />
+                            {formError.count && (
+                              <div className="text-danger small">
+                                {formError.count}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -220,6 +251,7 @@ class ResourceModal extends Component {
                           className="btn btn-primary"
                           data-dismiss="modal"
                           onClick={this.saveResource}
+                          disabled={!!this.state.formError.count}
                         >
                           Save changes
                         </button>
