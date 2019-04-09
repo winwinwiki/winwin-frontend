@@ -97,7 +97,9 @@ class RegionsServed extends Component {
                     initialValue=""
                     className="form-control position-relative mt-2"
                     fixtures={[]}
-                    onSuggestSelect={this.onSuggestSelect}
+                    onSuggestSelect={suggest => {
+                      if (suggest) this.onSuggestSelect(suggest.label);
+                    }}
                   />
                 )}
                 {isEdited &&
