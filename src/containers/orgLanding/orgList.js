@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { push } from "react-router-redux";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -21,6 +21,7 @@ import {
 
 import { onDeleteOrg } from "../../actions/organization/deleteOrgAction";
 import { Link } from "react-router-dom";
+import { PopupModal } from "../ui/popupModal";
 const filterList = [
   "Set Priority High",
   "Set Priority Normal",
@@ -52,8 +53,6 @@ class OrgList extends React.Component {
   componentDidMount() {
     this.props.startLoaderAction();
     this.props.fetchOrganisationsList();
-    //this.props.fetchSdgTagsList();
-    //this.props.fetchSpiTagsList();
   }
 
   handleOrgDelete = orgId => {
@@ -189,10 +188,14 @@ class OrgList extends React.Component {
       accessor: "id",
       sortable: false,
       Cell: row => (
-        <span
-          className="centerText"
-          onClick={() => this.handleOrgDelete(row.original.id)}
-        />
+        <Fragment>
+          <span
+            className="centerText"
+            data-toggle="modal"
+            data-target="#deleteModal"
+            onClick={() => this.setOrg(row.original)}
+          />
+        </Fragment>
       ),
       width: 50
     }
@@ -265,9 +268,23 @@ class OrgList extends React.Component {
             }}
           />
         </div>
+        <PopupModal
+          modalId="deleteModal"
+          modalTitle="Alert!"
+          modalContent={`Are you sure you want to delete '${
+            this.state.orgName
+          }' ?`}
+          primaryButtonText="Delete Organization"
+          secondaryButtonText="Cancel"
+          handleDelete={() => this.handleOrgDelete(this.state.orgId)}
+        />
       </section>
     );
   }
+
+  setOrg = org => {
+    this.setState({ orgId: org.id, orgName: org.name });
+  };
 
   getFilteredListOfOrg(e) {
     this.setState({

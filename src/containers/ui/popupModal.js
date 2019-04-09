@@ -5,7 +5,7 @@ export const PopupModal = ({ handleDelete, ...m }) => {
     <div
       {...m}
       className="modal fade"
-      id="deleteModal"
+      id={m.modalId}
       tabIndex="-1"
       role="dialog"
       aria-labelledby="exampleModalLabel"
@@ -21,7 +21,7 @@ export const PopupModal = ({ handleDelete, ...m }) => {
               <div className="modal-header flex-column">
                 <div className="d-flex w-100 p-3">
                   <h5 className="modal-title" id="exampleModalLabel">
-                    Alert!
+                    {m.modalTitle}
                   </h5>
                   <button
                     type="button"
@@ -34,16 +34,14 @@ export const PopupModal = ({ handleDelete, ...m }) => {
                 </div>
               </div>
             </div>
-            <div className="modal-body dashboard-content">
-              Are you sure you want to delete this record?
-            </div>
+            <div className="modal-body dashboard-content">{m.modalContent}</div>
             <div className="modal-footer">
               <button
                 type="button"
                 className="btn btn-secondary"
                 data-dismiss="modal"
               >
-                Close
+                {m.secondaryButtonText}
               </button>
               <button
                 type="button"
@@ -51,7 +49,7 @@ export const PopupModal = ({ handleDelete, ...m }) => {
                 data-dismiss="modal"
                 onClick={handleDelete}
               >
-                Delete
+                {m.primaryButtonText}
               </button>
             </div>
           </div>
