@@ -132,7 +132,9 @@ class OrgDetailPage extends React.Component {
                       containerClass="dropdown dropdown-with-searchbox"
                       onChange={this.onDropdownChange.bind(this)}
                       items={entityList}
-                      disabled={readOnly}
+                      disabled={
+                        readOnly || orgDetail.sector.toLowerCase() !== "public"
+                      }
                     />
                   </div>
                   <div className="form-group">
@@ -142,7 +144,9 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       name="sectorLevelName"
                       id="category"
-                      readOnly={readOnly}
+                      readOnly={
+                        readOnly || orgDetail.sector.toLowerCase() !== "public"
+                      }
                       placeholder="Enter Sector Level Name"
                       value={orgDetail.sectorLevelName}
                     />
@@ -502,8 +506,21 @@ class OrgDetailPage extends React.Component {
     this.setState({
       isEditable: false
     });
-    this.props.onSaveOrgBasicInfo(this.state.orgDetail);
+    const { orgDetail: { sector } = {} } = this.state;
+    if (sector.toLowerCase() !== "public")
+      this.setState(
+        {
+          orgDetail: {
+            ...this.state.orgDetail,
+            sectorLevel: "",
+            sectorLevelName: ""
+          }
+        },
+        () => this.props.onSaveOrgBasicInfo(this.state.orgDetail)
+      );
   }
+
+  validateOrgData = () => {};
 
   onCancelBasicInfo() {
     this.setState({
