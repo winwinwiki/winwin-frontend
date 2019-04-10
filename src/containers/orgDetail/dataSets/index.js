@@ -30,7 +30,7 @@ class DataSets extends React.Component {
         type: "",
         url: ""
       },
-      modalTitle: ""
+      modaltitle: ""
     };
   }
 
@@ -59,7 +59,7 @@ class DataSets extends React.Component {
   }
 
   render() {
-    const { dataSetList, selectedData, modalTitle } = this.state;
+    const { dataSetList, selectedData, modaltitle } = this.state;
     const { dataset, datasetCategories } = this.props;
     if (dataset.error || !dataSetList) {
       return null;
@@ -109,18 +109,18 @@ class DataSets extends React.Component {
           type={this.props.type}
           orgId={this.props.orgId}
           modalData={selectedData}
-          title={modalTitle}
+          title={modaltitle}
           categoriesList={datasetCategories}
           newModalData={this.handleNewModalData}
         />
         <PopupModal
-          modalId="deleteModal"
-          modalTitle="Alert!"
-          modalContent={`Are you sure you want to delete '${
+          modalid="deleteModal"
+          modaltitle="Alert!"
+          modalcontent={`Are you sure you want to delete '${
             this.state.dataSet.name
           }' ?`}
-          primaryButtonText="Delete DataSet"
-          secondaryButtonText="Cancel"
+          primarybuttontext="Delete DataSet"
+          secondarybuttontext="Cancel"
           handleDelete={() => this.handleDelete(this.state.orgId)}
         />
       </section>
@@ -157,7 +157,7 @@ class DataSets extends React.Component {
     const { dataSetList } = this.state;
     this.setState({
       selectedData: dataSetList.filter(data => data.id === dataSetId)[0],
-      modalTitle: "Edit Data Set"
+      modaltitle: "Edit Data Set"
     });
   };
 
@@ -169,7 +169,7 @@ class DataSets extends React.Component {
         type: "",
         url: ""
       },
-      modalTitle: "Add Data Set"
+      modaltitle: "Add Data Set"
     });
   };
 }
