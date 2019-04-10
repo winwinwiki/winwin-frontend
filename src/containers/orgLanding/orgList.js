@@ -8,6 +8,7 @@ import "react-table/react-table.css";
 import OrgFilters from "./orgFilter";
 import AppliedOrgFilters from "./appliedOrgFilters/index";
 import Dropdown from "../ui/dropdown";
+import { onSaveOrgBasicInfo } from "../../actions/orgDetail/orgDetailAction";
 import {
   fetchOrganisationsList,
   fetchSdgTagsList,
@@ -22,10 +23,15 @@ import {
 import { onDeleteOrg } from "../../actions/organization/deleteOrgAction";
 import { Link } from "react-router-dom";
 import { PopupModal } from "../ui/popupModal";
+
+const setPriorityHigh = "Set Priority High";
+const setPriorityNormal = "Set Priority Normal";
+const markReadyForTagging = "Mark 'Ready for Tagging'";
+
 const filterList = [
-  "Set Priority High",
-  "Set Priority Normal",
-  "Mark 'Ready for Tagging'"
+  { id: "High", value: setPriorityHigh },
+  { id: "Normal", value: setPriorityNormal },
+  { id: "Untagged", value: markReadyForTagging }
 ];
 const buttonList = [
   { id: "all", name: "All" },
@@ -35,34 +41,18 @@ const buttonList = [
 ];
 
 class OrgList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      entity: "",
-      orgList: [],
-      activeButton: ["All"],
-      searchText: ""
-    };
-    this.changePage = this.changePage.bind(this);
-    this.onDropdownChange = this.onDropdownChange.bind(this);
-    this.filterOrgList = this.filterOrgList.bind(this);
-    this.resetAllFilters = this.resetAllFilters.bind(this);
-    this.getFilteredListOfOrg = this.getFilteredListOfOrg.bind(this);
-  }
+  state = {
+    entity: "",
+    orgList: [],
+    activeButton: ["All"],
+    searchText: "",
+    selectedOrgList: []
+  };
 
   componentDidMount() {
     this.props.startLoaderAction();
     this.props.fetchOrganisationsList();
   }
-
-  handleOrgDelete = orgId => {
-    this.props.onDeleteOrg(orgId);
-    const { orgList } = this.state;
-    const filteredList = orgList.filter(x => x.id !== orgId);
-    this.setState({
-      orgList: filteredList
-    });
-  };
 
   componentDidUpdate(prevProps) {
     if (prevProps.orgList !== this.props.orgList && this.props.orgList.data) {
@@ -101,9 +91,12 @@ class OrgList extends React.Component {
       ),
       accessor: "id",
       sortable: false,
-      Cell: () => (
+      Cell: row => (
         <div className="centerText">
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            onClick={e => this.onSelectCheckbox(e, row.value)}
+          />
         </div>
       ),
       width: 50
@@ -222,7 +215,7 @@ class OrgList extends React.Component {
             name="filterEntity"
             placeholder="Actions"
             containerClass="dropdown dropdown-with-searchbox"
-            onChange={this.onDropdownChange.bind(this)}
+            onChange={this.onDropdownChange}
             items={filterList}
           />
           <div className="result-count">
@@ -282,23 +275,61 @@ class OrgList extends React.Component {
     );
   }
 
+  //when checkbox is checked
+  onSelectCheckbox = (e, id) => {
+    let { orgList, selectedOrgList } = this.state;
+    const target = e.target;
+    const isChecked = target.type === "checkbox" ? target.checked : false;
+    if (isChecked) {
+      selectedOrgList = [
+        ...selectedOrgList,
+        orgList.filter(x => x.id === id)[0]
+      ];
+    } else {
+      selectedOrgList = selectedOrgList.filter(x => x.id !== id);
+    }
+    this.setState({ selectedOrgList });
+  };
+
+  handleOrgDelete = orgId => {
+    this.props.onDeleteOrg(orgId);
+    const { orgList } = this.state;
+    const filteredList = orgList.filter(x => x.id !== orgId);
+    this.setState({
+      orgList: filteredList
+    });
+  };
+
   setOrg = org => {
     this.setState({ orgId: org.id, orgName: org.name });
   };
 
-  getFilteredListOfOrg(e) {
+  getFilteredListOfOrg = e => {
     this.setState({
       searchText: e.target.value
     });
-  }
+  };
 
-  changePage(orgId) {
+  changePage = orgId => {
     this.props.changePage(orgId);
-  }
+  };
 
-  onDropdownChange() {}
+  onDropdownChange = (e, val) => {
+    let { selectedOrgList } = this.state;
+    if (val === markReadyForTagging)
+      selectedOrgList.map(x => {
+        x.tagStatus = filterList.find(obj => obj.id === val.id).id;
+        return x;
+      });
+    else
+      selectedOrgList.map(x => {
+        x.priority = filterList.find(obj => obj.id === val.id).id;
+        return x;
+      });
+    this.props.onSaveOrgBasicInfo(selectedOrgList);
+  };
 
-  filterOrgList(filter) {
+  filterOrgList = filter => {
     const { activeButton } = this.state;
     let newSectors = activeButton.slice();
     if (filter["sector"] === "All") {
@@ -316,9 +347,9 @@ class OrgList extends React.Component {
     this.setState({
       activeButton: newSectors
     });
-  }
+  };
 
-  appliedFilterOrgList(filters) {
+  appliedFilterOrgList = filters => {
     // console.log(this.props)
     // const { orgList } = this.props;
     // let orgListCopy = JSON.parse(JSON.stringify(orgList));
@@ -353,15 +384,15 @@ class OrgList extends React.Component {
     // this.setState({
     //     orgList: filteredList
     // });
-  }
+  };
 
-  resetAllFilters() {
+  resetAllFilters = () => {
     this.props.fetchOrganisationsList({});
     this.props.setAppliedFilters(null, {});
     this.setState({
       activeButton: ["All"]
     });
-  }
+  };
 }
 
 const mapStateToProps = state => ({
@@ -379,7 +410,8 @@ const mapDispatchToProps = dispatch =>
       setAppliedFilters,
       startLoaderAction,
       stopLoaderAction,
-      onDeleteOrg
+      onDeleteOrg,
+      onSaveOrgBasicInfo
     },
     dispatch
   );
