@@ -11,7 +11,10 @@ import {
   RESET_REGIONSERVED_SUCCESS,
   RESET_REGIONSERVED_ERROR,
   UPDATE_REGIONSERVED_SUCCESS,
-  UPDATE_REGIONSERVED_ERROR
+  UPDATE_REGIONSERVED_ERROR,
+  FETCH_REGIONSLIST_REQUEST,
+  FETCH_REGIONSLIST_SUCCESS,
+  FETCH_REGIONSLIST_ERROR
 } from "../../constants/dispatch";
 import { api } from "../../api/api";
 import { PROGRAM } from "../../constants";
@@ -80,6 +83,25 @@ export const fetchOrgRegionsServed = (organizationId, type) => {
       },
       error => {
         dispatch(fetchRegionsServedError(error));
+      }
+    );
+  };
+};
+
+//Regions Master List API
+export const fetchRegionsList = (organizationId, type) => {
+  return dispatch => {
+    dispatch(fetchRegionsListReq());
+    let url =
+      type === PROGRAM
+        ? `/program/${organizationId}/regionmasters`
+        : `/organization/${organizationId}/regionmasters`;
+    api(url, "GET", {}, true).then(
+      response => {
+        dispatch(fetchRegionsListSuccess(response));
+      },
+      error => {
+        dispatch(fetchRegionsListError(error));
       }
     );
   };
@@ -169,6 +191,26 @@ function updateRegionsServedSuccess(response) {
 function updateRegionsServedError(error) {
   return {
     type: UPDATE_REGIONSERVED_ERROR,
+    error
+  };
+}
+
+function fetchRegionsListReq() {
+  return {
+    type: FETCH_REGIONSLIST_REQUEST
+  };
+}
+
+function fetchRegionsListSuccess(response) {
+  return {
+    type: FETCH_REGIONSLIST_SUCCESS,
+    response
+  };
+}
+
+function fetchRegionsListError(error) {
+  return {
+    type: FETCH_REGIONSLIST_ERROR,
     error
   };
 }
