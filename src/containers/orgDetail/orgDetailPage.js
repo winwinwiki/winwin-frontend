@@ -103,7 +103,7 @@ class OrgDetailPage extends React.Component {
                       readOnly={readOnly}
                       onChange={this.onChange.bind(this)}
                       placeholder="Enter Organization Name"
-                      value={orgDetail.name}
+                      value={orgDetail.name || ""}
                     />
                   </div>
                   <div className="section-title border-bottom pb-3 mb-3">
@@ -163,7 +163,7 @@ class OrgDetailPage extends React.Component {
                       placeholder="Enter Description"
                       readOnly={readOnly}
                       rows="5"
-                      value={orgDetail.description}
+                      value={orgDetail.description || ""}
                     />
                   </div>
                   <div className="form-group">
@@ -176,7 +176,7 @@ class OrgDetailPage extends React.Component {
                       readOnly={readOnly}
                       onChange={this.onChange.bind(this)}
                       placeholder="Enter NAICS Code"
-                      value={orgDetail.naicsCode}
+                      value={orgDetail.naicsCode || ""}
                     />
                   </div>
                   <div className="form-group">
@@ -189,7 +189,7 @@ class OrgDetailPage extends React.Component {
                       readOnly={readOnly}
                       onChange={this.onChange.bind(this)}
                       placeholder="Enter NTEE Code"
-                      value={orgDetail.nteeCode}
+                      value={orgDetail.nteeCode || ""}
                     />
                   </div>
                   <div className="section-title border-bottom pb-3 mb-3">
@@ -206,7 +206,7 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter Revenue Amount"
-                      value={orgDetail.revenue}
+                      value={orgDetail.revenue || ""}
                     />
                   </div>
 
@@ -220,7 +220,7 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter Assets"
-                      value={orgDetail.assets}
+                      value={orgDetail.assets || ""}
                     />
                   </div>
                   <div className="section-title border-bottom pb-3 mb-3">
@@ -236,7 +236,7 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter Street Address"
-                      value={orgDetail.address.street}
+                      value={orgDetail.address.street || ""}
                     />
                   </div>
                   <div className="form-group">
@@ -249,7 +249,7 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter City"
-                      value={orgDetail.address.city}
+                      value={orgDetail.address.city || ""}
                     />
                   </div>
                   <div className="form-group">
@@ -262,7 +262,7 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter County"
-                      value={orgDetail.address.county}
+                      value={orgDetail.address.county || ""}
                     />
                   </div>
                   <div className="form-group">
@@ -275,7 +275,7 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter State"
-                      value={orgDetail.address.state}
+                      value={orgDetail.address.state || ""}
                     />
                   </div>
                   <div className="form-group">
@@ -288,7 +288,7 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter Zip/Postal Code"
-                      value={orgDetail.address.zip}
+                      value={orgDetail.address.zip || ""}
                     />
                   </div>
                   <div className="form-group">
@@ -301,7 +301,7 @@ class OrgDetailPage extends React.Component {
                       readOnly={readOnly}
                       onChange={this.onChange.bind(this)}
                       placeholder="Enter Country"
-                      value={orgDetail.address.country}
+                      value={orgDetail.address.country || ""}
                     />
                   </div>
                   <div className="section-title border-bottom pb-3 mb-3">
@@ -317,7 +317,7 @@ class OrgDetailPage extends React.Component {
                       readOnly={readOnly}
                       onChange={this.onChange.bind(this)}
                       placeholder="Enter website url"
-                      value={orgDetail.websiteUrl}
+                      value={orgDetail.websiteUrl || ""}
                     />
                   </div>
                   <div className="form-group">
@@ -330,7 +330,7 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter Facebook url"
-                      value={orgDetail.facebookUrl}
+                      value={orgDetail.facebookUrl || ""}
                     />
                   </div>
                   <div className="form-group">
@@ -343,7 +343,7 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter LinkedIn url"
-                      value={orgDetail.linkedinUrl}
+                      value={orgDetail.linkedinUrl || ""}
                     />
                   </div>
                   <div className="form-group">
@@ -356,7 +356,7 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter Twitter url"
-                      value={orgDetail.twitterUrl}
+                      value={orgDetail.twitterUrl || ""}
                     />
                   </div>
                   <div className="form-group">
@@ -369,7 +369,7 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter contact info"
-                      value={orgDetail.contactInfo}
+                      value={orgDetail.contactInfo || ""}
                     />
                   </div>
                   <div className="section-title border-bottom pb-3 mb-3">
@@ -385,7 +385,7 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter Mission Statement"
-                      value={orgDetail.missionStatement}
+                      value={orgDetail.missionStatement || ""}
                     />
                   </div>
                   <div className="form-group">
@@ -398,7 +398,7 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter Values"
-                      value={orgDetail.values}
+                      value={orgDetail.values || ""}
                     />
                   </div>
                   <div className="form-group">
@@ -411,7 +411,7 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter Purpose"
-                      value={orgDetail.purpose}
+                      value={orgDetail.purpose || ""}
                     />
                   </div>
                   <div className="form-group">
@@ -424,7 +424,7 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter Self-Interest"
-                      value={orgDetail.selfInterest}
+                      value={orgDetail.selfInterest || ""}
                     />
                   </div>
                   <div className="form-group">
@@ -437,7 +437,7 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter Population Served"
-                      value={orgDetail.populationServed}
+                      value={orgDetail.populationServed || ""}
                     />
                   </div>
 
@@ -450,7 +450,7 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onChange.bind(this)}
                       readOnly={readOnly}
                       placeholder="Enter Business Model"
-                      value={orgDetail.businessModel}
+                      value={orgDetail.businessModel || ""}
                     />
                   </div>
 
