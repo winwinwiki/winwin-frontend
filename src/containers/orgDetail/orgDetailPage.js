@@ -506,18 +506,8 @@ class OrgDetailPage extends React.Component {
     this.setState({
       isEditable: false
     });
-    const { orgDetail: { sector } = {} } = this.state;
-    if (sector.toLowerCase() !== "public")
-      this.setState(
-        {
-          orgDetail: {
-            ...this.state.orgDetail,
-            sectorLevel: "",
-            sectorLevelName: ""
-          }
-        },
-        () => this.props.onSaveOrgBasicInfo(this.state.orgDetail)
-      );
+    const { orgDetail = {} } = this.state;
+    this.props.onSaveOrgBasicInfo([orgDetail]);
   }
 
   validateOrgData = () => {};
