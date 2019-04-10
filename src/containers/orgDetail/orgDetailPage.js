@@ -148,7 +148,7 @@ class OrgDetailPage extends React.Component {
                         readOnly || orgDetail.sector.toLowerCase() !== "public"
                       }
                       placeholder="Enter Sector Level Name"
-                      value={orgDetail.sectorLevelName}
+                      value={orgDetail.sectorLevelName || ""}
                     />
                   </div>
                   <div className="form-group">
