@@ -30,7 +30,7 @@ class Resources extends React.Component {
         count: "",
         description: ""
       },
-      modalTitle: ""
+      modaltitle: ""
     };
   }
 
@@ -90,7 +90,7 @@ class Resources extends React.Component {
   };
 
   render() {
-    const { selectedData, modalTitle, resourcesList } = this.state;
+    const { selectedData, modaltitle, resourcesList } = this.state;
     const { resources, resourceCategories } = this.props;
     if (!resources || !resources.data || resources.error || !resourcesList) {
       return null;
@@ -132,17 +132,17 @@ class Resources extends React.Component {
           orgId={this.props.orgId}
           modalData={selectedData}
           categoriesList={resourceCategories}
-          title={modalTitle}
+          title={modaltitle}
           newModalData={this.handleNewModalData}
         />
         <PopupModal
-          modalId="deleteModal"
-          modalTitle="Alert!"
-          modalContent={`Are you sure you want to delete '${
+          modalid="deleteModal"
+          modaltitle="Alert!"
+          modalcontent={`Are you sure you want to delete '${
             this.state.resource.name
           }' ?`}
-          primaryButtonText="Delete Resource"
-          secondaryButtonText="Cancel"
+          primarybuttontext="Delete Resource"
+          secondarybuttontext="Cancel"
           handleDelete={() => this.handleDelete(this.state.resource.id)}
         />
       </section>
@@ -154,7 +154,7 @@ class Resources extends React.Component {
       selectedData: resourcesList.filter(
         resource => resource.id === resourceId
       )[0],
-      modalTitle: "Edit Resource"
+      modaltitle: "Edit Resource"
     });
   };
 
@@ -165,7 +165,7 @@ class Resources extends React.Component {
         count: "",
         description: ""
       },
-      modalTitle: "Add New Resource"
+      modaltitle: "Add New Resource"
     });
   };
 }

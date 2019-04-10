@@ -11,7 +11,7 @@ import {
 import { NoteModal } from "./noteModal";
 class Notes extends React.Component {
   state = {
-    modalTitle: "",
+    modaltitle: "",
     selectedNoteId: "",
     note: "",
     notesList: ""
@@ -34,7 +34,7 @@ class Notes extends React.Component {
   }
 
   render() {
-    const { modalTitle, notesList, note } = this.state;
+    const { modaltitle, notesList, note } = this.state;
     const { isNotesSuccess } = this.props;
     if (!isNotesSuccess || !notesList) {
       return null;
@@ -80,7 +80,7 @@ class Notes extends React.Component {
         </div>
         <NoteModal
           note={note}
-          title={modalTitle}
+          title={modaltitle}
           handleChange={this.handleChange}
           saveNote={this.saveNewNote}
         />
@@ -159,7 +159,7 @@ class Notes extends React.Component {
   addNewNoteModal = () => {
     this.setState({
       note: "",
-      modalTitle: "Add Note"
+      modaltitle: "Add Note"
     });
   };
 

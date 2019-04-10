@@ -5,7 +5,7 @@ export const PopupModal = ({ handleDelete, ...m }) => {
     <div
       {...m}
       className="modal fade"
-      id={m.modalId}
+      id={m.modalid}
       tabIndex="-1"
       role="dialog"
       aria-labelledby="exampleModalLabel"
@@ -21,7 +21,7 @@ export const PopupModal = ({ handleDelete, ...m }) => {
               <div className="modal-header flex-column">
                 <div className="d-flex w-100 p-3">
                   <h5 className="modal-title" id="exampleModalLabel">
-                    {m.modalTitle}
+                    {m.modaltitle}
                   </h5>
                   <button
                     type="button"
@@ -34,14 +34,14 @@ export const PopupModal = ({ handleDelete, ...m }) => {
                 </div>
               </div>
             </div>
-            <div className="modal-body dashboard-content">{m.modalContent}</div>
+            <div className="modal-body dashboard-content">{m.modalcontent}</div>
             <div className="modal-footer">
               <button
                 type="button"
                 className="btn btn-secondary"
                 data-dismiss="modal"
               >
-                {m.secondaryButtonText}
+                {m.secondarybuttontext}
               </button>
               <button
                 type="button"
@@ -49,7 +49,7 @@ export const PopupModal = ({ handleDelete, ...m }) => {
                 data-dismiss="modal"
                 onClick={handleDelete}
               >
-                {m.primaryButtonText}
+                {m.primarybuttontext}
               </button>
             </div>
           </div>
