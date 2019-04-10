@@ -40,6 +40,13 @@ const buttonList = [
   { id: "social", name: "Social" }
 ];
 
+const tagIcon = {
+  autoTag: "A",
+  completeTag: "C",
+  organizationTag: "O",
+  untagged: "U"
+};
+
 class OrgList extends React.Component {
   state = {
     entity: "",
@@ -108,7 +115,11 @@ class OrgList extends React.Component {
       Cell: row => (
         <React.Fragment>
           <div className="org-tag orange card d-inline-block mr-1">
-            <div className="px-1 py-0">A</div>
+            <div className="px-1 py-0">
+              {row.original.tagStatus
+                ? tagIcon[row.original.tagStatus]
+                : tagIcon["autoTag"]}
+            </div>
             <div className="org-tag-footer" />
           </div>
           <Link
