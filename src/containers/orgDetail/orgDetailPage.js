@@ -133,7 +133,9 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onDropdownChange.bind(this)}
                       items={entityList}
                       disabled={
-                        readOnly || orgDetail.sector.toLowerCase() !== "public"
+                        readOnly ||
+                        (orgDetail.sector &&
+                          orgDetail.sector.toLowerCase() !== "public")
                       }
                     />
                   </div>
@@ -145,7 +147,9 @@ class OrgDetailPage extends React.Component {
                       name="sectorLevelName"
                       id="category"
                       readOnly={
-                        readOnly || orgDetail.sector.toLowerCase() !== "public"
+                        readOnly ||
+                        (orgDetail.sector &&
+                          orgDetail.sector.toLowerCase() !== "public")
                       }
                       placeholder="Enter Sector Level Name"
                       value={orgDetail.sectorLevelName || ""}
