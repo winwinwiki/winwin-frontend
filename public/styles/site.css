@@ -8080,6 +8080,12 @@ h5.modal-title {
 .org-tag.orange {
   border-color: #ffc107; }
 
+.org-tag.green {
+  color: #29950E; }
+
+.org-tag.red {
+  color: #D0021B; }
+
 .org-tag .org-tag-footer {
   padding: 0.1em 0em;
   background-color: #ffc107; }

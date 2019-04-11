@@ -49,6 +49,12 @@
   &.orange{
     border-color: #ffc107
   }
+  &.green{
+    color: #29950E    //normal priority
+  }
+  &.red{
+    color: #D0021B     //high priority
+  }
   .org-tag-footer{
     padding: 0.1em 0em;
     background-color: #ffc107

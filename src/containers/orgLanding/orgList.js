@@ -50,6 +50,11 @@ const tagIcon = {
   untagged: "U"
 };
 
+const tagColor = {
+  Normal: "green",
+  High: "red"
+};
+
 class OrgList extends React.Component {
   state = {
     entity: "",
@@ -78,12 +83,11 @@ class OrgList extends React.Component {
   }
 
   // componentWillReceiveProps(nextProps) {
-  //   if (nextProps &&
-  //     nextProps.orgList !== this.props.orgList) {
-  //       console.log("new org list received 1",nextProps.orgList);
+  //   if (nextProps && nextProps.orgList !== this.props.orgList) {
+  //     console.log("new org list received 1", nextProps.orgList);
   //     if (!nextProps.orgList.error) {
   //       this.setState({
-  //         orgList: nextProps.orgList.data
+  //         orgList: nextProps.orgList.data.response
   //       });
   //     } else {
   //     }
@@ -117,13 +121,19 @@ class OrgList extends React.Component {
       accessor: "name",
       Cell: row => (
         <React.Fragment>
-          <div className="org-tag orange card d-inline-block mr-1">
+          <div className="d-inline-block mr-5">
             <div className="px-1 py-0">
-              {row.original.tagStatus
-                ? tagIcon[row.original.tagStatus]
-                : tagIcon["autoTag"]}
+              <h1
+                className={`org-tag ${
+                  row.original.priority ? tagColor[row.original.priority] : ""
+                }`}
+              >
+                {row.original.tagStatus
+                  ? tagIcon[row.original.tagStatus]
+                  : tagIcon["autoTag"]}
+              </h1>
             </div>
-            <div className="org-tag-footer" />
+            {/* <div className="org-tag-footer" /> */}
           </div>
           <Link
             className="centerText d-inline-block"
@@ -211,9 +221,9 @@ class OrgList extends React.Component {
   render() {
     const { entity, orgList, activeButton, searchText } = this.state;
     const { appliedFilterList } = this.props;
-    // if (!orgList || !orgList.length) {
-    //   return null;
-    // }
+    if (!orgList || !orgList.length) {
+      return null;
+    }
     return (
       <section className="dashboard-content p-0">
         <OrgFilters
