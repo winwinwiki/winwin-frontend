@@ -352,6 +352,7 @@ class OrgList extends React.Component {
         return x;
       });
     this.props.onSaveOrgBasicInfo(selectedOrgList);
+    this.forceUpdate(); //re-render table when changing the status icon color
   };
 
   filterOrgList = filter => {
