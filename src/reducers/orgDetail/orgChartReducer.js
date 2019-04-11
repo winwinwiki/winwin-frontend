@@ -35,13 +35,13 @@ export default (state = initialState, action) => {
     case ADD_ORG_CHART_CHILD_SUCCESS:
       return {
         ...state,
-        isFetchOrgHierarchySuccess: action.isFetchOrgHierarchySuccess,
         orgHierarchy: {
           ...state.orgHierarchy,
           response: {
             ...state.orgHierarchy.response,
             children: [
-              ...state.orgHierarchy.response.children,
+              ...(state.orgHierarchy.response &&
+                state.orgHierarchy.response.children),
               action.response.response
             ]
           }
