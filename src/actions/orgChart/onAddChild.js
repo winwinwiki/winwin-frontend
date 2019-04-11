@@ -4,10 +4,12 @@ import {
   ADD_ORG_CHART_CHILD_ERROR
 } from "../../constants/dispatch";
 import { api } from "../../api/api";
+import { startLoader, stopLoader } from "../common/loaderActions";
 
 export const onAddOrgChartChild = params => {
   return dispatch => {
     dispatch(addOrgChartChildReq());
+    dispatch(startLoader());
     api(
       `/organization/${params.parentId}/suborganization`,
       "POST",
@@ -16,6 +18,7 @@ export const onAddOrgChartChild = params => {
     ).then(
       response => {
         dispatch(addOrgChartChildSuccess(response));
+        dispatch(stopLoader());
       },
       error => {
         dispatch(addOrgChartChildError(error));

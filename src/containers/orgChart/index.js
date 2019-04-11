@@ -51,7 +51,7 @@ class OrgChart extends React.Component {
           this.orgDetail,
           this.addNewChild
         );
-        chart.renderOrgChart();
+        chart && chart.renderOrgChart();
       }
     }
   }

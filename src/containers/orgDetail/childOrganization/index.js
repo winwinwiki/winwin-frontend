@@ -25,7 +25,6 @@ class addOrganization extends Component {
       childOrgName
     };
     this.props.onAddOrgChartChild(apiObj);
-    this.props.fetchOrgHierarchy(this.props.match.params.id);
   };
 
   render() {
@@ -81,7 +80,7 @@ class addOrganization extends Component {
                     this.props.history.goBack();
                   }}
                 >
-                  Cancel
+                  Go Back
                 </button>
                 <button className="btn btn-primary" onClick={this.onSave}>
                   Save
@@ -98,7 +97,7 @@ class addOrganization extends Component {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      changePage: () => push("/organization"),
+      changePage: orgId => push(`/organizations/${orgId}/organization-chart`),
       onAddOrgChartChild,
       fetchOrgHierarchy
     },

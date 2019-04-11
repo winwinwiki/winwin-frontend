@@ -273,13 +273,13 @@ class OrgList extends React.Component {
           />
         </div>
         <PopupModal
-          modalId="deleteModal"
-          modalTitle="Alert!"
-          modalContent={`Are you sure you want to delete '${
+          modalid="deleteModal"
+          modaltitle="Alert!"
+          modalcontent={`Are you sure you want to delete '${
             this.state.orgName
           }' ?`}
-          primaryButtonText="Delete Organization"
-          secondaryButtonText="Cancel"
+          primarybuttontext="Delete Organization"
+          secondarybuttontext="Cancel"
           handleDelete={() => this.handleOrgDelete(this.state.orgId)}
         />
       </section>
