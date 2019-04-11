@@ -157,18 +157,18 @@ class OrgDetail extends React.Component {
                   className="dropdown-menu dropdown-menu-right"
                   aria-labelledby="dropdownMenuLink"
                 >
-                  <a className="dropdown-item" href="#">
+                  {/* <a className="dropdown-item" href="#">
                     Change Status
-                  </a>
+                  </a> */}
                   <Link
                     className="dropdown-item"
                     to={`${match.url}/new-program`}
                   >
                     Add Program
                   </Link>
-                  <a className="dropdown-item" href="#">
+                  {/* <a className="dropdown-item" href="#">
                     Add Child Organization
-                  </a>
+                  </a> */}
                   <Link
                     className="dropdown-item"
                     to={`${match.url}/view-history`}
