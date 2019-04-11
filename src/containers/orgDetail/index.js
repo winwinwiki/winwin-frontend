@@ -45,7 +45,7 @@ class OrgDetail extends React.Component {
     return (
       <React.Fragment>
         <div className="py-4 border-bottom d-flex justify-content-between">
-          {/* <div
+          <div
             aria-label="breadcrumb"
             className="col breadcrumb-container pr-0"
           >
@@ -138,7 +138,7 @@ class OrgDetail extends React.Component {
                 </h2>
               </li>
             </ol>
-          </div> */}
+          </div>
           <div className="ml-auto">
             <div className="d-flex align-items-center">
               <div className="dropdown">
