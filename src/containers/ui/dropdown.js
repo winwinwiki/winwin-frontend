@@ -37,7 +37,7 @@ class Dropdown extends React.Component {
                 onClick={this.onChange.bind(this, item)}
                 className="dropdown-item"
               >
-                {item.value}
+                {item}
               </a>
             ))}
         </div>

@@ -28,11 +28,14 @@ const setPriorityHigh = "Set Priority High";
 const setPriorityNormal = "Set Priority Normal";
 const markReadyForTagging = "Mark 'Ready for Tagging'";
 
-const filterList = [
-  { id: "High", value: setPriorityHigh },
-  { id: "Normal", value: setPriorityNormal },
-  { id: "Untagged", value: markReadyForTagging }
-];
+const filterList = [setPriorityHigh, setPriorityNormal, markReadyForTagging];
+
+const priorityStatus = {
+  "Set Priority High": "High",
+  "Set Priority Normal": "Normal",
+  "Mark 'Ready for Tagging'": "Untagged"
+};
+
 const buttonList = [
   { id: "all", name: "All" },
   { id: "public", name: "Public" },
@@ -327,14 +330,15 @@ class OrgList extends React.Component {
 
   onDropdownChange = (e, val) => {
     let { selectedOrgList } = this.state;
-    if (val === markReadyForTagging)
+    if (val === priorityStatus[markReadyForTagging])
       selectedOrgList.map(x => {
-        x.tagStatus = filterList.find(obj => obj.id === val.id).id;
+        x.tagStatus = priorityStatus[val];
+
         return x;
       });
     else
       selectedOrgList.map(x => {
-        x.priority = filterList.find(obj => obj.id === val.id).id;
+        x.priority = priorityStatus[val];
         return x;
       });
     this.props.onSaveOrgBasicInfo(selectedOrgList);
