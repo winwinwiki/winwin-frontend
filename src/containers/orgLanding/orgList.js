@@ -180,7 +180,7 @@ class OrgList extends React.Component {
     },
     {
       id: "revenue",
-      Header: "Total Revenue",
+      Header: "Total Revenue($)",
       accessor: "revenue",
       sortable: true,
       Cell: row => <div className="centerText">{row.value}</div>
