@@ -140,12 +140,13 @@ class OrgDetailPage extends React.Component {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="category">Sector Level Name</label>
+                    <label htmlFor="sectorLevelName">Sector Level Name</label>
                     <input
                       type="text"
                       className="form-control"
                       name="sectorLevelName"
                       id="category"
+                      onChange={this.onChange.bind(this)}
                       readOnly={
                         readOnly ||
                         (orgDetail.sector &&
