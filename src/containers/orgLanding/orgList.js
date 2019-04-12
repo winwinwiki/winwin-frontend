@@ -117,7 +117,7 @@ class OrgList extends React.Component {
     },
     {
       id: "org",
-      Header: "Organisation Name",
+      Header: "Organization Name",
       accessor: "name",
       Cell: row => (
         <React.Fragment>
