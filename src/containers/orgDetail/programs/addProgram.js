@@ -29,6 +29,7 @@ class addProgram extends Component {
       }
     };
     this.props.onAddProgram(apiObj);
+    this.props.changePage(this.props.orgId);
   };
 
   render() {
@@ -96,7 +97,7 @@ class addProgram extends Component {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      changePage: () => push("/programs"),
+      changePage: orgId => push(`/organizations/${orgId}/programs`),
       onAddProgram
     },
     dispatch
