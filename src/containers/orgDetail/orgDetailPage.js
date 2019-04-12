@@ -1,7 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import Dropdown from "../ui/dropdown";
-import { sectorsList, entityList, addressFields } from "../../constants";
+import {
+  sectorsList,
+  entityList,
+  addressFields,
+  tagStatusList
+} from "../../constants";
 import { bindActionCreators } from "redux";
 import { push } from "react-router-redux";
 import { onSaveOrgBasicInfo } from "../../actions/orgDetail/orgDetailAction";
@@ -104,6 +109,18 @@ class OrgDetailPage extends React.Component {
                       onChange={this.onChange.bind(this)}
                       placeholder="Enter Organization Name"
                       value={orgDetail.name || ""}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="tagStatus">Tag Status</label>
+                    <Dropdown
+                      placeholder="Select Tag Status"
+                      selectedItem={orgDetail.tagStatus}
+                      name="tagStatus"
+                      containerClass="dropdown dropdown-with-searchbox"
+                      onChange={this.onDropdownChange.bind(this)}
+                      items={tagStatusList}
+                      disabled={readOnly}
                     />
                   </div>
                   <div className="section-title border-bottom pb-3 mb-3">

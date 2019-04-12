@@ -36,6 +36,13 @@ const priorityStatus = {
   "Mark 'Ready for Tagging'": "Untagged"
 };
 
+const tags = {
+  "Auto Tag": "autotag",
+  "Complete Tag": "completetag",
+  "Organization Tag": "organizationtag",
+  Untagged: "untagged"
+};
+
 const buttonList = [
   { id: "all", name: "All" },
   { id: "public", name: "Public" },
@@ -44,9 +51,9 @@ const buttonList = [
 ];
 
 const tagIcon = {
-  autoTag: "A",
-  completeTag: "C",
-  organizationTag: "O",
+  autotag: "A",
+  completetag: "C",
+  organizationtag: "O",
   untagged: "U"
 };
 
@@ -129,8 +136,8 @@ class OrgList extends React.Component {
                 }`}
               >
                 {row.original.tagStatus
-                  ? tagIcon[row.original.tagStatus]
-                  : tagIcon["autoTag"]}
+                  ? tagIcon[tags[row.original.tagStatus]]
+                  : tagIcon["autotag"]}
               </h1>
             </div>
             {/* <div className="org-tag-footer" /> */}
@@ -340,7 +347,7 @@ class OrgList extends React.Component {
 
   onDropdownChange = (e, val) => {
     let { selectedOrgList } = this.state;
-    if (val === priorityStatus[markReadyForTagging])
+    if (val === markReadyForTagging)
       selectedOrgList.map(x => {
         x.tagStatus = priorityStatus[val];
 
