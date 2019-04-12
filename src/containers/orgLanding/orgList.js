@@ -44,10 +44,10 @@ const buttonList = [
 ];
 
 const tagIcon = {
-  autotag: "A",
-  completetag: "C",
-  organizationtag: "O",
-  untagged: "U"
+  "Auto Tag": "A",
+  "Complete Tag": "C",
+  "Organization Tag": "O",
+  Untagged: "U"
 };
 
 const tagColor = {
