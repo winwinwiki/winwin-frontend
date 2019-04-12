@@ -71,7 +71,10 @@ class ProgramSidebar extends React.Component {
             )}
           >
             <i className="icon-chevron-left mr-1" />
-            <h4>{programDetail.data.response.name}</h4>
+            <h4>
+              {programDetail.data.response.name ||
+                programDetail.data.response[0].name}
+            </h4>
           </Link>
         </div>
         <ul className="list-group list-group-flush pr-3">

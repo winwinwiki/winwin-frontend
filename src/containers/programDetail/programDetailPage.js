@@ -132,7 +132,7 @@ class ProgramDetailPage extends Component {
     const {
       programDetail: { response: apiObj }
     } = this.state;
-    this.props.saveProgramDetailsAction(apiObj);
+    this.props.saveProgramDetailsAction([apiObj]);
   };
 }
 

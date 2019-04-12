@@ -92,7 +92,6 @@ const OrgDetailRoutes = props => (
       /> */}
       <PrivateRoute
         title={props.title}
-        description={props.description}
         authenticated={true}
         exact
         orgId={props.match.params.id}
