@@ -32,6 +32,7 @@ const OrgDetailRoutes = props => (
       />
       <PrivateRoute
         title={props.title}
+        description={props.description}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -41,6 +42,7 @@ const OrgDetailRoutes = props => (
       />
       <PrivateRoute
         title={props.title}
+        description={props.description}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -50,6 +52,7 @@ const OrgDetailRoutes = props => (
       />
       <PrivateRoute
         title={props.title}
+        description={props.description}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -59,6 +62,7 @@ const OrgDetailRoutes = props => (
       />
       <PrivateRoute
         title={props.title}
+        description={props.description}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -68,6 +72,7 @@ const OrgDetailRoutes = props => (
       />
       <PrivateRoute
         title={props.title}
+        description={props.description}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -75,17 +80,19 @@ const OrgDetailRoutes = props => (
         component={SdgTags}
         type={"Organization"}
       />
-      <PrivateRoute
+      {/* <PrivateRoute
         title={props.title}
+        description={props.description}
         authenticated={true}
         exact
         orgId={props.match.params.id}
         path={`${props.match.path}/new-page`}
         component={NewPage}
         type={"Organization"}
-      />
+      /> */}
       <PrivateRoute
         title={props.title}
+        description={props.description}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -95,6 +102,7 @@ const OrgDetailRoutes = props => (
       />
       <PrivateRoute
         title={props.title}
+        description={props.description}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -104,6 +112,7 @@ const OrgDetailRoutes = props => (
       />
       <PrivateRoute
         title={props.title}
+        description={props.description}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -113,6 +122,7 @@ const OrgDetailRoutes = props => (
       />
       <PrivateRoute
         title={props.title}
+        description={props.description}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -122,6 +132,7 @@ const OrgDetailRoutes = props => (
       />
       <PrivateRoute
         title={props.title}
+        description={props.description}
         authenticated={true}
         exact
         orgId={props.match.params.id}
@@ -131,12 +142,14 @@ const OrgDetailRoutes = props => (
       />
       <CrumbRoute
         title={"Program Details"}
+        description={props.description}
         orgId={props.match.params.id}
         path={`${props.match.path}/programs/:programId`}
         component={ProgramDetailRoutes}
       />
       <PrivateRoute
         title={props.title}
+        description={props.description}
         authenticated={true}
         orgId={props.match.params.id}
         exact

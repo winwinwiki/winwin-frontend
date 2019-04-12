@@ -37,6 +37,9 @@ const OrgLandingRoutes = props => (
         title={
           props.organizationDetail && titleCase(props.organizationDetail.name)
         }
+        description={
+          props.organizationDetail && props.organizationDetail.description
+        }
         path="/organizations/:id"
         component={OrgDetailRoutes}
       />
