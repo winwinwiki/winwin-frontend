@@ -36,6 +36,13 @@ const priorityStatus = {
   "Mark 'Ready for Tagging'": "Untagged"
 };
 
+const tags = {
+  "Auto Tag": "autotag",
+  "Complete Tag": "completetag",
+  "Organization Tag": "organizationtag",
+  Untagged: "untagged"
+};
+
 const buttonList = [
   { id: "all", name: "All" },
   { id: "public", name: "Public" },
@@ -44,10 +51,10 @@ const buttonList = [
 ];
 
 const tagIcon = {
-  "Auto Tag": "A",
-  "Complete Tag": "C",
-  "Organization Tag": "O",
-  Untagged: "U"
+  autotag: "A",
+  completetag: "C",
+  organizationtag: "O",
+  untagged: "U"
 };
 
 const tagColor = {
@@ -129,7 +136,7 @@ class OrgList extends React.Component {
                 }`}
               >
                 {row.original.tagStatus
-                  ? tagIcon[row.original.tagStatus.toLowerCase()]
+                  ? tagIcon[tags[row.original.tagStatus]]
                   : tagIcon["autotag"]}
               </h1>
             </div>
