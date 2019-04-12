@@ -18,7 +18,11 @@ export default ({
         }}
       >
         {Component ? (
-          <Component title={props.title} {...routeProps} />
+          <Component
+            title={props.title}
+            description={props.description}
+            {...routeProps}
+          />
         ) : (
           render(routeProps)
         )}

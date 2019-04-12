@@ -8049,11 +8049,6 @@ h5.modal-title {
   background-color: #F2F2F2; }
   .org-details-container .list-group-item:hover .action-icons {
     display: block; }
-  .org-details-container .list-group-item .action-icons {
-    transition: ease all .3s;
-    display: none; }
-    .org-details-container .list-group-item .action-icons.active {
-      display: block; }
 
 .action-icons {
   list-style: none;

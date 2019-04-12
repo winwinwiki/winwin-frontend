@@ -58,6 +58,7 @@ class ProgramDetailRoutes extends React.Component {
         <Switch>
           <PrivateRoute
             title={data && data.response.name}
+            description={data && data.response.description}
             orgId={match.params.programId}
             authenticated={isAuthenticated}
             exact
@@ -67,6 +68,7 @@ class ProgramDetailRoutes extends React.Component {
           />
           <PrivateRoute
             title={data && data.response.name}
+            description={data && data.response.description}
             orgId={match.params.programId}
             authenticated={isAuthenticated}
             exact
@@ -76,6 +78,7 @@ class ProgramDetailRoutes extends React.Component {
           />
           <PrivateRoute
             title={data && data.response.name}
+            description={data && data.response.description}
             orgId={match.params.programId}
             authenticated={isAuthenticated}
             exact
@@ -85,6 +88,7 @@ class ProgramDetailRoutes extends React.Component {
           />
           <PrivateRoute
             title={data && data.response.name}
+            description={data && data.response.description}
             orgId={match.params.programId}
             authenticated={isAuthenticated}
             exact
@@ -94,6 +98,7 @@ class ProgramDetailRoutes extends React.Component {
           />
           <PrivateRoute
             title={data && data.response.name}
+            description={data && data.response.description}
             orgId={match.params.programId}
             authenticated={isAuthenticated}
             exact
@@ -103,6 +108,7 @@ class ProgramDetailRoutes extends React.Component {
           />
           <PrivateRoute
             title={data && data.response.name}
+            description={data && data.response.description}
             orgId={match.params.programId}
             authenticated={isAuthenticated}
             path={`${match.path}`}

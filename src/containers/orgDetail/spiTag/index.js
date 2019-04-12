@@ -33,12 +33,7 @@ class SpiTags extends React.Component {
         <div className="col-md-18 m-auto card">
           <div className="col-md-18 m-auto d-flex flex-column py-3">
             <h3>{this.props.type} Description</h3>
-            <p>
-              Arts center conducts classes on any artistic or cultural topics
-              ranging from ?crafts, dance, singing, painting. Camps for youth
-              and adults and events ?open to the public. They also offer open
-              space for private events.
-            </p>
+            <p>{this.props.description}</p>
 
             <div className="section-title">Social Progress Index Tag</div>
             <form>
