@@ -103,12 +103,14 @@ class CreateUser extends Component {
       return;
     }
     const apiObj = {
-      name: fullName,
+      userDisplayName: fullName,
       email: email,
       role: role,
-      team: team
+      team: team,
+      imageUrl: "" //picture attribute in cognito is required
     };
     this.props.onCreateUser(apiObj);
+    this.props.changePage();
   };
 
   render() {

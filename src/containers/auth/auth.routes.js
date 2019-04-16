@@ -6,6 +6,7 @@ import Auth from "./";
 import Login from "./login";
 import ForgetPassword from "./forgetPassword";
 import ResetPassword from "./resetPassword";
+import newUserChangePassword from "./changePassword/newUserChangePassword";
 
 const AuthRoutes = () => (
   <React.Fragment>
@@ -15,6 +16,7 @@ const AuthRoutes = () => (
         <Route exact path="/" component={Login} />
         <Route exact path="/forget-password" component={ForgetPassword} />
         <Route exact path="/reset-password" component={ResetPassword} />
+        <Route exact path="/verify-user" component={newUserChangePassword} />
       </Switch>
       {/* </BrowserRouter> */}
     </Auth>

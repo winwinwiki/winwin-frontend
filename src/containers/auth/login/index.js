@@ -31,8 +31,11 @@ class Login extends React.Component {
 
   componentDidMount() {
     const { session } = this.props;
-    if (session && session.isAuthenticated && session.user) {
-      console.log("User session is already active, moving to landing page",session.user);
+    if (session && session.isAuthenticated && session.user && !session.error) {
+      console.log(
+        "User session is already active, moving to landing page",
+        session.user
+      );
       this.changePage(session.user);
     }
   }
@@ -50,8 +53,8 @@ class Login extends React.Component {
         email: "",
         password: ""
       });
-      console.log("User logged in, fetching user info");
-      this.props.fetchUserInfo();
+      // console.log("User logged in, fetching user info");
+      // this.props.fetchUserInfo();
     }
 
     if (
@@ -60,8 +63,22 @@ class Login extends React.Component {
       nextProps.session &&
       nextProps.session.user
     ) {
-      console.log("User logged in, user info received, moving to landing page",nextProps.session.user);
-      this.changePage(nextProps.session.user);
+      console.log(
+        "User logged in, user info received, moving to landing page",
+        nextProps.session.user
+      );
+      if (
+        nextProps.session.data &&
+        nextProps.session.isAuthenticated &&
+        !session.error
+      )
+        this.changePage(
+          nextProps.session.user,
+          nextProps.session.data.isNewUser
+        );
+      else if (nextProps.session.data || !nextProps.session.isAuthenticated)
+        //stop loader
+        this.props.stopLoaderAction();
     }
   }
 
@@ -164,12 +181,12 @@ class Login extends React.Component {
       this.setState({ formError });
       return;
     }
-    let isValidPwd = validate.password(value);
-    if (!isValidPwd) {
-      formError.password = "enter valid password";
-      this.setState({ formError });
-      return;
-    }
+    // let isValidPwd = validate.password(value);
+    // if (!isValidPwd) {
+    //   formError.password = "enter valid password";
+    //   this.setState({ formError });
+    //   return;
+    // }
     formError.password = "";
     this.setState({ formError });
     return;
@@ -191,16 +208,21 @@ class Login extends React.Component {
     }
     this.props.startLoaderAction("Logging in...");
     this.props.onLogin({ username: email, password: password });
+    !this.props.session.error && this.props.fetchUserInfo(email);
   }
 
-  changePage(userInfo) {
+  changePage(userInfo, isNewUser) {
     this.props.stopLoaderAction();
-    switch (userInfo.role) {
-      case "Administrator":
-      case "seeder":
-        return this.props.changePage("/organizations");
-      default:
-        return this.props.changePage("/organizations");
+    if (isNewUser) {
+      this.props.changePage("/verify-user", userInfo.email);
+    } else {
+      switch (userInfo.role) {
+        case "Administrator":
+        case "seeder":
+          return this.props.changePage("/organizations");
+        default:
+          return this.props.changePage("/organizations");
+      }
     }
   }
 }
@@ -213,7 +235,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      changePage: page => push(page),
+      changePage: (page, param) => push(page, param),
       onLogin,
       fetchUserInfo,
       startLoaderAction,
