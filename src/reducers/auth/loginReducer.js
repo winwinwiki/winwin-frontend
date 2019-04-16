@@ -14,10 +14,9 @@ const initialState = {
   data: null,
   error: false,
   user: localStorage.user ? JSON.parse(localStorage.user) : null,
-  isAuthenticated:
-    localStorage._authId && localStorage.user
-      ? localStorage._authId && !!JSON.parse(localStorage.user).email
-      : false
+  isAuthenticated: localStorage._auth
+    ? !!JSON.parse(localStorage._auth).accessToken
+    : false
 };
 
 export default (state = initialState, action) => {
@@ -31,12 +30,15 @@ export default (state = initialState, action) => {
       });
 
     case LOGIN_SUCCESS:
-      localStorage.setItem("_authId", action.response);
+      localStorage.setItem("_auth", JSON.stringify(action.response.response));
       return Object.assign({}, state, {
         loading: false,
-        data: action.response,
+        data: action.response.response,
         error: false,
-        isAuthenticated: true
+        isNewUser: action.response.response.isNewUser
+          ? action.response.response.isNewUser
+          : "",
+        isAuthenticated: true //access token is manadatory to login
       });
 
     case LOGIN_ERROR:
@@ -47,9 +49,9 @@ export default (state = initialState, action) => {
         isAuthenticated: false
       });
     case USERINFO_SUCCESS:
-      localStorage.setItem("user", JSON.stringify(action.response));
+      localStorage.setItem("user", JSON.stringify(action.response.response));
       return Object.assign({}, state, {
-        user: action.response,
+        user: action.response.response,
         isAuthenticated: true
       });
 
@@ -57,7 +59,7 @@ export default (state = initialState, action) => {
       // localStorage.setItem("user", JSON.stringify(action.response));
       const { response = {} } = action;
       return Object.assign({}, state, {
-        user: updateObject(state.user, response),
+        user: response.response,
         isAuthenticated: true
       });
 
@@ -72,7 +74,7 @@ export default (state = initialState, action) => {
 
     case LOGOUT: {
       localStorage.removeItem("user");
-      localStorage.removeItem("_authId");
+      localStorage.removeItem("_auth");
       return Object.assign({}, state, {
         loading: false,
         data: null,

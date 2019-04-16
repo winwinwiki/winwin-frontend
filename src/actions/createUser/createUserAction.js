@@ -8,7 +8,7 @@ import { api } from "../../api/api";
 export const onCreateUser = params => {
   return dispatch => {
     dispatch(createUserRequest());
-    api("/users", "POST", params, true).then(
+    api("/user", "POST", JSON.stringify(params), true).then(
       //to be integrated with api
       response => {
         dispatch(createUserSuccess(response));

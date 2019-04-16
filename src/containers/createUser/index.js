@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      changePage: () => push("/users"),
+      changePage: () => push("/user-management"),
       onCreateUser
     },
     dispatch

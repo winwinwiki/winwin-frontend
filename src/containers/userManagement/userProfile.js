@@ -9,6 +9,7 @@ import { rolesList } from "../../constants";
 import Dropdown from "../ui/dropdown";
 import validate from "../../util/validation";
 import "./userProfile.css";
+import { Link } from "react-router-dom";
 import { s3Upload } from "../../libs/awsLib";
 
 class UserProfile extends React.Component {
@@ -130,8 +131,8 @@ class UserProfile extends React.Component {
                           className="form-control"
                           onBlur={this.validateField}
                           onChange={this.onChange}
-                          name="name"
-                          value={userInfo.name}
+                          name="userDisplayName"
+                          value={userInfo.userDisplayName}
                           readOnly={readOnly}
                         />
                         {userProfileFormError.name && (
@@ -256,16 +257,20 @@ class UserProfile extends React.Component {
   }
 
   renderSelectedFile = () => {
-    const { file } = this.state;
+    const { file, isEditable } = this.state;
     if (file) {
       return (
         <div className="upload-image-wrap d-flex flex-wrap mb-4">
           <div className="col-sm-22">
-            <a href={file.preview}>{file.name}</a>
+            <a rel="noopener noreferrer" href={file.preview} target="_blank">
+              {file.name}
+            </a>
           </div>
-          <div className="col-sm-2">
-            <span className="icon-close" onClick={this.dropFile} />
-          </div>
+          {isEditable && (
+            <div className="col-sm-2">
+              <span className="icon-close" onClick={this.dropFile} />
+            </div>
+          )}
         </div>
       );
     } else {
@@ -279,19 +284,20 @@ class UserProfile extends React.Component {
 
   async setUserInfo() {
     const { session } = this.props;
-    const currentUser = await Auth.currentAuthenticatedUser({
-      bypassCache: true // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
-    });
-    const { attributes } = currentUser;
-    const userProfileObj = {
-      name: attributes["custom:fullName"],
-      email: attributes.email,
-      role: attributes["custom:role"],
-      team: attributes["custom:team"]
-    };
+    // const currentUser = await Auth.currentAuthenticatedUser({
+    //   bypassCache: true // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
+    // });
+    // const { attributes } = currentUser;
+    // const userProfileObj = {
+    //   name: attributes["custom:fullName"],
+    //   email: attributes.email,
+    //   role: attributes["custom:role"],
+    //   team: attributes["custom:team"]
+    // };
     if (session && session.user) {
       this.setState({
-        userInfo: updateObject(session.user, userProfileObj)
+        // userInfo: updateObject(session.user, userProfileObj)
+        userInfo: session.user
       });
     }
   }
@@ -339,23 +345,36 @@ class UserProfile extends React.Component {
     });
   }
 
-  saveUserImage = async () => {
-    try {
-      const { file } = this.state;
-      const attachment = file ? await s3Upload(file) : null;
-      this.setState({ profileImage: attachment });
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  // saveUserImage = async () => {
+  //   try {
+  //     const { file } = this.state;
+  //     const attachment = file ? await s3Upload(file) : null;
+  //     this.setState({ profileImage: attachment });
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   async saveUserInfo() {
     this.setState({
       isEditable: false
     });
-    const { userInfo } = this.state;
-    await this.saveUserImage();
-    this.props.onSaveUserInfo(userInfo, this.state.profileImage);
+    const { file } = this.state;
+    // await this.saveUserImage();
+    if (!file)
+      this.setState(
+        state => {
+          return {
+            ...state,
+            userInfo: {
+              ...state.userInfo,
+              imageUrl: null //store base64 image
+            }
+          };
+        },
+        () => this.props.onSaveUserInfo(this.state.userInfo)
+      );
+    this.props.onSaveUserInfo(this.state.userInfo);
   }
 
   cancelUserInfo() {
@@ -376,12 +395,26 @@ class UserProfile extends React.Component {
     }
     Object.keys(recievedFiles).forEach(key => {
       let reader = new FileReader();
+      reader.readAsDataURL(recievedFiles[key]);
+      this.setState({ file: recievedFiles[key] }); // to show the uploaded image
+
       reader.onload = () => {
-        this.setState({ file: recievedFiles[key] });
+        this.setState(state => {
+          return {
+            ...state,
+            userInfo: {
+              ...state.userInfo,
+              // imageUrl: reader.result //store base64 image
+              imageUrl: null //store base64 image
+            }
+          };
+        });
         this.validateDataFeedForm("file", recievedFiles[key]);
         // this.props.onFileChange(files, deleteImages);
       };
-      reader.readAsDataURL(recievedFiles[key]);
+      reader.onerror = function(error) {
+        this.setState({ error });
+      };
     });
   };
 

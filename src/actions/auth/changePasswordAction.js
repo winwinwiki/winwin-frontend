@@ -3,40 +3,80 @@ import {
   CHANGEPASSWORD_SUCCESS,
   CHANGEPASSWORD_ERROR
 } from "../../constants/dispatch";
-import { Auth } from "aws-amplify";
+import { api } from "../../api/api";
 
 export const onChangePassword = params => {
   return dispatch => {
-    dispatch(cpRequest());
-    Auth.changePassword(
-      params.currentUser,
-      params.oldPassword,
-      params.newPassword
+    dispatch(changePasswordRequest());
+    const accessToken = localStorage.getItem("_auth")
+      ? JSON.parse(localStorage.getItem("_auth")).accessToken
+      : null;
+    const userObj = {
+      accessToken,
+      password: params.oldPassword,
+      newPassword: params.newPassword
+    };
+    return api(
+      "/user/changePassword",
+      "POST",
+      JSON.stringify(userObj),
+      false
     ).then(
       response => {
-        dispatch(cpSuccess(response));
+        dispatch(changePasswordSuccess(response));
       },
       error => {
-        dispatch(cpError(error));
+        dispatch(changePasswordError(error));
+      }
+    );
+  };
+
+  // using amplify
+  // return dispatch => {
+  //   dispatch(changePasswordRequest());
+  //   Auth.changePassword(
+  //     params.currentUser,
+  //     params.oldPassword,
+  //     params.newPassword
+  //   ).then(
+  //     response => {
+  //       dispatch(changePasswordSuccess(response));
+  //     },
+  //     error => {
+  //       dispatch(changePasswordError(error));
+  //     }
+  //   );
+  // };
+};
+
+export const onNewUserChangePassword = params => {
+  return dispatch => {
+    dispatch(changePasswordRequest());
+    return api("/user/login", "POST", JSON.stringify(params), false).then(
+      response => {
+        dispatch(changePasswordSuccess(response));
+      },
+      error => {
+        dispatch(changePasswordError(error));
       }
     );
   };
 };
 
-function cpRequest() {
+function changePasswordRequest() {
   return {
     type: CHANGEPASSWORD_REQUEST
   };
 }
 
-function cpSuccess(response) {
+function changePasswordSuccess(response) {
   return {
     type: CHANGEPASSWORD_SUCCESS,
     response
   };
 }
 
-function cpError(error) {
+function changePasswordError(error) {
   return {
     type: CHANGEPASSWORD_ERROR,
     error

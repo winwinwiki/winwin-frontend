@@ -54,7 +54,7 @@ const Header = props => {
                 aria-expanded="false"
                 className="nav-link dropdown-toggle active"
               >
-                {userInfo.name}
+                {userInfo.userDisplayName}
                 <img
                   src="/images/profile-pic.png"
                   alt="Profile Pic"

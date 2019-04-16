@@ -28,8 +28,8 @@ class CommonUtil {
   }
 
   static getToken() {
-    let token = localStorage.getItem("_token")
-      ? localStorage.getItem("_token")
+    let token = localStorage.getItem("_auth")
+      ? localStorage.getItem("_auth").accessToken
       : null;
     return {
       Authorization: "Bearer " + token,
@@ -38,8 +38,8 @@ class CommonUtil {
   }
 
   static getAuthId() {
-    let authId = localStorage.getItem("_authId")
-      ? localStorage.getItem("_authId")
+    let authId = localStorage.getItem("_auth")
+      ? localStorage.getItem("_auth")
       : null;
     return {
       "user-auth-id": authId,
