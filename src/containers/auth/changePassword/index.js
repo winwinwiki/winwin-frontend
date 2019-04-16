@@ -7,22 +7,16 @@ import { push } from "react-router-redux";
 import { Auth } from "aws-amplify";
 
 class UserProfile extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+  state = {
+    oldPassword: "",
+    newPassword: "",
+    retypeNewPass: "",
+    formError: {
       oldPassword: "",
       newPassword: "",
-      retypeNewPass: "",
-      formError: {
-        oldPassword: "",
-        newPassword: "",
-        retypeNewPass: ""
-      }
-    };
-
-    this.onChange = this.onChange.bind(this);
-    this.validateField = this.validateField.bind(this);
-  }
+      retypeNewPass: ""
+    }
+  };
 
   componentWillReceiveProps(nextProps) {
     const { changePassword } = this.props;
@@ -154,13 +148,13 @@ class UserProfile extends React.Component {
     );
   }
 
-  onChange(e) {
+  onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-  }
+  };
 
-  validateField(e) {
+  validateField = e => {
     this.validateChangetPasswordForm(e.target.name, e.target.value);
-  }
+  };
 
   validateChangetPasswordForm = (field, value) => {
     const { formError, newPassword, retypeNewPass } = this.state;
@@ -196,16 +190,7 @@ class UserProfile extends React.Component {
     return;
   };
 
-  editUserInfo() {
-    this.setState({
-      isEditable: true
-    });
-  }
-
-  async saveUserInfo() {
-    this.setState({
-      isEditable: false
-    });
+  saveUserInfo = () => {
     const { oldPassword, retypeNewPass, newPassword } = this.state;
     if (!retypeNewPass || !newPassword) {
       this.validateChangetPasswordForm("retypeNewPass", retypeNewPass);
@@ -215,13 +200,11 @@ class UserProfile extends React.Component {
 
     // const currentUser = await Auth.currentAuthenticatedUser();
     this.props.onChangePassword({ oldPassword, newPassword });
-  }
+  };
 
-  cancelUserInfo() {
-    this.setState({
-      isEditable: false
-    });
-  }
+  cancelUserInfo = () => {
+    this.props.history.goBack();
+  };
 }
 
 const mapStateToProps = state => ({
