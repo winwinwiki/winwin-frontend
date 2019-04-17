@@ -87,7 +87,9 @@ const Header = props => {
                 <AccessComponent role={userInfo.role} access={["all"]}>
                   {" "}
                   <Link
-                    to={`/user-management/${userInfo.id}`}
+                    to={`/user-management/${encodeURIComponent(
+                      userInfo.email
+                    )}`}
                     className="dropdown-item"
                   >
                     My Profile
