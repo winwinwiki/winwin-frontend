@@ -107,7 +107,8 @@ class CreateUser extends Component {
       email: email,
       role: role,
       team: team,
-      imageUrl: "" //picture attribute in cognito is required
+      imageUrl: "", //picture attribute in cognito is required,
+      isActive: true //by default user is in active status
     };
     this.props.onCreateUser(apiObj);
     this.props.changePage();

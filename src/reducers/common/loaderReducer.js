@@ -1,4 +1,8 @@
-import { LOADER_START, LOADER_STOP } from "../../constants/dispatch";
+import {
+  LOADER_START,
+  LOADER_STOP,
+  LOGIN_ERROR
+} from "../../constants/dispatch";
 
 const initialState = {
   loading: false,
@@ -13,6 +17,12 @@ export default (state = initialState, action) => {
         message: action.data
       });
     case LOADER_STOP:
+      return Object.assign({}, state, {
+        loading: false,
+        message: null
+      });
+
+    case LOGIN_ERROR:
       return Object.assign({}, state, {
         loading: false,
         message: null

@@ -11,7 +11,7 @@ export const onCreateUser = params => {
     api("/user", "POST", JSON.stringify(params), true).then(
       //to be integrated with api
       response => {
-        dispatch(createUserSuccess(response));
+        dispatch(createUserSuccess(params));
       },
       error => {
         dispatch(createUserError(error));
