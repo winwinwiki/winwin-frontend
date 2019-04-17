@@ -4,11 +4,18 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import { fetchUsersList } from "../../actions/userManagement/userListAction";
+import {
+  fetchUsersList,
+  deleteUser
+} from "../../actions/userManagement/userListAction";
 import UploadUserModal from "./uploadUsersModal";
 import Dropdown from "../ui/dropdown";
 import Search from "../ui/searchBar";
 import ButtonGroup from "../ui/buttonGroup";
+import {
+  startLoaderAction,
+  stopLoaderAction
+} from "../../actions/common/loaderActions";
 
 const actionList = ["Make Active", "Make Inactive"];
 const buttonList = [
@@ -16,88 +23,18 @@ const buttonList = [
   { id: "active", name: "Active" },
   { id: "inactive", name: "Inactive" }
 ];
-const columns = [
-  {
-    id: "select",
-    Header: (
-      <span>
-        <input type="checkbox" />
-      </span>
-    ),
-    accessor: "select",
-    sortable: false,
-    Cell: row => (
-      <div className="centerText">
-        <input type="checkbox" checked={row.value} />
-      </div>
-    ),
-    width: 50
-  },
-  {
-    id: "user",
-    Header: "User Name",
-    accessor: row => {
-      return { name: row.name, status: row.status };
-    },
-    sortable: true,
-    Cell: row => {
-      return (
-        <React.Fragment>
-          <div
-            className={`statusCircle d-inline-block mx-2 ${
-              row.value.status === "Active" ? "active" : ""
-            }`}
-          />
-          <div className="d-inline-block centerText">{row.value.name}</div>
-        </React.Fragment>
-      );
-    }
-  },
-  {
-    id: "role",
-    Header: "Role",
-    accessor: "role",
-    sortable: false,
-    Cell: row => <div className="centerText">{row.value}</div>
-  },
-  {
-    id: "team",
-    Header: "Team",
-    accessor: "team",
-    sortable: false,
-    Cell: row => <div className="centerText">{row.value}</div>
-  },
-  {
-    id: "delete",
-    Header: "",
-    accessor: "id",
-    sortable: false,
-    Cell: row => <span className="centerText" />,
-    width: 50
-  }
-];
 
 class UserList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      action: "",
-      userList: [],
-      activeButton: ["Active"],
-      searchText: "",
-      upload: ""
-    };
-    this.onChange = this.onChange.bind(this);
-    this.changePage = this.changePage.bind(this);
-    this.onDropdownChange = this.onDropdownChange.bind(this);
-    this.setActiveButton = this.setActiveButton.bind(this);
-    this.onSingleRowSelect = this.onSingleRowSelect.bind(this);
-    this.onColumnSelect = this.onColumnSelect.bind(this);
-    this.onEditUser = this.onEditUser.bind(this);
-    this.onCreateUserDownload = this.onCreateUserDownload.bind(this);
-  }
+  state = {
+    action: "",
+    userList: [],
+    activeButton: ["Active"],
+    searchText: "",
+    upload: ""
+  };
 
   componentDidMount() {
+    this.props.startLoaderAction();
     this.props.fetchUsersList();
     if (this.props.userList.length > 0) {
       this.setState({
@@ -116,10 +53,90 @@ class UserList extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.userList !== this.props.userList &&
+      this.props.userList.data
+    ) {
+      this.props.stopLoaderAction();
+    }
+  }
+
+  columns = [
+    {
+      id: "select",
+      Header: (
+        <span>
+          <input type="checkbox" />
+        </span>
+      ),
+      accessor: "select",
+      sortable: false,
+      Cell: row => (
+        <div className="centerText">
+          <input type="checkbox" checked={row.value} />
+        </div>
+      ),
+      width: 50
+    },
+    {
+      id: "user",
+      Header: "User Name",
+      // accessor: row => {
+      //   return { name: row.name, status: row.status };
+      // },
+      accessor: "userDisplayName",
+      sortable: true,
+      Cell: row => {
+        return (
+          <React.Fragment>
+            <div
+              className={`statusCircle d-inline-block mx-2 ${
+                row.original.isActive === "Active" ? "active" : ""
+              }`}
+            />
+            <div className="d-inline-block centerText">{row.value}</div>
+          </React.Fragment>
+        );
+      }
+    },
+    {
+      id: "role",
+      Header: "Role",
+      accessor: "role",
+      sortable: false,
+      Cell: row => <div className="centerText">{row.value}</div>
+    },
+    {
+      id: "team",
+      Header: "Team",
+      accessor: "team",
+      sortable: false,
+      Cell: row => <div className="centerText">{row.value}</div>
+    },
+    {
+      id: "delete",
+      Header: "",
+      accessor: "email",
+      sortable: false,
+      Cell: row => (
+        <span className="centerText" onClick={() => this.onDelete(row.value)} />
+      ),
+      width: 50
+    }
+  ];
+
+  onDelete = email => {
+    this.props.deleteUser({ email });
+  };
+
   render() {
-    const { userList, activeButton, searchText } = this.state;
-    const { isFetchUserSuccess } = this.props;
-    if (!isFetchUserSuccess || !userList) {
+    const {
+      userList: { data: userList } = {},
+      activeButton,
+      searchText
+    } = this.state;
+    if (!userList) {
       return null;
     }
     return (
@@ -180,16 +197,18 @@ class UserList extends React.Component {
             placeholder="Actions"
             name="action"
             containerClass="dropdown dropdown-with-searchbox"
-            onChange={this.onDropdownChange.bind(this)}
+            onChange={this.onDropdownChange}
             items={actionList}
           />
           <div className="result-count">{userList.length} users found</div>
         </div>
         <div>
           <ReactTable
-            pageSize={10}
+            pageSize={userList.length > 10 ? 10 : userList.length}
+            minRows={3}
+            noDataText="No users found"
             data={userList}
-            columns={columns}
+            columns={this.columns}
             className="-highlight"
             sortable={true}
             multiSort={true}
@@ -199,31 +218,8 @@ class UserList extends React.Component {
                 asc: true
               }
             ]}
-            getTdProps={(state, rowInfo, column) => {
+            getTheadThProps={(state, rowInfo) => {
               return {
-                onClick: e => {
-                  if (column.id !== "select" && column.id !== "delete") {
-                    this.changePage(rowInfo.original.id);
-                  } else if (column.id !== "select") {
-                    this.onSingleRowSelect(
-                      rowInfo.original.id,
-                      e.target.checked
-                    );
-                  } else if (column.id !== "delete") {
-                  }
-                },
-                style: {
-                  height: 50
-                }
-              };
-            }}
-            getTheadThProps={(state, rowInfo, column) => {
-              return {
-                onClick: e => {
-                  if (column.id === "select") {
-                    this.onColumnSelect(e.target.checked);
-                  }
-                },
                 style: {
                   height: 50,
                   verticalAlign: "middle",
@@ -231,6 +227,38 @@ class UserList extends React.Component {
                 }
               };
             }}
+            // getTdProps={(state, rowInfo, column) => {
+            //   return {
+            //     onClick: e => {
+            //       if (column.id !== "select" && column.id !== "delete") {
+            //         this.changePage(rowInfo.original.id);
+            //       } else if (column.id !== "select") {
+            //         this.onSingleRowSelect(
+            //           rowInfo.original.id,
+            //           e.target.checked
+            //         );
+            //       } else if (column.id !== "delete") {
+            //       }
+            //     },
+            //     style: {
+            //       height: 50
+            //     }
+            //   };
+            // }}
+            // getTheadThProps={(state, rowInfo, column) => {
+            //   return {
+            //     onClick: e => {
+            //       if (column.id === "select") {
+            //         this.onColumnSelect(e.target.checked);
+            //       }
+            //     },
+            //     style: {
+            //       height: 50,
+            //       verticalAlign: "middle",
+            //       lineHeight: 3
+            //     }
+            //   };
+            // }}
           />
         </div>
         <UploadUserModal />
@@ -238,50 +266,50 @@ class UserList extends React.Component {
     );
   }
 
-  onSingleRowSelect(id, value) {
-    const { userList } = this.state;
-    let newUserList = userList.slice();
-    newUserList = newUserList.map(user => {
-      if (user.id === id) {
-        user.select = value;
-      }
-      return user;
-    });
-    this.setState({
-      userList: newUserList
-    });
-  }
+  // onSingleRowSelect = (id, value) => {
+  //   const { userList: { data: userList } = {} } = this.state;
+  //   let newUserList = userList.slice();
+  //   newUserList = newUserList.map(user => {
+  //     if (user.id === id) {
+  //       user.select = value;
+  //     }
+  //     return user;
+  //   });
+  //   this.setState({
+  //     userList: newUserList
+  //   });
+  // };
 
-  onColumnSelect(value) {
-    const { userList } = this.state;
-    let newUserList = userList.slice();
-    newUserList = newUserList.map(user => {
-      user.select = value;
-      return user;
-    });
-    this.setState({
-      userList: newUserList
-    });
-  }
+  // onColumnSelect = value => {
+  //   const { userList } = this.state;
+  //   let newUserList = userList.slice();
+  //   newUserList = newUserList.map(user => {
+  //     user.select = value;
+  //     return user;
+  //   });
+  //   this.setState({
+  //     userList: newUserList
+  //   });
+  // };
 
-  onChange(e) {
+  onChange = e => {
     this.setState({
       searchText: e.target.value
     });
-  }
+  };
 
-  changePage(orgId) {
+  changePage = orgId => {
     this.props.changePage(orgId);
-  }
+  };
 
-  onDropdownChange(field, value) {
+  onDropdownChange = (field, value) => {
     this.setState({ [field]: value });
     if (field === "action" && value === "Edit User") {
       this.onEditUser();
     }
-  }
+  };
 
-  onCreateUserDownload() {
+  onCreateUserDownload = () => {
     let createUser = [
       {
         firstname: "",
@@ -293,9 +321,9 @@ class UserList extends React.Component {
       }
     ];
     this.downloadCSVFile("Create-User.csv", createUser);
-  }
+  };
 
-  onEditUser() {
+  onEditUser = () => {
     const { userList } = this.state;
     let selectedUsers = userList.slice();
     selectedUsers = selectedUsers.filter(user => user.select);
@@ -307,9 +335,9 @@ class UserList extends React.Component {
       });
       this.downloadCSVFile("Edit-User.csv", selectedUsers);
     }
-  }
+  };
 
-  createCSVFile(selectedUsers) {
+  createCSVFile = selectedUsers => {
     let result = "",
       ctr,
       keys = Object.keys(selectedUsers[0]);
@@ -329,9 +357,9 @@ class UserList extends React.Component {
       return result;
     });
     return result;
-  }
+  };
 
-  downloadCSVFile(fileName, selectedUsers) {
+  downloadCSVFile = (fileName, selectedUsers) => {
     let data, filename, link;
     let csv = this.createCSVFile(selectedUsers);
     if (csv == null) return;
@@ -347,9 +375,9 @@ class UserList extends React.Component {
     link.setAttribute("href", data);
     link.setAttribute("download", filename);
     link.click();
-  }
+  };
 
-  setActiveButton(field) {
+  setActiveButton = field => {
     const { activeButton } = this.state;
     let newSectors = activeButton.slice();
     if (field === "All") {
@@ -368,21 +396,21 @@ class UserList extends React.Component {
     this.setState({
       activeButton: newSectors
     });
-  }
+  };
 }
 
 const mapStateToProps = state => ({
-  isFetchUserPending: state.userManagement.isFetchUserPending,
-  isFetchUserSuccess: state.userManagement.isFetchUserSuccess,
-  fetchUserError: state.userManagement.fetchUserError,
-  userList: state.userManagement.userList
+  userList: state.userManagement
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       changePage: id => push("/user-management/" + id),
-      fetchUsersList
+      fetchUsersList,
+      startLoaderAction,
+      stopLoaderAction,
+      deleteUser
     },
     dispatch
   );

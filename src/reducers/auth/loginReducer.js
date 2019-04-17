@@ -30,7 +30,8 @@ export default (state = initialState, action) => {
       });
 
     case LOGIN_SUCCESS:
-      localStorage.setItem("_auth", JSON.stringify(action.response.response));
+      action.response.response &&
+        localStorage.setItem("_auth", JSON.stringify(action.response.response));
       return Object.assign({}, state, {
         loading: false,
         data: action.response.response,
@@ -49,7 +50,8 @@ export default (state = initialState, action) => {
         isAuthenticated: false
       });
     case USERINFO_SUCCESS:
-      localStorage.setItem("user", JSON.stringify(action.response.response));
+      action.response.response &&
+        localStorage.setItem("user", JSON.stringify(action.response.response));
       return Object.assign({}, state, {
         user: action.response.response,
         isAuthenticated: true

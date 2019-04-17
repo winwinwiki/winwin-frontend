@@ -16,14 +16,25 @@ export function api(url, method, body, isAuth) {
     //     .then((responseJson) => resolve(HandleError.checkResponse(responseJson)))
     //     .catch((error) => reject(error));
     // }
+    function handleErrors(response) {
+      if (!response.ok) {
+        response
+          .clone()
+          .json()
+          .then(json => {
+            reject(Error(json.response));
+          });
+      }
+      return response.json();
+    }
 
     if (method.toUpperCase() === "GET") {
       fetch(baseUrl, {
         method: method,
         headers: isAuth ? CommonUtil.getAuthId() : CommonUtil.getHeaders()
       })
-        .then(response => response.json())
-        .then(responseJson => resolve(HandleError.checkResponse(responseJson)))
+        .then(handleErrors)
+        .then(responseJson => resolve(responseJson))
         .catch(error => reject(error));
     } else {
       fetch(baseUrl, {
@@ -31,8 +42,8 @@ export function api(url, method, body, isAuth) {
         headers: isAuth ? CommonUtil.getAuthId() : CommonUtil.getHeaders(),
         body: body
       })
-        .then(response => response.json())
-        .then(responseJson => resolve(HandleError.checkResponse(responseJson)))
+        .then(handleErrors) //return a promise
+        .then(responseJson => resolve(responseJson)) //resolve the above promise
         .catch(error => reject(error));
     }
   });
