@@ -1,7 +1,10 @@
 import {
   LOADER_START,
   LOADER_STOP,
-  LOGIN_ERROR
+  LOGIN_ERROR,
+  USERINFO_REQUEST,
+  USERINFO_SUCCESS,
+  USERINFO_ERROR
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -26,6 +29,21 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         loading: false,
         message: null
+      });
+
+    case USERINFO_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
+    case USERINFO_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    case USERINFO_ERROR:
+      return Object.assign({}, state, {
+        loading: false
       });
     default:
       return state;

@@ -12,6 +12,7 @@ import UploadUserModal from "./uploadUsersModal";
 import Dropdown from "../ui/dropdown";
 import Search from "../ui/searchBar";
 import ButtonGroup from "../ui/buttonGroup";
+import { Link } from "react-router-dom";
 import {
   startLoaderAction,
   stopLoaderAction
@@ -95,7 +96,18 @@ class UserList extends React.Component {
                 row.original.isActive === "Active" ? "active" : ""
               }`}
             />
-            <div className="d-inline-block centerText">{row.value}</div>
+            <Link
+              className="centerText d-inline-block"
+              to={{
+                pathname:
+                  "user-management/" + encodeURIComponent(row.original.email),
+                state: {
+                  email: row.original.email
+                }
+              }}
+            >
+              {row.value}
+            </Link>
           </React.Fragment>
         );
       }

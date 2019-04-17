@@ -5,7 +5,8 @@ import {
   LOAD_USER_FROM_STORAGE,
   USERINFO_SUCCESS,
   LOGOUT,
-  SAVEUSERINFO_SUCCESS
+  SAVEUSERINFO_SUCCESS,
+  LOGGED_IN_USERINFO_SUCCESS
 } from "../../constants/dispatch";
 import { updateObject } from "../../util/util";
 
@@ -49,19 +50,11 @@ export default (state = initialState, action) => {
         error: true,
         isAuthenticated: false
       });
-    case USERINFO_SUCCESS:
+    case LOGGED_IN_USERINFO_SUCCESS:
       action.response.response &&
         localStorage.setItem("user", JSON.stringify(action.response.response));
       return Object.assign({}, state, {
         user: action.response.response,
-        isAuthenticated: true
-      });
-
-    case SAVEUSERINFO_SUCCESS:
-      // localStorage.setItem("user", JSON.stringify(action.response));
-      const { response = {} } = action;
-      return Object.assign({}, state, {
-        user: response.response,
         isAuthenticated: true
       });
 
