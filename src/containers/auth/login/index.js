@@ -11,6 +11,7 @@ import {
   startLoaderAction,
   stopLoaderAction
 } from "../../../actions/common/loaderActions";
+import { USER } from "../../../constants";
 
 class Login extends React.Component {
   constructor(props) {
@@ -208,7 +209,8 @@ class Login extends React.Component {
     }
     this.props.startLoaderAction("Logging in...");
     this.props.onLogin({ username: email, password: password });
-    !this.props.session.error && this.props.fetchUserInfo(email);
+    !this.props.session.error &&
+      this.props.fetchUserInfo(email, USER.isLoggedInUser);
   }
 
   changePage(userInfo, isNewUser) {

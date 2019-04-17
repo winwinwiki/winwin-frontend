@@ -1,10 +1,14 @@
 import {
   USERINFO_REQUEST,
   USERINFO_SUCCESS,
-  USERINFO_ERROR
+  USERINFO_ERROR,
+  LOGGED_IN_USERINFO_REQUEST,
+  LOGGED_IN_USERINFO_SUCCESS,
+  LOGGED_IN_USERINFO_ERROR
 } from "../../constants/dispatch";
 import { Auth } from "aws-amplify";
 import { api } from "../../api/api";
+import { USER } from "../../constants";
 // export const fetchUserInfo = () => {
 //   return dispatch => {
 //     dispatch(userInfoRequest());
@@ -27,19 +31,44 @@ import { api } from "../../api/api";
 //   };
 // };
 
-export const fetchUserInfo = email => {
+export const fetchUserInfo = (email, userState) => {
   return dispatch => {
-    dispatch(userInfoRequest());
+    if (USER.isUser === userState) dispatch(userInfoRequest());
+    if (USER.isLoggedInUser === userState) dispatch(loggedInUserInfoRequest());
     return api("/user/info", "POST", JSON.stringify({ email }), false).then(
       response => {
-        dispatch(userInfoSuccess(response));
+        if (USER.isUser === userState) dispatch(userInfoSuccess(response));
+        if (USER.isLoggedInUser === userState)
+          dispatch(loggedInUserInfoSuccess(response));
       },
       error => {
-        dispatch(userInfoError(error));
+        if (USER.isUser === userState) dispatch(userInfoError(error));
+        if (USER.isLoggedInUser === userState)
+          dispatch(loggedInUserInfoError(error));
       }
     );
   };
 };
+
+export function loggedInUserInfoRequest() {
+  return {
+    type: LOGGED_IN_USERINFO_REQUEST
+  };
+}
+
+export function loggedInUserInfoSuccess(response) {
+  return {
+    type: LOGGED_IN_USERINFO_SUCCESS,
+    response
+  };
+}
+
+export function loggedInUserInfoError(error) {
+  return {
+    type: LOGGED_IN_USERINFO_ERROR,
+    error
+  };
+}
 
 export function userInfoRequest() {
   return {

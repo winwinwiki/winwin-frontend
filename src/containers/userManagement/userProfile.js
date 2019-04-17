@@ -3,9 +3,10 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Upload from "../ui/upload";
 import { onSaveUserInfo } from "../../actions/users/saveUserInfoAction";
+import { fetchUserInfo } from "../../actions/users/userInfoAction";
 import { Auth, API } from "aws-amplify";
 import { updateObject } from "../../util/util";
-import { rolesList } from "../../constants";
+import { rolesList, USER } from "../../constants";
 import Dropdown from "../ui/dropdown";
 import validate from "../../util/validation";
 import "./userProfile.css";
@@ -13,28 +14,23 @@ import { Link } from "react-router-dom";
 import { s3Upload } from "../../libs/awsLib";
 
 class UserProfile extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      profileImage: null,
+  state = {
+    profileImage: null,
+    file: null,
+    userInfo: null,
+    isEditable: false,
+    userProfileFormError: {
       file: null,
-      userInfo: null,
-      isEditable: false,
-      userProfileFormError: {
-        file: null,
-        name: "",
-        role: "",
-        team: ""
-      }
-    };
+      name: "",
+      role: "",
+      team: ""
+    }
+  };
 
-    this.onChange = this.onChange.bind(this);
-    this.onDropdownChange = this.onDropdownChange.bind(this);
-    this.validateField = this.validateField.bind(this);
-  }
-  async componentDidMount() {
+  componentDidMount() {
     document.title = "User Details - Winwin";
-    const { session } = this.props;
+    const { session, location: { state: { email } = {} } = {} } = this.props;
+
     if (!session || !session.user || !session.isAuthenticated) {
       // try {
       //   const profileImage = await this.profileImage();
@@ -43,26 +39,25 @@ class UserProfile extends React.Component {
       //   alert(e);
       // }
       this.props.history.push("/");
+    } else if (email) {
+      this.props.fetchUserInfo(email, USER.isUser);
     } else {
       this.setUserInfo();
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { session } = this.props;
+    const { userInfo, location: { state: { email } = {} } = {} } = this.props;
+    email && this.setUserInfo();
     if (
       nextProps &&
-      nextProps.session &&
-      session.user !== nextProps.session.user &&
-      nextProps.session.user
+      nextProps.userInfo &&
+      userInfo.data !== nextProps.userInfo.data &&
+      nextProps.userInfo.data
     ) {
       this.setState({
-        userInfo: nextProps.session.user
+        userInfo: nextProps.userInfo.data
       });
-    }
-
-    if (nextProps && nextProps.session !== session && !nextProps.session.user) {
-      this.props.history.push("/");
     }
   }
 
@@ -74,7 +69,7 @@ class UserProfile extends React.Component {
       isEditable,
       file
     } = this.state;
-    const { session } = this.props;
+    const { session, userInfo: { data } = {} } = this.props;
     let readOnly = isEditable ? "" : "readOnly";
     if (!session || !session.user || !userInfo) {
       return null;
@@ -98,7 +93,7 @@ class UserProfile extends React.Component {
               </div>
             )}
             <div className="mb-4">
-              <h4>{propUserInfo.name}</h4>
+              <h4>{userInfo.userDisplayName}</h4>
             </div>
             <div className="row">
               <div className="col-13">
@@ -135,9 +130,9 @@ class UserProfile extends React.Component {
                           value={userInfo.userDisplayName}
                           readOnly={readOnly}
                         />
-                        {userProfileFormError.name && (
+                        {userProfileFormError.userDisplayName && (
                           <div className="text-danger small">
-                            {userProfileFormError.name}
+                            {userProfileFormError.userDisplayName}
                           </div>
                         )}
                       </div>
@@ -162,7 +157,7 @@ class UserProfile extends React.Component {
                           selectedItem={role || userInfo.role}
                           name="role"
                           containerClass="dropdown dropdown-with-searchbox"
-                          onChange={this.onDropdownChange.bind(this)}
+                          onChange={this.onDropdownChange}
                           items={rolesList}
                           disabled={readOnly}
                         />
@@ -282,7 +277,7 @@ class UserProfile extends React.Component {
     this.setState({ file: null });
   };
 
-  async setUserInfo() {
+  setUserInfo = () => {
     const { session } = this.props;
     // const currentUser = await Auth.currentAuthenticatedUser({
     //   bypassCache: true // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
@@ -300,24 +295,24 @@ class UserProfile extends React.Component {
         userInfo: session.user
       });
     }
-  }
+  };
 
-  onDropdownChange(field, value) {
+  onDropdownChange = (field, value) => {
     const { userInfo = {} } = this.state;
     userInfo.role = value;
     this.setState({ userInfo });
-  }
+  };
 
-  onChange(e) {
+  onChange = e => {
     let userInfo = Object.assign({}, this.state.userInfo, {
       [e.target.name]: e.target.value
     });
     this.setState({ userInfo: userInfo });
-  }
+  };
 
-  validateField(e) {
+  validateField = e => {
     this.validateCreateOrgForm(e.target.name, e.target.value);
-  }
+  };
 
   validateCreateOrgForm = (field, value) => {
     const { userProfileFormError: formError } = this.state;
@@ -339,11 +334,11 @@ class UserProfile extends React.Component {
     }
   };
 
-  editUserInfo() {
+  editUserInfo = () => {
     this.setState({
       isEditable: true
     });
-  }
+  };
 
   // saveUserImage = async () => {
   //   try {
@@ -355,7 +350,7 @@ class UserProfile extends React.Component {
   //   }
   // };
 
-  async saveUserInfo() {
+  saveUserInfo = () => {
     this.setState({
       isEditable: false
     });
@@ -375,15 +370,15 @@ class UserProfile extends React.Component {
         () => this.props.onSaveUserInfo(this.state.userInfo)
       );
     this.props.onSaveUserInfo(this.state.userInfo);
-  }
+  };
 
-  cancelUserInfo() {
+  cancelUserInfo = () => {
     const { session } = this.props;
     this.setState({
       isEditable: false,
       userInfo: session.user
     });
-  }
+  };
 
   onDrop = (recievedFiles, rejectedFiles) => {
     const { file } = this.state;
@@ -452,7 +447,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ onSaveUserInfo }, dispatch);
+  bindActionCreators({ onSaveUserInfo, fetchUserInfo }, dispatch);
 
 export default connect(
   mapStateToProps,
