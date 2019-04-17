@@ -367,9 +367,9 @@ class UserProfile extends React.Component {
             }
           };
         },
-        () => this.props.onSaveUserInfo(this.state.userInfo)
+        () => this.props.onSaveUserInfo([this.state.userInfo])
       );
-    this.props.onSaveUserInfo(this.state.userInfo);
+    this.props.onSaveUserInfo([this.state.userInfo]);
   };
 
   cancelUserInfo = () => {
