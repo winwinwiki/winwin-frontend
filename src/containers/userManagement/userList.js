@@ -17,6 +17,7 @@ import {
   startLoaderAction,
   stopLoaderAction
 } from "../../actions/common/loaderActions";
+import { PopupModal } from "../ui/popupModal";
 
 const actionList = ["Make Active", "Make Inactive"];
 const buttonList = [
@@ -132,13 +133,22 @@ class UserList extends React.Component {
       accessor: "email",
       sortable: false,
       Cell: row => (
-        <span className="centerText" onClick={() => this.onDelete(row.value)} />
+        <span
+          className="centerText"
+          data-toggle="modal"
+          data-target="#deleteModal"
+          onClick={() => this.setUser(row.value, row.original.userDisplayName)}
+        />
       ),
       width: 50
     }
   ];
 
-  onDelete = email => {
+  setUser = (email, userDisplayName) => {
+    this.setState({ email, userDisplayName });
+  };
+
+  handleDelete = email => {
     this.props.deleteUser({ email });
   };
 
@@ -274,6 +284,16 @@ class UserList extends React.Component {
           />
         </div>
         <UploadUserModal />
+        <PopupModal
+          modalid="deleteModal"
+          modaltitle="Alert!"
+          modalcontent={`Are you sure you want to delete '${
+            this.state.userDisplayName
+          }' ?`}
+          primarybuttontext="Delete User"
+          secondarybuttontext="Cancel"
+          handleDelete={() => this.handleDelete(this.state.email)}
+        />
       </section>
     );
   }
