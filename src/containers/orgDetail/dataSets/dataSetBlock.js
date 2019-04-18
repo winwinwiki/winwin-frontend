@@ -29,7 +29,7 @@ class DataSetBlock extends React.Component {
             </li>
           </ul>
         </div>
-        <div className="row">
+        <div className="row mt-2">
           <div className="col">
             <div className="form-group">
               <label htmlFor="dataSetName">Data Set Name</label>

@@ -28,7 +28,7 @@ const ResourceBlock = props => {
           </li>
         </ul>
       </div>
-      <div className="row">
+      <div className="row mt-2">
         <div className="col">
           <div className="form-group">
             <label htmlFor="category">Resource Name</label>
