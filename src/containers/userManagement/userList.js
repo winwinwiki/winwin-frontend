@@ -33,7 +33,7 @@ class UserList extends React.Component {
     userList: [],
     filteredList: [],
     activeButton: ["Active"],
-    searchText: "",
+    search: "",
     upload: "",
     selected: {},
     selectAll: 0
@@ -212,20 +212,37 @@ class UserList extends React.Component {
 
   render() {
     const {
-      userList: { data: userList } = {},
+      // userList: { data: userList } = {},
       activeButton,
-      searchText
+      search
     } = this.state;
+    let userList = this.state.userList.data;
     if (!userList) {
       return null;
+    }
+    //filter by searched text
+    if (this.state.search) {
+      userList = userList.filter(row => {
+        return (
+          row.userDisplayName.includes(this.state.search) ||
+          row.team.includes(this.state.search)
+        );
+      });
+    }
+    //search by status
+    if (this.state.activeButton.length === 1) {
+      if (this.state.activeButton.indexOf("Active") > -1)
+        userList = userList.filter(row => row.isActive === "true");
+      if (this.state.activeButton.indexOf("Inactive") > -1)
+        userList = userList.filter(row => row.isActive === "false");
     }
     return (
       <section className="dashboard-content p-0">
         <div className="d-flex align-content-center border-bottom py-3">
           <Search
             placeholder="Search by name or team"
-            onChange={this.onChange}
-            value={searchText}
+            onChange={e => this.setState({ search: e.target.value })}
+            value={search}
           />
 
           <ButtonGroup
@@ -384,7 +401,7 @@ class UserList extends React.Component {
 
   onChange = e => {
     this.setState({
-      searchText: e.target.value
+      search: e.target.value
     });
   };
 
