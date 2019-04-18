@@ -81,7 +81,7 @@ class SDGModal extends React.Component {
                       <React.Fragment key={idx1}>
                         <div className="col-sm-8">
                           <p className="border-bottom pb-3">
-                            {goalObj.goalName}
+                            {goalObj.goalCode + " " + goalObj.goalName}
                           </p>
                           <div className="item-list mb-4">
                             {goalObj.subGoals.map((subGoalObj, idx2) => (
@@ -96,11 +96,12 @@ class SDGModal extends React.Component {
                                   checked={this.isChecked(subGoalObj)}
                                   onChange={e => this.onChange(e, subGoalObj)}
                                 />
+
                                 <label
                                   htmlFor={subGoalObj.subGoalCode}
                                   className="custom-control-label"
                                 >
-                                  {" "}
+                                  {subGoalObj.subGoalCode}{" "}
                                   {subGoalObj.subGoalName}
                                 </label>
                               </div>
