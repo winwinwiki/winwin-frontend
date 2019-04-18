@@ -226,10 +226,64 @@ class OrgList extends React.Component {
   ];
 
   render() {
-    const { entity, orgList, activeButton, searchText } = this.state;
+    const { entity, activeButton, searchText } = this.state;
     const { appliedFilterList } = this.props;
+
+    let orgList = this.state.orgList;
     if (!orgList || !orgList.length) {
       return null;
+    }
+    //filter by searched text
+    if (this.state.searchText) {
+      orgList = orgList.filter(row => {
+        return (
+          (row.address.state &&
+            row.address.state.toLowerCase().includes(this.state.searchText)) ||
+          (row.address.county &&
+            row.address.county.toLowerCase().includes(this.state.searchText)) ||
+          (row.address.city &&
+            row.address.city.toLowerCase().includes(this.state.searchText)) ||
+          (row.address.country &&
+            row.address.country
+              .toLowerCase()
+              .includes(this.state.searchText)) ||
+          (row.address.street &&
+            row.address.street.toLowerCase().includes(this.state.searchText)) ||
+          (row.address.zip &&
+            row.address.zip.toLowerCase().includes(this.state.searchText))
+        );
+      });
+    }
+    //search by sector
+    if (this.state.activeButton.length === 1) {
+      if (this.state.activeButton.indexOf("Public") > -1)
+        orgList = orgList.filter(row => row.sector === "Public");
+      if (this.state.activeButton.indexOf("Private") > -1)
+        orgList = orgList.filter(row => row.sector === "Private");
+      if (this.state.activeButton.indexOf("Social") > -1)
+        orgList = orgList.filter(row => row.sector === "Social");
+    } else {
+      if (
+        this.state.activeButton.includes("Public") &&
+        this.state.activeButton.includes("Social")
+      )
+        orgList = orgList.filter(
+          row => row.sector === "Public" || row.sector === "Social"
+        );
+      if (
+        this.state.activeButton.includes("Public") &&
+        this.state.activeButton.includes("Private")
+      )
+        orgList = orgList.filter(
+          row => row.sector === "Public" || row.sector === "Private"
+        );
+      if (
+        this.state.activeButton.includes("Social") &&
+        this.state.activeButton.includes("Private")
+      )
+        orgList = orgList.filter(
+          row => row.sector === "Social" || row.sector === "Private"
+        );
     }
     return (
       <section className="dashboard-content p-0">
