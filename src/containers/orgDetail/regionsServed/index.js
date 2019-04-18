@@ -50,8 +50,6 @@ class RegionsServed extends Component {
     this.props.fetchRegionsList(this.props.orgId, this.props.type);
   }
 
-  static getDerivedStateFromProps = () => {};
-
   componentDidUpdate(prevProps) {
     if (
       prevProps.regionsServed !== this.props.regionsServed &&
@@ -250,6 +248,15 @@ class RegionsServed extends Component {
     ];
 
     this.props.saveOrgRegionsServed({ updatedRegions, orgId, type });
+    this.setState(state => {
+      return {
+        ...state,
+        regionsServed: {
+          ...state.regionsServed,
+          region: { ...state.regionsServed.region, regionName: "" }
+        }
+      };
+    });
   };
 
   onClose = () => {
