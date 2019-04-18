@@ -17,6 +17,7 @@ import {
   startLoaderAction,
   stopLoaderAction
 } from "../../actions/common/loaderActions";
+import { onSaveUserInfo } from "../../actions/users/saveUserInfoAction";
 import { PopupModal } from "../ui/popupModal";
 
 const actionList = ["Make Active", "Make Inactive"];
@@ -30,9 +31,12 @@ class UserList extends React.Component {
   state = {
     action: "",
     userList: [],
+    filteredList: [],
     activeButton: ["Active"],
     searchText: "",
-    upload: ""
+    upload: "",
+    selected: {},
+    selectAll: 0
   };
 
   componentDidMount() {
@@ -64,21 +68,75 @@ class UserList extends React.Component {
     }
   }
 
+  //******CheckBox**** */
+  toggleRow(email) {
+    const { userList: { data: userList } = {} } = this.state;
+    let { filteredList = [] } = this.state;
+    const newSelected = Object.assign({}, this.state.selected);
+    newSelected[email] = !this.state.selected[email];
+    if (newSelected[email]) {
+      filteredList = [
+        ...filteredList,
+        userList.filter(x => x.email === email)[0]
+      ];
+    } else filteredList = filteredList.filter(x => x.email !== email);
+
+    this.setState({
+      selected: newSelected,
+      selectAll: 2,
+      filteredList
+    });
+  }
+
+  toggleSelectAll() {
+    let newSelected = {};
+
+    if (this.state.selectAll === 0) {
+      this.state.userList.data.forEach(x => {
+        newSelected[x.email] = true;
+      });
+    }
+
+    this.setState({
+      selected: newSelected,
+      selectAll: this.state.selectAll === 0 ? 1 : 0,
+      filteredList: this.state.selectAll === 0 ? this.state.userList.data : []
+    });
+  }
+  //******CheckBox**** */
+
   columns = [
     {
       id: "select",
       Header: (
         <span>
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            className="checkbox"
+            checked={this.state.selectAll === 1}
+            ref={input => {
+              if (input) {
+                input.indeterminate = this.state.selectAll === 2;
+              }
+            }}
+            onChange={() => this.toggleSelectAll()}
+          />
         </span>
       ),
       accessor: "select",
       sortable: false,
-      Cell: row => (
-        <div className="centerText">
-          <input type="checkbox" checked={row.value} />
-        </div>
-      ),
+      Cell: ({ original }) => {
+        return (
+          <div className="centerText">
+            <input
+              type="checkbox"
+              className="checkbox"
+              checked={this.state.selected[original.email] === true}
+              onChange={() => this.toggleRow(original.email)}
+            />
+          </div>
+        );
+      },
       width: 50
     },
     {
@@ -94,7 +152,7 @@ class UserList extends React.Component {
           <React.Fragment>
             <div
               className={`statusCircle d-inline-block mx-2 ${
-                row.original.isActive === "Active" ? "active" : ""
+                JSON.parse(row.original.isActive) === true ? "active" : ""
               }`}
             />
             <Link
@@ -335,16 +393,28 @@ class UserList extends React.Component {
   };
 
   onDropdownChange = (field, value) => {
+    let { filteredList = [] } = this.state;
     this.setState({ [field]: value });
     if (field === "action" && value === "Edit User") {
       this.onEditUser();
     }
+    if (field === "action" && value === "Make Active")
+      filteredList = filteredList.map(x => {
+        x.isActive = true;
+        return x;
+      });
+    if (field === "action" && value === "Make Inactive")
+      filteredList = filteredList.map(x => {
+        x.isActive = false;
+        return x;
+      });
+    this.props.onSaveUserInfo(filteredList);
   };
 
   onCreateUserDownload = () => {
     let createUser = [
       {
-        firstname: "",
+        userDisplayName: "",
         lastname: "",
         email: "",
         role: "",
@@ -442,7 +512,8 @@ const mapDispatchToProps = dispatch =>
       fetchUsersList,
       startLoaderAction,
       stopLoaderAction,
-      deleteUser
+      deleteUser,
+      onSaveUserInfo
     },
     dispatch
   );
