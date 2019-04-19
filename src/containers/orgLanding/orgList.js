@@ -238,6 +238,8 @@ class OrgList extends React.Component {
       orgList = orgList.filter(row => {
         return (
           (row.address.state &&
+            row.name.toLowerCase().includes(this.state.searchText)) ||
+          (row.address.state &&
             row.address.state.toLowerCase().includes(this.state.searchText)) ||
           (row.address.county &&
             row.address.county.toLowerCase().includes(this.state.searchText)) ||
@@ -248,9 +250,7 @@ class OrgList extends React.Component {
               .toLowerCase()
               .includes(this.state.searchText)) ||
           (row.address.street &&
-            row.address.street.toLowerCase().includes(this.state.searchText)) ||
-          (row.address.zip &&
-            row.address.zip.toLowerCase().includes(this.state.searchText))
+            row.address.street.toLowerCase().includes(this.state.searchText))
         );
       });
     }
