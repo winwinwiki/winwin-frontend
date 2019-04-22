@@ -106,9 +106,9 @@ class Resources extends React.Component {
             </div>
             <form>
               <ul className="list-group list-group-flush">
-                {resourcesList.map(resource => (
+                {resourcesList.map((resource, index) => (
                   <ResourceBlock
-                    key={resource.id}
+                    key={index}
                     data={resource}
                     changeModalData={this.changeModalData}
                     selectedResource={this.selectedResource}
