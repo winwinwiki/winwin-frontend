@@ -36,10 +36,15 @@ class ProgramList extends React.Component {
   }
 
   render() {
-    const { programList, searchText } = this.state;
+    let { programList, searchText } = this.state;
     const { isFetchProgramSuccess } = this.props;
     if (!isFetchProgramSuccess || !programList) {
       return null;
+    }
+    if (searchText) {
+      programList = programList.filter(x =>
+        x.name.toLowerCase().includes(searchText)
+      );
     }
     return (
       <section className="dashboard-content p-0 py-3 org-details-container">
