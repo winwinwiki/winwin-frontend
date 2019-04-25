@@ -39,7 +39,7 @@ class CommonUtil {
 
   static getAuthId() {
     let authId = localStorage.getItem("_auth")
-      ? localStorage.getItem("_auth")
+      ? JSON.parse(localStorage.getItem("_auth")).accessToken
       : null;
     return {
       "user-auth-id": authId,
