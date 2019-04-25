@@ -8050,6 +8050,9 @@ h5.modal-title {
   .org-details-container .list-group-item:hover .action-icons {
     display: block; }
 
+.cursor-pointer {
+  cursor: pointer; }
+
 .action-icons {
   list-style: none;
   position: absolute;
