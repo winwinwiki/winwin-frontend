@@ -95,7 +95,8 @@ class OrgChart extends React.Component {
             orgChartModifiedData.id +
             "_add" +
             orgChartModifiedData.childrenType,
-          name: "+ Add New " + orgChartModifiedData.childrenType
+          // name: "+ Add New " + orgChartModifiedData.childrenType
+          name: "+ Add New Child"
         }
       ];
     } else {
@@ -105,7 +106,8 @@ class OrgChart extends React.Component {
       modifiedChildren.push({
         id:
           orgChartModifiedData.id + "_add" + orgChartModifiedData.childrenType,
-        name: "+ Add New " + orgChartModifiedData.childrenType
+        // name: "+ Add New " + orgChartModifiedData.childrenType
+        name: "+ Add New Child"
       });
       orgChartModifiedData["children"] = modifiedChildren;
     }
