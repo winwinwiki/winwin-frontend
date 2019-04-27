@@ -5,11 +5,13 @@ import {
 } from "../../constants/dispatch";
 import { Auth } from "aws-amplify";
 import { api } from "../../api/api";
+import { isUserProfile } from "../../constants";
 
-export const onSaveUserInfo = obj => {
+export const onSaveUserInfo = (obj, params) => {
   return dispatch => {
     dispatch(saveUserInfoRequest());
-    return api("/user/updateInfo", "POST", JSON.stringify(obj), false).then(
+    let url = params === isUserProfile ? "/user/update" : "/user/updateAll";
+    return api(url, "POST", JSON.stringify(obj), true).then(
       response => {
         dispatch(saveUserInfoSuccess(response));
       },

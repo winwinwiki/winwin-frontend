@@ -19,6 +19,7 @@ import {
 } from "../../actions/common/loaderActions";
 import { onSaveUserInfo } from "../../actions/users/saveUserInfoAction";
 import { PopupModal } from "../ui/popupModal";
+import { isUserProfile } from "../../constants";
 
 const actionList = ["Make Active", "Make Inactive"];
 const buttonList = [
@@ -425,7 +426,7 @@ class UserList extends React.Component {
         x.isActive = false;
         return x;
       });
-    this.props.onSaveUserInfo(filteredList);
+    this.props.onSaveUserInfo(filteredList, !isUserProfile);
   };
 
   onCreateUserDownload = () => {
