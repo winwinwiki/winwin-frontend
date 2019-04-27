@@ -37,7 +37,7 @@ class Login extends React.Component {
         "User session is already active, moving to landing page",
         session.user
       );
-      this.changePage(session.user);
+      this.changePage(session.data.user);
     }
   }
 
@@ -47,7 +47,7 @@ class Login extends React.Component {
       nextProps &&
       nextProps.session !== session &&
       nextProps.session.data &&
-      !nextProps.session.user &&
+      !nextProps.session.data.userDetails &&
       !nextProps.session.error
     ) {
       this.setState({
@@ -62,19 +62,15 @@ class Login extends React.Component {
       nextProps &&
       nextProps.session !== session &&
       nextProps.session &&
-      nextProps.session.user
+      nextProps.session.data
     ) {
-      console.log(
-        "User logged in, user info received, moving to landing page",
-        nextProps.session.user
-      );
       if (
         nextProps.session.data &&
         nextProps.session.isAuthenticated &&
         !session.error
       )
         this.changePage(
-          nextProps.session.user,
+          nextProps.session.data.userDetails,
           nextProps.session.data.isNewUser
         );
       else if (nextProps.session.data || !nextProps.session.isAuthenticated)
@@ -209,8 +205,8 @@ class Login extends React.Component {
     }
     this.props.startLoaderAction("Logging in...");
     this.props.onLogin({ username: email, password: password });
-    !this.props.session.error &&
-      this.props.fetchUserInfo(email, USER.isLoggedInUser);
+    // !this.props.session.error &&
+    //   this.props.fetchUserInfo(email, USER.isLoggedInUser);
   }
 
   changePage(userInfo, isNewUser) {
@@ -218,13 +214,12 @@ class Login extends React.Component {
     if (isNewUser) {
       this.props.changePage("/verify-user", userInfo.email);
     } else {
-      switch (userInfo.role) {
-        case "Administrator":
-        case "seeder":
-          return this.props.changePage("/organizations");
-        default:
-          return this.props.changePage("/organizations");
-      }
+      // switch (userInfo.role) {
+      //   case "Administrator":
+      //   case "seeder":
+      //     return this.props.changePage("/organizations");
+      //   default:
+      return this.props.changePage("/organizations");
     }
   }
 }
