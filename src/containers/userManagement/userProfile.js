@@ -6,7 +6,7 @@ import { onSaveUserInfo } from "../../actions/users/saveUserInfoAction";
 import { fetchUserInfo } from "../../actions/users/userInfoAction";
 import { Auth, API } from "aws-amplify";
 import { updateObject } from "../../util/util";
-import { rolesList, USER } from "../../constants";
+import { rolesList, USER, isUserProfile } from "../../constants";
 import Dropdown from "../ui/dropdown";
 import validate from "../../util/validation";
 import "./userProfile.css";
@@ -356,20 +356,19 @@ class UserProfile extends React.Component {
     });
     const { file } = this.state;
     // await this.saveUserImage();
-    if (!file)
-      this.setState(
-        state => {
-          return {
-            ...state,
-            userInfo: {
-              ...state.userInfo,
-              imageUrl: null //store base64 image
-            }
-          };
-        },
-        () => this.props.onSaveUserInfo([this.state.userInfo])
-      );
-    this.props.onSaveUserInfo([this.state.userInfo]);
+    // if (!file)
+    this.setState(
+      state => {
+        return {
+          ...state,
+          userInfo: {
+            ...state.userInfo,
+            imageUrl: null //store base64 image
+          }
+        };
+      },
+      () => this.props.onSaveUserInfo(this.state.userInfo, isUserProfile)
+    );
   };
 
   cancelUserInfo = () => {

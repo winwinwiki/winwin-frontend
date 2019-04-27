@@ -35,7 +35,7 @@ export const fetchUserInfo = (email, userState) => {
   return dispatch => {
     if (USER.isUser === userState) dispatch(userInfoRequest());
     if (USER.isLoggedInUser === userState) dispatch(loggedInUserInfoRequest());
-    return api("/user/info", "POST", JSON.stringify({ email }), false).then(
+    return api("/user/info", "POST", JSON.stringify({ email }), true).then(
       response => {
         if (USER.isUser === userState) dispatch(userInfoSuccess(response));
         if (USER.isLoggedInUser === userState)
