@@ -32,10 +32,18 @@ export default (state = initialState, action) => {
 
     case LOGIN_SUCCESS:
       action.response.response &&
-        localStorage.setItem("_auth", JSON.stringify(action.response.response));
+        localStorage.setItem(
+          "_auth",
+          JSON.stringify(action.response.response.authResult)
+        );
+      localStorage.setItem(
+        "user",
+        JSON.stringify(action.response.response.userDetails)
+      );
       return Object.assign({}, state, {
         loading: false,
-        data: action.response.response,
+        data: action.response.response.authResult,
+        user: action.response.response.userDetails,
         error: false,
         isNewUser: action.response.response.isNewUser
           ? action.response.response.isNewUser

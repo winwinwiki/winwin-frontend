@@ -4,7 +4,8 @@ import {
   LOGIN_ERROR,
   USERINFO_REQUEST,
   USERINFO_SUCCESS,
-  USERINFO_ERROR
+  USERINFO_ERROR,
+  LOGIN_SUCCESS
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -26,6 +27,12 @@ export default (state = initialState, action) => {
       });
 
     case LOGIN_ERROR:
+      return Object.assign({}, state, {
+        loading: false,
+        message: null
+      });
+
+    case LOGIN_SUCCESS:
       return Object.assign({}, state, {
         loading: false,
         message: null
