@@ -12,6 +12,7 @@ import { Provider } from "react-redux";
 import reducer from "./reducers";
 import Amplify from "aws-amplify";
 import apiConfig from "./buildConfig/apiConfig";
+import { checkTokenExpiration } from "./middlewares/checkTokenExpiration";
 
 Amplify.configure({
   Auth: {
@@ -40,8 +41,8 @@ Amplify.configure({
 export const history = createHistory();
 
 const initialState = {};
-const enhancers = [];
-const middleware = [thunk, routerMiddleware(history)];
+const enhancers = [checkTokenExpiration];
+const middleware = [thunk, routerMiddleware(history), ...enhancers];
 
 if (process.env.NODE_ENV === "development") {
   const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
@@ -54,10 +55,7 @@ if (process.env.NODE_ENV === "development") {
 const store = createStore(
   reducer,
   initialState,
-  compose(
-    applyMiddleware(...middleware),
-    ...enhancers
-  )
+  compose(applyMiddleware(...middleware))
 );
 
 ReactDOM.render(

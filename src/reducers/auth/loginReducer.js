@@ -76,8 +76,7 @@ export default (state = initialState, action) => {
     }
 
     case LOGOUT: {
-      localStorage.removeItem("user");
-      localStorage.removeItem("_auth");
+      localStorage.clear();
       return Object.assign({}, state, {
         loading: false,
         data: null,

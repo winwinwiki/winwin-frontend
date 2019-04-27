@@ -72,7 +72,7 @@ function loginError(error) {
   };
 }
 
-function logout() {
+export function logout() {
   return {
     type: LOGOUT
   };
