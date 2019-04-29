@@ -17,27 +17,26 @@ const OrgLandingRoutes = props => (
         authenticated={props.isAuthenticated}
         exact
         path="/user-management"
+        perform="users:list"
         component={UserList}
       />
       <PrivateRoute
         title="Change Password"
         authenticated={props.isAuthenticated}
         path="/change-password"
+        perform="users:changePassword"
         component={ChangePassword}
       />
       <CrumbRoute
         title="New User"
         path="/user-management/new"
+        perform="users:create"
         component={CreateUser}
       />
       <CrumbRoute
         title="User Details"
         path="/user-management/:id"
-        component={UserProfile}
-      />
-      <PrivateRoute
-        authenticated={props.isAuthenticated}
-        path="/my-profile/:id"
+        perform="users:getSelf"
         component={UserProfile}
       />
     </Switch>

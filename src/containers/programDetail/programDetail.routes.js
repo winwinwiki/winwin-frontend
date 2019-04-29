@@ -61,6 +61,7 @@ class ProgramDetailRoutes extends React.Component {
             description={data && data.response.description}
             orgId={match.params.programId}
             authenticated={isAuthenticated}
+            perform="programDetailsDataSet:list"
             exact
             path={`${match.path}/data-sets`}
             component={DataSets}
@@ -71,6 +72,7 @@ class ProgramDetailRoutes extends React.Component {
             description={data && data.response.description}
             orgId={match.params.programId}
             authenticated={isAuthenticated}
+            perform="programDetailsResources:list"
             exact
             path={`${match.path}/resources`}
             component={Resources}
@@ -81,6 +83,7 @@ class ProgramDetailRoutes extends React.Component {
             description={data && data.response.description}
             orgId={match.params.programId}
             authenticated={isAuthenticated}
+            perform="programDetailsRegionsServed:list"
             exact
             path={`${match.path}/regions-served`}
             component={RegionsServed}
@@ -91,6 +94,7 @@ class ProgramDetailRoutes extends React.Component {
             description={data && data.response.description}
             orgId={match.params.programId}
             authenticated={isAuthenticated}
+            perform="programDetailsSPITags:list"
             exact
             path={`${match.path}/spi-tags`}
             component={SpiTags}
@@ -101,6 +105,7 @@ class ProgramDetailRoutes extends React.Component {
             description={data && data.response.description}
             orgId={match.params.programId}
             authenticated={isAuthenticated}
+            perform="programDetailsSDGTags:list"
             exact
             path={`${match.path}/sdg-tags`}
             component={SdgTags}
@@ -111,6 +116,7 @@ class ProgramDetailRoutes extends React.Component {
             description={data && data.response.description}
             orgId={match.params.programId}
             authenticated={isAuthenticated}
+            perform="programDetails:list"
             path={`${match.path}`}
             component={ProgramDetailPage}
           />
