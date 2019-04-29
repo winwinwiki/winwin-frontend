@@ -38,7 +38,6 @@ class Resources extends React.Component {
     this.props.startLoaderAction();
     const orgId = await this.props.orgId;
     await this.props.fetchOrgResources(orgId, this.props.type);
-    await this.props.fetchResourceCategories(orgId, this.props.type);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -133,7 +132,7 @@ class Resources extends React.Component {
           type={this.props.type}
           orgId={this.props.orgId}
           modalData={selectedData}
-          categoriesList={resourceCategories}
+          // categoriesList={resourceCategories}
           title={modaltitle}
           newModalData={this.handleNewModalData}
         />
@@ -152,6 +151,8 @@ class Resources extends React.Component {
   }
   changeModalData = resourceId => {
     const { resourcesList } = this.state;
+    const { orgId, type } = this.props;
+    this.props.fetchResourceCategories(orgId, type);
     this.setState({
       selectedData: resourcesList.filter(
         resource => resource.id === resourceId

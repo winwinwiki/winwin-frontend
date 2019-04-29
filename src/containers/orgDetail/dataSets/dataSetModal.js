@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { saveOrgDataSets } from "../../../actions/orgDetail/dataSetAction";
 import Autosuggest from "react-autosuggest";
 import { compareStrings } from "../../../util/util";
+import { fetchDataSetCategories } from "../../../actions/orgDetail/dataSetCategoriesAction";
 
 const getSuggestionValue = suggestion => suggestion.categoryName;
 
@@ -20,12 +21,17 @@ class DataSetModal extends Component {
     }
   };
 
+  componentDidMount() {
+    const { orgId, type } = this.props;
+    // this.props.fetchDataSetCategories(orgId, type);
+  }
+
   componentWillReceiveProps(nextProps) {
     const { modalData } = this.props;
     if (
       nextProps.modalData !== modalData &&
       nextProps.modalData &&
-      nextProps.categoriesList
+      nextProps.categoriesList.data
     ) {
       if (!nextProps.modalData.error) {
         this.setState({
@@ -304,15 +310,20 @@ class DataSetModal extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  categoriesList: state.datasetCategories
+});
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      saveOrgDataSets
+      saveOrgDataSets,
+      fetchDataSetCategories
     },
     dispatch
   );
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(DataSetModal);
