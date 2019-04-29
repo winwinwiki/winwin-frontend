@@ -38,7 +38,7 @@ class DataSets extends React.Component {
     const { orgId, type } = this.props;
     this.props.startLoaderAction();
     this.props.fetchOrgDataSets(orgId, type);
-    this.props.fetchDataSetCategories(orgId, type);
+    // this.props.fetchDataSetCategories(orgId, type);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -105,7 +105,7 @@ class DataSets extends React.Component {
           orgId={this.props.orgId}
           modalData={selectedData}
           title={modaltitle}
-          categoriesList={datasetCategories}
+          // categoriesList={datasetCategories}
           newModalData={this.handleNewModalData}
         />
         <PopupModal
@@ -150,6 +150,8 @@ class DataSets extends React.Component {
 
   changeModalData = dataSetId => {
     const { dataSetList } = this.state;
+    const { orgId, type } = this.props;
+    this.props.fetchDataSetCategories(orgId, type);
     this.setState({
       selectedData: dataSetList.filter(data => data.id === dataSetId)[0],
       modaltitle: "Edit Data Set"

@@ -47,7 +47,6 @@ class RegionsServed extends Component {
   componentDidMount() {
     this.props.startLoaderAction();
     this.props.fetchOrgRegionsServed(this.props.orgId, this.props.type);
-    this.props.fetchRegionsList(this.props.orgId, this.props.type);
   }
 
   componentDidUpdate(prevProps) {
@@ -278,6 +277,7 @@ class RegionsServed extends Component {
   };
 
   onEdit = () => {
+    this.props.fetchRegionsList(this.props.orgId, this.props.type);
     this.setState({
       isEdited: true
     });
