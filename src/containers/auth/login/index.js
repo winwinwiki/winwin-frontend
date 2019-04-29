@@ -37,7 +37,7 @@ class Login extends React.Component {
         "User session is already active, moving to landing page",
         session.user
       );
-      this.changePage(session.data.user);
+      this.changePage(session.user);
     }
   }
 
