@@ -23,6 +23,7 @@ import {
 import { onDeleteOrg } from "../../actions/organization/deleteOrgAction";
 import { Link } from "react-router-dom";
 import { PopupModal } from "../ui/popupModal";
+import Can from "../Can";
 
 const setPriorityHigh = "Set Priority High";
 const setPriorityNormal = "Set Priority Normal";
@@ -212,14 +213,18 @@ class OrgList extends React.Component {
       accessor: "id",
       sortable: false,
       Cell: row => (
-        <Fragment>
-          <span
-            className="centerText"
-            data-toggle="modal"
-            data-target="#deleteModal"
-            onClick={() => this.setOrg(row.original)}
-          />
-        </Fragment>
+        <Can
+          role={this.props.userRole}
+          perform="organizations:delete"
+          yes={() => (
+            <span
+              className="centerText"
+              data-toggle="modal"
+              data-target="#deleteModal"
+              onClick={() => this.setOrg(row.original)}
+            />
+          )}
+        />
       ),
       width: 50
     }
@@ -484,7 +489,8 @@ class OrgList extends React.Component {
 
 const mapStateToProps = state => ({
   orgList: state.orgList,
-  appliedFilterList: state.orgList.appliedFilterList
+  appliedFilterList: state.orgList.appliedFilterList,
+  userRole: state.session.user.role
 });
 
 const mapDispatchToProps = dispatch =>

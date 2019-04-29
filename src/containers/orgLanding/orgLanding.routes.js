@@ -18,18 +18,21 @@ const OrgLandingRoutes = props => (
         authenticated={props.isAuthenticated}
         exact
         path="/organizations"
+        perform="organizations:list"
         component={OrgList}
       />
       <CrumbRoute
         title={"New Organization"}
         exact
         path="/organizations/new"
+        perform="organizations:create"
         component={CreateOrg}
       />
       <CrumbRoute
         title={"Upload Data Feed"}
         exact
         path="/organizations/uploadDataFeed"
+        perform="organizations:multiCreate"
         component={UploadDataFeed}
       />
       {/* <CrumbRoute title={"Organization Details"} path="/organizations/:id/programs/:programId" component={ProgramDetailRoutes} /> */}
@@ -41,6 +44,7 @@ const OrgLandingRoutes = props => (
           props.organizationDetail && props.organizationDetail.description
         }
         path="/organizations/:id"
+        perform="organizationDetails:list"
         component={OrgDetailRoutes}
       />
     </Switch>

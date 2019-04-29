@@ -33,6 +33,7 @@
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.11",
     "match-sorter": "^2.3.0",
+    "moment": "^2.24.0",
     "object-assign": "4.1.1",
     "orgchart": "^2.1.2",
     "popper.js": "^1.14.7",

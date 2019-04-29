@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export function modifiyFilterList(list) {
   let desiredList = {};
   desiredList["assetsRangeMin"] = list["assetsRange"]["min"];
@@ -72,4 +74,8 @@ export function titleCase(str) {
       return val.charAt(0).toUpperCase() + val.substr(1).toLowerCase();
     })
     .join(" ");
+}
+
+export function timeSince(timestamp) {
+  return moment(timestamp).fromNow();
 }

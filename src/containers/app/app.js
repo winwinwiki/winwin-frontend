@@ -24,11 +24,6 @@ const AppRoutes = props => (
         path="/change-password"
         component={UserManagementRoutes}
       />
-      <CrumbRoute
-        title="User Details"
-        path="/my-profile"
-        component={UserManagementRoutes}
-      />
       <Route path="/" component={AuthRoutes} />
     </Switch>
   </App>

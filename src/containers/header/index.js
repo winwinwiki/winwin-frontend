@@ -4,6 +4,7 @@ import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
 import AccessComponent from "../common/accessComponent";
 import { logoutAction } from "../../actions/auth/loginAction";
+import Can from "../Can";
 
 const Header = props => {
   const { session, history } = props;
@@ -66,16 +67,34 @@ const Header = props => {
                 aria-labelledby="navbarDropdownMenuLink"
                 className="dropdown-menu dropdown-menu-right"
               >
-                <AccessComponent
+                <Can
                   role={userInfo.role}
-                  access={["Administrator", "data-seeder"]}
+                  perform="organizations:list"
+                  yes={() => (
+                    <Link to="/organizations" className="dropdown-item">
+                      Organization Management
+                    </Link>
+                  )}
+                />
+                {/* <AccessComponent
+                  role={userInfo.role}
+                  access={["Administrator", "DataSeeder"]}
                 >
                   {" "}
                   <Link to="/organizations" className="dropdown-item">
                     Organization Management
                   </Link>
-                </AccessComponent>
-                <AccessComponent
+                </AccessComponent> */}
+                <Can
+                  role={userInfo.role}
+                  perform="users:list"
+                  yes={() => (
+                    <Link to="/user-management" className="dropdown-item">
+                      User Management
+                    </Link>
+                  )}
+                />
+                {/* <AccessComponent
                   role={userInfo.role}
                   access={["Administrator"]}
                 >
@@ -83,8 +102,25 @@ const Header = props => {
                   <Link to="/user-management" className="dropdown-item">
                     User Management
                   </Link>
-                </AccessComponent>
-                <AccessComponent role={userInfo.role} access={["all"]}>
+                </AccessComponent> */}
+                <Can
+                  role={userInfo.role}
+                  perform="users:getSelf"
+                  yes={() => (
+                    <Link
+                      to={`/user-management/${encodeURIComponent(
+                        userInfo.email
+                      )}`}
+                      className="dropdown-item"
+                    >
+                      My Profile
+                    </Link>
+                  )}
+                />
+                {/* <AccessComponent
+                  role={userInfo.role}
+                  access={["Administrator", "DataSeeder"]}
+                >
                   {" "}
                   <Link
                     to={`/user-management/${encodeURIComponent(
@@ -94,23 +130,33 @@ const Header = props => {
                   >
                     My Profile
                   </Link>
-                </AccessComponent>
-                <AccessComponent role={userInfo.role} access={["all"]}>
+                </AccessComponent> */}
+                <Can
+                  role={userInfo.role}
+                  perform="users:changePassword"
+                  yes={() => (
+                    <Link to="/change-password" className="dropdown-item">
+                      Change Password
+                    </Link>
+                  )}
+                />
+                {/* <AccessComponent
+                  role={userInfo.role}
+                  access={["Administrator", "DataSeeder"]}
+                >
                   {" "}
                   <Link to="/change-password" className="dropdown-item">
                     Change Password
                   </Link>
-                </AccessComponent>
-                <AccessComponent role={userInfo.role} access={["all"]}>
-                  {" "}
-                  <a
-                    href="javascript:;"
-                    className="dropdown-item"
-                    onClick={props.logoutAction}
-                  >
-                    Logout
-                  </a>
-                </AccessComponent>
+                </AccessComponent> */}
+
+                <a
+                  href="javascript:;"
+                  className="dropdown-item"
+                  onClick={props.logoutAction}
+                >
+                  Logout
+                </a>
               </div>
             </li>
           </ul>

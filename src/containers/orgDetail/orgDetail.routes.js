@@ -26,14 +26,17 @@ const OrgDetailRoutes = props => (
         title="View History"
         exact
         orgId={props.match.params.id}
+        orgName={props.title}
         path={`${props.match.path}/view-history`}
         component={ViewHistory}
+        perform="organizationHistory:list"
         type={"Organization"}
       />
       <PrivateRoute
         title={props.title}
         description={props.description}
         authenticated={true}
+        perform="organizationDetailsDataSet:list"
         exact
         orgId={props.match.params.id}
         path={`${props.match.path}/data-sets`}
@@ -44,6 +47,7 @@ const OrgDetailRoutes = props => (
         title={props.title}
         description={props.description}
         authenticated={true}
+        perform="organizationDetailsResources:list"
         exact
         orgId={props.match.params.id}
         path={`${props.match.path}/resources`}
@@ -54,6 +58,7 @@ const OrgDetailRoutes = props => (
         title={props.title}
         description={props.description}
         authenticated={true}
+        perform="organizationDetailsRegionsServed:list"
         exact
         orgId={props.match.params.id}
         path={`${props.match.path}/regions-served`}
@@ -64,6 +69,7 @@ const OrgDetailRoutes = props => (
         title={props.title}
         description={props.description}
         authenticated={true}
+        perform="organizationDetailsSPITags:list"
         exact
         orgId={props.match.params.id}
         path={`${props.match.path}/spi-tags`}
@@ -74,6 +80,7 @@ const OrgDetailRoutes = props => (
         title={props.title}
         description={props.description}
         authenticated={true}
+        perform="organizationDetailsSDGTags:list"
         exact
         orgId={props.match.params.id}
         path={`${props.match.path}/sdg-tags`}
@@ -93,6 +100,7 @@ const OrgDetailRoutes = props => (
       <PrivateRoute
         title={props.title}
         authenticated={true}
+        perform="programs:list"
         exact
         orgId={props.match.params.id}
         path={`${props.match.path}/programs`}
@@ -103,6 +111,7 @@ const OrgDetailRoutes = props => (
         title={props.title}
         description={props.description}
         authenticated={true}
+        perform="organizationNotes:list"
         exact
         orgId={props.match.params.id}
         path={`${props.match.path}/notes`}
@@ -113,6 +122,7 @@ const OrgDetailRoutes = props => (
         title={props.title}
         description={props.description}
         authenticated={true}
+        perform="programs:create"
         exact
         orgId={props.match.params.id}
         path={`${props.match.path}/new-program`}
@@ -123,6 +133,7 @@ const OrgDetailRoutes = props => (
         title={props.title}
         description={props.description}
         authenticated={true}
+        perform="organizationsChart:create"
         exact
         orgId={props.match.params.id}
         path={`${props.match.path}/new-child-organization`}
@@ -133,6 +144,7 @@ const OrgDetailRoutes = props => (
         title={props.title}
         description={props.description}
         authenticated={true}
+        perform="organizationsChart:list"
         exact
         orgId={props.match.params.id}
         path={`${props.match.path}/organization-chart`}
@@ -144,12 +156,14 @@ const OrgDetailRoutes = props => (
         description={props.description}
         orgId={props.match.params.id}
         path={`${props.match.path}/programs/:programId`}
+        perform="programDetails:list"
         component={ProgramDetailRoutes}
       />
       <PrivateRoute
         title={props.title}
         description={props.description}
         authenticated={true}
+        perform="organizationDetails:list"
         orgId={props.match.params.id}
         exact
         path={`${props.match.path}`}
