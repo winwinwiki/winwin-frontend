@@ -41,21 +41,34 @@ Amplify.configure({
 export const history = createHistory();
 
 const initialState = {};
-const enhancers = [checkTokenExpiration];
-const middleware = [thunk, routerMiddleware(history), ...enhancers];
+const customEnhancers = [checkTokenExpiration];
+const middleware = [thunk, routerMiddleware(history), ...customEnhancers];
 
-if (process.env.NODE_ENV === "development") {
-  const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
+// if (process.env.NODE_ENV === "development") {
+//   const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
 
-  if (typeof devToolsExtension === "function") {
-    enhancers.push(devToolsExtension());
-  }
-}
+//   if (typeof devToolsExtension === "function") {
+//     enhancers.push(devToolsExtension());
+//   }
+// }
+
+const composeEnhancers =
+  typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+        // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+      })
+    : compose;
+
+const enhancer = composeEnhancers(
+  applyMiddleware(...middleware)
+  // other store enhancers if any
+);
 
 const store = createStore(
   reducer,
-  initialState,
-  compose(applyMiddleware(...middleware))
+  enhancer
+  // initialState,
+  // compose(applyMiddleware(...middleware))
 );
 
 ReactDOM.render(
