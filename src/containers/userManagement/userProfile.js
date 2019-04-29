@@ -372,10 +372,8 @@ class UserProfile extends React.Component {
   };
 
   cancelUserInfo = () => {
-    const { session } = this.props;
     this.setState({
-      isEditable: false,
-      userInfo: session.user
+      isEditable: false
     });
   };
 
