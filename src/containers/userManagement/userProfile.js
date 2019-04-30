@@ -299,7 +299,7 @@ class UserProfile extends React.Component {
 
   onDropdownChange = (field, value) => {
     const { userInfo = {} } = this.state;
-    userInfo.role = value;
+    userInfo.role = value.replace(/ /g, ""); //remove whitespaces if any
     this.setState({ userInfo });
   };
 
