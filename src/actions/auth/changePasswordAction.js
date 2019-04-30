@@ -20,7 +20,7 @@ export const onChangePassword = params => {
       "/user/changePassword",
       "POST",
       JSON.stringify(userObj),
-      false
+      true
     ).then(
       response => {
         dispatch(changePasswordSuccess(response));
