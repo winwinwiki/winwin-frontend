@@ -1,30 +1,50 @@
 import moment from "moment";
+import { frameworkTagList } from "../containers/orgLanding/appliedOrgFilters/appliedOrgFiltersList";
 
 export function modifiyFilterList(list) {
   let desiredList = {};
-  desiredList["assetsRangeMin"] = list["assetsRange"]["min"];
-  desiredList["assetsRangeMax"] = list["assetsRange"]["max"];
+
+  if (!(list["assets"]["min"] === 0 && list["assets"]["max"] === 0)) {
+    desiredList["assetsMin"] = list["assets"]["min"];
+    desiredList["assetsMax"] = list["assets"]["max"];
+  }
+
   if (list["frameworkTag"])
     desiredList["frameworkTag"] = list["frameworkTag"]["value"];
+
   if (list["industryCls"])
     desiredList["industryCls"] = list["industryCls"]["value"];
-  if (list["level1"]) desiredList["level1"] = list["level1"]["value"];
-  if (list["level2"]) desiredList["level2"] = list["level2"]["value"];
-  if (list["level3"]) desiredList["level3"] = list["level3"]["value"];
+
+  if (list["frameworkTag"]["value"] === frameworkTagList[0]["value"]) {
+    if (list["level1"]) desiredList["dimensionId"] = list["level1"]["value"];
+    if (list["level2"]) desiredList["componentId"] = list["level2"]["value"];
+    if (list["level3"]) desiredList["indicatorId"] = list["level3"]["value"];
+  } else if (list["frameworkTag"]["value"] === frameworkTagList[1]["value"]) {
+    if (list["level1"]) desiredList["goalCode"] = list["level1"]["value"];
+    if (list["level2"]) desiredList["shortNameCode"] = list["level2"]["value"];
+  }
+
   if (list["priority"]) desiredList["priority"] = list["priority"];
-  desiredList["revenueRangeMin"] = list["revenueRange"]["min"];
-  desiredList["revenueRangeMax"] = list["revenueRange"]["max"];
-  if (list["status"] && list["status"].length)
-    desiredList["status"] = list["status"];
-  if (list["sector"] && list["sector"].length)
-    desiredList["sector"] = list["sector"];
+
+  if (!(list["revenue"]["min"] === 0 && list["revenue"]["max"] === 0)) {
+    desiredList["revenueMin"] = list["revenue"]["min"];
+    desiredList["revenueMax"] = list["revenue"]["max"];
+  }
+
+  if (list["tagStatus"] && list["tagStatus"].length)
+    desiredList["tagStatus"] = list["tagStatus"];
+
+  if (list["sectorLevel"] && list["sectorLevel"].length)
+    desiredList["sectorLevel"] = list["sectorLevel"];
+
   if (list["subIndustryCls"] && list["subIndustryCls"].length) {
     desiredList["subIndustryCls"] = list["subIndustryCls"].map(
       subIndustryCls => subIndustryCls.value
     );
   }
-  if (list["userMod"] && list["userMod"].length) {
-    desiredList["userMod"] = list["userMod"].map(userMod => userMod.value);
+
+  if (list["editedBy"] && list["editedBy"].length) {
+    desiredList["editedBy"] = list["editedBy"].map(editedBy => editedBy.value);
   }
   return desiredList;
 }
@@ -78,4 +98,63 @@ export function titleCase(str) {
 
 export function timeSince(timestamp) {
   return moment(timestamp).fromNow();
+}
+
+export function customNumberFormatter(num, digits) {
+  var si = [
+    { value: 1, symbol: "" },
+    { value: 1e3, symbol: "k" },
+    { value: 1e6, symbol: "M" },
+    { value: 1e9, symbol: "B" },
+    { value: 1e12, symbol: "T" }
+  ];
+  var rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+  var i;
+  for (i = si.length - 1; i > 0; i--) {
+    if (num >= si[i].value) {
+      break;
+    }
+  }
+  return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
+}
+
+export function getSPIDataByIndicators(SPIList, id) {
+  let spi = {};
+  if (!SPIList) return {};
+  SPIList.forEach(({ dimensionId, dimensionName, components }) => {
+    components.forEach(({ indicators, componentId, componentName }) => {
+      let validIndicator = indicators.find(
+        ({ indicatorId }) => indicatorId === id
+      );
+      if (validIndicator) {
+        spi = {
+          dimensionId,
+          dimensionName,
+          componentId,
+          componentName,
+          isChecked: true,
+          ...validIndicator
+        };
+        return;
+      }
+    });
+  });
+  return spi;
+}
+
+export function getSDGDataBySubGoals(SDGList, id) {
+  let sdg = {};
+  SDGList.forEach(({ goalCode, goalName, subGoals }) => {
+    let validGoal = subGoals.find(({ subGoalCode }) => subGoalCode === id);
+    if (validGoal) {
+      sdg = {
+        goalCode,
+        goalName,
+        isChecked: true,
+        ...validGoal
+      };
+      return;
+    }
+  });
+  return sdg;
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Checkbox from "../../ui/checkbox";
@@ -6,47 +6,77 @@ import { setAppliedFilters } from "../../../actions/orgLanding/orgLandingAction"
 import InputRange from "react-input-range";
 import ReactSelect from "react-select";
 import "react-input-range/lib/css/index.css";
-import { modifiyFilterList } from "../../../util/util";
+import {
+  modifiyFilterList,
+  customNumberFormatter,
+  getSPIDataByIndicators,
+  getSDGDataBySubGoals
+} from "../../../util/util";
+import { entityList, tagStatusList } from "../../../constants";
+import { fetchUsersList } from "../../../actions/userManagement/userListAction";
+import {
+  fetchNAICSList,
+  fetchNTEEList
+} from "../../../actions/orgDetail/industryClassificationAction";
+import {
+  fetchSdgTagsList,
+  fetchSpiTagsList
+} from "../../../actions/orgLanding/orgLandingAction";
+import { spiTagsListSelector } from "../../../selectors/spiTagsSelector";
+import { sdgTagsListSelector } from "../../../selectors/sdgTagsSelector";
 var classNames = require("classnames");
 
-const Priority = ["normal", "high"];
-const userList = [
-  { value: "abc", label: "abc abc" },
-  { value: "sumit", label: "sumit chaudhari" },
-  { value: "Sunny", label: "Sunny tambi" }
-];
-const frameworkTagList = [
+const Priority = ["Normal", "High"];
+// const userList = [
+//   { value: "abc", label: "abc abc" },
+//   { value: "sumit", label: "sumit chaudhari" },
+//   { value: "Sunny", label: "Sunny tambi" }
+// ];
+export const frameworkTagList = [
   { value: "Social Progress Index", label: "Social Progress Index" },
   {
     value: "Sustainable Developement Goals",
     label: "Sustainable Developement Goals"
   }
 ];
+
+const frameworkLabels = {
+  "Social Progress Index": {
+    level1: "Dimensions",
+    level2: "Components",
+    level3: "Indicators"
+  },
+  "Sustainable Developement Goals": {
+    level1: "Goals",
+    level2: "Sub-Goals"
+  }
+};
+
 const industryClassification = [
   { value: "NAICS", label: "NAICS" },
   { value: "NTEE", label: "NTEE" }
 ];
-const SubIndustryClassification = [
-  { value: "1", label: "select 1" },
-  { value: "2", label: "select 2" },
-  { value: "3", label: "select 3" }
-];
+// const SubIndustryClassification = [
+//   { value: "1", label: "select 1" },
+//   { value: "2", label: "select 2" },
+//   { value: "3", label: "select 3" }
+// ];
 class AppliedOrgFiltersList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userMod: [],
+      editedBy: [],
       industryCls: "",
       subIndustryCls: "",
       frameworkTag: "",
       level1: "",
       level2: "",
       level3: "",
-      sector: [],
-      status: [],
+      sectorLevel: [],
+      tagStatus: [],
       priority: "",
-      revenueRange: { min: 0, max: 0 },
-      assetsRange: { min: 0, max: 0 },
+      revenue: { min: 0, max: 0 },
+      assets: { min: 0, max: 0 },
       level1List: [],
       level2List: [],
       level3List: []
@@ -60,7 +90,15 @@ class AppliedOrgFiltersList extends React.Component {
     this.onSelectChange = this.onSelectChange.bind(this);
     this.onLevel3Change = this.onLevel3Change.bind(this);
     this.onLevel2Change = this.onLevel2Change.bind(this);
-    this.onLevel1Change = this.onLevel1Change.bind(this);
+    // this.onLevel1Change = this.onLevel1Change.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.fetchUsersList();
+    this.props.fetchNAICSList();
+    this.props.fetchNTEEList();
+    this.props.fetchSpiTagsList();
+    this.props.fetchSdgTagsList();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -75,11 +113,11 @@ class AppliedOrgFiltersList extends React.Component {
 
   render() {
     const {
-      userMod,
-      sector,
-      status,
-      revenueRange,
-      assetsRange,
+      editedBy,
+      sectorLevel,
+      tagStatus,
+      revenue,
+      assets,
       priority,
       industryCls,
       subIndustryCls,
@@ -87,12 +125,22 @@ class AppliedOrgFiltersList extends React.Component {
       level1,
       level2,
       level3,
-      level1List,
-      level2List,
-      level3List
+      level1List
+      // level2List
+      // level3List
     } = this.state;
-    const { isFilterModalVisible, activeOrg } = this.props;
-
+    const {
+      isFilterModalVisible,
+      activeOrg,
+      assestsMin,
+      assestsMax,
+      revenueMin,
+      revenueMax
+    } = this.props;
+    let userList = [];
+    let SubIndustryClassification = [];
+    let level3List = [];
+    let level2List = [];
     let showFilterCls = classNames(
       { show: isFilterModalVisible },
       { "dropdown-menu": true },
@@ -102,6 +150,49 @@ class AppliedOrgFiltersList extends React.Component {
       activeOrg.indexOf("Public") > -1 && activeOrg.length === 1;
     let isSectorLevelShow =
       activeOrg.indexOf("Public") > -1 || activeOrg.indexOf("All") > -1;
+
+    //userLists
+    if (this.props.userList.data)
+      userList = this.props.userList.data.map(function(value) {
+        return { value: value.email, label: value.userDisplayName };
+      });
+
+    //SubIndustryClassification lists
+
+    if (
+      this.props.NAICSList.data &&
+      industryCls.value === industryClassification[0].value
+    )
+      SubIndustryClassification = this.props.NAICSList.data.map(function(
+        value
+      ) {
+        return { value: value.code, label: value.name };
+      });
+    if (
+      this.props.NTEEList.data &&
+      industryCls.value === industryClassification[1].value
+    )
+      SubIndustryClassification = this.props.NTEEList.data.map(function(value) {
+        return { value: value.code, label: value.name };
+      });
+
+    //frameworkTag
+    if (
+      this.props.customSPIList &&
+      frameworkTag.value === frameworkTagList[0].value
+    )
+      level3List = this.props.customSPIList.map(value => {
+        return { value: value.indicatorId, label: value.indicatorName };
+      });
+
+    if (
+      this.props.customSDGList &&
+      frameworkTag.value === frameworkTagList[1].value
+    )
+      level2List = this.props.customSDGList.map(value => {
+        return { value: value.subGoalCode, label: value.subGoalName };
+      });
+
     return (
       <form
         aria-labelledby="filterDropdown"
@@ -113,68 +204,68 @@ class AppliedOrgFiltersList extends React.Component {
             {isSectorLevelShow && <h5>Sector Level</h5>}
             {isSectorLevelShow && (
               <Checkbox
-                name="federal"
+                name={entityList[0]}
                 label="Federal"
-                checked={sector.indexOf("federal") > -1}
+                checked={sectorLevel.indexOf(entityList[0]) > -1}
                 onChange={this.onSectorCheckboxChange}
               />
             )}
             {isSectorLevelShow && (
               <Checkbox
-                name="state"
+                name={entityList[1]}
                 label="State"
-                checked={sector.indexOf("state") > -1}
+                checked={sectorLevel.indexOf(entityList[1]) > -1}
                 onChange={this.onSectorCheckboxChange}
               />
             )}
             {isSectorLevelShow && (
               <Checkbox
-                name="county"
+                name={entityList[2]}
                 label="County"
-                checked={sector.indexOf("county") > -1}
+                checked={sectorLevel.indexOf(entityList[2]) > -1}
                 onChange={this.onSectorCheckboxChange}
               />
             )}
             {isSectorLevelShow && (
               <Checkbox
-                name="city"
+                name={entityList[3]}
                 label="City"
-                checked={sector.indexOf("city") > -1}
+                checked={sectorLevel.indexOf(entityList[3]) > -1}
                 onChange={this.onSectorCheckboxChange}
               />
             )}
             {isSectorLevelShow && (
               <Checkbox
-                name="district"
+                name={entityList[4]}
                 label="District"
-                checked={sector.indexOf("district") > -1}
+                checked={sectorLevel.indexOf(entityList[4]) > -1}
                 onChange={this.onSectorCheckboxChange}
               />
             )}
 
             <h5 className={isSectorLevelShow ? "mt-4" : ""}>Status</h5>
             <Checkbox
-              name="autoTag"
+              name={tagStatusList[0]}
               label="Auto Tag"
-              checked={status.indexOf("autoTag") > -1}
+              checked={tagStatus.indexOf(tagStatusList[0]) > -1}
               onChange={this.onStatusCheckboxChange}
             />
             <Checkbox
-              name="completeTag"
+              name={tagStatusList[1]}
               label="Complete Tag"
-              checked={status.indexOf("completeTag") > -1}
+              checked={tagStatus.indexOf(tagStatusList[1]) > -1}
               onChange={this.onStatusCheckboxChange}
             />
             <Checkbox
-              name="orgTag"
+              name={tagStatusList[2]}
               label="Organization Tag"
-              checked={status.indexOf("orgTag") > -1}
+              checked={tagStatus.indexOf(tagStatusList[2]) > -1}
               onChange={this.onStatusCheckboxChange}
             />
             <Checkbox
-              name="unTaggged"
+              name={tagStatusList[3]}
               label="Untagged"
-              checked={status.indexOf("unTaggged") > -1}
+              checked={tagStatus.indexOf(tagStatusList[3]) > -1}
               onChange={this.onStatusCheckboxChange}
             />
           </div>
@@ -213,14 +304,14 @@ class AppliedOrgFiltersList extends React.Component {
 
             <h5>Edited by User</h5>
             <ReactSelect
-              name="userMod"
+              name="editedBy"
               className="mb-3"
               classNamePrefix="react-select"
               isMulti="true"
               placeholder="Select User"
-              value={userMod}
+              value={editedBy}
               onChange={selectedOption =>
-                this.onSelectChange("userMod", selectedOption)
+                this.onSelectChange("editedBy", selectedOption)
               }
               options={userList}
               closeMenuOnSelect="false"
@@ -233,7 +324,7 @@ class AppliedOrgFiltersList extends React.Component {
                 className="mb-3"
                 classNamePrefix="react-select"
                 isMulti={false}
-                placeholder="Select Industry Classification"
+                placeholder="Select Industry"
                 value={industryCls}
                 onChange={selectedOption =>
                   this.onSelectChange("industryCls", selectedOption)
@@ -248,7 +339,7 @@ class AppliedOrgFiltersList extends React.Component {
                 className="mb-3"
                 classNamePrefix="react-select"
                 isMulti={false}
-                placeholder="Select Sub Industry Classification"
+                placeholder="Select Sub Industry"
                 value={subIndustryCls}
                 onChange={selectedOption =>
                   this.onSelectChange("subIndustryCls", selectedOption)
@@ -262,11 +353,23 @@ class AppliedOrgFiltersList extends React.Component {
             <div className="my-4">
               <InputRange
                 draggableTrack
-                maxValue={100}
-                minValue={0}
-                formatLabel={value => `$ ${value}`}
-                value={revenueRange}
-                onChange={value => this.setState({ revenueRange: value })}
+                maxValue={revenueMax}
+                minValue={revenueMin}
+                formatLabel={value => `$ ${customNumberFormatter(value, 2)}`}
+                value={revenue}
+                onChange={value => {
+                  const processedValues = { ...value };
+
+                  if (processedValues.min < revenueMin) {
+                    processedValues.min = revenueMin;
+                  }
+
+                  if (processedValues.max > revenueMax) {
+                    processedValues.max = revenueMax;
+                  }
+
+                  this.setState({ revenue: processedValues });
+                }}
                 onChangeComplete={value => {}}
               />
             </div>
@@ -274,11 +377,23 @@ class AppliedOrgFiltersList extends React.Component {
             <div className="my-4">
               <InputRange
                 draggableTrack
-                maxValue={100}
-                minValue={0}
-                formatLabel={value => `$ ${value}`}
-                value={assetsRange}
-                onChange={value => this.setState({ assetsRange: value })}
+                maxValue={assestsMax}
+                minValue={assestsMin}
+                formatLabel={value => `$ ${customNumberFormatter(value, 2)}`}
+                value={assets}
+                onChange={value => {
+                  const processedValues = { ...value };
+
+                  if (processedValues.min < assestsMin) {
+                    processedValues.min = assestsMin;
+                  }
+
+                  if (processedValues.max > assestsMax) {
+                    processedValues.max = assestsMax;
+                  }
+
+                  this.setState({ assets: processedValues });
+                }}
                 onChangeComplete={value => {}}
               />
             </div>
@@ -298,7 +413,7 @@ class AppliedOrgFiltersList extends React.Component {
 
             {frameworkTag &&
               frameworkTag.label === frameworkTagList[0].label && (
-                <h5>Level 3</h5>
+                <h5>{frameworkLabels[frameworkTag.label].level3}</h5>
               )}
             {frameworkTag &&
               frameworkTag.label === frameworkTagList[0].label && (
@@ -307,39 +422,39 @@ class AppliedOrgFiltersList extends React.Component {
                   className="mb-3"
                   classNamePrefix="react-select"
                   isMulti={false}
-                  placeholder="Select Level3"
+                  placeholder="Select Level 3"
                   value={level3}
                   onChange={this.onLevel3Change}
                   options={level3List}
                 />
               )}
 
-            {frameworkTag && <h5>Level 2</h5>}
             {frameworkTag && (
-              <ReactSelect
-                name="level2"
-                className="mb-3"
-                classNamePrefix="react-select"
-                isMulti={false}
-                placeholder="Select Level2"
-                value={level2}
-                onChange={this.onLevel2Change}
-                options={level2List}
-              />
-            )}
+              <Fragment>
+                <h5>{frameworkLabels[frameworkTag.label].level2}</h5>
+                <ReactSelect
+                  name="level2"
+                  className="mb-3"
+                  classNamePrefix="react-select"
+                  isMulti={false}
+                  placeholder="Select Level 2"
+                  value={level2}
+                  onChange={this.onLevel2Change}
+                  options={level2List}
+                />
 
-            {frameworkTag && <h5>Level 1</h5>}
-            {frameworkTag && (
-              <ReactSelect
-                name="level1"
-                className="mb-3"
-                classNamePrefix="react-select"
-                isMulti={false}
-                placeholder="Select Level1"
-                value={level1}
-                onChange={this.onLevel1Change}
-                options={level1List}
-              />
+                <h5>{frameworkLabels[frameworkTag.label].level1}</h5>
+                <ReactSelect
+                  name="level1"
+                  className="mb-3"
+                  classNamePrefix="react-select"
+                  isMulti={false}
+                  placeholder="Select Level 1"
+                  value={level1}
+                  onChange={this.onLevel1Change}
+                  options={level1List}
+                />
+              </Fragment>
             )}
           </div>
         </div>
@@ -364,86 +479,24 @@ class AppliedOrgFiltersList extends React.Component {
       </form>
     );
   }
-  onLevel1Change(level1) {
-    if (!Array.isArray(level1)) {
-      this.setState({
-        level1: level1,
-        level2: "",
-        level3: ""
-      });
-    } else {
-      this.setState({
-        level1: "",
-        level2: "",
-        level3: ""
-      });
-    }
-  }
+
   onLevel2Change(level2) {
-    const { frameworkTag } = this.state;
-    if (
-      !Array.isArray(level2) &&
-      frameworkTag &&
-      frameworkTag.label === frameworkTagList[1].label
-    ) {
-      const { SDGList } = this.props;
-      let frameworkList = JSON.parse(JSON.stringify(SDGList));
-      let selectedFramework;
-      selectedFramework = frameworkList.find(l2 => l2.level2 === level2.label);
-      this.setState({
-        level1: {
-          value: selectedFramework.level1Id,
-          label: selectedFramework.level1
-        },
-        level2: { value: selectedFramework.id, label: selectedFramework.level2 }
-      });
-    } else if (
-      !Array.isArray(level2) &&
-      frameworkTag &&
-      frameworkTag.label === frameworkTagList[0].label
-    ) {
-      this.setState({
-        level1: "",
-        level2: level2,
-        level3: ""
-      });
-    } else {
-      this.setState({
-        level1: "",
-        level2: "",
-        level3: ""
-      });
-    }
+    let sdg = getSDGDataBySubGoals(this.props.SDGList.response, level2.value);
+
+    this.setState({
+      level2,
+      level1: { value: sdg.goalCode, label: sdg.goalName }
+    });
   }
+
   onLevel3Change(level3) {
-    if (!Array.isArray(level3)) {
-      const { SPIList } = this.props;
-      let frameworkList = JSON.parse(JSON.stringify(SPIList));
-      let selectedFramework;
-      selectedFramework = frameworkList.find(
-        l3 => l3.indicator === level3.label
-      );
-      this.setState({
-        level3: {
-          value: selectedFramework.id,
-          label: selectedFramework.indicator
-        },
-        level1: {
-          value: selectedFramework.dimension,
-          label: selectedFramework.dimension
-        },
-        level2: {
-          value: selectedFramework.component,
-          label: selectedFramework.component
-        }
-      });
-    } else {
-      this.setState({
-        level1: "",
-        level2: "",
-        level3: ""
-      });
-    }
+    let spi = getSPIDataByIndicators(this.props.SPIList.response, level3.value);
+
+    this.setState({
+      level3: { value: spi.indicatorId, label: spi.indicatorName },
+      level2: { value: spi.componentId, label: spi.componentName },
+      level1: { value: spi.dimensionId, label: spi.dimensionName }
+    });
   }
   onDropdownChange(field, value) {
     this.setState({ [field]: value });
@@ -454,52 +507,8 @@ class AppliedOrgFiltersList extends React.Component {
   }
 
   onFrameworkTagChange(value) {
-    const { SPIList, SDGList } = this.props;
-    let frameworkList =
-      value && value.label === frameworkTagList[0].label
-        ? JSON.parse(JSON.stringify(SPIList))
-        : JSON.parse(JSON.stringify(SDGList));
-    let level1 = [],
-      level2 = [],
-      level3 = [];
-    if (value && value.label === frameworkTagList[0].label) {
-      level3 = frameworkList.map(l3 => {
-        if (
-          !(
-            level1[level1.length - 1] &&
-            level1[level1.length - 1].label === l3.dimension
-          )
-        ) {
-          level1.push({ value: l3.dimension, label: l3.dimension });
-        }
-        if (
-          !(
-            level2[level2.length - 1] &&
-            level2[level2.length - 1].label === l3.component
-          )
-        ) {
-          level2.push({ value: l3.component, label: l3.component });
-        }
-
-        return { value: l3.id, label: l3.indicator };
-      });
-    } else if (!Array.isArray(value)) {
-      level2 = frameworkList.map(l2 => {
-        if (
-          !(
-            level1[level1.length - 1] &&
-            level1[level1.length - 1].label === l2.level1
-          )
-        )
-          level1.push({ value: l2.level1Id, label: l2.level1 });
-        return { value: l2.id, label: l2.level2 };
-      });
-    }
     this.setState({
       frameworkTag: value,
-      level1List: level1,
-      level2List: level2,
-      level3List: level3,
       level1: "",
       level2: "",
       level3: ""
@@ -507,20 +516,20 @@ class AppliedOrgFiltersList extends React.Component {
   }
 
   onSectorCheckboxChange(name) {
-    let sectorList = JSON.parse(JSON.stringify(this.state.sector));
+    let sectorList = JSON.parse(JSON.stringify(this.state.sectorLevel));
     let index = sectorList.indexOf(name);
     index > -1 ? sectorList.splice(index, 1) : sectorList.push(name);
     this.setState({
-      sector: sectorList
+      sectorLevel: sectorList
     });
   }
 
   onStatusCheckboxChange(name) {
-    let statusList = JSON.parse(JSON.stringify(this.state.status));
+    let statusList = JSON.parse(JSON.stringify(this.state.tagStatus));
     let index = statusList.indexOf(name);
     index > -1 ? statusList.splice(index, 1) : statusList.push(name);
     this.setState({
-      status: statusList
+      tagStatus: statusList
     });
   }
 
@@ -533,18 +542,18 @@ class AppliedOrgFiltersList extends React.Component {
   clearAppliedFilters() {
     this.props.setAppliedFilters(null, {});
     this.setState({
-      userMod: [],
+      editedBy: [],
       industryCls: "",
       subIndustryCls: "",
       frameworkTag: "",
       level1: "",
       level2: "",
       level3: "",
-      sector: [],
-      status: [],
+      sectorLevel: [],
+      tagStatus: [],
       priority: "",
-      revenueRange: { min: 0, max: 0 },
-      assetsRange: { min: 0, max: 0 },
+      revenue: { min: 0, max: 0 },
+      assets: { min: 0, max: 0 },
       level1List: [],
       level2List: [],
       level3List: []
@@ -564,14 +573,24 @@ class AppliedOrgFiltersList extends React.Component {
 
 const mapStateToProps = state => ({
   appliedFilterList: state.orgList.appliedFilterList,
+  customSDGList: sdgTagsListSelector(state),
+  customSPIList: spiTagsListSelector(state),
+  SPIList: state.orgList.spiList,
   SDGList: state.orgList.sdgList,
-  SPIList: state.orgList.spiList
+  NAICSList: state.naicsList,
+  NTEEList: state.nteeList,
+  userList: state.userManagement
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      setAppliedFilters
+      setAppliedFilters,
+      fetchUsersList,
+      fetchNAICSList,
+      fetchNTEEList,
+      fetchSdgTagsList,
+      fetchSpiTagsList
     },
     dispatch
   );

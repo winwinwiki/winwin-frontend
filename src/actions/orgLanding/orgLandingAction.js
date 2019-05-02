@@ -35,7 +35,7 @@ export const setAppliedFilters = (appliedFilterList, params) => {
     dispatch(fetchOrgRequest());
     let queryString = qs.stringify(params);
     api(
-      `/organisations${queryString ? "?" + queryString : ""}`,
+      `/organization${queryString ? "?" + queryString : ""}`,
       "GET",
       {},
       true

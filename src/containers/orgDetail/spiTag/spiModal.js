@@ -3,6 +3,7 @@ import Search from "../../ui/searchBar";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { updateSPIData } from "../../../actions/orgDetail/spiTagsAction";
+import { getSPIDataByIndicators } from "../../../util/util";
 class SPIModal extends Component {
   state = {
     searchText: "",
@@ -138,27 +139,9 @@ class SPIModal extends Component {
 
   desiredSPIList = id => {
     const { response: SPIList } = this.props.SPIList;
-    let spi = {};
 
     //1. checks spi master list if the selected id is valid and returns full path of the nested object
-    SPIList.forEach(({ dimensionId, dimensionName, components }) => {
-      components.forEach(({ indicators, componentId, componentName }) => {
-        let validIndicator = indicators.find(
-          ({ indicatorId }) => indicatorId === id
-        );
-        if (validIndicator) {
-          spi = {
-            dimensionId,
-            dimensionName,
-            componentId,
-            componentName,
-            isChecked: true,
-            ...validIndicator
-          };
-          return;
-        }
-      });
-    });
+    let spi = getSPIDataByIndicators(SPIList, id);
 
     //2. check if id selected is already present in checkedspitags list
     const { checkedSPITags } = this.state;
