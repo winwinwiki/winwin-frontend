@@ -51,23 +51,23 @@ class AppliedOrgFilters extends React.Component {
     const { appliedFilterList } = this.props;
     return (
       valueArr.length +
-      appliedFilterList["status"].length +
-      appliedFilterList["sector"].length +
-      appliedFilterList["userMod"].length
+      appliedFilterList["tagStatus"].length +
+      appliedFilterList["sectorLevel"].length +
+      appliedFilterList["editedBy"].length
     );
   }
 
   createTag(valueArr) {
     const { appliedFilterList } = this.props;
     let count = 0;
-    let flatUserModArray = appliedFilterList["userMod"].map(user => {
-      return { type: "userMod", value: user.label };
+    let flatUserModArray = appliedFilterList["editedBy"].map(user => {
+      return { type: "editedBy", value: user.label };
     });
-    let flatStatusArray = appliedFilterList["status"].map(status => {
-      return { type: "status", value: status };
+    let flatStatusArray = appliedFilterList["tagStatus"].map(tagStatus => {
+      return { type: "tagStatus", value: tagStatus };
     });
-    let flatSectorArray = appliedFilterList["sector"].map(sector => {
-      return { type: "sector", value: sector };
+    let flatSectorArray = appliedFilterList["sectorLevel"].map(sectorLevel => {
+      return { type: "sectorLevel", value: sectorLevel };
     });
     let tagValues =
       flatUserModArray && flatStatusArray && flatSectorArray
@@ -100,14 +100,14 @@ class AppliedOrgFilters extends React.Component {
   createMoreTag(valueArr) {
     const { appliedFilterList } = this.props;
     let count = 0;
-    let flatUserModArray = appliedFilterList["userMod"].map(user => {
-      return { type: "userMod", value: user.label };
+    let flatUserModArray = appliedFilterList["editedBy"].map(user => {
+      return { type: "editedBy", value: user.label };
     });
-    let flatStatusArray = appliedFilterList["status"].map(status => {
-      return { type: "status", value: status };
+    let flatStatusArray = appliedFilterList["tagStatus"].map(tagStatus => {
+      return { type: "tagStatus", value: tagStatus };
     });
-    let flatSectorArray = appliedFilterList["sector"].map(sector => {
-      return { type: "sector", value: sector };
+    let flatSectorArray = appliedFilterList["sectorLevel"].map(sectorLevel => {
+      return { type: "sectorLevel", value: sectorLevel };
     });
     let tagValues =
       flatUserModArray && flatStatusArray && flatSectorArray
@@ -206,13 +206,13 @@ class AppliedOrgFilters extends React.Component {
           case "assetsRange":
             filterList[type]["max"] = 0;
             break;
-          case "userMod":
+          case "editedBy":
             filterList[type] = filterList[type].filter(
               item => item.label !== value
             );
             break;
-          case "status":
-          case "sector":
+          case "tagStatus":
+          case "sectorLevel":
             filterList[type].splice(filterList[type].indexOf(value), 1);
             break;
           default:

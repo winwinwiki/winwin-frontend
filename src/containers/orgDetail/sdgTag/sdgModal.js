@@ -3,6 +3,7 @@ import Search from "../../ui/searchBar";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { updateSDGData } from "../../../actions/orgDetail/sdgTagsAction";
+import { getSDGDataBySubGoals } from "../../../util/util";
 class SDGModal extends React.Component {
   state = {
     searchText: "",
@@ -130,21 +131,9 @@ class SDGModal extends React.Component {
   desiredSDGList(id) {
     const { response: SDGList } = this.props.SDGList;
     const { checkedSDGTags } = this.state;
-    let sdg = {};
 
     //1. checks sdg master list if the selected id is valid and returns full path of the nested object
-    SDGList.forEach(({ goalCode, goalName, subGoals }) => {
-      let validGoal = subGoals.find(({ subGoalCode }) => subGoalCode === id);
-      if (validGoal) {
-        sdg = {
-          goalCode,
-          goalName,
-          isChecked: true,
-          ...validGoal
-        };
-        return;
-      }
-    });
+    let sdg = getSDGDataBySubGoals(SDGList, id);
     let found = checkedSDGTags.find(
       ({ subGoalCode }) => subGoalCode === sdg.subGoalCode
     );

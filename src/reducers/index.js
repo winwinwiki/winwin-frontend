@@ -30,6 +30,8 @@ import createUser from "./createUser/createUserReducer";
 import saveUserInfo from "./users/saveUserInfoReducer";
 import datasetCategories from "./orgDetail/dataSetCategoriesReducer";
 import resourceCategories from "./orgDetail/resourceCategoriesReducer";
+import naicsList from "./orgDetail/fetchNAICSListReducer";
+import nteeList from "./orgDetail/fetchNTEEListReducer";
 
 export default combineReducers({
   routing: routerReducer,
@@ -57,5 +59,7 @@ export default combineReducers({
   notes,
   saveUserInfo,
   datasetCategories,
-  resourceCategories
+  resourceCategories,
+  naicsList,
+  nteeList
 });

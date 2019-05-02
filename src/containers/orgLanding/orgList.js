@@ -24,6 +24,7 @@ import { onDeleteOrg } from "../../actions/organization/deleteOrgAction";
 import { Link } from "react-router-dom";
 import { PopupModal } from "../ui/popupModal";
 import Can from "../Can";
+import { maxBy, minBy } from "lodash";
 
 const setPriorityHigh = "Set Priority High";
 const setPriorityNormal = "Set Priority Normal";
@@ -69,7 +70,11 @@ class OrgList extends React.Component {
     orgList: [],
     activeButton: ["All"],
     searchText: "",
-    selectedOrgList: []
+    selectedOrgList: [],
+    assestsMin: 0,
+    assestsMax: 100,
+    revenueMin: 0,
+    revenueMax: 100
   };
 
   componentDidMount() {
@@ -78,7 +83,11 @@ class OrgList extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.orgList !== this.props.orgList && this.props.orgList.data) {
+    if (
+      prevProps.orgList !== this.props.orgList &&
+      this.props.orgList.data &&
+      this.props.orgList.data.response
+    ) {
       console.log("new org list received 2", this.props.orgList);
       //if (!this.props.orgList.error) {
       this.setState({
@@ -86,6 +95,14 @@ class OrgList extends React.Component {
       });
       //} else {
       //}
+      if (this.props.orgList.data.response.length)
+        this.setState({
+          assestsMin: minBy(this.props.orgList.data.response, "assets").assets,
+          assestsMax: maxBy(this.props.orgList.data.response, "assets").assets,
+          revenueMin: minBy(this.props.orgList.data.response, "revenue")
+            .revenue,
+          revenueMax: maxBy(this.props.orgList.data.response, "revenue").revenue
+        });
       this.props.stopLoaderAction();
     }
   }
@@ -231,11 +248,19 @@ class OrgList extends React.Component {
   ];
 
   render() {
-    const { entity, activeButton, searchText } = this.state;
+    const {
+      entity,
+      activeButton,
+      searchText,
+      assestsMin,
+      assestsMax,
+      revenueMin,
+      revenueMax
+    } = this.state;
     const { appliedFilterList } = this.props;
 
     let orgList = this.state.orgList;
-    if (!orgList || !orgList.length) {
+    if (!orgList) {
       return null;
     }
     //filter by searched text
@@ -298,6 +323,10 @@ class OrgList extends React.Component {
           searchText={searchText}
           getFilteredListOfOrg={this.getFilteredListOfOrg}
           filterOrgList={this.filterOrgList}
+          revenueMin={revenueMin}
+          revenueMax={revenueMax}
+          assestsMin={assestsMin}
+          assestsMax={assestsMax}
         />
         <div className="d-flex py-3 align-items-center applied-filters-container">
           <Dropdown
@@ -439,43 +468,6 @@ class OrgList extends React.Component {
     this.setState({
       activeButton: newSectors
     });
-  };
-
-  appliedFilterOrgList = filters => {
-    // console.log(this.props)
-    // const { orgList } = this.props;
-    // let orgListCopy = JSON.parse(JSON.stringify(orgList));
-    //  let filteredList = orgListCopy.filter((org => {
-    //     let isFiltered = true;
-    //     Object.keys(filters).map((key) => {
-    //         if(!isFiltered) { return; }
-    //         switch(key) {
-    //             case 'userMod':
-    //             case 'priority':
-    //             case 'subIndustryCls':
-    //             case 'industryCls':
-    //             case 'frameworkTag':
-    //             case 'level1':
-    //             case 'level2':
-    //             case 'level3':
-    //                 isFiltered = filters[key].includes('Select') || !filters[key] ? true :  (filters[key].toLowerCase() === org[key].toLowerCase());
-    //                 break;
-    //             case 'revenueRange':
-    //                 break;
-    //             case 'assetsRange':
-    //                 isFiltered =  (filters[key]['min'] <= org['totalAssets'] && filters[key]['max'] >= org['totalAssets']);
-    //                 break;
-    //             case 'status':
-    //                 isFiltered = !!filters[key].find(status => status.toLowerCase() === org['sectorLevel']);
-    //             default:
-    //                 break;
-    //         }
-    //     });
-    //     return isFiltered;
-    // }));
-    // this.setState({
-    //     orgList: filteredList
-    // });
   };
 
   resetAllFilters = () => {

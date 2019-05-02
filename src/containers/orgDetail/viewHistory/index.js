@@ -1,24 +1,31 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { fetchOrgHistory } from "../../../actions/orgDetail/orgHistoryAction";
-
+import { titleCase, timeSince } from "../../../util/util";
+import {
+  startLoaderAction,
+  stopLoaderAction
+} from "../../../actions/common/loaderActions";
+import { orgHistorySelector } from "../../../selectors/orgHistorySelector";
 class OrgHistory extends React.Component {
   componentDidMount() {
+    this.props.startLoaderAction();
     this.props.fetchOrgHistory(this.props.match.params.id, () => {});
   }
 
-  componentWillReceiveProps(nextProps) {
-    // if(JSON.stringify(nextProps.programList) !== JSON.stringify(this.props.programList) ) {
-    //     this.setState({
-    //         programList: nextProps.programList
-    //     });
-    // }
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.orgHistory !== this.props.orgHistory &&
+      this.props.orgHistory
+    ) {
+      this.props.stopLoaderAction();
+    }
   }
 
   render() {
-    const { isFetchOrgHistorySuccess, orgHistory } = this.props;
-    if (!isFetchOrgHistorySuccess || !orgHistory) {
+    const { orgHistory, orgName } = this.props;
+    if (!orgHistory) {
       return null;
     }
     return (
@@ -26,13 +33,15 @@ class OrgHistory extends React.Component {
         <div className="col-md-18 m-auto card">
           <div className="col-md-18 m-auto d-flex flex-column py-3">
             <div className="row mb-4 py-3 border-bottom">
-              <div className="col">{`${orgHistory.name} - View History`}</div>
+              <div className="col">{`${orgName} - View History`}</div>
             </div>
-            <div className="row">
-              <div className="col">
-                {this.renderHistoryList(orgHistory.history)}
+            {orgHistory.length ? (
+              <div className="row">
+                <div className="col">{this.renderHistoryList(orgHistory)}</div>
               </div>
-            </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </section>
@@ -41,13 +50,13 @@ class OrgHistory extends React.Component {
 
   renderHistoryList(orgHistory) {
     return orgHistory.map((history, index) => {
-      let historyData = history.data.map((historyData, index) => (
+      let historyDetailsData = history.details.map((historyData, index) => (
         <li key={index}>{historyData}</li>
       ));
       return (
         <div key={index}>
-          {`Update by '${history.updatedBy}' ${history.updatedTime}`}
-          <ul key={history.id}>{historyData}</ul>
+          {history.title}
+          <ul key={new Date()}>{historyDetailsData}</ul>
         </div>
       );
     });
@@ -55,16 +64,15 @@ class OrgHistory extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  isFetchOrgHistoryPending: state.orgHistory.isFetchOrgHistoryPending,
-  isFetchOrgHistorySuccess: state.orgHistory.isFetchOrgHistorySuccess,
-  fetchOrgHistoryError: state.orgHistory.fetchOrgHistoryError,
-  orgHistory: state.orgHistory.orgHistory
+  orgHistory: orgHistorySelector(state)
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      fetchOrgHistory
+      fetchOrgHistory,
+      startLoaderAction,
+      stopLoaderAction
     },
     dispatch
   );
