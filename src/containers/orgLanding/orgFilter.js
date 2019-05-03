@@ -82,10 +82,6 @@ class OrgFilters extends React.Component {
               activeOrg={activeButton}
               toggleAppliedFilterModal={this.toggleAppliedFilterModal}
               isFilterModalVisible={isFilterModalVisible}
-              revenueMin={props.revenueMin}
-              revenueMax={props.revenueMax}
-              assestsMin={props.assestsMin}
-              assestsMax={props.assestsMax}
             />
           </div>
         </div>

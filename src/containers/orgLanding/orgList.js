@@ -95,14 +95,6 @@ class OrgList extends React.Component {
       });
       //} else {
       //}
-      if (this.props.orgList.data.response.length)
-        this.setState({
-          assestsMin: minBy(this.props.orgList.data.response, "assets").assets,
-          assestsMax: maxBy(this.props.orgList.data.response, "assets").assets,
-          revenueMin: minBy(this.props.orgList.data.response, "revenue")
-            .revenue,
-          revenueMax: maxBy(this.props.orgList.data.response, "revenue").revenue
-        });
       this.props.stopLoaderAction();
     }
   }
@@ -323,10 +315,6 @@ class OrgList extends React.Component {
           searchText={searchText}
           getFilteredListOfOrg={this.getFilteredListOfOrg}
           filterOrgList={this.filterOrgList}
-          revenueMin={revenueMin}
-          revenueMax={revenueMax}
-          assestsMin={assestsMin}
-          assestsMax={assestsMax}
         />
         <div className="d-flex py-3 align-items-center applied-filters-container">
           <Dropdown

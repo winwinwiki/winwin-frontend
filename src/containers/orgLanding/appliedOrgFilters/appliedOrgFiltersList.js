@@ -52,7 +52,7 @@ const frameworkLabels = {
   }
 };
 
-const industryClassification = [
+export const industryClassification = [
   { value: "NAICS", label: "NAICS" },
   { value: "NTEE", label: "NTEE" }
 ];
@@ -62,36 +62,23 @@ const industryClassification = [
 //   { value: "3", label: "select 3" }
 // ];
 class AppliedOrgFiltersList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      editedBy: [],
-      industryCls: "",
-      subIndustryCls: "",
-      frameworkTag: "",
-      level1: "",
-      level2: "",
-      level3: "",
-      sectorLevel: [],
-      tagStatus: [],
-      priority: "",
-      revenue: { min: 0, max: 0 },
-      assets: { min: 0, max: 0 },
-      level1List: [],
-      level2List: [],
-      level3List: []
-    };
-    this.onDropdownChange = this.onDropdownChange.bind(this);
-    this.onFrameworkTagChange = this.onFrameworkTagChange.bind(this);
-    this.onSectorCheckboxChange = this.onSectorCheckboxChange.bind(this);
-    this.onStatusCheckboxChange = this.onStatusCheckboxChange.bind(this);
-    this.addFiltersTag = this.addFiltersTag.bind(this);
-    this.clearAppliedFilters = this.clearAppliedFilters.bind(this);
-    this.onSelectChange = this.onSelectChange.bind(this);
-    this.onLevel3Change = this.onLevel3Change.bind(this);
-    this.onLevel2Change = this.onLevel2Change.bind(this);
-    // this.onLevel1Change = this.onLevel1Change.bind(this);
-  }
+  state = {
+    editedBy: [],
+    industryCls: "",
+    subIndustryCls: "",
+    frameworkTag: "",
+    level1: "",
+    level2: "",
+    level3: "",
+    sectorLevel: [],
+    tagStatus: [],
+    priority: "",
+    revenue: { min: 0, max: 0 },
+    assets: { min: 0, max: 0 },
+    level1List: [],
+    level2List: [],
+    level3List: []
+  };
 
   componentDidMount() {
     this.props.fetchUsersList();
@@ -129,14 +116,13 @@ class AppliedOrgFiltersList extends React.Component {
       // level2List
       // level3List
     } = this.state;
-    const {
-      isFilterModalVisible,
-      activeOrg,
-      assestsMin,
-      assestsMax,
-      revenueMin,
-      revenueMax
-    } = this.props;
+    const { isFilterModalVisible, activeOrg, orgDetail } = this.props;
+
+    let assestsMin = 0;
+    let assestsMax = 100;
+    let revenueMin = 0;
+    let revenueMax = 100;
+
     let userList = [];
     let SubIndustryClassification = [];
     let level3List = [];
@@ -480,16 +466,16 @@ class AppliedOrgFiltersList extends React.Component {
     );
   }
 
-  onLevel2Change(level2) {
+  onLevel2Change = level2 => {
     let sdg = getSDGDataBySubGoals(this.props.SDGList.response, level2.value);
 
     this.setState({
       level2,
       level1: { value: sdg.goalCode, label: sdg.goalName }
     });
-  }
+  };
 
-  onLevel3Change(level3) {
+  onLevel3Change = level3 => {
     let spi = getSPIDataByIndicators(this.props.SPIList.response, level3.value);
 
     this.setState({
@@ -497,49 +483,49 @@ class AppliedOrgFiltersList extends React.Component {
       level2: { value: spi.componentId, label: spi.componentName },
       level1: { value: spi.dimensionId, label: spi.dimensionName }
     });
-  }
-  onDropdownChange(field, value) {
+  };
+  onDropdownChange = (field, value) => {
     this.setState({ [field]: value });
-  }
+  };
 
-  onSelectChange(field, value) {
+  onSelectChange = (field, value) => {
     this.setState({ [field]: value });
-  }
+  };
 
-  onFrameworkTagChange(value) {
+  onFrameworkTagChange = value => {
     this.setState({
       frameworkTag: value,
       level1: "",
       level2: "",
       level3: ""
     });
-  }
+  };
 
-  onSectorCheckboxChange(name) {
+  onSectorCheckboxChange = name => {
     let sectorList = JSON.parse(JSON.stringify(this.state.sectorLevel));
     let index = sectorList.indexOf(name);
     index > -1 ? sectorList.splice(index, 1) : sectorList.push(name);
     this.setState({
       sectorLevel: sectorList
     });
-  }
+  };
 
-  onStatusCheckboxChange(name) {
+  onStatusCheckboxChange = name => {
     let statusList = JSON.parse(JSON.stringify(this.state.tagStatus));
     let index = statusList.indexOf(name);
     index > -1 ? statusList.splice(index, 1) : statusList.push(name);
     this.setState({
       tagStatus: statusList
     });
-  }
+  };
 
-  addFiltersTag() {
+  addFiltersTag = () => {
     let filters = modifiyFilterList(this.state);
     this.props.setAppliedFilters(this.state, filters);
     this.props.toggleAppliedFilterModal();
-  }
+  };
 
-  clearAppliedFilters() {
+  clearAppliedFilters = () => {
     this.props.setAppliedFilters(null, {});
     this.setState({
       editedBy: [],
@@ -558,17 +544,17 @@ class AppliedOrgFiltersList extends React.Component {
       level2List: [],
       level3List: []
     });
-  }
+  };
 
-  percentFormatter(v) {
+  percentFormatter = v => {
     return `${v} %`;
-  }
+  };
 
-  setPriority(priority) {
+  setPriority = priority => {
     this.setState({
       priority
     });
-  }
+  };
 }
 
 const mapStateToProps = state => ({
