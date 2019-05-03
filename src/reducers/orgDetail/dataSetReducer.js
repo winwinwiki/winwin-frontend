@@ -10,7 +10,8 @@ import {
   FETCH_PROG_DATASET_ERROR,
   SAVE_PROG_DATASET_REQUEST,
   SAVE_PROG_DATASET_SUCCESS,
-  SAVE_PROG_DATASET_ERROR
+  SAVE_PROG_DATASET_ERROR,
+  DELETE_DATASET_SUCCESS
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -48,11 +49,35 @@ export default (state = initialState, action) => {
         saveError: false
       });
     case SAVE_DATASET_SUCCESS:
+      if (state.data.response.find(x => x.id === action.response.response.id)) {
+        //when trying to edit
+        return {
+          ...state,
+          data: {
+            ...state.data,
+            response: state.data.response.map(val =>
+              val.id === action.response.response.id
+                ? action.response.response
+                : val
+            )
+          }
+        };
+      } else {
+        return {
+          ...state,
+          data: {
+            ...state.data,
+            response: [...state.data.response, action.response.response]
+          }
+        };
+      }
+
+    case DELETE_DATASET_SUCCESS:
       return {
         ...state,
         data: {
           ...state.data,
-          response: [...state.data.response, action.response.response]
+          response: action.response //save filtered list
         }
       };
 

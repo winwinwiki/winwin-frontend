@@ -59,7 +59,12 @@ export const fetchOrgResources = (params, type) => {
   };
 };
 
-export const deleteOrgResource = ({ orgId, resourceId, type }) => {
+export const deleteOrgResource = ({
+  orgId,
+  resourceId,
+  type,
+  filteredList
+}) => {
   return dispatch => {
     dispatch(deleteResourceReq());
     let url =
@@ -71,7 +76,7 @@ export const deleteOrgResource = ({ orgId, resourceId, type }) => {
     };
     api(url, "DELETE", JSON.stringify(deleteObj), true).then(
       response => {
-        dispatch(deleteResourceSuccess(response));
+        dispatch(deleteResourceSuccess(filteredList));
       },
       error => {
         dispatch(deleteResourceError(error));

@@ -80,18 +80,10 @@ class Resources extends React.Component {
     });
   };
 
-  handleDelete = () => {
-    const { resource: { id: resourceId } = {}, resourcesList } = this.state;
-    const { orgId } = this.props;
-    this.props.deleteOrgResource({ orgId, resourceId });
-    const filteredList = resourcesList.filter(x => x.id !== resourceId);
-    this.setState({ resourcesList: filteredList });
-  };
-
   render() {
     const { selectedData, modaltitle, resourcesList } = this.state;
     const { resources, resourceCategories } = this.props;
-    if (!resources || !resources.data || resources.error || !resourcesList) {
+    if (!resources || !resourcesList) {
       return null;
     }
     return (
@@ -120,7 +112,7 @@ class Resources extends React.Component {
                     data-target="#resourceModal"
                     onClick={this.addNewResourceModal}
                   >
-                    <i className="icon-add mr-2" /> Add Another
+                    <i className="icon-add mr-2" /> Add New Resource
                   </a>
                 </li>
               </ul>
@@ -132,9 +124,7 @@ class Resources extends React.Component {
           type={this.props.type}
           orgId={this.props.orgId}
           modalData={selectedData}
-          // categoriesList={resourceCategories}
           title={modaltitle}
-          newModalData={this.handleNewModalData}
         />
         <PopupModal
           modalid="deleteModal"
@@ -144,11 +134,27 @@ class Resources extends React.Component {
           }' ?`}
           primarybuttontext="Delete Resource"
           secondarybuttontext="Cancel"
-          handleDelete={() => this.handleDelete(this.state.resource.id)}
+          handleDelete={() => this.handleDelete()}
         />
       </section>
     );
   }
+
+  handleDelete = () => {
+    const { resource: { id: resourceId } = {}, resourcesList } = this.state;
+    const { orgId, type } = this.props;
+    const filteredList = resourcesList.filter(x => x.id !== resourceId);
+    this.props.deleteOrgResource({ orgId, resourceId, type, filteredList });
+    this.setState({
+      selectedData: {
+        organizationResourceCategory: { categoryName: "" },
+        count: "",
+        description: ""
+      }
+    });
+  };
+
+  //when edit resource
   changeModalData = resourceId => {
     const { resourcesList } = this.state;
     const { orgId, type } = this.props;
@@ -161,7 +167,10 @@ class Resources extends React.Component {
     });
   };
 
+  //add new resource
   addNewResourceModal = () => {
+    const { orgId, type } = this.props;
+    this.props.fetchResourceCategories(orgId, type);
     this.setState({
       selectedData: {
         organizationResourceCategory: { categoryName: "" },

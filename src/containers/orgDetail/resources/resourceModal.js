@@ -26,17 +26,13 @@ class ResourceModal extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { modalData } = this.props;
-    if (
-      nextProps.modalData !== modalData &&
-      nextProps.modalData &&
-      nextProps.categoriesList
-    ) {
-      if (!nextProps.modalData.error) {
-        this.setState({
-          modalData: nextProps.modalData,
-          categories: nextProps.categoriesList.data.response
-        });
-      }
+    if (nextProps.modalData.id !== modalData.id && nextProps.modalData) {
+      this.setState({
+        modalData: nextProps.modalData,
+        categories:
+          nextProps.categoriesList.data &&
+          nextProps.categoriesList.data.response
+      });
     }
   }
 
@@ -103,13 +99,9 @@ class ResourceModal extends Component {
   saveResource = e => {
     e.preventDefault();
     const { modalData } = this.state;
-    const { orgId, type, resourcesList } = this.props;
-    if (!modalData.organizationId) {
-      modalData.organizationId = orgId;
-      this.props.newModalData(modalData);
-    }
-    if (!resourcesList.find(x => x.id === modalData.id))
-      this.props.saveOrgResource(modalData, type);
+    const { orgId, type } = this.props;
+    if (!modalData.organizationId) modalData.organizationId = orgId;
+    this.props.saveOrgResource(modalData, type);
   };
 
   validateField = e => {
@@ -268,6 +260,10 @@ class ResourceModal extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  categoriesList: state.resourceCategories
+});
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
@@ -277,6 +273,6 @@ const mapDispatchToProps = dispatch =>
   );
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(ResourceModal);

@@ -21,37 +21,31 @@ class DataSetModal extends Component {
     }
   };
 
-  componentDidMount() {
-    const { orgId, type } = this.props;
-    // this.props.fetchDataSetCategories(orgId, type);
-  }
-
   componentWillReceiveProps(nextProps) {
     const { modalData } = this.props;
-    if (
-      nextProps.modalData !== modalData &&
-      nextProps.modalData &&
-      nextProps.categoriesList.data
-    ) {
-      if (!nextProps.modalData.error) {
-        this.setState({
-          modalData: nextProps.modalData,
-          categories: nextProps.categoriesList.data.response
-        });
-      }
+    if (nextProps.modalData.id !== modalData.id && nextProps.modalData) {
+      this.setState({
+        modalData: nextProps.modalData,
+        categories:
+          nextProps.categoriesList.data &&
+          nextProps.categoriesList.data.response
+      });
     }
   }
 
   saveDataSet = e => {
     e.preventDefault();
     const { modalData } = this.state;
-    const { orgId, type, dataSetList } = this.props;
-    if (!modalData.organizationId) {
-      modalData.organizationId = orgId;
-      this.props.newModalData(modalData);
-    }
-    if (!dataSetList.find(x => x.id === modalData.id))
-      this.props.saveOrgDataSets(modalData, type);
+    const { orgId, type } = this.props;
+    if (!modalData.organizationId) modalData.organizationId = orgId;
+    this.props.saveOrgDataSets(modalData, type);
+    this.setState({
+      modalData: {
+        type: "",
+        url: "",
+        organizationDataSetCategory: { categoryName: "" }
+      }
+    });
   };
 
   // input fields onchange method
