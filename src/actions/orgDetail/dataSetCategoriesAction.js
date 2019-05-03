@@ -27,7 +27,7 @@ export const fetchDataSetCategories = (orgId, type) => {
   };
 };
 
-export const deleteOrgDataSet = ({ orgId, dataSetId, type }) => {
+export const deleteOrgDataSet = ({ orgId, dataSetId, type, filteredList }) => {
   return dispatch => {
     dispatch(deleteDataSetReq());
     const deleteObj = {
@@ -39,7 +39,7 @@ export const deleteOrgDataSet = ({ orgId, dataSetId, type }) => {
         : `/organization/${orgId}/dataset`;
     api(url, "DELETE", JSON.stringify(deleteObj), true).then(
       response => {
-        dispatch(deleteDataSetSuccess(response));
+        dispatch(deleteDataSetSuccess(filteredList));
       },
       error => {
         dispatch(deleteDataSetError(error));

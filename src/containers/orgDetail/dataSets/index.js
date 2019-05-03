@@ -91,7 +91,7 @@ class DataSets extends React.Component {
                     data-target="#dataSetModal"
                     onClick={this.addNewDataSetModal}
                   >
-                    <i className="icon-add mr-2" /> Add Another
+                    <i className="icon-add mr-2" /> Add New Data Set
                   </a>
                 </li>
               </ul>
@@ -105,8 +105,6 @@ class DataSets extends React.Component {
           orgId={this.props.orgId}
           modalData={selectedData}
           title={modaltitle}
-          // categoriesList={datasetCategories}
-          newModalData={this.handleNewModalData}
         />
         <PopupModal
           modalid="deleteModal"
@@ -116,19 +114,11 @@ class DataSets extends React.Component {
           }' ?`}
           primarybuttontext="Delete DataSet"
           secondarybuttontext="Cancel"
-          handleDelete={() => this.handleDelete(this.state.orgId)}
+          handleDelete={() => this.handleDelete()}
         />
       </section>
     );
   }
-
-  handleNewModalData = newModalData => {
-    const { dataSetList, selectedData } = this.state;
-    const newList = [...dataSetList, newModalData];
-    this.setState({
-      dataSetList: newList
-    });
-  };
 
   selectedDataSet = dataSet => {
     dataSet &&
@@ -143,11 +133,19 @@ class DataSets extends React.Component {
   handleDelete = () => {
     const { dataSet: { id: dataSetId } = {}, dataSetList } = this.state;
     const { orgId, type } = this.props;
-    this.props.deleteOrgDataSet({ orgId, dataSetId, type });
     const filteredList = dataSetList.filter(x => x.id !== dataSetId);
-    this.setState({ dataSetList: filteredList });
+    this.props.deleteOrgDataSet({ orgId, dataSetId, type, filteredList });
+    this.setState({
+      selectedData: {
+        organizationDataSetCategory: { categoryName: "" },
+        description: "",
+        type: "",
+        url: ""
+      }
+    });
   };
 
+  //when edit is clicked
   changeModalData = dataSetId => {
     const { dataSetList } = this.state;
     const { orgId, type } = this.props;
@@ -158,7 +156,10 @@ class DataSets extends React.Component {
     });
   };
 
+  //when add new is clicked
   addNewDataSetModal = () => {
+    const { orgId, type } = this.props;
+    this.props.fetchDataSetCategories(orgId, type);
     this.setState({
       selectedData: {
         organizationDataSetCategory: { categoryName: "" },

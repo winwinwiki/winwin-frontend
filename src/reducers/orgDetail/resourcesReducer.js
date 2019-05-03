@@ -4,7 +4,8 @@ import {
   FETCH_RESOURCES_ERROR,
   SAVE_RESOURCES_REQUEST,
   SAVE_RESOURCES_SUCCESS,
-  SAVE_RESOURCES_ERROR
+  SAVE_RESOURCES_ERROR,
+  DELETE_RESOURCE_SUCCESS
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -42,11 +43,34 @@ export default (state = initialState, action) => {
         saveError: false
       });
     case SAVE_RESOURCES_SUCCESS:
+      if (state.data.response.find(x => x.id === action.response.response.id)) {
+        //when trying to edit
+        return {
+          ...state,
+          data: {
+            ...state.data,
+            response: state.data.response.map(val =>
+              val.id === action.response.response.id
+                ? action.response.response
+                : val
+            )
+          }
+        };
+      } else {
+        return {
+          ...state,
+          data: {
+            ...state.data,
+            response: [...state.data.response, action.response.response]
+          }
+        };
+      }
+    case DELETE_RESOURCE_SUCCESS:
       return {
         ...state,
         data: {
           ...state.data,
-          response: [...state.data.response, action.response.response]
+          response: action.response
         }
       };
 
