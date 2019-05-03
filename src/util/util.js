@@ -1,5 +1,8 @@
 import moment from "moment";
-import { frameworkTagList } from "../containers/orgLanding/appliedOrgFilters/appliedOrgFiltersList";
+import {
+  frameworkTagList,
+  industryClassification
+} from "../containers/orgLanding/appliedOrgFilters/appliedOrgFiltersList";
 
 export function modifiyFilterList(list) {
   let desiredList = {};
@@ -12,8 +15,8 @@ export function modifiyFilterList(list) {
   if (list["frameworkTag"])
     desiredList["frameworkTag"] = list["frameworkTag"]["value"];
 
-  if (list["industryCls"])
-    desiredList["industryCls"] = list["industryCls"]["value"];
+  // if (list["industryCls"])
+  //   desiredList["industryCls"] = list["industryCls"]["value"];
 
   if (list["frameworkTag"]["value"] === frameworkTagList[0]["value"]) {
     if (list["level1"]) desiredList["dimensionId"] = list["level1"]["value"];
@@ -37,10 +40,12 @@ export function modifiyFilterList(list) {
   if (list["sectorLevel"] && list["sectorLevel"].length)
     desiredList["sectorLevel"] = list["sectorLevel"];
 
-  if (list["subIndustryCls"] && list["subIndustryCls"].length) {
-    desiredList["subIndustryCls"] = list["subIndustryCls"].map(
-      subIndustryCls => subIndustryCls.value
-    );
+  if (list["industryCls"] && list["subIndustryCls"]) {
+    if (list["industryCls"]["label"] === industryClassification[0].label)
+      desiredList["naicsCode"] = list["subIndustryCls"].value;
+
+    if (list["industryCls"]["label"] === industryClassification[1].label)
+      desiredList["nteeCode"] = list["subIndustryCls"].value;
   }
 
   if (list["editedBy"] && list["editedBy"].length) {
