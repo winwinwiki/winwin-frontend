@@ -345,6 +345,7 @@ class OrgList extends React.Component {
           <ReactTable
             pageSize={orgList.length > 10 ? 10 : orgList.length}
             minRows={3}
+            showPageSizeOptions= {false}
             noDataText="No organization found"
             data={orgList}
             columns={this.columns}
