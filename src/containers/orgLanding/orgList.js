@@ -91,7 +91,7 @@ class OrgList extends React.Component {
       console.log("new org list received 2", this.props.orgList);
       //if (!this.props.orgList.error) {
       this.setState({
-        orgList: this.props.orgList.data.response
+        orgList: this.props.orgList.data.response.payload
       });
       //} else {
       //}
@@ -345,7 +345,7 @@ class OrgList extends React.Component {
           <ReactTable
             pageSize={orgList.length > 10 ? 10 : orgList.length}
             minRows={3}
-            showPageSizeOptions= {false}
+            showPageSizeOptions={false}
             noDataText="No organization found"
             data={orgList}
             columns={this.columns}
