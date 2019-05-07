@@ -35,24 +35,17 @@ export default (state = initialState, action) => {
         data: action.error,
         error: true
       });
-    case SAVE_ORGDETAIL_BASIC_INFO_REQUEST:
-      return Object.assign({}, state, {
-        loading: true,
-        saveData: null,
-        saveError: false
-      });
+
     case SAVE_ORGDETAIL_BASIC_INFO_SUCCESS:
+      const customAction = {
+        response: action.response.response[0]
+      };
       return Object.assign({}, state, {
         loading: false,
-        saveData: action.response,
-        saveError: false
+        data: customAction,
+        error: false
       });
-    case SAVE_ORGDETAIL_BASIC_INFO_ERROR:
-      return Object.assign({}, state, {
-        loading: false,
-        saveData: action.error,
-        saveError: true
-      });
+
     default:
       return state;
   }
