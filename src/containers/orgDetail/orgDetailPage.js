@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import Dropdown from "../ui/dropdown";
+
 import {
   sectorsList,
   entityList,
@@ -15,14 +16,17 @@ import {
   startLoaderAction,
   stopLoaderAction
 } from "../../actions/common/loaderActions";
+import { industryClassificationSelector } from "../../selectors/industryClassificationSelector";
+import {
+  fetchNAICSList,
+  fetchNTEEList
+} from "../../actions/orgDetail/industryClassificationAction";
+import AutoSuggestComponent from "../common/autoCompleteComponent";
 class OrgDetailPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      orgDetail: null,
-      isEditable: false
-    };
-  }
+  state = {
+    orgDetail: null,
+    isEditable: false
+  };
 
   componentDidMount() {
     const {
@@ -31,25 +35,17 @@ class OrgDetailPage extends React.Component {
     } = this.props;
     const { data: { response: { id: orgId } = {} } = {} } = organizationDetail;
     if (paramsOrgId !== orgId) {
-      this.props.startLoaderAction();
       this.props.fetchOrganisationDetail({ orgId: this.props.match.params.id });
-    }
-    if (
-      organizationDetail &&
-      organizationDetail.data &&
-      paramsOrgId === orgId
-    ) {
-      this.setState({
-        orgDetail: organizationDetail.data.response
-      });
+      this.props.fetchNAICSList();
+      this.props.fetchNTEEList();
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { orgDetail } = this.props;
+    const { organizationDetail } = this.props;
     if (
       nextProps &&
-      nextProps.organizationDetail !== orgDetail &&
+      nextProps.organizationDetail !== organizationDetail &&
       nextProps.organizationDetail.data
     ) {
       if (!nextProps.organizationDetail.error) {
@@ -60,17 +56,9 @@ class OrgDetailPage extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    if (
-      prevProps.organizationDetail !== this.props.organizationDetail &&
-      this.props.organizationDetail.data
-    ) {
-      this.props.stopLoaderAction();
-    }
-  }
-
   render() {
     const { isEditable, orgDetail } = this.state;
+    const { industryCodes } = this.props;
     if (!orgDetail) {
       return null;
     }
@@ -106,7 +94,7 @@ class OrgDetailPage extends React.Component {
                       name="name"
                       id="name"
                       readOnly={readOnly}
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       placeholder="Enter Organization Name"
                       value={orgDetail.name || ""}
                     />
@@ -118,7 +106,7 @@ class OrgDetailPage extends React.Component {
                       selectedItem={orgDetail.tagStatus}
                       name="tagStatus"
                       containerClass="dropdown dropdown-with-searchbox"
-                      onChange={this.onDropdownChange.bind(this)}
+                      onChange={this.onDropdownChange}
                       items={tagStatusList}
                       disabled={readOnly}
                     />
@@ -134,7 +122,7 @@ class OrgDetailPage extends React.Component {
                       selectedItem={orgDetail.sector}
                       name="sector"
                       containerClass="dropdown dropdown-with-searchbox"
-                      onChange={this.onDropdownChange.bind(this)}
+                      onChange={this.onDropdownChange}
                       items={sectorsList}
                       disabled={readOnly}
                     />
@@ -147,7 +135,7 @@ class OrgDetailPage extends React.Component {
                       selectedItem={orgDetail.sectorLevel}
                       name="sectorLevel"
                       containerClass="dropdown dropdown-with-searchbox"
-                      onChange={this.onDropdownChange.bind(this)}
+                      onChange={this.onDropdownChange}
                       items={entityList}
                       disabled={
                         readOnly ||
@@ -163,7 +151,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       name="sectorLevelName"
                       id="category"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       readOnly={
                         readOnly ||
                         (orgDetail.sector &&
@@ -181,7 +169,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       name="description"
                       id="orgdescription"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       placeholder="Enter Description"
                       readOnly={readOnly}
                       rows="5"
@@ -190,29 +178,61 @@ class OrgDetailPage extends React.Component {
                   </div>
                   <div className="form-group">
                     <label htmlFor="naicsCode">NAICS Code</label>
-                    <input
+                    {/* <input
                       type="text"
                       className="form-control"
                       name="naicsCode"
                       id="naicsCode"
                       readOnly={readOnly}
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       placeholder="Enter NAICS Code"
                       value={orgDetail.naicsCode || ""}
-                    />
+                    /> */}
+                    {industryCodes.naicsList && (
+                      <AutoSuggestComponent
+                        suggestions={industryCodes.naicsList}
+                        placeholder="Enter NAICS Code"
+                        className="form-control position-relative mt-2"
+                        onChange={(e, value) =>
+                          this.onSuggestChange("naicsCode", value, e)
+                        }
+                        readOnly={readOnly}
+                        value={
+                          (orgDetail.naicsCode && orgDetail.naicsCode.name) ||
+                          orgDetail.naicsCode ||
+                          ""
+                        }
+                      />
+                    )}
                   </div>
                   <div className="form-group">
                     <label htmlFor="nteeCode">NTEE Code</label>
-                    <input
+                    {/* <input
                       type="text"
                       className="form-control"
                       name="nteeCode"
                       id="nteeCode"
                       readOnly={readOnly}
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       placeholder="Enter NTEE Code"
                       value={orgDetail.nteeCode || ""}
-                    />
+                    /> */}
+                    {industryCodes.nteeList && (
+                      <AutoSuggestComponent
+                        suggestions={industryCodes.nteeList}
+                        placeholder="Enter NTEE Code"
+                        className="form-control position-relative mt-2"
+                        onChange={(e, value) =>
+                          this.onSuggestChange("nteeCode", value, e)
+                        }
+                        readOnly={readOnly}
+                        value={
+                          (orgDetail.nteeCode && orgDetail.nteeCode.name) ||
+                          orgDetail.nteeCode ||
+                          ""
+                        }
+                      />
+                    )}
                   </div>
                   <div className="section-title border-bottom pb-3 mb-3">
                     Financial
@@ -225,7 +245,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       id="category"
                       name="revenue"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       readOnly={readOnly}
                       placeholder="Enter Revenue Amount"
                       value={orgDetail.revenue || ""}
@@ -239,7 +259,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       id="category"
                       name="assets"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       readOnly={readOnly}
                       placeholder="Enter Assets"
                       value={orgDetail.assets || ""}
@@ -255,7 +275,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       name="street"
                       id="street"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       readOnly={readOnly}
                       placeholder="Enter Street Address"
                       value={orgDetail.address.street || ""}
@@ -268,7 +288,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       id="category"
                       name="city"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       readOnly={readOnly}
                       placeholder="Enter City"
                       value={orgDetail.address.city || ""}
@@ -281,7 +301,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       id="category"
                       name="county"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       readOnly={readOnly}
                       placeholder="Enter County"
                       value={orgDetail.address.county || ""}
@@ -294,7 +314,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       id="category"
                       name="state"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       readOnly={readOnly}
                       placeholder="Enter State"
                       value={orgDetail.address.state || ""}
@@ -307,7 +327,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       id="category"
                       name="zip"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       readOnly={readOnly}
                       placeholder="Enter Zip/Postal Code"
                       value={orgDetail.address.zip || ""}
@@ -321,7 +341,7 @@ class OrgDetailPage extends React.Component {
                       id="category"
                       name="country"
                       readOnly={readOnly}
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       placeholder="Enter Country"
                       value={orgDetail.address.country || ""}
                     />
@@ -337,7 +357,7 @@ class OrgDetailPage extends React.Component {
                       id="category"
                       name="websiteUrl"
                       readOnly={readOnly}
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       placeholder="Enter website url"
                       value={orgDetail.websiteUrl || ""}
                     />
@@ -349,7 +369,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       id="facebook"
                       name="facebookUrl"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       readOnly={readOnly}
                       placeholder="Enter Facebook url"
                       value={orgDetail.facebookUrl || ""}
@@ -362,7 +382,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       id="linkedIn"
                       name="linkedinUrl"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       readOnly={readOnly}
                       placeholder="Enter LinkedIn url"
                       value={orgDetail.linkedinUrl || ""}
@@ -375,7 +395,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       id="twitter"
                       name="twitterUrl"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       readOnly={readOnly}
                       placeholder="Enter Twitter url"
                       value={orgDetail.twitterUrl || ""}
@@ -388,7 +408,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       id="category"
                       name="contactInfo"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       readOnly={readOnly}
                       placeholder="Enter contact info"
                       value={orgDetail.contactInfo || ""}
@@ -404,7 +424,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       id="missionStatement"
                       name="missionStatement"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       readOnly={readOnly}
                       placeholder="Enter Mission Statement"
                       value={orgDetail.missionStatement || ""}
@@ -417,7 +437,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       name="values"
                       id="values"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       readOnly={readOnly}
                       placeholder="Enter Values"
                       value={orgDetail.values || ""}
@@ -430,7 +450,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       name="purpose"
                       id="purpose"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       readOnly={readOnly}
                       placeholder="Enter Purpose"
                       value={orgDetail.purpose || ""}
@@ -443,7 +463,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       name="selfInterest"
                       id="selfInterest"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       readOnly={readOnly}
                       placeholder="Enter Self-Interest"
                       value={orgDetail.selfInterest || ""}
@@ -456,7 +476,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       id="populationServed"
                       name="populationServed"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       readOnly={readOnly}
                       placeholder="Enter Population Served"
                       value={orgDetail.populationServed || ""}
@@ -469,7 +489,7 @@ class OrgDetailPage extends React.Component {
                       className="form-control"
                       id="businessModel"
                       name="businessModel"
-                      onChange={this.onChange.bind(this)}
+                      onChange={this.onChange}
                       readOnly={readOnly}
                       placeholder="Enter Business Model"
                       value={orgDetail.businessModel || ""}
@@ -486,7 +506,7 @@ class OrgDetailPage extends React.Component {
                       </button>
                       <button
                         className="btn btn-primary"
-                        onClick={() => this.saveBasicInfo()}
+                        onClick={this.saveBasicInfo}
                       >
                         Save
                       </button>
@@ -503,46 +523,68 @@ class OrgDetailPage extends React.Component {
     );
   }
 
-  onChange(e) {
+  onSuggestChange = (field, { newValue }, e) => {
+    this.setState({
+      orgDetail: {
+        ...this.state.orgDetail,
+        [field]: newValue
+      }
+    });
+  };
+
+  onSelectChange = (field, value) => {
+    this.setState({
+      orgDetail: { ...this.state.orgDetail, [field]: value.value }
+    });
+  };
+
+  onChange = e => {
     const { orgDetail } = this.state;
     const { target: { name, value } = {} } = e;
     if (addressFields.includes(name.toLowerCase())) {
       orgDetail.address[name] = value;
     } else orgDetail[name] = value;
     this.setState({ orgDetail });
-  }
+  };
 
-  onDropdownChange(field, value) {
+  onDropdownChange = (field, value) => {
     const { orgDetail } = this.state;
     orgDetail[field] = value;
     this.setState({ orgDetail });
-  }
+  };
 
-  editBasicInfo() {
+  editBasicInfo = () => {
     this.setState({
       isEditable: true
     });
-  }
+  };
 
-  saveBasicInfo() {
+  saveBasicInfo = e => {
+    e.preventDefault();
     this.setState({
       isEditable: false
     });
-    const { orgDetail = {} } = this.state;
-    this.props.onSaveOrgBasicInfo([orgDetail]);
-  }
+    let apiObj = this.state.orgDetail;
+    apiObj = {
+      ...apiObj,
+      naicsCode: this.state.orgDetail.naicsCode.id,
+      nteeCode: this.state.orgDetail.nteeCode.id
+    };
+    this.props.onSaveOrgBasicInfo([apiObj]);
+  };
 
   validateOrgData = () => {};
 
-  onCancelBasicInfo() {
+  onCancelBasicInfo = () => {
     this.setState({
       isEditable: false
     });
-  }
+  };
 }
 
 const mapStateToProps = state => ({
-  organizationDetail: state.orgDetail
+  organizationDetail: state.orgDetail,
+  industryCodes: industryClassificationSelector(state)
 });
 
 const mapDispatchToProps = dispatch =>
@@ -552,7 +594,9 @@ const mapDispatchToProps = dispatch =>
       onSaveOrgBasicInfo,
       fetchOrganisationDetail,
       startLoaderAction,
-      stopLoaderAction
+      stopLoaderAction,
+      fetchNAICSList,
+      fetchNTEEList
     },
 
     dispatch
