@@ -33,9 +33,9 @@ const Priority = ["Normal", "High"];
 //   { value: "Sunny", label: "Sunny tambi" }
 // ];
 export const frameworkTagList = [
-  { value: "Social Progress Index", label: "Social Progress Index" },
+  { value: "SPI", label: "Social Progress Index" },
   {
-    value: "Sustainable Developement Goals",
+    value: "SDG",
     label: "Sustainable Developement Goals"
   }
 ];
@@ -152,14 +152,14 @@ class AppliedOrgFiltersList extends React.Component {
       SubIndustryClassification = this.props.NAICSList.data.map(function(
         value
       ) {
-        return { value: value.code, label: value.name };
+        return { value: value.id, label: value.name };
       });
     if (
       this.props.NTEEList.data &&
       industryCls.value === industryClassification[1].value
     )
       SubIndustryClassification = this.props.NTEEList.data.map(function(value) {
-        return { value: value.code, label: value.name };
+        return { value: value.id, label: value.name };
       });
 
     //frameworkTag
