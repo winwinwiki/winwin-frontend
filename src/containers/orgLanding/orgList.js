@@ -276,6 +276,9 @@ class OrgList extends React.Component {
         );
       });
     }
+    {
+      /* /**` */
+    }
     //search by sector
     if (this.state.activeButton.length === 1) {
       if (this.state.activeButton.indexOf("Public") > -1)
@@ -284,28 +287,9 @@ class OrgList extends React.Component {
         orgList = orgList.filter(row => row.sector === "Private");
       if (this.state.activeButton.indexOf("Social") > -1)
         orgList = orgList.filter(row => row.sector === "Social");
-    } else {
-      if (
-        this.state.activeButton.includes("Public") &&
-        this.state.activeButton.includes("Social")
-      )
-        orgList = orgList.filter(
-          row => row.sector === "Public" || row.sector === "Social"
-        );
-      if (
-        this.state.activeButton.includes("Public") &&
-        this.state.activeButton.includes("Private")
-      )
-        orgList = orgList.filter(
-          row => row.sector === "Public" || row.sector === "Private"
-        );
-      if (
-        this.state.activeButton.includes("Social") &&
-        this.state.activeButton.includes("Private")
-      )
-        orgList = orgList.filter(
-          row => row.sector === "Social" || row.sector === "Private"
-        );
+    }
+    {
+      /* /**` */
     }
     return (
       <section className="dashboard-content p-0">
@@ -449,7 +433,7 @@ class OrgList extends React.Component {
         newSectors.splice(newSectors.indexOf("All"), 1);
       newSectors.indexOf(filter["sector"]) > -1
         ? newSectors.splice(newSectors.indexOf(filter["sector"]), 1)
-        : newSectors.push(filter["sector"]);
+        : (newSectors[0] = filter["sector"]);
     }
     if (newSectors.length === 0) newSectors.push("All");
     this.props.fetchOrganisationsList({ newSectors });
