@@ -304,6 +304,7 @@ class UserList extends React.Component {
           <ReactTable
             pageSize={userList.length > 10 ? 10 : userList.length}
             minRows={3}
+            showPageSizeOptions={false}
             noDataText="No users found"
             data={userList}
             columns={this.columns}
