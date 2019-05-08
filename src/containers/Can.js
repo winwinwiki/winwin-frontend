@@ -30,8 +30,12 @@ const check = (rules, role, action, data) => {
 
 const Can = props =>
   check(rules, props.role, props.perform, props.data)
-    ? props.yes()
-    : props.no();
+    ? props.yes
+      ? props.yes()
+      : true
+    : props.no
+    ? props.no()
+    : false;
 
 Can.defaultProps = {
   yes: () => null,
