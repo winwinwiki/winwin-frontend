@@ -82,8 +82,7 @@ class RegionsServed extends Component {
           })
           .filter(x =>
             x.regionName.toLowerCase().includes(inputValue.toLowerCase())
-          )
-          .sort();
+          );
   };
 
   onSuggestionsFetchRequested = ({ value }) => {
