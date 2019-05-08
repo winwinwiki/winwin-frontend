@@ -3,16 +3,55 @@ import Search from "../../ui/searchBar";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { updateSDGData } from "../../../actions/orgDetail/sdgTagsAction";
-import { getSDGDataBySubGoals } from "../../../util/util";
+import { getSDGDataBySubGoals, deepFilter } from "../../../util/util";
+import { debounce, cloneDeep } from "lodash";
+import {
+  startLoaderAction,
+  stopLoaderAction
+} from "../../../actions/common/loaderActions";
 class SDGModal extends React.Component {
   state = {
     searchText: "",
-    checkedSDGTags: this.props.checkedSDGTags
+    checkedSDGTags: this.props.checkedSDGTags,
+    flag: false
+  };
+
+  handleSearch = debounce(val => {
+    let r = [];
+    let list = this.props.SDGList.response;
+    if (val) {
+      r = deepFilter(cloneDeep(list), val); //deep clone list to avoid props from changing when state changes
+      this.props.startLoaderAction();
+      this.setState({ flag: true, SDGList: { response: r } }, () =>
+        this.props.stopLoaderAction()
+      );
+    }
+    if (!r.length && this.state.flag) {
+      this.props.startLoaderAction();
+      //SDG List in props persist coz we deepcloned the list
+      this.setState({ SDGList: this.props.SDGList }, () =>
+        this.props.stopLoaderAction()
+      );
+    }
+  }, 2000);
+
+  componentDidMount() {
+    let SDGList = this.props.SDGList;
+    this.setState({
+      SDGList
+    });
+  }
+
+  onSearch = e => {
+    e.preventDefault();
+    let val = e.target.value;
+    this.setState({ searchText: val });
+    this.handleSearch(val);
   };
 
   render() {
-    const { searchText, checkedSDGTags } = this.state;
-    const { SDGList } = this.props;
+    const { searchText, checkedSDGTags, SDGList } = this.state;
+    // const { SDGList } = this.props;
     if (!SDGList || !checkedSDGTags) {
       return null;
     }
@@ -51,7 +90,7 @@ class SDGModal extends React.Component {
                     <div className="w-100 col d-flex align-content-center py-3">
                       <Search
                         placeholder="Search"
-                        onChange={this.onChange}
+                        onChange={this.onSearch}
                         value={searchText}
                       />
                       <div className="ml-auto">
@@ -148,7 +187,7 @@ class SDGModal extends React.Component {
         checkedSDGTags: newChecked
       });
     }
-    //else add newly checked spi tag
+    //else add newly checked SDG tag
     else this.setState({ checkedSDGTags: [...this.state.checkedSDGTags, sdg] });
     return sdg;
   }
@@ -168,11 +207,14 @@ class SDGModal extends React.Component {
   }
 }
 const mapStateToProps = state => ({
-  SDGList: state.orgList.sdgList
+  // SDGList: state.orgList.sdgList
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ updateSDGData }, dispatch);
+  bindActionCreators(
+    { updateSDGData, startLoaderAction, stopLoaderAction },
+    dispatch
+  );
 
 export default connect(
   mapStateToProps,
