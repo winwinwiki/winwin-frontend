@@ -266,7 +266,7 @@ class OrgDetailPage extends React.Component {
                     />
                   </div>
                   <div className="section-title border-bottom pb-3 mb-3">
-                    Head Quarters
+                    Headquarters
                   </div>
                   <div className="form-group">
                     <label htmlFor="category">Street Address</label>
