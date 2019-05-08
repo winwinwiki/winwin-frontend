@@ -17,28 +17,15 @@ import {
   updateRegionsAction,
   fetchRegionsList
 } from "../../../actions/orgDetail/regionsServedAction";
-import { compareStrings } from "../../../util/util";
-
-// const addressComponents = {
-//   street_number: "short_name",
-//   route: "long_name",
-//   locality: "long_name",
-//   administrative_area_level_1: "long_name",
-//   administrative_area_level_2: "long_name",
-//   country: "long_name",
-//   postal_code: "short_name"
-// };
+import Can, { isUserAuthorized } from "../../Can";
 
 const getSuggestionValue = suggestion => suggestion.regionName;
 
 class RegionsServed extends Component {
   state = {
-    // location: null,
     isEdited: false,
     suggestions: [],
-    // regionsServed: {
-    //   data: {}
-    // }
+
     regionsServed: {
       region: { regionName: "" }
     }
@@ -47,6 +34,14 @@ class RegionsServed extends Component {
   componentDidMount() {
     this.props.startLoaderAction();
     this.props.fetchOrgRegionsServed(this.props.orgId, this.props.type);
+    //rba
+    if (
+      Can({
+        role: this.props.user.role,
+        perform: "organizationDetailsRegionsServed:edit"
+      })
+    )
+      this.onEdit();
   }
 
   componentDidUpdate(prevProps) {
@@ -70,10 +65,19 @@ class RegionsServed extends Component {
 
     return inputLength === 0
       ? []
-      : regionsList.filter(
-          region =>
-            region.regionName.toLowerCase().slice(0, inputLength) === inputValue
-        );
+      : regionsList
+          .sort(function(a, b) {
+            if (a.regionName.toLowerCase() < b.regionName.toLowerCase()) {
+              return -1;
+            }
+            if (a.regionName.toLowerCase() > b.regionName.toLowerCase()) {
+              return 1;
+            }
+            return 0;
+          })
+          .filter(x =>
+            x.regionName.toLowerCase().includes(inputValue.toLowerCase())
+          );
   };
 
   onSuggestionsFetchRequested = ({ value }) => {

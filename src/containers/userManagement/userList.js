@@ -304,6 +304,7 @@ class UserList extends React.Component {
           <ReactTable
             pageSize={userList.length > 10 ? 10 : userList.length}
             minRows={3}
+            showPageSizeOptions={false}
             noDataText="No users found"
             data={userList}
             columns={this.columns}
@@ -508,7 +509,7 @@ class UserList extends React.Component {
 
       newSectors.indexOf(field) > -1
         ? newSectors.splice(newSectors.indexOf(field), 1)
-        : newSectors.push(field);
+        : (newSectors[0] = field);
     }
     if (newSectors.length === 0) newSectors.push("All");
     //this.props.fetchFilteredUserList({type: field});
