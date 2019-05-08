@@ -3,16 +3,55 @@ import Search from "../../ui/searchBar";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { updateSPIData } from "../../../actions/orgDetail/spiTagsAction";
-import { getSPIDataByIndicators } from "../../../util/util";
+import { getSPIDataByIndicators, deepFilter } from "../../../util/util";
+import { debounce, cloneDeep } from "lodash";
+import {
+  startLoaderAction,
+  stopLoaderAction
+} from "../../../actions/common/loaderActions";
 class SPIModal extends Component {
   state = {
     searchText: "",
-    checkedSPITags: this.props.checkedSPITags
+    checkedSPITags: this.props.checkedSPITags,
+    flag: false
+  };
+
+  handleSearch = debounce(val => {
+    let r = [];
+    let list = this.props.SPIList.response;
+    if (val) {
+      r = deepFilter(cloneDeep(list), val); //deep clone list to avoid props from changing when state changes
+      this.props.startLoaderAction();
+      this.setState({ flag: true, SPIList: { response: r } }, () =>
+        this.props.stopLoaderAction()
+      );
+    }
+    if (!r.length && this.state.flag) {
+      this.props.startLoaderAction();
+      //SPI List in props persist coz we deepcloned the list
+      this.setState({ SPIList: this.props.SPIList }, () =>
+        this.props.stopLoaderAction()
+      );
+    }
+  }, 2000);
+
+  componentDidMount() {
+    let SPIList = this.props.SPIList;
+    this.setState({
+      SPIList
+    });
+  }
+
+  onSearch = e => {
+    e.preventDefault();
+    let val = e.target.value;
+    this.setState({ searchText: val });
+    this.handleSearch(val);
   };
 
   render() {
-    const { searchText, checkedSPITags } = this.state;
-    const { SPIList } = this.props;
+    const { searchText, checkedSPITags, SPIList } = this.state;
+    // const { SPIList } = this.props;
     if (!SPIList || !checkedSPITags) {
       return null;
     }
@@ -51,7 +90,7 @@ class SPIModal extends Component {
                     <div className="w-100 col d-flex align-content-center py-3">
                       <Search
                         placeholder="Search"
-                        onChange={this.onChange}
+                        onChange={this.onSearch}
                         value={searchText}
                       />
                       <div className="ml-auto">
@@ -185,7 +224,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ updateSPIData }, dispatch);
+  bindActionCreators(
+    { updateSPIData, startLoaderAction, stopLoaderAction },
+    dispatch
+  );
 
 export default connect(
   mapStateToProps,
