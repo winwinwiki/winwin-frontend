@@ -509,7 +509,7 @@ class UserList extends React.Component {
 
       newSectors.indexOf(field) > -1
         ? newSectors.splice(newSectors.indexOf(field), 1)
-        : newSectors.push(field);
+        : (newSectors[0] = field);
     }
     if (newSectors.length === 0) newSectors.push("All");
     //this.props.fetchFilteredUserList({type: field});
