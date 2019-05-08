@@ -58,12 +58,15 @@ class SpiTags extends React.Component {
             </form>
           </div>
         </div>
-        <SPIModal
-          type={type}
-          orgId={orgId}
-          checkedSPITags={spiTags.data.response}
-          updateSPIData={updateSPIData}
-        />
+        {this.props.SPIList && (
+          <SPIModal
+            type={type}
+            orgId={orgId}
+            checkedSPITags={spiTags.data.response}
+            updateSPIData={updateSPIData}
+            SPIList={this.props.SPIList}
+          />
+        )}
       </section>
     );
   }
@@ -113,7 +116,8 @@ class SpiTags extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  spiTags: state.spiTags
+  spiTags: state.spiTags,
+  SPIList: state.orgList.spiList
 });
 
 const mapDispatchToProps = dispatch =>

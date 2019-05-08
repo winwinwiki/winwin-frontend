@@ -163,3 +163,20 @@ export function getSDGDataBySubGoals(SDGList, id) {
   });
   return sdg;
 }
+
+export function deepFilter(array, indicator) {
+  return array.filter(function iter(o) {
+    return Object.keys(o).some(function(k) {
+      if (
+        typeof o[k] === "string" &&
+        o[k].toLowerCase().indexOf(indicator.toLowerCase()) !== -1
+      ) {
+        return true;
+      }
+      if (Array.isArray(o[k])) {
+        o[k] = o[k].filter(iter);
+        return o[k].length;
+      }
+    });
+  });
+}
