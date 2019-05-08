@@ -220,7 +220,7 @@ class SPIModal extends Component {
 }
 
 const mapStateToProps = state => ({
-  SPIList: state.orgList.spiList
+  // SPIList: state.orgList.spiList
 });
 
 const mapDispatchToProps = dispatch =>
