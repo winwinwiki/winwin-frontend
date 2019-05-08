@@ -70,10 +70,20 @@ class RegionsServed extends Component {
 
     return inputLength === 0
       ? []
-      : regionsList.filter(
-          region =>
-            region.regionName.toLowerCase().slice(0, inputLength) === inputValue
-        );
+      : regionsList
+          .sort(function(a, b) {
+            if (a.regionName.toLowerCase() < b.regionName.toLowerCase()) {
+              return -1;
+            }
+            if (a.regionName.toLowerCase() > b.regionName.toLowerCase()) {
+              return 1;
+            }
+            return 0;
+          })
+          .filter(x =>
+            x.regionName.toLowerCase().includes(inputValue.toLowerCase())
+          )
+          .sort();
   };
 
   onSuggestionsFetchRequested = ({ value }) => {
