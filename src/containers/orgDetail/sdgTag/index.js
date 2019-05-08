@@ -59,11 +59,14 @@ class SdgTags extends React.Component {
             </form>
           </div>
         </div>
-        <SDGModal
-          type={type}
-          orgId={orgId}
-          checkedSDGTags={sdgTags.data.response}
-        />
+        {this.props.SDGList && (
+          <SDGModal
+            type={type}
+            orgId={orgId}
+            checkedSDGTags={sdgTags.data.response}
+            SDGList={this.props.SDGList}
+          />
+        )}
       </section>
     );
   }
@@ -101,7 +104,8 @@ class SdgTags extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  sdgTags: state.sdgTags
+  sdgTags: state.sdgTags,
+  SDGList: state.orgList.sdgList
 });
 
 const mapDispatchToProps = dispatch =>
