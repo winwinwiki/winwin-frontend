@@ -16,7 +16,7 @@ class SDGModal extends React.Component {
     flag: false
   };
 
-  handleSearch = debounce(val => {
+  handleSearch = val => {
     let r = [];
     let list = this.props.SDGList.response;
     if (val) {
@@ -33,7 +33,7 @@ class SDGModal extends React.Component {
         this.props.stopLoaderAction()
       );
     }
-  }, 2000);
+  };
 
   componentDidMount() {
     let SDGList = this.props.SDGList;

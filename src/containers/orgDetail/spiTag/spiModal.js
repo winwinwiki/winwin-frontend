@@ -12,28 +12,21 @@ import {
 class SPIModal extends Component {
   state = {
     searchText: "",
-    checkedSPITags: this.props.checkedSPITags,
-    flag: false
+    checkedSPITags: this.props.checkedSPITags
   };
 
-  handleSearch = debounce(val => {
+  handleSearch = val => {
     let r = [];
     let list = this.props.SPIList.response;
     if (val) {
       r = deepFilter(cloneDeep(list), val); //deep clone list to avoid props from changing when state changes
-      this.props.startLoaderAction();
-      this.setState({ flag: true, SPIList: { response: r } }, () =>
-        this.props.stopLoaderAction()
-      );
+      this.setState({ SPIList: { response: r } });
     }
-    if (!r.length && this.state.flag) {
-      this.props.startLoaderAction();
+    if (this.state.searchText === "") {
       //SPI List in props persist coz we deepcloned the list
-      this.setState({ SPIList: this.props.SPIList }, () =>
-        this.props.stopLoaderAction()
-      );
+      this.setState({ SPIList: this.props.SPIList });
     }
-  }, 2000);
+  };
 
   componentDidMount() {
     let SPIList = this.props.SPIList;
