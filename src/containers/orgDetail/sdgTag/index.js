@@ -76,10 +76,12 @@ class SdgTags extends React.Component {
     let sdgTagsList = sdgTags.data.response;
     let desiredTagsList = {};
     sdgTagsList.map(tags => {
-      if (!desiredTagsList[tags["goalName"]])
-        desiredTagsList[tags["goalName"]] = [];
+      if (!desiredTagsList[tags["goalCode"] + ". " + tags["goalName"]])
+        desiredTagsList[tags["goalCode"] + ". " + tags["goalName"]] = [];
 
-      desiredTagsList[tags["goalName"]].push(tags["subGoalName"]);
+      desiredTagsList[tags["goalCode"] + ". " + tags["goalName"]].push(
+        tags["subGoalCode"] + " " + tags["subGoalName"]
+      );
       return desiredTagsList;
     });
     return Object.keys(desiredTagsList).map((goalName, idx) => (
