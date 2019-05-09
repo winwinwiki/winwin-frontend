@@ -12,8 +12,7 @@ import {
 class SDGModal extends React.Component {
   state = {
     searchText: "",
-    checkedSDGTags: this.props.checkedSDGTags,
-    flag: false
+    checkedSDGTags: this.props.checkedSDGTags
   };
 
   handleSearch = val => {
@@ -21,17 +20,11 @@ class SDGModal extends React.Component {
     let list = this.props.SDGList.response;
     if (val) {
       r = deepFilter(cloneDeep(list), val); //deep clone list to avoid props from changing when state changes
-      this.props.startLoaderAction();
-      this.setState({ flag: true, SDGList: { response: r } }, () =>
-        this.props.stopLoaderAction()
-      );
+      this.setState({ SDGList: { response: r } });
     }
-    if (!r.length && this.state.flag) {
-      this.props.startLoaderAction();
+    if (this.state.searchText === "") {
       //SDG List in props persist coz we deepcloned the list
-      this.setState({ SDGList: this.props.SDGList }, () =>
-        this.props.stopLoaderAction()
-      );
+      this.setState({ SDGList: this.props.SDGList });
     }
   };
 
