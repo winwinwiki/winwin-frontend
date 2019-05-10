@@ -5,6 +5,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import validate from "../../../util/validation";
 import { saveOrgResource } from "../../../actions/orgDetail/resourcesAction";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import cloneDeep from "lodash/cloneDeep";
 
 const getSuggestionValue = suggestion => suggestion.categoryName;
 
@@ -20,7 +22,9 @@ class ResourceModal extends Component {
       organizationResourceCategory: { categoryName: "" }
     },
     formError: {
-      count: ""
+      count: "",
+      description: "",
+      organizationResourceCategory: { categoryName: "" }
     }
   };
 
@@ -28,7 +32,7 @@ class ResourceModal extends Component {
     const { modalData } = this.props;
     if (nextProps.modalData.id !== modalData.id && nextProps.modalData) {
       this.setState({
-        modalData: nextProps.modalData,
+        modalData: cloneDeep(nextProps.modalData),
         categories:
           nextProps.categoriesList.data &&
           nextProps.categoriesList.data.response
@@ -49,7 +53,6 @@ class ResourceModal extends Component {
   };
 
   getSuggestions = value => {
-    console.log(value);
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
     const {
@@ -91,30 +94,59 @@ class ResourceModal extends Component {
     let name = target.name;
     const { modalData } = this.state;
     if (name === "categoryName")
-      modalData.organizationDataSetCategory[name] = value;
+      modalData.organizationResourceCategory[name] = value;
     else modalData[name] = value;
     this.setState({ modalData });
   };
 
   saveResource = e => {
     e.preventDefault();
-    const { modalData } = this.state;
+    const {
+      modalData,
+      formError: { count, organizationResourceCategory: { categoryName } } = {}
+    } = this.state;
     const { orgId, type } = this.props;
+    if (!modalData.organizationResourceCategory.categoryName) {
+      this.validateResourceForm(
+        "Resource",
+        modalData.organizationResourceCategory.categoryName
+      );
+      return;
+    } else if (categoryName !== "" || count !== "") {
+      return;
+    }
+    this.props.toggle();
     if (!modalData.organizationId) modalData.organizationId = orgId;
     this.props.saveOrgResource(modalData, type);
   };
 
   validateField = e => {
-    this.validateAddResourceForm(e.target.name, e.target.value);
+    this.validateResourceForm(e.target.name, e.target.value);
   };
 
-  validateAddResourceForm = (field, value) => {
+  validateResourceForm = (field, value) => {
     const { formError } = this.state;
 
+    if (field === "Resource") {
+      if (!value) {
+        formError.organizationResourceCategory.categoryName =
+          "Resource name is required.";
+        this.setState({ formError });
+        return;
+      }
+      formError.organizationResourceCategory.categoryName = "";
+      this.setState({ formError });
+      return;
+    }
     if (field === "count") {
+      if (!value) {
+        formError.count = "Count is required.";
+        this.setState({ formError });
+        return;
+      }
       let isValid = validate.number(value);
       if (!isValid) {
-        formError.count = "Number is expected/required.";
+        formError.count = "Number is expected.";
         this.setState({ formError });
         return;
       }
@@ -122,6 +154,18 @@ class ResourceModal extends Component {
       this.setState({ formError });
       return;
     }
+  };
+
+  onClose = () => {
+    this.setState({
+      formError: {
+        count: "",
+        description: "",
+        organizationResourceCategory: { categoryName: "" }
+      },
+      modalData: cloneDeep(this.props.modalData)
+    });
+    this.props.toggle();
   };
 
   render() {
@@ -137,125 +181,218 @@ class ResourceModal extends Component {
     } = this.state;
     const inputProps = {
       id,
+      name: "Resource",
       placeholder: "Enter Resource Name",
       value: categoryName || "", //input prop value should always be string
-      onChange: this.onChange
+      onChange: this.onChange,
+      onBlur: this.validateField
     };
     return (
-      <div
-        className="modal fade"
-        id="resourceModal"
-        tabIndex="-1"
-        role="dialog"
-        aria-labelledby="resourceModalLabel"
-        aria-hidden="true"
+      <Modal
+        isOpen={this.props.showModal}
+        fade={true}
+        toggle={() => this.props.toggle()}
+        className={this.props.className}
       >
-        <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <div className="dashboard-container">
-              <div className="dashboard-header">
-                <div className="modal-header flex-column">
-                  <div className="d-flex w-100 p-3">
-                    <h5 className="modal-title" id="resourceModalLabel">
-                      {title}
-                    </h5>
-                    <button
-                      type="button"
-                      className="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
+        <ModalHeader toggle={this.toggle}>
+          <div className="d-flex w-100 p-3">
+            <h5 className="modal-title" id="ResourceModalLabel">
+              {title}
+            </h5>
+          </div>
+        </ModalHeader>
+        <ModalBody className="dashboard-content">
+          <form action="">
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item px-0">
+                <div className="row">
+                  <div className="col">
+                    <div className="form-group">
+                      <label htmlFor="new-category">Resource Name</label>
+                      <Autosuggest
+                        id="categoryName"
+                        suggestions={suggestions}
+                        onSuggestionsFetchRequested={
+                          this.onSuggestionsFetchRequested
+                        }
+                        onSuggestionsClearRequested={
+                          this.onSuggestionsClearRequested
+                        }
+                        getSuggestionValue={getSuggestionValue}
+                        renderSuggestion={renderSuggestion}
+                        inputProps={inputProps}
+                      />
+                      {formError.organizationResourceCategory.categoryName && (
+                        <small className="form-element-hint text-danger">
+                          {formError.organizationResourceCategory.categoryName}
+                        </small>
+                      )}
+                    </div>
+                  </div>
+                  <div className="col">
+                    <div className="form-group">
+                      <label htmlFor="new-count">Count</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="new-count"
+                        name="count"
+                        placeholder="Enter Count"
+                        value={count}
+                        onBlur={this.validateField}
+                        onChange={this.handleChange}
+                      />
+                      {formError.count && (
+                        <div className="text-danger small">
+                          {formError.count}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="modal-body dashboard-content">
-                <form action="">
-                  <ul className="list-group list-group-flush">
-                    <li className="list-group-item px-0">
-                      <div className="row">
-                        <div className="col">
-                          <div className="form-group">
-                            <label htmlFor="new-category">Resource Name</label>
-                            <Autosuggest
-                              id="categoryName"
-                              suggestions={suggestions}
-                              onSuggestionsFetchRequested={
-                                this.onSuggestionsFetchRequested
-                              }
-                              onSuggestionsClearRequested={
-                                this.onSuggestionsClearRequested
-                              }
-                              getSuggestionValue={getSuggestionValue}
-                              renderSuggestion={renderSuggestion}
-                              inputProps={inputProps}
-                            />
-                          </div>
-                        </div>
-                        <div className="col">
-                          <div className="form-group">
-                            <label htmlFor="new-count">Count</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="new-count"
-                              name="count"
-                              placeholder="Enter Count"
-                              value={count}
-                              onBlur={this.validateField}
-                              onChange={this.handleChange}
-                            />
-                            {formError.count && (
-                              <div className="text-danger small">
-                                {formError.count}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col">
-                          <div className="form-group">
-                            <label htmlFor="description">Description</label>
-                            <textarea
-                              className="form-control"
-                              placeholder="A desription about the resource will go here"
-                              id="description"
-                              name="description"
-                              rows="5"
-                              value={description}
-                              onChange={this.handleChange}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="modal-footer">
-                        <button
-                          type="button"
-                          className="btn btn-secondary"
-                          data-dismiss="modal"
-                        >
-                          Close
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-primary"
-                          data-dismiss="modal"
-                          onClick={this.saveResource}
-                          disabled={!!this.state.formError.count}
-                        >
-                          Save changes
-                        </button>
-                      </div>
-                    </li>
-                  </ul>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                <div className="row">
+                  <div className="col">
+                    <div className="form-group">
+                      <label htmlFor="description">Description</label>
+                      <textarea
+                        className="form-control"
+                        placeholder="A desription about the resource will go here"
+                        id="description"
+                        name="description"
+                        rows="5"
+                        value={description}
+                        onChange={this.handleChange}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </form>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="secondary" onClick={this.onClose}>
+            Close
+          </Button>
+          <Button color="primary" onClick={this.saveResource}>
+            Save changes
+          </Button>{" "}
+        </ModalFooter>
+      </Modal>
+      // <div
+      //   className="modal fade"
+      //   id="resourceModal"
+      //   tabIndex="-1"
+      //   role="dialog"
+      //   aria-labelledby="resourceModalLabel"
+      //   aria-hidden="true"
+      // >
+      //   <div className="modal-dialog modal-dialog-centered" role="document">
+      //     <div className="modal-content">
+      //       <div className="dashboard-container">
+      //         <div className="dashboard-header">
+      //           <div className="modal-header flex-column">
+      //             <div className="d-flex w-100 p-3">
+      //               <h5 className="modal-title" id="resourceModalLabel">
+      //                 {title}
+      //               </h5>
+      //               <button
+      //                 type="button"
+      //                 className="close"
+      //                 data-dismiss="modal"
+      //                 aria-label="Close"
+      //               >
+      //                 <span aria-hidden="true">&times;</span>
+      //               </button>
+      //             </div>
+      //           </div>
+      //         </div>
+      //         <div className="modal-body dashboard-content">
+      //           <form action="">
+      //             <ul className="list-group list-group-flush">
+      //               <li className="list-group-item px-0">
+      //                 <div className="row">
+      //                   <div className="col">
+      //                     <div className="form-group">
+      //                       <label htmlFor="new-category">Resource Name</label>
+      //                       <Autosuggest
+      //                         id="categoryName"
+      //                         suggestions={suggestions}
+      //                         onSuggestionsFetchRequested={
+      //                           this.onSuggestionsFetchRequested
+      //                         }
+      //                         onSuggestionsClearRequested={
+      //                           this.onSuggestionsClearRequested
+      //                         }
+      //                         getSuggestionValue={getSuggestionValue}
+      //                         renderSuggestion={renderSuggestion}
+      //                         inputProps={inputProps}
+      //                       />
+      //                     </div>
+      //                   </div>
+      //                   <div className="col">
+      //                     <div className="form-group">
+      //                       <label htmlFor="new-count">Count</label>
+      //                       <input
+      //                         type="text"
+      //                         className="form-control"
+      //                         id="new-count"
+      //                         name="count"
+      //                         placeholder="Enter Count"
+      //                         value={count}
+      //                         onBlur={this.validateField}
+      //                         onChange={this.handleChange}
+      //                       />
+      //                       {formError.count && (
+      //                         <div className="text-danger small">
+      //                           {formError.count}
+      //                         </div>
+      //                       )}
+      //                     </div>
+      //                   </div>
+      //                 </div>
+      //                 <div className="row">
+      //                   <div className="col">
+      //                     <div className="form-group">
+      //                       <label htmlFor="description">Description</label>
+      //                       <textarea
+      //                         className="form-control"
+      //                         placeholder="A desription about the resource will go here"
+      //                         id="description"
+      //                         name="description"
+      //                         rows="5"
+      //                         value={description}
+      //                         onChange={this.handleChange}
+      //                       />
+      //                     </div>
+      //                   </div>
+      //                 </div>
+      //                 <div className="modal-footer">
+      //                   <button
+      //                     type="button"
+      //                     className="btn btn-secondary"
+      //                     data-dismiss="modal"
+      //                   >
+      //                     Close
+      //                   </button>
+      //                   <button
+      //                     type="button"
+      //                     className="btn btn-primary"
+      //                     data-dismiss="modal"
+      //                     onClick={this.saveResource}
+      //                     disabled={!!this.state.formError.count}
+      //                   >
+      //                     Save changes
+      //                   </button>
+      //                 </div>
+      //               </li>
+      //             </ul>
+      //           </form>
+      //         </div>
+      //       </div>
+      //     </div>
+      //   </div>
+      // </div>
     );
   }
 }

@@ -30,7 +30,8 @@ class DataSets extends React.Component {
         type: "",
         url: ""
       },
-      modaltitle: ""
+      modaltitle: "",
+      modal: false
     };
   }
 
@@ -105,6 +106,8 @@ class DataSets extends React.Component {
           orgId={this.props.orgId}
           modalData={selectedData}
           title={modaltitle}
+          toggle={this.toggle}
+          showModal={this.state.modal}
         />
         <PopupModal
           modalid="deleteModal"
@@ -119,6 +122,12 @@ class DataSets extends React.Component {
       </section>
     );
   }
+
+  toggle = () => {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
+  };
 
   selectedDataSet = dataSet => {
     dataSet &&
@@ -150,6 +159,7 @@ class DataSets extends React.Component {
     const { dataSetList } = this.state;
     const { orgId, type } = this.props;
     this.props.fetchDataSetCategories(orgId, type);
+    this.toggle();
     this.setState({
       selectedData: dataSetList.filter(data => data.id === dataSetId)[0],
       modaltitle: "Edit Data Set"
@@ -158,6 +168,7 @@ class DataSets extends React.Component {
 
   //when add new is clicked
   addNewDataSetModal = () => {
+    this.toggle();
     const { orgId, type } = this.props;
     this.props.fetchDataSetCategories(orgId, type);
     this.setState({

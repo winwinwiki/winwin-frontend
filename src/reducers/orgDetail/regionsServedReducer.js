@@ -6,17 +6,13 @@ import {
   SAVE_REGIONSERVED_SUCCESS,
   SAVE_REGIONSERVED_ERROR,
   REMOVE_REGIONSERVED_SUCCESS,
-  RESET_REGIONSERVED_SUCCESS,
-  UPDATE_REGIONSERVED_SUCCESS,
   FETCH_REGIONSLIST_SUCCESS
 } from "../../constants/dispatch";
 
 const initialState = {
   loading: false,
   data: null,
-  error: false,
-  saveData: null,
-  saveError: false
+  error: false
 };
 
 export default (state = initialState, action) => {
@@ -31,7 +27,6 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         loading: false,
         data: action.response,
-        saveData: action.response,
         error: false
       });
 
@@ -49,24 +44,17 @@ export default (state = initialState, action) => {
     case SAVE_REGIONSERVED_REQUEST:
       return Object.assign({}, state, {
         loading: true,
-        saveData: null,
         saveError: false
       });
-    // case SAVE_REGIONSERVED_SUCCESS:
-    //   return Object.assign({}, state, {
-    //     loading: false,
-    //     saveData: action.response,
-    //     saveError: false
-    //   });
+
     case SAVE_REGIONSERVED_ERROR:
       return Object.assign({}, state, {
         loading: false,
-        saveData: action.error,
-        saveError: true
+        data: action.error,
+        error: true
       });
 
     // add new regions
-    // case UPDATE_REGIONSERVED_SUCCESS:
     case SAVE_REGIONSERVED_SUCCESS:
       return {
         ...state,
@@ -93,13 +81,6 @@ export default (state = initialState, action) => {
           })
         }
       };
-
-    case RESET_REGIONSERVED_SUCCESS:
-      return Object.assign({}, state, {
-        loading: false,
-        data: state.saveData,
-        error: false
-      });
 
     default:
       return state;

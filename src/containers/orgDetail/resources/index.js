@@ -30,7 +30,8 @@ class Resources extends React.Component {
         count: "",
         description: ""
       },
-      modaltitle: ""
+      modaltitle: "",
+      modal: false
     };
   }
 
@@ -80,6 +81,12 @@ class Resources extends React.Component {
     });
   };
 
+  toggle = () => {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
+  };
+
   render() {
     const { selectedData, modaltitle, resourcesList } = this.state;
     const { resources, resourceCategories } = this.props;
@@ -125,6 +132,8 @@ class Resources extends React.Component {
           orgId={this.props.orgId}
           modalData={selectedData}
           title={modaltitle}
+          toggle={this.toggle}
+          showModal={this.state.modal}
         />
         <PopupModal
           modalid="deleteModal"
@@ -159,6 +168,7 @@ class Resources extends React.Component {
     const { resourcesList } = this.state;
     const { orgId, type } = this.props;
     this.props.fetchResourceCategories(orgId, type);
+    this.toggle();
     this.setState({
       selectedData: resourcesList.filter(
         resource => resource.id === resourceId
@@ -170,6 +180,7 @@ class Resources extends React.Component {
   //add new resource
   addNewResourceModal = () => {
     const { orgId, type } = this.props;
+    this.toggle();
     this.props.fetchResourceCategories(orgId, type);
     this.setState({
       selectedData: {
