@@ -1,9 +1,7 @@
 import React, { Component, Fragment } from "react";
-import Geosuggest from "react-geosuggest";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import filter from "lodash/filter";
-import Autosuggest from "react-autosuggest";
+
 import {
   startLoaderAction,
   stopLoaderAction
@@ -17,9 +15,10 @@ import {
   updateRegionsAction,
   fetchRegionsList
 } from "../../../actions/orgDetail/regionsServedAction";
-import Can, { isUserAuthorized } from "../../Can";
+import Can from "../../Can";
+import { regionsListSelector } from "../../../selectors/regionsListSelector";
 
-const getSuggestionValue = suggestion => suggestion.regionName;
+import FilterableSelect from "../../common/virtualizedSelect";
 
 class RegionsServed extends Component {
   state = {
@@ -47,50 +46,12 @@ class RegionsServed extends Component {
   componentDidUpdate(prevProps) {
     if (
       prevProps.regionsServed !== this.props.regionsServed &&
+      prevProps.regionsList !== this.props.regionsList &&
       this.props.regionsServed.data
     ) {
       this.props.stopLoaderAction();
     }
   }
-
-  // Use your imagination to render suggestions.
-  renderSuggestion = suggestion => <div>{suggestion.regionName}</div>;
-
-  getSuggestions = value => {
-    const inputValue = value.trim().toLowerCase();
-    const inputLength = inputValue.length;
-    const {
-      regionsServed: { regionsList: { response: regionsList = [] } = {} } = {}
-    } = this.props;
-
-    return inputLength === 0
-      ? []
-      : regionsList
-          .sort(function(a, b) {
-            if (a.regionName.toLowerCase() < b.regionName.toLowerCase()) {
-              return -1;
-            }
-            if (a.regionName.toLowerCase() > b.regionName.toLowerCase()) {
-              return 1;
-            }
-            return 0;
-          })
-          .filter(x =>
-            x.regionName.toLowerCase().includes(inputValue.toLowerCase())
-          );
-  };
-
-  onSuggestionsFetchRequested = ({ value }) => {
-    this.setState({
-      suggestions: this.getSuggestions(value)
-    });
-  };
-
-  onSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: []
-    });
-  };
 
   onChange = e => {
     e.preventDefault();
@@ -125,7 +86,6 @@ class RegionsServed extends Component {
   render() {
     const {
       isEdited,
-      suggestions,
       regionsServed: { region: { regionId, regionName } = {} } = {}
     } = this.state;
     if (
@@ -138,14 +98,7 @@ class RegionsServed extends Component {
     const {
       data: { response: regionsServedList } = {}
     } = this.props.regionsServed;
-    const inputProps = {
-      // id,
-      name: "regionName",
-      placeholder: "Search regions (for ex. Seattle, WA, USA)",
-      className: "form-control position-relative mt-2",
-      value: regionName,
-      onChange: this.onChange
-    };
+
     return (
       <section className="dashboard-content p-0 py-3 org-details-container">
         <div className="col-md-18 m-auto card">
@@ -169,43 +122,27 @@ class RegionsServed extends Component {
                     </div>
                   </li>
                 )}
-                {isEdited && (
-                  // <Geosuggest
-                  //   ref={el => (this._geoSuggest = el)}
-                  //   placeholder="Search regions (for ex. Seattle, WA, USA)"
-                  //   initialValue=""
-                  //   className="form-control position-relative mt-2"
-                  //   fixtures={[]}
-                  //   onSuggestSelect={suggest => {
-                  //     if (suggest) this.onSuggestSelect(suggest);
-                  //   }}
-                  // />
+                {isEdited && this.props.regionsList && (
                   <div className="row mt-2">
                     <div className="col-sm-22">
-                      <Autosuggest
-                        id="regionName"
-                        suggestions={suggestions}
-                        onSuggestionsFetchRequested={
-                          this.onSuggestionsFetchRequested
-                        }
-                        onSuggestionsClearRequested={
-                          this.onSuggestionsClearRequested
-                        }
-                        getSuggestionValue={getSuggestionValue}
-                        onSuggestionSelected={this.onSuggestionSelected}
-                        renderSuggestion={this.renderSuggestion}
-                        inputProps={inputProps}
-                        onSelect={this.onSelect}
+                      <FilterableSelect
+                        className="position-relative mt-2"
+                        name="regionName"
+                        placeholder="Search regions (for ex. Seattle, WA, USA)"
+                        options={this.props.regionsList}
+                        onSuggestChange={this.onSuggestChange}
+                        value={regionName}
                       />
                     </div>
                   </div>
                 )}
                 {isEdited &&
                   regionsServedList.map((region, idx) => {
-                    const { region: { regionName } = {}, isActive } = region;
-                    return isActive ? (
+                    return region.isActive && region.region ? (
                       <div className="row mt-2" key={idx}>
-                        <div className="col-sm-22">{regionName}</div>
+                        <div className="col-sm-22">
+                          {region.region.regionName}
+                        </div>
                         <div className="col-sm-2">
                           <a
                             href="javascript:;"
@@ -222,10 +159,9 @@ class RegionsServed extends Component {
                   })}
                 {!isEdited &&
                   regionsServedList.map((region, idx) => {
-                    const { region: { regionName } = {}, isActive } = region;
-                    return isActive ? (
+                    return region.isActive && region.region ? (
                       <li className="mt-2" key={idx}>
-                        {regionName}
+                        {region.region.regionName}
                       </li>
                     ) : (
                       ""
@@ -239,14 +175,27 @@ class RegionsServed extends Component {
     );
   }
 
-  onSubmit = (e, data) => {
-    e.preventDefault();
+  onSuggestChange = (field, val) => {
+    this.setState(
+      {
+        regionsServed: {
+          region: { regionName: val.label }
+        }
+      },
+      () => this.onSubmit(val)
+    );
+  };
+
+  onSubmit = data => {
     const { type, orgId } = this.props;
     const { regionsServed: { region } = {} } = this.state;
     const updatedRegions = [
       {
         organizationId: orgId,
-        region: data ? data.suggestion : region
+        region: {
+          regionId: data.value,
+          regionName: data.label
+        }
       }
     ];
 
@@ -308,11 +257,11 @@ class RegionsServed extends Component {
     });
   };
 
-  //when selected from suggested list call on submit method
-  onSuggestionSelected = (e, data) => {
-    e.preventDefault();
-    this.onSubmit(e, data);
-  };
+  // //when selected from suggested list call on submit method
+  // onSuggestionSelected = (e, data) => {
+  //   e.preventDefault();
+  //   this.onSubmit(e, data);
+  // };
 
   // onSuggestSelect = place => {
   //   this._geoSuggest.clear(); //clear inputtext
@@ -372,7 +321,8 @@ class RegionsServed extends Component {
 }
 
 const mapStateToProps = state => ({
-  regionsServed: state.regionsServed
+  regionsServed: state.regionsServed,
+  regionsList: regionsListSelector(state)
 });
 
 const mapDispatchToProps = dispatch =>
