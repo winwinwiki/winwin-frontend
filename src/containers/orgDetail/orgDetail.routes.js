@@ -18,6 +18,7 @@ import OrgChart from "../orgChart";
 import AddChildOrganisation from "./childOrganization";
 
 import ProgramDetailRoutes from "../programDetail/programDetail.routes";
+import Tree from "../sortableTree/sortableTree";
 
 const OrgDetailRoutes = props => (
   <OrgDetail match={props.match} history={props.history}>
@@ -148,7 +149,8 @@ const OrgDetailRoutes = props => (
         exact
         orgId={props.match.params.id}
         path={`${props.match.path}/organization-chart`}
-        component={OrgChart}
+        // component={OrgChart}
+        component={Tree}
         type={"Organization"}
       />
       <CrumbRoute

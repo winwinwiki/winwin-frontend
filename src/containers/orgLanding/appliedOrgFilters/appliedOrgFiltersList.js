@@ -118,10 +118,10 @@ class AppliedOrgFiltersList extends React.Component {
     } = this.state;
     const { isFilterModalVisible, activeOrg, orgDetail } = this.props;
 
-    let assestsMin = 0;
-    let assestsMax = 100;
-    let revenueMin = 0;
-    let revenueMax = 100;
+    let assestsMin = 500000;
+    let assestsMax = 1000000000;
+    let revenueMin = 500000;
+    let revenueMax = 1000000000;
 
     let userList = [];
     let SubIndustryClassification = [];
@@ -339,6 +339,7 @@ class AppliedOrgFiltersList extends React.Component {
             <div className="my-4">
               <InputRange
                 draggableTrack
+                step={2500000}
                 maxValue={revenueMax}
                 minValue={revenueMin}
                 formatLabel={value => `$ ${customNumberFormatter(value, 2)}`}
@@ -363,6 +364,7 @@ class AppliedOrgFiltersList extends React.Component {
             <div className="my-4">
               <InputRange
                 draggableTrack
+                step={2500000}
                 maxValue={assestsMax}
                 minValue={assestsMin}
                 formatLabel={value => `$ ${customNumberFormatter(value, 2)}`}

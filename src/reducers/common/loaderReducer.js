@@ -34,7 +34,9 @@ import {
   SAVE_RESOURCES_ERROR,
   DELETE_RESOURCE_REQUEST,
   DELETE_RESOURCE_SUCCESS,
-  DELETE_RESOURCE_ERROR
+  DELETE_RESOURCE_ERROR,
+  SET_FETCHORGHEIRARCHY_PENDING,
+  SET_FETCHORGHEIRARCHY_SUCCESS
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -232,6 +234,17 @@ export default (state = initialState, action) => {
       });
 
     case DELETE_RESOURCE_ERROR:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    //org tree
+    case SET_FETCHORGHEIRARCHY_PENDING:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
+    case SET_FETCHORGHEIRARCHY_SUCCESS:
       return Object.assign({}, state, {
         loading: false
       });
