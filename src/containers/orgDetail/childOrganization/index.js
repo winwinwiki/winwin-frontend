@@ -18,13 +18,15 @@ class addOrganization extends Component {
   onSave = e => {
     e.preventDefault();
     const { childOrgName, childOrgType } = this.state;
+    const { location: { state: { parentId } = {} } = {} } = this.props;
     const apiObj = {
-      parentId: this.props.orgId,
+      parentId: parentId,
       childOrgType:
         childOrgType || this.props.history.location.search.replace(/\?/, ""),
       childOrgName
     };
     this.props.onAddOrgChartChild(apiObj);
+    this.props.changePage(this.props.orgId);
   };
 
   render() {
@@ -43,14 +45,14 @@ class addOrganization extends Component {
                       type="text"
                       className="form-control"
                       id="childOrganizationType"
-                      placeholder="Enter Program Name"
+                      placeholder="Enter Child Organization Type"
                       name="childOrgType"
-                      readOnly
+                      // readOnly
                       onChange={this.onChange}
-                      value={this.props.history.location.search.replace(
-                        /\?/,
-                        ""
-                      )}
+                      // value={this.props.history.location.search.replace(
+                      //   /\?/,
+                      //   ""
+                      // )}
                     />
                   </div>
                 </div>

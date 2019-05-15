@@ -7,28 +7,29 @@ import {
 } from "../../constants/dispatch";
 
 const initialState = {
-  isFetchOrgHierarchyPending: false,
-  isFetchOrgHierarchySuccess: false,
-  fetchOrgHierarchyError: null,
-  orgHierarchy: {}
+  loading: false,
+  orgHierarchy: {},
+  error: false
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_FETCHORGHEIRARCHY_PENDING:
       return Object.assign({}, state, {
-        isFetchOrgHierarchyPending: action.isFetchOrgHierarchyPending
+        loading: true,
+        data: null,
+        error: false
       });
 
     case SET_FETCHORGHEIRARCHY_SUCCESS:
       return Object.assign({}, state, {
-        isFetchOrgHierarchySuccess: action.isFetchOrgHierarchySuccess,
-        orgHierarchy: action.orgHierarchy
+        loading: false,
+        orgHierarchy: action.response,
+        error: false
       });
 
     case RESET_ORGHIRARCHY_SUCCESS:
       return Object.assign({}, state, {
-        isFetchOrgHierarchySuccess: true,
         orgHierarchy: initialState
       });
 
@@ -47,14 +48,10 @@ export default (state = initialState, action) => {
           }
         }
       };
-    // return Object.assign({}, state, {
-    //   isFetchOrgHierarchySuccess: action.isFetchOrgHierarchySuccess,
-    //   orgHierarchy: action.orgHierarchy
-    // });
 
     case SET_FECTHORGHEIRARCHY_ERROR:
       return Object.assign({}, state, {
-        fetchOrgHierarchyError: action.fetchOrgHierarchyError
+        error: action.error
       });
 
     default:

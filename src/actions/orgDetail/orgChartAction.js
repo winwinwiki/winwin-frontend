@@ -6,21 +6,19 @@ import {
   RESET_ORGHIRARCHY_ERROR
 } from "../../constants/dispatch";
 import { callFetchOrgHierarchyApi } from "../../api/orgDetail/orgDetailApi";
+import { api } from "../../api/api";
 
-export const fetchOrgHierarchy = (orgId, callback) => {
+export const fetchOrgHierarchy = orgId => {
   return dispatch => {
-    dispatch(setFetchOrgHierarchyPending(true));
-    dispatch(setFetchOrgHierarchySuccess(false, {}));
-    dispatch(setFetchOrgHierarchyError(null));
-
-    callFetchOrgHierarchyApi(orgId, (error, orgHierarchy) => {
-      dispatch(setFetchOrgHierarchyPending(false));
-      if (!error) {
-        dispatch(setFetchOrgHierarchySuccess(true, orgHierarchy));
-      } else {
+    dispatch(setFetchOrgHierarchyPending());
+    api(`/organization/${orgId}/suborganization`, "GET", {}, true).then(
+      response => {
+        dispatch(setFetchOrgHierarchySuccess(response));
+      },
+      error => {
         dispatch(setFetchOrgHierarchyError(error));
       }
-    });
+    );
   };
 };
 
@@ -34,25 +32,23 @@ export const resetOrgHierarchyData = () => {
   };
 };
 
-function setFetchOrgHierarchyPending(isFetchOrgHierarchyPending) {
+function setFetchOrgHierarchyPending() {
   return {
-    type: SET_FETCHORGHEIRARCHY_PENDING,
-    isFetchOrgHierarchyPending
+    type: SET_FETCHORGHEIRARCHY_PENDING
   };
 }
 
-function setFetchOrgHierarchySuccess(isFetchOrgHierarchySuccess, orgHierarchy) {
+function setFetchOrgHierarchySuccess(response) {
   return {
     type: SET_FETCHORGHEIRARCHY_SUCCESS,
-    isFetchOrgHierarchySuccess,
-    orgHierarchy
+    response
   };
 }
 
-function setFetchOrgHierarchyError(fetchOrgHierarchyError) {
+function setFetchOrgHierarchyError(error) {
   return {
     type: SET_FECTHORGHEIRARCHY_ERROR,
-    fetchOrgHierarchyError
+    error
   };
 }
 

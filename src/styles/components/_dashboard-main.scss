@@ -5,6 +5,10 @@
   min-height: 0;
 }
 
+.d-flex{    // Firefox bug : to allow overflow in firefox
+  min-height: 0;
+}
+
 .dashboard-container{
   overflow: hidden;
   //overflow-x: hidden;
