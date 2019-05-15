@@ -1,3 +1,7 @@
 .rst__rowLabel{
     cursor: pointer !important;
 }
+
+.rst__rowSubtitle{
+    line-height: 0;
+}

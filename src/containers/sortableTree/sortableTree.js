@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import SortableTree from "react-sortable-tree";
 import { push } from "react-router-redux";
 import { bindActionCreators } from "redux";
@@ -98,7 +98,7 @@ class Tree extends Component {
                   isVirtualized={false}
                   treeData={this.state.orgTreeData}
                   onChange={orgTreeData => this.setState({ orgTreeData })}
-                  rowHeight={80}
+                  rowHeight={90}
                   // searchQuery={searchString}
                   // searchFocusOffset={searchFocusIndex}
                   // searchFinishCallback={matches =>
@@ -111,10 +111,20 @@ class Tree extends Component {
                   //   })
                   // }
                   canDrop={rowInfo => {
+                    //only one parent is allowed
                     if (!rowInfo.nextParent) return false;
                     return true;
                   }}
                   generateNodeProps={rowInfo => ({
+                    subtitle: ({ node: { subtitle, children } }) => {
+                      return (
+                        <Fragment>
+                          {subtitle}
+                          <div>&nbsp;</div>
+                          {`${children.length} children`}
+                        </Fragment>
+                      );
+                    },
                     onClick: event => {
                       if (
                         (event.target.parentElement.className.includes(
