@@ -22,12 +22,15 @@ const rename = obj => {
     }
     //rename name key
     if (prop === "name") {
-      obj.title = obj[prop];
+      obj.title = obj[prop] || "";
       delete obj[prop];
     }
     //make subtitle from address obj
     if (prop === "location") {
-      obj.subtitle = `${obj[prop].city}, ${obj[prop].country}`;
+      obj.subtitle =
+        obj[prop].city &&
+        obj[prop].country &&
+        `${obj[prop].city}, ${obj[prop].country}`;
       delete obj[prop];
     }
   }
