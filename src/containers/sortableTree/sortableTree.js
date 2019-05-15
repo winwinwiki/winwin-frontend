@@ -11,12 +11,14 @@ import {
 } from "../../actions/common/loaderActions";
 import { OrgHierarchySelector } from "../../selectors/OrgHierarchySelector";
 import "./sortableTree.css";
-
+import Search from "../ui/searchBar";
 class Tree extends Component {
   state = {
     isEdited: false,
     treeData: [{ title: "Chicken", children: [{ title: "Egg" }] }], //sample tree data
     orgTreeData: []
+    // searchString: "",
+    // searchFocusIndex: 0
   };
 
   componentDidMount() {
@@ -55,12 +57,27 @@ class Tree extends Component {
     return null;
   };
 
+  // handleSearchOnChange = e => {
+  //   this.setState({
+  //     searchString: e.target.value
+  //   });
+  // };
+
   render() {
-    const { isEdited } = this.state;
+    const { isEdited, searchString, searchFocusIndex } = this.state;
     return (
       <section className="dashboard-content p-0 py-3 org-details-container">
         <div className="col-md-18 m-auto card">
           <div className="col-md-18 m-auto d-flex flex-column py-3">
+            {/* <div className="row mb-4">
+              <div className="col">
+                <Search
+                  placeholder="Search Organization"
+                  onChange={this.handleSearchOnChange}
+                  value={searchString}
+                />
+              </div>
+            </div> */}
             <ul className="list-group list-group-flush">
               <li className="list-group-item px-0">
                 {!isEdited && (
@@ -82,6 +99,21 @@ class Tree extends Component {
                   treeData={this.state.orgTreeData}
                   onChange={orgTreeData => this.setState({ orgTreeData })}
                   rowHeight={80}
+                  // searchQuery={searchString}
+                  // searchFocusOffset={searchFocusIndex}
+                  // searchFinishCallback={matches =>
+                  //   this.setState({
+                  //     searchFoundCount: matches.length,
+                  //     searchFocusIndex:
+                  //       matches.length > 0
+                  //         ? searchFocusIndex % matches.length
+                  //         : 0
+                  //   })
+                  // }
+                  canDrop={rowInfo => {
+                    if (!rowInfo.nextParent) return;
+                    return rowInfo;
+                  }}
                   generateNodeProps={rowInfo => ({
                     onClick: event => {
                       if (
