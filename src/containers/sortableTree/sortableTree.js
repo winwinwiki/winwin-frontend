@@ -111,8 +111,8 @@ class Tree extends Component {
                   //   })
                   // }
                   canDrop={rowInfo => {
-                    if (!rowInfo.nextParent) return;
-                    return rowInfo;
+                    if (!rowInfo.nextParent) return false;
+                    return true;
                   }}
                   generateNodeProps={rowInfo => ({
                     onClick: event => {
