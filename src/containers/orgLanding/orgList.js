@@ -24,7 +24,6 @@ import { onDeleteOrg } from "../../actions/organization/deleteOrgAction";
 import { Link } from "react-router-dom";
 import { PopupModal } from "../ui/popupModal";
 import Can from "../Can";
-import { maxBy, minBy } from "lodash";
 
 const setPriorityHigh = "Set Priority High";
 const setPriorityNormal = "Set Priority Normal";
@@ -74,7 +73,9 @@ class OrgList extends React.Component {
     assestsMin: 0,
     assestsMax: 100,
     revenueMin: 0,
-    revenueMax: 100
+    revenueMax: 100,
+    selected: {},
+    selectAll: 0
   };
 
   componentDidMount() {
@@ -112,24 +113,92 @@ class OrgList extends React.Component {
   //   }
   // }
 
+  toggleRow = (name, id) => {
+    const newSelected = Object.assign({}, this.state.selected);
+    newSelected[name] = !this.state.selected[name];
+    this.setState({
+      selected: newSelected,
+      selectAll: 2
+    });
+    //when selected row is found
+    if (newSelected[name]) {
+      this.setState({
+        selectedOrgList: [
+          ...this.state.selectedOrgList,
+          this.state.orgList.find(x => x.name === name)
+        ]
+      });
+    }
+    if (!newSelected[name]) {
+      this.setState({
+        selectedOrgList: this.state.selectedOrgList.filter(x => x.name !== name)
+      });
+    }
+  };
+
+  toggleSelectAll = () => {
+    let newSelected = {};
+
+    if (this.state.selectAll === 0) {
+      this.state.orgList.forEach(x => {
+        newSelected[x.name] = true;
+      });
+    }
+
+    this.setState(
+      {
+        selected: newSelected,
+        selectAll: this.state.selectAll === 0 ? 1 : 0
+      },
+      () =>
+        this.state.selectAll === 1
+          ? this.setState({ selectedOrgList: this.state.orgList })
+          : this.setState({ selectedOrgList: [] })
+    );
+  };
+
   columns = [
     {
       id: "select",
-      Header: (
-        <span>
-          <input type="checkbox" />
-        </span>
-      ),
+      Cell: ({ original, value }) => {
+        return (
+          <div className="centerText">
+            <input
+              type="checkbox"
+              className="checkbox"
+              checked={this.state.selected[original.name] === true}
+              onChange={() => this.toggleRow(original.name, value)}
+            />
+          </div>
+        );
+      },
+      Header: x => {
+        return (
+          <div className="centerText">
+            <input
+              type="checkbox"
+              className="checkbox"
+              checked={this.state.selectAll === 1}
+              ref={input => {
+                if (input) {
+                  input.indeterminate = this.state.selectAll === 2;
+                }
+              }}
+              onChange={() => this.toggleSelectAll()}
+            />
+          </div>
+        );
+      },
       accessor: "id",
       sortable: false,
-      Cell: row => (
-        <div className="centerText">
-          <input
-            type="checkbox"
-            onClick={e => this.onSelectCheckbox(e, row.value)}
-          />
-        </div>
-      ),
+      // Cell: row => (
+      //   <div className="centerText">
+      //     <input
+      //       type="checkbox"
+      //       onClick={e => this.onSelectCheckbox(e, row.value)}
+      //     />
+      //   </div>
+      // ),
       width: 50
     },
     {
@@ -367,21 +436,21 @@ class OrgList extends React.Component {
     );
   }
 
-  //when checkbox is checked
-  onSelectCheckbox = (e, id) => {
-    let { orgList, selectedOrgList } = this.state;
-    const target = e.target;
-    const isChecked = target.type === "checkbox" ? target.checked : false;
-    if (isChecked) {
-      selectedOrgList = [
-        ...selectedOrgList,
-        orgList.filter(x => x.id === id)[0]
-      ];
-    } else {
-      selectedOrgList = selectedOrgList.filter(x => x.id !== id);
-    }
-    this.setState({ selectedOrgList });
-  };
+  // //when checkbox is checked
+  // onSelectCheckbox = (e, id) => {
+  //   let { orgList, selectedOrgList } = this.state;
+  //   const target = e.target;
+  //   const isChecked = target.type === "checkbox" ? target.checked : false;
+  //   if (isChecked) {
+  //     selectedOrgList = [
+  //       ...selectedOrgList,
+  //       orgList.filter(x => x.id === id)[0]
+  //     ];
+  //   } else {
+  //     selectedOrgList = selectedOrgList.filter(x => x.id !== id);
+  //   }
+  //   this.setState({ selectedOrgList });
+  // };
 
   handleOrgDelete = orgId => {
     this.props.onDeleteOrg(orgId);
@@ -406,21 +475,32 @@ class OrgList extends React.Component {
     this.props.changePage(orgId);
   };
 
+  getSelectedOrgList = (orgList, key) => {
+    return orgList.find(x => x.name === key);
+  };
+
+  getCustomFilteredOrgList = (orgList, key) => {
+    return orgList.filter(x => x.name !== key);
+  };
+
   onDropdownChange = (e, val) => {
     let { selectedOrgList } = this.state;
-    if (val === markReadyForTagging)
+    if (val === markReadyForTagging) {
       selectedOrgList.map(x => {
         x.tagStatus = priorityStatus[val];
-
+        x.naicsCode = (x.naicsCode && x.naicsCode.id) || "";
+        x.nteeCode = (x.nteeCode && x.nteeCode.id) || "";
         return x;
       });
-    else
+    } else {
       selectedOrgList.map(x => {
         x.priority = priorityStatus[val];
+        x.naicsCode = (x.naicsCode && x.naicsCode.id) || "";
+        x.nteeCode = (x.nteeCode && x.nteeCode.id) || "";
         return x;
       });
+    }
     this.props.onSaveOrgBasicInfo(selectedOrgList);
-    this.forceUpdate(); //re-render table when changing the status icon color
   };
 
   filterOrgList = filter => {
