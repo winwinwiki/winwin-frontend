@@ -70,16 +70,13 @@ class UserList extends React.Component {
   }
 
   //******CheckBox**** */
-  toggleRow(email) {
+  toggleRow = email => {
     const { userList: { data: userList } = {} } = this.state;
     let { filteredList = [] } = this.state;
     const newSelected = Object.assign({}, this.state.selected);
     newSelected[email] = !this.state.selected[email];
     if (newSelected[email]) {
-      filteredList = [
-        ...filteredList,
-        userList.filter(x => x.email === email)[0]
-      ];
+      filteredList = [...filteredList, userList.find(x => x.email === email)];
     } else filteredList = filteredList.filter(x => x.email !== email);
 
     this.setState({
@@ -87,9 +84,9 @@ class UserList extends React.Component {
       selectAll: 2,
       filteredList
     });
-  }
+  };
 
-  toggleSelectAll() {
+  toggleSelectAll = () => {
     let newSelected = {};
 
     if (this.state.selectAll === 0) {
@@ -98,17 +95,36 @@ class UserList extends React.Component {
       });
     }
 
-    this.setState({
-      selected: newSelected,
-      selectAll: this.state.selectAll === 0 ? 1 : 0,
-      filteredList: this.state.selectAll === 0 ? this.state.userList.data : []
-    });
-  }
+    this.setState(
+      {
+        selected: newSelected,
+        selectAll: this.state.selectAll === 0 ? 1 : 0
+      },
+      () => {
+        this.setState({
+          filteredList:
+            this.state.selectAll === 1 ? this.state.userList.data : []
+        });
+      }
+    );
+  };
   //******CheckBox**** */
 
   columns = [
     {
       id: "select",
+      Cell: ({ original, value }) => {
+        return (
+          <div className="centerText">
+            <input
+              type="checkbox"
+              className="checkbox"
+              checked={this.state.selected[original.email] === true}
+              onChange={() => this.toggleRow(original.email)}
+            />
+          </div>
+        );
+      },
       Header: (
         <span>
           <input
@@ -124,20 +140,8 @@ class UserList extends React.Component {
           />
         </span>
       ),
-      accessor: "select",
+      accessor: "id",
       sortable: false,
-      Cell: ({ original }) => {
-        return (
-          <div className="centerText">
-            <input
-              type="checkbox"
-              className="checkbox"
-              checked={this.state.selected[original.email] === true}
-              onChange={() => this.toggleRow(original.email)}
-            />
-          </div>
-        );
-      },
       width: 50
     },
     {
@@ -225,8 +229,10 @@ class UserList extends React.Component {
     if (this.state.search) {
       userList = userList.filter(row => {
         return (
-          row.userDisplayName.toLowerCase().includes(this.state.search) ||
-          row.team.toLowerCase().includes(this.state.search)
+          row.userDisplayName
+            .toLowerCase()
+            .includes(this.state.search.toLowerCase()) ||
+          row.team.toLowerCase().includes(this.state.search.toLowerCase())
         );
       });
     }
