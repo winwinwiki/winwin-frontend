@@ -124,11 +124,11 @@ class CreateUser extends Component {
               <div className="row">
                 <div className="col">
                   <div className="form-group">
-                    <label htmlFor="fullName">First Name</label>
+                    <label htmlFor="fullName">Full Name</label>
                     <input
                       id="fullName"
                       type="text"
-                      placeholder="First Name"
+                      placeholder="Full Name"
                       className="form-control"
                       onBlur={this.validateField}
                       onChange={this.onChange}
