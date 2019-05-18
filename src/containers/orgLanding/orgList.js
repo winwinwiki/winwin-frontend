@@ -113,7 +113,7 @@ class OrgList extends React.Component {
   //   }
   // }
 
-  toggleRow = (name, id) => {
+  toggleRow = name => {
     const newSelected = Object.assign({}, this.state.selected);
     newSelected[name] = !this.state.selected[name];
     this.setState({
@@ -160,35 +160,34 @@ class OrgList extends React.Component {
   columns = [
     {
       id: "select",
-      Cell: ({ original, value }) => {
+      Cell: ({ original }) => {
         return (
           <div className="centerText">
             <input
               type="checkbox"
               className="checkbox"
               checked={this.state.selected[original.name] === true}
-              onChange={() => this.toggleRow(original.name, value)}
+              onChange={() => this.toggleRow(original.name)}
             />
           </div>
         );
       },
-      Header: x => {
-        return (
-          <div className="centerText">
-            <input
-              type="checkbox"
-              className="checkbox"
-              checked={this.state.selectAll === 1}
-              ref={input => {
-                if (input) {
-                  input.indeterminate = this.state.selectAll === 2;
-                }
-              }}
-              onChange={() => this.toggleSelectAll()}
-            />
-          </div>
-        );
-      },
+      Header: (
+        <span>
+          <input
+            type="checkbox"
+            className="checkbox"
+            checked={this.state.selectAll === 1}
+            ref={input => {
+              if (input) {
+                input.indeterminate = this.state.selectAll === 2;
+              }
+            }}
+            onChange={() => this.toggleSelectAll()}
+          />
+        </span>
+      ),
+
       accessor: "id",
       sortable: false,
       // Cell: row => (
@@ -309,15 +308,7 @@ class OrgList extends React.Component {
   ];
 
   render() {
-    const {
-      entity,
-      activeButton,
-      searchText,
-      assestsMin,
-      assestsMax,
-      revenueMin,
-      revenueMax
-    } = this.state;
+    const { entity, activeButton, searchText } = this.state;
     const { appliedFilterList } = this.props;
 
     let orgList = this.state.orgList;
@@ -329,19 +320,29 @@ class OrgList extends React.Component {
       orgList = orgList.filter(row => {
         return (
           (row.address.state &&
-            row.name.toLowerCase().includes(this.state.searchText)) ||
+            row.name
+              .toLowerCase()
+              .includes(this.state.searchText.toLowerCase())) ||
           (row.address.state &&
-            row.address.state.toLowerCase().includes(this.state.searchText)) ||
+            row.address.state
+              .toLowerCase()
+              .includes(this.state.searchText.toLowerCase())) ||
           (row.address.county &&
-            row.address.county.toLowerCase().includes(this.state.searchText)) ||
+            row.address.county
+              .toLowerCase()
+              .includes(this.state.searchText.toLowerCase())) ||
           (row.address.city &&
-            row.address.city.toLowerCase().includes(this.state.searchText)) ||
+            row.address.city
+              .toLowerCase()
+              .includes(this.state.searchText.toLowerCase())) ||
           (row.address.country &&
             row.address.country
               .toLowerCase()
-              .includes(this.state.searchText)) ||
+              .includes(this.state.searchText.toLowerCase())) ||
           (row.address.street &&
-            row.address.street.toLowerCase().includes(this.state.searchText))
+            row.address.street
+              .toLowerCase()
+              .includes(this.state.searchText.toLowerCase()))
         );
       });
     }
