@@ -24,6 +24,9 @@ import {
 } from "../../../actions/orgLanding/orgLandingAction";
 import { spiTagsListSelector } from "../../../selectors/spiTagsSelector";
 import { sdgTagsListSelector } from "../../../selectors/sdgTagsSelector";
+import { InputGroup, InputGroupAddon, Input } from "reactstrap";
+import "./filters.css";
+
 var classNames = require("classnames");
 
 const Priority = ["Normal", "High"];
@@ -186,7 +189,7 @@ class AppliedOrgFiltersList extends React.Component {
         style={{ left: -500 }}
       >
         <div className="row">
-          <div className="col">
+          <div className="col col-sm-5">
             {isSectorLevelShow && <h5>Sector Level</h5>}
             {isSectorLevelShow && (
               <Checkbox
@@ -255,7 +258,7 @@ class AppliedOrgFiltersList extends React.Component {
               onChange={this.onStatusCheckboxChange}
             />
           </div>
-          <div className="col">
+          <div className="col col-sm-6">
             <h5>Priority</h5>
             <div className="btn-group btn-group-toggle mb-4">
               <label
@@ -334,10 +337,37 @@ class AppliedOrgFiltersList extends React.Component {
               />
             )}
           </div>
-          <div className="col">
+          <div className="col col-sm-7">
             <h5>Revenue</h5>
-            <div className="my-4">
-              <InputRange
+            <div className="input-group mb-3 my-4">
+              <div className="input-group-prepend">
+                <span className="input-group-text">$</span>
+              </div>
+              <input
+                type="number"
+                className="form-control mr-3"
+                placeholder="min"
+                onChange={e =>
+                  this.setState({
+                    revenue: { ...this.state.revenue, min: e.target.value }
+                  })
+                }
+              />
+              <span className="mt-2">to</span>
+              <div className="input-group-prepend ml-3">
+                <span className="input-group-text">$</span>
+              </div>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="max"
+                onChange={e =>
+                  this.setState({
+                    revenue: { ...this.state.revenue, max: e.target.value }
+                  })
+                }
+              />
+              {/* <InputRange
                 draggableTrack
                 step={2500000}
                 maxValue={revenueMax}
@@ -358,10 +388,10 @@ class AppliedOrgFiltersList extends React.Component {
                   this.setState({ revenue: processedValues });
                 }}
                 onChangeComplete={value => {}}
-              />
+              /> */}
             </div>
             <h5>Assets</h5>
-            <div className="my-4">
+            {/* <div className="my-4">
               <InputRange
                 draggableTrack
                 step={2500000}
@@ -384,9 +414,38 @@ class AppliedOrgFiltersList extends React.Component {
                 }}
                 onChangeComplete={value => {}}
               />
+            </div> */}
+            <div className="input-group mb-3 my-4">
+              <div className="input-group-prepend">
+                <span className="input-group-text">$</span>
+              </div>
+              <input
+                type="number"
+                className="form-control mr-3"
+                placeholder="min"
+                onChange={e =>
+                  this.setState({
+                    assets: { ...this.state.revenue, min: e.target.value }
+                  })
+                }
+              />
+              <span className="mt-2">to</span>
+              <div className="input-group-prepend ml-3">
+                <span className="input-group-text">$</span>
+              </div>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="max"
+                onChange={e =>
+                  this.setState({
+                    assets: { ...this.state.revenue, max: e.target.value }
+                  })
+                }
+              />
             </div>
           </div>
-          <div className="col">
+          <div className="col col-sm-6">
             <h5>Framework Tag</h5>
             <ReactSelect
               name="frameworkTag"
