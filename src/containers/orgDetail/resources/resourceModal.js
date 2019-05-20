@@ -118,6 +118,13 @@ class ResourceModal extends Component {
     this.props.toggle();
     if (!modalData.organizationId) modalData.organizationId = orgId;
     this.props.saveOrgResource(modalData, type);
+    this.setState({
+      modalData: {
+        count: "",
+        description: "",
+        organizationResourceCategory: { categoryName: "" }
+      }
+    });
   };
 
   validateField = e => {
