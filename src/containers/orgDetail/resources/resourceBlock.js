@@ -39,8 +39,7 @@ const ResourceBlock = props => {
               readOnly="readOnly"
               placeholder="Enter Category"
               value={
-                data.organizationResourceCategory &&
-                data.organizationResourceCategory.categoryName
+                data.resourceCategory && data.resourceCategory.categoryName
               }
             />
           </div>

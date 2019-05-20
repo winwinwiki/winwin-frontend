@@ -26,12 +26,12 @@ class DataSetModal extends Component {
     modalData: {
       type: "",
       url: "",
-      organizationDataSetCategory: { categoryName: "" }
+      dataSetCategory: { categoryName: "" }
     },
     formError: {
       type: "",
       url: "",
-      organizationDataSetCategory: { categoryName: "" }
+      dataSetCategory: { categoryName: "" }
     }
   };
 
@@ -51,14 +51,14 @@ class DataSetModal extends Component {
     e.preventDefault();
     const {
       modalData,
-      formError: { organizationDataSetCategory: { categoryName } } = {}
+      formError: { dataSetCategory: { categoryName } } = {}
     } = this.state;
     const { orgId, type } = this.props;
 
-    if (!modalData.organizationDataSetCategory.categoryName) {
+    if (!modalData.dataSetCategory.categoryName) {
       this.validateDataSetForm(
         "DataSet",
-        modalData.organizationDataSetCategory.categoryName
+        modalData.dataSetCategory.categoryName
       );
       return;
     } else if (categoryName !== "") {
@@ -71,7 +71,7 @@ class DataSetModal extends Component {
       modalData: {
         type: "",
         url: "",
-        organizationDataSetCategory: { categoryName: "" }
+        dataSetCategory: { categoryName: "" }
       }
     });
   };
@@ -82,8 +82,7 @@ class DataSetModal extends Component {
     const value = target.type === "checkbox" ? target.checked : target.value;
     let name = target.name;
     const { modalData } = this.state;
-    if (name === "categoryName")
-      modalData.organizationDataSetCategory[name] = value;
+    if (name === "categoryName") modalData.dataSetCategory[name] = value;
     else modalData[name] = value;
     this.setState({ modalData });
   };
@@ -125,15 +124,15 @@ class DataSetModal extends Component {
       categoriesList: { data: { response: categoriesList = [] } = {} } = {}
     } = this.props;
 
-    modalData.organizationDataSetCategory.categoryName = newValue;
+    modalData.dataSetCategory.categoryName = newValue;
 
     //find id in categories list to be updated
     let filteredCategory = categoriesList.find(x => {
       return compareStrings(x.categoryName, newValue) ? x : "";
     });
     if (filteredCategory && filteredCategory.id && filteredCategory.id !== -1)
-      modalData.organizationDataSetCategory.id = filteredCategory.id;
-    else modalData.organizationDataSetCategory.id = -1;
+      modalData.dataSetCategory.id = filteredCategory.id;
+    else modalData.dataSetCategory.id = -1;
     this.setState({ modalData, value: newValue });
   };
 
@@ -151,12 +150,11 @@ class DataSetModal extends Component {
     const { formError } = this.state;
     if (field === "DataSet") {
       if (!value) {
-        formError.organizationDataSetCategory.categoryName =
-          "DataSet name is required.";
+        formError.dataSetCategory.categoryName = "DataSet name is required.";
         this.setState({ formError });
         return;
       }
-      formError.organizationDataSetCategory.categoryName = "";
+      formError.dataSetCategory.categoryName = "";
       this.setState({ formError });
       return;
     }
@@ -168,7 +166,7 @@ class DataSetModal extends Component {
       formError: {
         type: "",
         url: "",
-        organizationDataSetCategory: { categoryName: "" }
+        dataSetCategory: { categoryName: "" }
       },
       modalData: cloneDeep(this.props.modalData)
     });
@@ -182,7 +180,7 @@ class DataSetModal extends Component {
         description,
         type,
         url,
-        organizationDataSetCategory: { categoryName, id } = {}
+        dataSetCategory: { categoryName, id } = {}
       } = {}
     } = this.state;
     const { title } = this.props;
@@ -232,9 +230,9 @@ class DataSetModal extends Component {
                         renderSuggestion={renderSuggestion}
                         inputProps={inputProps}
                       />
-                      {formError.organizationDataSetCategory.categoryName && (
+                      {formError.dataSetCategory.categoryName && (
                         <small className="form-element-hint text-danger">
-                          {formError.organizationDataSetCategory.categoryName}
+                          {formError.dataSetCategory.categoryName}
                         </small>
                       )}
                     </div>
@@ -391,11 +389,11 @@ class DataSetModal extends Component {
       //                         renderSuggestion={renderSuggestion}
       //                         inputProps={inputProps}
       //                       />
-      //                       {formError.organizationDataSetCategory
+      //                       {formError.dataSetCategory
       //                         .categoryName && (
       //                         <small className="form-element-hint text-danger">
       //                           {
-      //                             formError.organizationDataSetCategory
+      //                             formError.dataSetCategory
       //                               .categoryName
       //                           }
       //                         </small>

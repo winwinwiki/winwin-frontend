@@ -116,6 +116,18 @@ class Tree extends Component {
                     return true;
                   }}
                   generateNodeProps={rowInfo => ({
+                    title: (
+                      <div
+                        style={{
+                          width: 200,
+                          overflow: "hidden",
+                          textOverflow: "ellipsis"
+                        }}
+                        title={`${rowInfo.node.title}`}
+                      >
+                        {rowInfo.node.title}
+                      </div>
+                    ),
                     subtitle: ({ node: { subtitle, children } }) => {
                       return (
                         <Fragment>

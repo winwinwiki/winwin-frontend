@@ -76,7 +76,7 @@ class Resources extends React.Component {
     this.setState({
       resource: {
         id: resource.id,
-        name: resource.organizationResourceCategory.categoryName
+        name: resource.resourceCategory.categoryName
       }
     });
   };
@@ -156,7 +156,7 @@ class Resources extends React.Component {
     this.props.deleteOrgResource({ orgId, resourceId, type, filteredList });
     this.setState({
       selectedData: {
-        organizationResourceCategory: { categoryName: "" },
+        resourceCategory: { categoryName: "" },
         count: "",
         description: ""
       }
@@ -184,7 +184,7 @@ class Resources extends React.Component {
     this.props.fetchResourceCategories(orgId, type);
     this.setState({
       selectedData: {
-        organizationResourceCategory: { categoryName: "" },
+        resourceCategory: { categoryName: "" },
         count: "",
         description: ""
       },

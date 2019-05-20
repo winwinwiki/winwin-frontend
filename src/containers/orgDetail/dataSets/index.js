@@ -134,7 +134,7 @@ class DataSets extends React.Component {
       this.setState({
         dataSet: {
           id: dataSet.id,
-          name: dataSet.organizationDataSetCategory.categoryName
+          name: dataSet.dataSetCategory.categoryName
         }
       });
   };
@@ -146,7 +146,7 @@ class DataSets extends React.Component {
     this.props.deleteOrgDataSet({ orgId, dataSetId, type, filteredList });
     this.setState({
       selectedData: {
-        organizationDataSetCategory: { categoryName: "" },
+        dataSetCategory: { categoryName: "" },
         description: "",
         type: "",
         url: ""
@@ -173,7 +173,7 @@ class DataSets extends React.Component {
     this.props.fetchDataSetCategories(orgId, type);
     this.setState({
       selectedData: {
-        organizationDataSetCategory: { categoryName: "" },
+        dataSetCategory: { categoryName: "" },
         description: "",
         type: "",
         url: ""
