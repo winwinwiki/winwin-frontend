@@ -202,6 +202,11 @@ export const ADD_PROGRAM_REQUEST = "program/ADD_PROGRAM_REQUEST";
 export const ADD_PROGRAM_SUCCESS = "program/ADD_PROGRAM_SUCCESS";
 export const ADD_PROGRAM_ERROR = "program/ADD_PROGRAM_ERROR";
 
+//delete program
+export const DELETE_PROGRAM_REQUEST = "program/DELETE_PROGRAM_REQUEST";
+export const DELETE_PROGRAM_SUCCESS = "program/DELETE_PROGRAM_SUCCESS";
+export const DELETE_PROGRAM_ERROR = "program/DELETE_PROGRAM_ERROR";
+
 //Data Feed
 export const DATA_FEED_REQUEST = "org/DATA_FEED_REQUEST";
 export const DATA_FEED_SUCCESS = "org/DATA_FEED_SUCCESS";

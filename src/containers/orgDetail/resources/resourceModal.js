@@ -19,12 +19,12 @@ class ResourceModal extends Component {
     modalData: {
       count: "",
       description: "",
-      organizationResourceCategory: { categoryName: "" }
+      resourceCategory: { categoryName: "" }
     },
     formError: {
       count: "",
       description: "",
-      organizationResourceCategory: { categoryName: "" }
+      resourceCategory: { categoryName: "" }
     }
   };
 
@@ -75,15 +75,15 @@ class ResourceModal extends Component {
       categoriesList: { data: { response: categoriesList = [] } = {} } = {}
     } = this.props;
 
-    modalData.organizationResourceCategory.categoryName = newValue;
+    modalData.resourceCategory.categoryName = newValue;
 
     //find id in categories list to be updated
     let filteredCategory = categoriesList.find(x => {
       return compareStrings(x.categoryName, newValue) ? x : "";
     });
     if (filteredCategory && filteredCategory.id)
-      modalData.organizationResourceCategory.id = filteredCategory.id;
-    else modalData.organizationResourceCategory.id = -1;
+      modalData.resourceCategory.id = filteredCategory.id;
+    else modalData.resourceCategory.id = -1;
     this.setState({ modalData, value: newValue });
   };
 
@@ -93,8 +93,7 @@ class ResourceModal extends Component {
     const value = target.type === "checkbox" ? target.checked : target.value;
     let name = target.name;
     const { modalData } = this.state;
-    if (name === "categoryName")
-      modalData.organizationResourceCategory[name] = value;
+    if (name === "categoryName") modalData.resourceCategory[name] = value;
     else modalData[name] = value;
     this.setState({ modalData });
   };
@@ -103,13 +102,13 @@ class ResourceModal extends Component {
     e.preventDefault();
     const {
       modalData,
-      formError: { count, organizationResourceCategory: { categoryName } } = {}
+      formError: { count, resourceCategory: { categoryName } } = {}
     } = this.state;
     const { orgId, type } = this.props;
-    if (!modalData.organizationResourceCategory.categoryName) {
+    if (!modalData.resourceCategory.categoryName) {
       this.validateResourceForm(
         "Resource",
-        modalData.organizationResourceCategory.categoryName
+        modalData.resourceCategory.categoryName
       );
       return;
     } else if (categoryName !== "" || count !== "") {
@@ -122,7 +121,7 @@ class ResourceModal extends Component {
       modalData: {
         count: "",
         description: "",
-        organizationResourceCategory: { categoryName: "" }
+        resourceCategory: { categoryName: "" }
       }
     });
   };
@@ -136,12 +135,11 @@ class ResourceModal extends Component {
 
     if (field === "Resource") {
       if (!value) {
-        formError.organizationResourceCategory.categoryName =
-          "Resource name is required.";
+        formError.resourceCategory.categoryName = "Resource name is required.";
         this.setState({ formError });
         return;
       }
-      formError.organizationResourceCategory.categoryName = "";
+      formError.resourceCategory.categoryName = "";
       this.setState({ formError });
       return;
     }
@@ -168,7 +166,7 @@ class ResourceModal extends Component {
       formError: {
         count: "",
         description: "",
-        organizationResourceCategory: { categoryName: "" }
+        resourceCategory: { categoryName: "" }
       },
       modalData: cloneDeep(this.props.modalData)
     });
@@ -182,7 +180,7 @@ class ResourceModal extends Component {
       modalData: {
         description,
         count,
-        organizationResourceCategory: { categoryName, id } = {}
+        resourceCategory: { categoryName, id } = {}
       } = {},
       formError
     } = this.state;
@@ -229,9 +227,9 @@ class ResourceModal extends Component {
                         renderSuggestion={renderSuggestion}
                         inputProps={inputProps}
                       />
-                      {formError.organizationResourceCategory.categoryName && (
+                      {formError.resourceCategory.categoryName && (
                         <small className="form-element-hint text-danger">
-                          {formError.organizationResourceCategory.categoryName}
+                          {formError.resourceCategory.categoryName}
                         </small>
                       )}
                     </div>
