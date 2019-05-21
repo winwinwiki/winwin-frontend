@@ -70,7 +70,7 @@ class Login extends React.Component {
         !session.error
       )
         this.changePage(
-          nextProps.session.data.userDetails,
+          nextProps.session.data.userDetails || nextProps.session.data,
           nextProps.session.data.isNewUser
         );
       else if (nextProps.session.data || !nextProps.session.isAuthenticated)
@@ -212,7 +212,7 @@ class Login extends React.Component {
   changePage(userInfo, isNewUser) {
     this.props.stopLoaderAction();
     if (isNewUser) {
-      this.props.changePage("/verify-user", userInfo.email);
+      this.props.changePage("/verify-user", userInfo.userName);
     } else {
       // switch (userInfo.role) {
       //   case "Administrator":
