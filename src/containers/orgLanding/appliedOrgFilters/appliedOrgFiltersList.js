@@ -24,9 +24,6 @@ import {
 } from "../../../actions/orgLanding/orgLandingAction";
 import { spiTagsListSelector } from "../../../selectors/spiTagsSelector";
 import { sdgTagsListSelector } from "../../../selectors/sdgTagsSelector";
-import { InputGroup, InputGroupAddon, Input } from "reactstrap";
-import "./filters.css";
-
 var classNames = require("classnames");
 
 const Priority = ["Normal", "High"];
@@ -340,12 +337,13 @@ class AppliedOrgFiltersList extends React.Component {
           <div className="col col-sm-7">
             <h5>Revenue</h5>
             <div className="input-group mb-3 my-4">
+              <h5 className="mt-2 mr-2">Min : </h5>
               <div className="input-group-prepend">
                 <span className="input-group-text">$</span>
               </div>
               <input
                 type="number"
-                className="form-control mr-3"
+                className="form-control"
                 placeholder="min"
                 onChange={e =>
                   this.setState({
@@ -353,8 +351,10 @@ class AppliedOrgFiltersList extends React.Component {
                   })
                 }
               />
-              <span className="mt-2">to</span>
-              <div className="input-group-prepend ml-3">
+            </div>
+            <div className="input-group mb-3 my-4">
+              <h5 className="mt-2 mr-2">Max : </h5>
+              <div className="input-group-prepend">
                 <span className="input-group-text">$</span>
               </div>
               <input
@@ -367,61 +367,16 @@ class AppliedOrgFiltersList extends React.Component {
                   })
                 }
               />
-              {/* <InputRange
-                draggableTrack
-                step={2500000}
-                maxValue={revenueMax}
-                minValue={revenueMin}
-                formatLabel={value => `$ ${customNumberFormatter(value, 2)}`}
-                value={revenue}
-                onChange={value => {
-                  const processedValues = { ...value };
-
-                  if (processedValues.min < revenueMin) {
-                    processedValues.min = revenueMin;
-                  }
-
-                  if (processedValues.max > revenueMax) {
-                    processedValues.max = revenueMax;
-                  }
-
-                  this.setState({ revenue: processedValues });
-                }}
-                onChangeComplete={value => {}}
-              /> */}
             </div>
             <h5>Assets</h5>
-            {/* <div className="my-4">
-              <InputRange
-                draggableTrack
-                step={2500000}
-                maxValue={assestsMax}
-                minValue={assestsMin}
-                formatLabel={value => `$ ${customNumberFormatter(value, 2)}`}
-                value={assets}
-                onChange={value => {
-                  const processedValues = { ...value };
-
-                  if (processedValues.min < assestsMin) {
-                    processedValues.min = assestsMin;
-                  }
-
-                  if (processedValues.max > assestsMax) {
-                    processedValues.max = assestsMax;
-                  }
-
-                  this.setState({ assets: processedValues });
-                }}
-                onChangeComplete={value => {}}
-              />
-            </div> */}
             <div className="input-group mb-3 my-4">
+              <h5 className="mt-2 mr-2">Min : </h5>
               <div className="input-group-prepend">
                 <span className="input-group-text">$</span>
               </div>
               <input
                 type="number"
-                className="form-control mr-3"
+                className="form-control"
                 placeholder="min"
                 onChange={e =>
                   this.setState({
@@ -429,8 +384,10 @@ class AppliedOrgFiltersList extends React.Component {
                   })
                 }
               />
-              <span className="mt-2">to</span>
-              <div className="input-group-prepend ml-3">
+            </div>
+            <div className="input-group mb-3 my-4">
+              <h5 className="mt-2 mr-2">Max : </h5>
+              <div className="input-group-prepend">
                 <span className="input-group-text">$</span>
               </div>
               <input
