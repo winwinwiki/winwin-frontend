@@ -144,11 +144,6 @@ class ResourceModal extends Component {
       return;
     }
     if (field === "count") {
-      if (!value) {
-        formError.count = "Count is required.";
-        this.setState({ formError });
-        return;
-      }
       let isValid = validate.number(value);
       if (!isValid) {
         formError.count = "Number is expected.";
