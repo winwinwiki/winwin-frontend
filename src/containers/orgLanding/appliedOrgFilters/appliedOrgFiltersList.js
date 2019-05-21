@@ -24,6 +24,10 @@ import {
 } from "../../../actions/orgLanding/orgLandingAction";
 import { spiTagsListSelector } from "../../../selectors/spiTagsSelector";
 import { sdgTagsListSelector } from "../../../selectors/sdgTagsSelector";
+import {
+  naicsListSelector,
+  nteeListSelector
+} from "../../../selectors/industryClassificationSelector";
 var classNames = require("classnames");
 
 const Priority = ["Normal", "High"];
@@ -146,19 +150,17 @@ class AppliedOrgFiltersList extends React.Component {
     //SubIndustryClassification lists
 
     if (
-      this.props.NAICSList.data &&
+      this.props.NAICSList &&
       industryCls.value === industryClassification[0].value
     )
-      SubIndustryClassification = this.props.NAICSList.data.map(function(
-        value
-      ) {
+      SubIndustryClassification = this.props.NAICSList.map(function(value) {
         return { value: value.id, label: value.name };
       });
     if (
-      this.props.NTEEList.data &&
+      this.props.NTEEList &&
       industryCls.value === industryClassification[1].value
     )
-      SubIndustryClassification = this.props.NTEEList.data.map(function(value) {
+      SubIndustryClassification = this.props.NTEEList.map(function(value) {
         return { value: value.id, label: value.name };
       });
 
@@ -581,8 +583,8 @@ const mapStateToProps = state => ({
   customSPIList: spiTagsListSelector(state),
   SPIList: state.orgList.spiList,
   SDGList: state.orgList.sdgList,
-  NAICSList: state.naicsList,
-  NTEEList: state.nteeList,
+  NAICSList: naicsListSelector(state),
+  NTEEList: nteeListSelector(state),
   userList: state.userManagement
 });
 
