@@ -222,7 +222,14 @@ class OrgList extends React.Component {
           </div>
           <Link
             className="centerText d-inline-block"
+            style={{
+              maxWidth: 190,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap"
+            }}
             to={"organizations/" + row.original.id}
+            title={row.value}
           >
             {row.value}
           </Link>
@@ -239,6 +246,8 @@ class OrgList extends React.Component {
       //     </React.Fragment>
       //   );
       // },
+      width: 280,
+      resizable: false,
       sortable: true,
       filterable: true,
       filterMethod: (filter, rows) => {
