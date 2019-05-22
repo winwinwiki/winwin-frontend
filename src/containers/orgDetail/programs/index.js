@@ -18,7 +18,7 @@ class ProgramList extends React.Component {
 
   componentDidMount() {
     this.props.startLoaderAction();
-    this.props.fetchProgramsList(this.props.match.params.id);
+    this.props.fetchProgramsList(this.props.orgId);
   }
 
   componentWillReceiveProps(nextProps) {

@@ -14,7 +14,7 @@ class addProgram extends Component {
     e.preventDefault();
     const { description, programName } = this.state;
     const apiObj = {
-      parentId: this.props.orgId,
+      organizationId: this.props.orgId,
       name: programName,
       description,
       // address obj is to be removed
@@ -63,6 +63,21 @@ class addProgram extends Component {
                       name="description"
                       rows="5"
                       placeholder="Enter Program Description"
+                      onChange={this.onChange}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col">
+                  <div className="form-group">
+                    <label htmlFor="programUrl">Program URL</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="programUrl"
+                      name="programUrl"
+                      placeholder="Enter Program URL"
                       onChange={this.onChange}
                     />
                   </div>

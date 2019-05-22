@@ -27,15 +27,25 @@ export const fetchDataSetCategories = (orgId, type) => {
   };
 };
 
-export const deleteOrgDataSet = ({ orgId, dataSetId, type, filteredList }) => {
+export const deleteOrgDataSet = (
+  orgId,
+  dataSetId,
+  type,
+  filteredList,
+  programId
+) => {
   return dispatch => {
     dispatch(deleteDataSetReq());
     const deleteObj = {
       id: dataSetId
     };
+    if (type === PROGRAM) {
+      deleteObj.programId = programId;
+      deleteObj.organizationId = orgId;
+    }
     let url =
       type === PROGRAM
-        ? `/program/${orgId}/dataset`
+        ? `/program/${programId}/dataset`
         : `/organization/${orgId}/dataset`;
     api(url, "DELETE", JSON.stringify(deleteObj), true).then(
       response => {

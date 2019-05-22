@@ -14,6 +14,7 @@ import {
   Input
 } from "reactstrap";
 import cloneDeep from "lodash/cloneDeep";
+import { PROGRAM } from "../../../constants";
 
 const getSuggestionValue = suggestion => suggestion.categoryName;
 
@@ -66,6 +67,9 @@ class DataSetModal extends Component {
     }
     this.props.toggle();
     if (!modalData.organizationId) modalData.organizationId = orgId;
+    if (this.props.type === PROGRAM) {
+      modalData.programId = this.props.programId;
+    }
     this.props.saveOrgDataSets(modalData, type);
     this.setState({
       modalData: {

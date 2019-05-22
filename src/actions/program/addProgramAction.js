@@ -9,7 +9,7 @@ export const onAddProgram = params => {
   return dispatch => {
     dispatch(addProgramReq());
     api(
-      `/organization/${params.parentId}/program`,
+      `/organization/${params.organizationId}/program`,
       "POST",
       JSON.stringify(params),
       true

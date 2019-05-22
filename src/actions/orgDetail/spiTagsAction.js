@@ -27,12 +27,12 @@ export const fetchSpiTags = (organizationId, type) => {
   };
 };
 
-export const updateSPIData = (apiObj, orgId, filteredObj, type) => {
+export const updateSPIData = (apiObj, orgId, filteredObj, type, programId) => {
   return dispatch => {
     dispatch(updateSPIDataReq());
     let url =
       type === PROGRAM
-        ? `/program/${orgId}/spidata`
+        ? `/program/${programId}/spidata`
         : `/organization/${orgId}/spidata`;
     api(url, "POST", JSON.stringify(apiObj), true).then(
       response => {

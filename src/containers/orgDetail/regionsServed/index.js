@@ -19,6 +19,7 @@ import Can from "../../Can";
 import { regionsListSelector } from "../../../selectors/regionsListSelector";
 
 import FilterableSelect from "../../common/virtualizedSelect";
+import { PROGRAM } from "../../../constants";
 
 class RegionsServed extends Component {
   state = {
@@ -31,8 +32,12 @@ class RegionsServed extends Component {
   };
 
   componentDidMount() {
+    const { orgId, programId, type } = this.props;
     this.props.startLoaderAction();
-    this.props.fetchOrgRegionsServed(this.props.orgId, this.props.type);
+    this.props.fetchOrgRegionsServed(
+      type === PROGRAM ? programId : orgId,
+      type
+    );
     //rba
     if (
       Can({
@@ -187,7 +192,7 @@ class RegionsServed extends Component {
   };
 
   onSubmit = data => {
-    const { type, orgId } = this.props;
+    const { type, orgId, programId } = this.props;
     const { regionsServed: { region } = {} } = this.state;
     const updatedRegions = [
       {
@@ -198,8 +203,11 @@ class RegionsServed extends Component {
         }
       }
     ];
+    if (type === PROGRAM) {
+      updatedRegions[0].programId = programId;
+    }
 
-    this.props.saveOrgRegionsServed({ updatedRegions, orgId, type });
+    this.props.saveOrgRegionsServed(updatedRegions, orgId, type, programId);
     this.setState(state => {
       return {
         ...state,
@@ -212,8 +220,9 @@ class RegionsServed extends Component {
   };
 
   onClose = () => {
+    const { orgId, programId, type } = this.props;
     this.props.startLoaderAction();
-    this.props.fetchOrgRegionsServed(this.props.orgId);
+    this.props.fetchOrgRegionsServed(type === PROGRAM ? programId : orgId);
     this.setState({ isEdited: false });
   };
 
@@ -230,7 +239,8 @@ class RegionsServed extends Component {
   };
 
   onEdit = () => {
-    this.props.fetchRegionsList(this.props.orgId, this.props.type);
+    const { orgId, programId, type } = this.props;
+    this.props.fetchRegionsList(type === PROGRAM ? programId : orgId, type);
     this.setState({
       isEdited: true
     });
@@ -240,6 +250,7 @@ class RegionsServed extends Component {
     const {
       orgId,
       type,
+      programId,
       regionsServed: { data: { response: updatedRegions } = {} } = {}
     } = this.props;
 
@@ -250,11 +261,7 @@ class RegionsServed extends Component {
         return val;
       });
 
-    this.props.saveOrgRegionsServed({
-      updatedRegions: filteredRegion,
-      orgId,
-      type
-    });
+    this.props.saveOrgRegionsServed(filteredRegion, orgId, type, programId);
   };
 
   // //when selected from suggested list call on submit method

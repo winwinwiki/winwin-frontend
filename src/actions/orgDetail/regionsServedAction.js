@@ -20,12 +20,17 @@ import { api } from "../../api/api";
 import { PROGRAM } from "../../constants";
 
 //change method
-export const saveOrgRegionsServed = ({ updatedRegions, orgId, type }) => {
+export const saveOrgRegionsServed = (
+  updatedRegions,
+  orgId,
+  type,
+  programId
+) => {
   return dispatch => {
     dispatch(saveRegionsServedReq());
     let url =
       type === PROGRAM
-        ? `/program/${orgId}/region`
+        ? `/program/${programId}/region`
         : `/organization/${orgId}/region`;
     api(url, "POST", JSON.stringify(updatedRegions), true).then(
       response => {

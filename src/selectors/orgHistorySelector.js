@@ -56,10 +56,13 @@ const actionLabels = {
 };
 
 const entityLabels = {
-  spitag: "Organization Level Tag: SPI -",
-  sdgtag: "Organization Level Tag: SDG -",
+  "spi tag": "Organization Level Tag: SPI -",
+  "sdg tag": "Organization Level Tag: SDG -",
   dataset: "Data Set:",
-  organization: "Organization:"
+  organization: "Organization:",
+  note: "a Note -",
+  resource: "Resource:",
+  "region Served": "Region Served -"
 };
 
 export { orgHistorySelector };
