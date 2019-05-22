@@ -59,7 +59,8 @@ class ProgramDetailRoutes extends React.Component {
           <PrivateRoute
             title={data && data.response.name}
             description={data && data.response.description}
-            orgId={match.params.programId}
+            programId={match.params.programId}
+            orgId={match.params.id}
             authenticated={isAuthenticated}
             perform="programDetailsDataSet:list"
             exact
@@ -70,7 +71,8 @@ class ProgramDetailRoutes extends React.Component {
           <PrivateRoute
             title={data && data.response.name}
             description={data && data.response.description}
-            orgId={match.params.programId}
+            programId={match.params.programId}
+            orgId={match.params.id}
             authenticated={isAuthenticated}
             perform="programDetailsResources:list"
             exact
@@ -81,7 +83,8 @@ class ProgramDetailRoutes extends React.Component {
           <PrivateRoute
             title={data && data.response.name}
             description={data && data.response.description}
-            orgId={match.params.programId}
+            programId={match.params.programId}
+            orgId={match.params.id}
             authenticated={isAuthenticated}
             perform="programDetailsRegionsServed:list"
             exact
@@ -92,7 +95,8 @@ class ProgramDetailRoutes extends React.Component {
           <PrivateRoute
             title={data && data.response.name}
             description={data && data.response.description}
-            orgId={match.params.programId}
+            programId={match.params.programId}
+            orgId={match.params.id}
             authenticated={isAuthenticated}
             perform="programDetailsSPITags:list"
             exact
@@ -103,7 +107,8 @@ class ProgramDetailRoutes extends React.Component {
           <PrivateRoute
             title={data && data.response.name}
             description={data && data.response.description}
-            orgId={match.params.programId}
+            programId={match.params.programId}
+            orgId={match.params.id}
             authenticated={isAuthenticated}
             perform="programDetailsSDGTags:list"
             exact
@@ -114,7 +119,8 @@ class ProgramDetailRoutes extends React.Component {
           <PrivateRoute
             title={data && data.response.name}
             description={data && data.response.description}
-            orgId={match.params.programId}
+            programId={match.params.programId}
+            orgId={match.params.id}
             authenticated={isAuthenticated}
             perform="programDetails:list"
             path={`${match.path}`}

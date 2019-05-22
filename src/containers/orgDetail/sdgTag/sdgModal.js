@@ -9,6 +9,7 @@ import {
   startLoaderAction,
   stopLoaderAction
 } from "../../../actions/common/loaderActions";
+import { PROGRAM } from "../../../constants";
 class SDGModal extends React.Component {
   state = {
     searchText: "",
@@ -156,8 +157,22 @@ class SDGModal extends React.Component {
   onSave = () => {
     const { checkedSDGTags } = this.state;
     const filteredTags = checkedSDGTags.filter(x => x.isChecked === true);
-    const { orgId, type } = this.props;
-    this.props.updateSDGData(checkedSDGTags, orgId, filteredTags, type);
+    const { orgId, type, programId } = this.props;
+    checkedSDGTags.map(x => {
+      x.organizationId = orgId;
+    });
+    if (type === PROGRAM) {
+      checkedSDGTags.map(x => {
+        x.programId = programId;
+      });
+    }
+    this.props.updateSDGData(
+      checkedSDGTags,
+      orgId,
+      filteredTags,
+      type,
+      programId
+    );
   };
 
   desiredSDGList(id) {

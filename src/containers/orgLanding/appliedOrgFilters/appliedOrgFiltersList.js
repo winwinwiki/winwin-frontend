@@ -233,27 +233,27 @@ class AppliedOrgFiltersList extends React.Component {
 
             <h5 className={isSectorLevelShow ? "mt-4" : ""}>Status</h5>
             <Checkbox
-              name={tagStatusList[0]}
+              name="Auto Tag"
               label="Auto Tag"
+              checked={tagStatus.indexOf("Auto Tag") > -1}
+              onChange={this.onStatusCheckboxChange}
+            />
+            <Checkbox
+              name={tagStatusList[0]}
+              label="Complete Tag"
               checked={tagStatus.indexOf(tagStatusList[0]) > -1}
               onChange={this.onStatusCheckboxChange}
             />
             <Checkbox
               name={tagStatusList[1]}
-              label="Complete Tag"
+              label="Organization Tag"
               checked={tagStatus.indexOf(tagStatusList[1]) > -1}
               onChange={this.onStatusCheckboxChange}
             />
             <Checkbox
               name={tagStatusList[2]}
-              label="Organization Tag"
+              label="Ready For Tagging"
               checked={tagStatus.indexOf(tagStatusList[2]) > -1}
-              onChange={this.onStatusCheckboxChange}
-            />
-            <Checkbox
-              name={tagStatusList[3]}
-              label="Untagged"
-              checked={tagStatus.indexOf(tagStatusList[3]) > -1}
               onChange={this.onStatusCheckboxChange}
             />
           </div>

@@ -41,7 +41,8 @@ const tags = {
   "Auto Tag": "autotag",
   "Complete Tag": "completetag",
   "Organization Tag": "organizationtag",
-  Untagged: "untagged"
+  Untagged: "untagged",
+  "Ready For Tagging": "readyfortagging"
 };
 
 const buttonList = [
@@ -55,7 +56,8 @@ const tagIcon = {
   autotag: "A",
   completetag: "C",
   organizationtag: "O",
-  untagged: "U"
+  untagged: "U",
+  readyfortagging: "R"
 };
 
 const tagColor = {
@@ -215,7 +217,7 @@ class OrgList extends React.Component {
               >
                 {row.original.tagStatus
                   ? tagIcon[tags[row.original.tagStatus]]
-                  : tagIcon["autotag"]}
+                  : tagIcon["readyfortagging"]}
               </h1>
             </div>
             {/* <div className="org-tag-footer" /> */}

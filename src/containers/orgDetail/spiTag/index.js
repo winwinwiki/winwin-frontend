@@ -9,12 +9,13 @@ import {
   stopLoaderAction
 } from "../../../actions/common/loaderActions";
 import { updateSPIData } from "../../../actions/orgDetail/spiTagsAction";
+import { PROGRAM } from "../../../constants";
 class SpiTags extends React.Component {
   componentDidMount() {
-    const { orgId, type } = this.props;
+    const { orgId, type, programId } = this.props;
     this.props.startLoaderAction();
-    this.props.fetchSpiTags(orgId, type);
-    this.props.fetchSpiTagsList(orgId, type);
+    this.props.fetchSpiTags(type === PROGRAM ? programId : orgId, type);
+    this.props.fetchSpiTagsList(type === PROGRAM ? programId : orgId, type);
   }
 
   componentDidUpdate(prevProps) {
@@ -65,6 +66,7 @@ class SpiTags extends React.Component {
             checkedSPITags={spiTags.data.response}
             updateSPIData={updateSPIData}
             SPIList={this.props.SPIList}
+            programId={this.props.programId}
           />
         )}
       </section>

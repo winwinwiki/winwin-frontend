@@ -7,6 +7,7 @@ import validate from "../../../util/validation";
 import { saveOrgResource } from "../../../actions/orgDetail/resourcesAction";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import cloneDeep from "lodash/cloneDeep";
+import { PROGRAM } from "../../../constants";
 
 const getSuggestionValue = suggestion => suggestion.categoryName;
 
@@ -116,6 +117,9 @@ class ResourceModal extends Component {
     }
     this.props.toggle();
     if (!modalData.organizationId) modalData.organizationId = orgId;
+    if (this.props.type === PROGRAM) {
+      modalData.programId = this.props.programId;
+    }
     this.props.saveOrgResource(modalData, type);
     this.setState({
       modalData: {
