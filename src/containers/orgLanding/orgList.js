@@ -249,18 +249,6 @@ class OrgList extends React.Component {
       width: 280,
       resizable: false,
       sortable: true,
-      filterable: true,
-      filterMethod: (filter, rows) => {
-        return matchSorter(rows, filter.value, {
-          keys: [
-            {
-              threshold: matchSorter.rankings.CONTAINS,
-              key: "org"
-            }
-          ]
-        });
-      },
-      filterAll: true,
       style: {
         height: 50
       }
