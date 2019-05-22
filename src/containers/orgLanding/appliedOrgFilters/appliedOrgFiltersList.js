@@ -3,12 +3,10 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Checkbox from "../../ui/checkbox";
 import { setAppliedFilters } from "../../../actions/orgLanding/orgLandingAction";
-import InputRange from "react-input-range";
 import ReactSelect from "react-select";
 import "react-input-range/lib/css/index.css";
 import {
   modifiyFilterList,
-  customNumberFormatter,
   getSPIDataByIndicators,
   getSDGDataBySubGoals
 } from "../../../util/util";
@@ -31,11 +29,7 @@ import {
 var classNames = require("classnames");
 
 const Priority = ["Normal", "High"];
-// const userList = [
-//   { value: "abc", label: "abc abc" },
-//   { value: "sumit", label: "sumit chaudhari" },
-//   { value: "Sunny", label: "Sunny tambi" }
-// ];
+
 export const frameworkTagList = [
   { value: "SPI", label: "Social Progress Index" },
   {
@@ -60,11 +54,6 @@ export const industryClassification = [
   { value: "NAICS", label: "NAICS" },
   { value: "NTEE", label: "NTEE" }
 ];
-// const SubIndustryClassification = [
-//   { value: "1", label: "select 1" },
-//   { value: "2", label: "select 2" },
-//   { value: "3", label: "select 3" }
-// ];
 class AppliedOrgFiltersList extends React.Component {
   state = {
     editedBy: [],
@@ -107,8 +96,6 @@ class AppliedOrgFiltersList extends React.Component {
       editedBy,
       sectorLevel,
       tagStatus,
-      revenue,
-      assets,
       priority,
       industryCls,
       subIndustryCls,
@@ -117,15 +104,8 @@ class AppliedOrgFiltersList extends React.Component {
       level2,
       level3,
       level1List
-      // level2List
-      // level3List
     } = this.state;
     const { isFilterModalVisible, activeOrg, orgDetail } = this.props;
-
-    let assestsMin = 500000;
-    let assestsMax = 1000000000;
-    let revenueMin = 500000;
-    let revenueMax = 1000000000;
 
     let userList = [];
     let SubIndustryClassification = [];

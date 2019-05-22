@@ -49,12 +49,24 @@ class AppliedOrgFilters extends React.Component {
 
   calculateTagCount(valueArr) {
     const { appliedFilterList } = this.props;
-    return (
+    let count =
       valueArr.length +
       appliedFilterList["tagStatus"].length +
       appliedFilterList["sectorLevel"].length +
-      appliedFilterList["editedBy"].length
-    );
+      appliedFilterList["editedBy"].length;
+    if (
+      appliedFilterList["revenue"].min >= 0 &&
+      appliedFilterList["revenue"].max > 0
+    ) {
+      count++;
+    }
+    if (
+      appliedFilterList["assets"].min >= 0 &&
+      appliedFilterList["assets"].max > 0
+    ) {
+      count++;
+    }
+    return count;
   }
 
   createTag(valueArr) {
@@ -69,13 +81,48 @@ class AppliedOrgFilters extends React.Component {
     let flatSectorArray = appliedFilterList["sectorLevel"].map(sectorLevel => {
       return { type: "sectorLevel", value: sectorLevel };
     });
+    let flatAssetsObj = {};
+    let flatRevenueObj = {};
+    if (
+      appliedFilterList["revenue"].min >= 0 &&
+      appliedFilterList["revenue"].max > 0
+    ) {
+      flatRevenueObj = [
+        {
+          type: "revenue",
+          value: `Revenue: $${appliedFilterList["revenue"].min} - $${
+            appliedFilterList["revenue"].max
+          }`
+        }
+      ];
+    }
+
+    if (
+      appliedFilterList["assets"].min >= 0 &&
+      appliedFilterList["assets"].max > 0
+    ) {
+      flatAssetsObj = [
+        {
+          type: "assets",
+          value: `Assets: $${appliedFilterList["assets"].min} - $${
+            appliedFilterList["assets"].max
+          }`
+        }
+      ];
+    }
     let tagValues =
-      flatUserModArray && flatStatusArray && flatSectorArray
+      flatUserModArray &&
+      flatStatusArray &&
+      flatSectorArray &&
+      flatRevenueObj &&
+      flatAssetsObj
         ? [
             ...valueArr,
             ...flatUserModArray,
             ...flatStatusArray,
-            ...flatSectorArray
+            ...flatSectorArray,
+            ...flatRevenueObj,
+            ...flatAssetsObj
           ]
         : valueArr;
     return tagValues.map((val, idx) => {
@@ -109,13 +156,48 @@ class AppliedOrgFilters extends React.Component {
     let flatSectorArray = appliedFilterList["sectorLevel"].map(sectorLevel => {
       return { type: "sectorLevel", value: sectorLevel };
     });
+    let flatAssetsObj = {};
+    let flatRevenueObj = {};
+    if (
+      appliedFilterList["revenue"].min >= 0 &&
+      appliedFilterList["revenue"].max > 0
+    ) {
+      flatRevenueObj = [
+        {
+          type: "revenue",
+          value: `Revenue: $${appliedFilterList["revenue"].min} - $${
+            appliedFilterList["revenue"].max
+          }`
+        }
+      ];
+    }
+
+    if (
+      appliedFilterList["assets"].min >= 0 &&
+      appliedFilterList["assets"].max > 0
+    ) {
+      flatAssetsObj = [
+        {
+          type: "assets",
+          value: `Assets: $${appliedFilterList["assets"].min} - $${
+            appliedFilterList["assets"].max
+          }`
+        }
+      ];
+    }
     let tagValues =
-      flatUserModArray && flatStatusArray && flatSectorArray
+      flatUserModArray &&
+      flatStatusArray &&
+      flatSectorArray &&
+      flatRevenueObj &&
+      flatAssetsObj
         ? [
             ...valueArr,
             ...flatUserModArray,
             ...flatStatusArray,
-            ...flatSectorArray
+            ...flatSectorArray,
+            ...flatRevenueObj,
+            ...flatAssetsObj
           ]
         : valueArr;
     return tagValues.map((val, idx) => {
@@ -202,9 +284,13 @@ class AppliedOrgFilters extends React.Component {
           case "industryCls":
             filterList[type] = "";
             break;
-          case "revenueRange":
-          case "assetsRange":
-            filterList[type]["max"] = 0;
+          case "revenue":
+            filterList["revenue"].min = 0;
+            filterList["revenue"].max = 0;
+            break;
+          case "assets":
+            filterList["assets"].min = 0;
+            filterList["assets"].max = 0;
             break;
           case "editedBy":
             filterList[type] = filterList[type].filter(
