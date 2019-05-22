@@ -352,6 +352,7 @@ class AppliedOrgFiltersList extends React.Component {
                     revenue: { ...this.state.revenue, min: e.target.value }
                   })
                 }
+                value={this.state.revenue.min}
               />
             </div>
             <div className="input-group mb-3 my-4">
@@ -368,6 +369,7 @@ class AppliedOrgFiltersList extends React.Component {
                     revenue: { ...this.state.revenue, max: e.target.value }
                   })
                 }
+                value={this.state.revenue.max}
               />
             </div>
             <h5>Assets</h5>
@@ -382,9 +384,10 @@ class AppliedOrgFiltersList extends React.Component {
                 placeholder="min"
                 onChange={e =>
                   this.setState({
-                    assets: { ...this.state.revenue, min: e.target.value }
+                    assets: { ...this.state.assets, min: e.target.value }
                   })
                 }
+                value={this.state.assets.min}
               />
             </div>
             <div className="input-group mb-3 my-4">
@@ -398,9 +401,10 @@ class AppliedOrgFiltersList extends React.Component {
                 placeholder="max"
                 onChange={e =>
                   this.setState({
-                    assets: { ...this.state.revenue, max: e.target.value }
+                    assets: { ...this.state.assets, max: e.target.value }
                   })
                 }
+                value={this.state.assets.max}
               />
             </div>
           </div>
