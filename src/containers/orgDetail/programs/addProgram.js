@@ -12,11 +12,12 @@ class addProgram extends Component {
 
   onSave = e => {
     e.preventDefault();
-    const { description, programName } = this.state;
+    const { description, programName, programUrl } = this.state;
     const apiObj = {
       organizationId: this.props.orgId,
       name: programName,
       description,
+      websiteUrl: programUrl,
       // address obj is to be removed
       address: {
         street: "",
