@@ -36,7 +36,15 @@ import {
   DELETE_RESOURCE_SUCCESS,
   DELETE_RESOURCE_ERROR,
   SET_FETCHORGHEIRARCHY_PENDING,
-  SET_FETCHORGHEIRARCHY_SUCCESS
+  SET_FETCHORGHEIRARCHY_SUCCESS,
+  ADD_PROGRAM_REQUEST,
+  ADD_PROGRAM_SUCCESS,
+  ADD_PROGRAM_ERROR,
+  FETCH_PROG_REQUEST,
+  FETCH_PROG_SUCCESS,
+  FETCH_PROG_ERROR,
+  FETCH_PROGDETAIL_REQUEST,
+  FETCH_PROGDETAIL_SUCCESS
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -245,6 +253,49 @@ export default (state = initialState, action) => {
       });
 
     case SET_FETCHORGHEIRARCHY_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    //ADD PROGRAM
+    case ADD_PROGRAM_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
+    case ADD_PROGRAM_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    case ADD_PROGRAM_ERROR:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    // PROGRAM LIST
+    case FETCH_PROG_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
+    case FETCH_PROG_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    case FETCH_PROG_ERROR:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    // PROGRAM DETAILS
+    case FETCH_PROGDETAIL_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
+    case FETCH_PROGDETAIL_SUCCESS:
       return Object.assign({}, state, {
         loading: false
       });
