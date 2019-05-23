@@ -47,11 +47,11 @@ export const saveNote = params => {
   };
 };
 
-export const deleteNote = (params, orgId) => {
+export const deleteNote = params => {
   return dispatch => {
     dispatch(deleteNotesPending());
     api(
-      `/organization/${orgId}/notes`,
+      `/organization/${params.organizationId}/notes`,
       "DELETE",
       JSON.stringify(params),
       true
