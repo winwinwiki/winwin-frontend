@@ -226,7 +226,7 @@ class AppliedOrgFiltersList extends React.Component {
             />
             <Checkbox
               name={tagStatusList[1]}
-              label="Organization Tag"
+              label="Unfinished Tag"
               checked={tagStatus.indexOf(tagStatusList[1]) > -1}
               onChange={this.onStatusCheckboxChange}
             />

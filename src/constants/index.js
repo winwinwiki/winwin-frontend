@@ -6,7 +6,7 @@ export const entityList = ["Federal", "State", "County", "City", "District"];
 //order of theese elements is important do not change it
 export const tagStatusList = [
   "Complete Tag",
-  "Organization Tag",
+  "Unfinished Tag",
   "Ready For Tagging"
 ];
 export const addressFields = [
