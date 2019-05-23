@@ -44,7 +44,10 @@ import {
   FETCH_PROG_SUCCESS,
   FETCH_PROG_ERROR,
   FETCH_PROGDETAIL_REQUEST,
-  FETCH_PROGDETAIL_SUCCESS
+  FETCH_PROGDETAIL_SUCCESS,
+  FETCH_NOTES_PENDING,
+  FETCH_NOTES_SUCCESS,
+  FETCH_NOTES_ERROR
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -296,6 +299,21 @@ export default (state = initialState, action) => {
       });
 
     case FETCH_PROGDETAIL_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    // notes
+    case FETCH_NOTES_PENDING:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
+    case FETCH_NOTES_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false
+      });
+    case FETCH_NOTES_ERROR:
       return Object.assign({}, state, {
         loading: false
       });

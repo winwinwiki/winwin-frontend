@@ -9,22 +9,18 @@ import {
   SAVE_NOTES_SUCCESS,
   SAVE_NOTES_ERROR
 } from "../../constants/dispatch";
-import { fetchNotesApi } from "../../api/orgDetail/notesApi";
 import { api } from "../../api/api";
 export const fetchOrgNotes = orgId => {
   return dispatch => {
-    dispatch(fetchNotesPending(true));
-    dispatch(fetchNotesSuccess(false, []));
-    dispatch(fetchNotesError(null));
-
-    fetchNotesApi((error, notesList) => {
-      dispatch(fetchNotesPending(false));
-      if (!error) {
-        dispatch(fetchNotesSuccess(true, notesList));
-      } else {
+    dispatch(fetchNotesPending());
+    api(`/organization/${orgId}/notes`, "GET", {}, true).then(
+      response => {
+        dispatch(fetchNotesSuccess(response));
+      },
+      error => {
         dispatch(fetchNotesError(error));
       }
-    }, orgId);
+    );
   };
 };
 
@@ -66,17 +62,16 @@ export const deleteNote = params => {
   };
 };
 
-function fetchNotesPending(isNotesPending) {
+function fetchNotesPending() {
   return {
-    type: FETCH_NOTES_PENDING,
-    isNotesPending
+    type: FETCH_NOTES_PENDING
   };
 }
 
-function fetchNotesSuccess(isNotesSuccess, notesList) {
+function fetchNotesSuccess(notesList) {
   return {
     type: FETCH_NOTES_SUCCESS,
-    isNotesSuccess,
+    isNotesSuccess: true,
     notesList
   };
 }
