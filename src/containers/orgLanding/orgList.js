@@ -24,6 +24,7 @@ import { onDeleteOrg } from "../../actions/organization/deleteOrgAction";
 import { Link } from "react-router-dom";
 import { PopupModal } from "../ui/popupModal";
 import Can from "../Can";
+import isEqual from "lodash/isEqual";
 
 const setPriorityHigh = "Set Priority High";
 const setPriorityNormal = "Set Priority Normal";
@@ -61,6 +62,24 @@ const tagIcon = {
 const tagColor = {
   Normal: "green",
   High: "red"
+};
+
+const filtersObj = {
+  editedBy: [],
+  industryCls: "",
+  subIndustryCls: "",
+  frameworkTag: "",
+  level1: "",
+  level2: "",
+  level3: "",
+  sectorLevel: [],
+  tagStatus: [],
+  priority: "",
+  revenue: { min: 0, max: 0 },
+  assets: { min: 0, max: 0 },
+  level1List: [],
+  level2List: [],
+  level3List: []
 };
 
 class OrgList extends React.Component {
@@ -383,7 +402,7 @@ class OrgList extends React.Component {
             {orgList.length} organizations found
           </div>
           <AppliedOrgFilters />
-          {appliedFilterList && (
+          {appliedFilterList && !isEqual(appliedFilterList, filtersObj) && (
             <div className="clear-filters">
               <a
                 href="javascript:;"
