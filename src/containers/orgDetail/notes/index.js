@@ -171,7 +171,10 @@ class Notes extends React.Component {
       x => x.noteId !== selectedNoteId
     );
     this.setState({ notesList: filteredNotesList });
-    this.props.deleteNote({ noteId: selectedNoteId }, this.props.orgId);
+    this.props.deleteNote({
+      noteId: selectedNoteId,
+      organizationId: this.props.orgId
+    });
   };
 }
 
