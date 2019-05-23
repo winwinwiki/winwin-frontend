@@ -251,6 +251,13 @@ class OrgList extends React.Component {
       width: 280,
       resizable: false,
       sortable: true,
+      filterable: true,
+      filterMethod: (filter, rows) => {
+        return matchSorter(rows, filter.value, {
+          keys: [{ threshold: matchSorter.rankings.CONTAINS, key: "org" }]
+        });
+      },
+      filterAll: true,
       style: {
         height: 50
       }
@@ -318,10 +325,6 @@ class OrgList extends React.Component {
     if (this.state.searchText) {
       orgList = orgList.filter(row => {
         return (
-          (row.address.state &&
-            row.name
-              .toLowerCase()
-              .includes(this.state.searchText.toLowerCase())) ||
           (row.address.state &&
             row.address.state
               .toLowerCase()

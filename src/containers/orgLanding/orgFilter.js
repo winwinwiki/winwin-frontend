@@ -36,7 +36,7 @@ class OrgFilters extends React.Component {
             Search
           </label>
           <Search
-            placeholder="Search Organization/State/County/City/District"
+            placeholder="Search State/County/City/District"
             onChange={getFilteredListOfOrg}
             value={searchText}
           />
