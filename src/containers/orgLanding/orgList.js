@@ -34,14 +34,13 @@ const filterList = [setPriorityHigh, setPriorityNormal, markReadyForTagging];
 const priorityStatus = {
   "Set Priority High": "High",
   "Set Priority Normal": "Normal",
-  "Mark 'Ready for Tagging'": "Untagged"
+  "Mark 'Ready for Tagging'": "Ready For Tagging"
 };
 
 const tags = {
   "Auto Tag": "autotag",
   "Complete Tag": "completetag",
-  "Organization Tag": "organizationtag",
-  Untagged: "untagged",
+  "Unfinished Tag": "unfinishedtag",
   "Ready For Tagging": "readyfortagging"
 };
 
@@ -55,8 +54,7 @@ const buttonList = [
 const tagIcon = {
   autotag: "A",
   completetag: "C",
-  organizationtag: "O",
-  untagged: "U",
+  unfinishedtag: "U",
   readyfortagging: "R"
 };
 
