@@ -340,29 +340,14 @@ class OrgList extends React.Component {
     }
     //filter by searched text
     if (this.state.searchText) {
-      orgList = orgList.filter(row => {
-        return (
-          (row.address.state &&
-            row.address.state
-              .toLowerCase()
-              .includes(this.state.searchText.toLowerCase())) ||
-          (row.address.county &&
-            row.address.county
-              .toLowerCase()
-              .includes(this.state.searchText.toLowerCase())) ||
-          (row.address.city &&
-            row.address.city
-              .toLowerCase()
-              .includes(this.state.searchText.toLowerCase())) ||
-          (row.address.country &&
-            row.address.country
-              .toLowerCase()
-              .includes(this.state.searchText.toLowerCase())) ||
-          (row.address.street &&
-            row.address.street
-              .toLowerCase()
-              .includes(this.state.searchText.toLowerCase()))
-        );
+      orgList = matchSorter(orgList, this.state.searchText, {
+        keys: [
+          { threshold: matchSorter.rankings.CONTAINS, key: "name" },
+          { threshold: matchSorter.rankings.CONTAINS, key: "address.city" },
+          { threshold: matchSorter.rankings.CONTAINS, key: "address.county" },
+          { threshold: matchSorter.rankings.CONTAINS, key: "address.country" },
+          { threshold: matchSorter.rankings.CONTAINS, key: "address.street" }
+        ]
       });
     }
     {
