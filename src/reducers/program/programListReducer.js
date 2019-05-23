@@ -30,7 +30,9 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         isFetchProgramSuccess: true,
         programList: {
-          response: [...state.programList.response, ...action.response.response]
+          response:
+            state.programList.response &&
+            state.programList.response.concat(action.response.response)
         }
       });
 
@@ -38,9 +40,9 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         isFetchProgramSuccess: true,
         programList: {
-          response: state.programList.response.filter(
-            x => x.id !== action.response
-          )
+          response:
+            state.programList.response &&
+            state.programList.response.filter(x => x.id !== action.response)
         },
         fetchProgramError: false
       });

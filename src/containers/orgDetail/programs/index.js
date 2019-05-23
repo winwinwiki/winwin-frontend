@@ -17,8 +17,9 @@ class ProgramList extends React.Component {
   };
 
   componentDidMount() {
-    this.props.startLoaderAction();
-    this.props.fetchProgramsList(this.props.orgId);
+    if (!(this.props.programList.length || this.props.programList.response)) {
+      this.props.fetchProgramsList(this.props.orgId);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -26,12 +27,6 @@ class ProgramList extends React.Component {
       this.setState({
         programList: nextProps.programList.response
       });
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.programList !== this.props.programList) {
-      this.props.stopLoaderAction();
     }
   }
 
