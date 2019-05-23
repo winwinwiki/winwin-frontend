@@ -4,7 +4,10 @@ import { connect } from "react-redux";
 
 import { Link } from "react-router-dom";
 
-import { fetchProgramsList } from "../../../actions/program/programListAction";
+import {
+  fetchProgramsList,
+  resetProgramList
+} from "../../../actions/program/programListAction";
 import Search from "../../ui/searchBar";
 import {
   startLoaderAction,
@@ -28,6 +31,10 @@ class ProgramList extends React.Component {
         programList: nextProps.programList.response
       });
     }
+  }
+
+  componentWillUnmount() {
+    this.props.resetProgramList();
   }
 
   render() {
@@ -130,7 +137,8 @@ const mapDispatchToProps = dispatch =>
     {
       fetchProgramsList,
       startLoaderAction,
-      stopLoaderAction
+      stopLoaderAction,
+      resetProgramList
     },
     dispatch
   );

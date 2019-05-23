@@ -4,7 +4,9 @@ import {
   FETCH_PROG_ERROR,
   FILTER_PROG_REQUEST,
   FILTER_PROG_SUCCESS,
-  FILTER_PROG_ERROR
+  FILTER_PROG_ERROR,
+  RESET_PROGRAMLIST_SUCCESS,
+  RESET_PROGRAMLIST_ERROR
 } from "../../constants/dispatch";
 import { api } from "../../api/api";
 import qs from "qs";
@@ -40,6 +42,16 @@ export const filterProgramsList = (orgId, params) => {
         dispatch(filterProgramsError(error));
       }
     );
+  };
+};
+
+export const resetProgramList = () => {
+  return async dispatch => {
+    try {
+      dispatch(resetProgramListSuccess());
+    } catch (err) {
+      resetProgramListError();
+    }
   };
 };
 
@@ -79,6 +91,20 @@ function filterProgramsSuccess(response) {
 function filterProgramsError(error) {
   return {
     type: FILTER_PROG_ERROR,
+    error
+  };
+}
+
+function resetProgramListSuccess(response) {
+  return {
+    type: RESET_PROGRAMLIST_SUCCESS,
+    response
+  };
+}
+
+function resetProgramListError(error) {
+  return {
+    type: RESET_PROGRAMLIST_ERROR,
     error
   };
 }

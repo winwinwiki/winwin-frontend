@@ -23,10 +23,7 @@ class Notes extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (
-      JSON.stringify(nextProps.notesList) !==
-      JSON.stringify(this.props.notesList)
-    ) {
+    if (nextProps.notesList !== this.props.notesList) {
       this.setState({
         notesList: nextProps.notesList.response
       });
