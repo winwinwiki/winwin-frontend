@@ -43,7 +43,7 @@ class ProgramList extends React.Component {
     }
     if (searchText) {
       programList = programList.filter(x =>
-        x.name.toLowerCase().includes(searchText)
+        x.name.toLowerCase().includes(searchText.toLowerCase())
       );
     }
     return (
