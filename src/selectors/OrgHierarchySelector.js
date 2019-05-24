@@ -28,9 +28,10 @@ const rename = obj => {
     //make subtitle from address obj
     if (prop === "location") {
       obj.subtitle =
-        obj[prop].city &&
-        obj[prop].country &&
-        `${obj[prop].city}, ${obj[prop].country}`;
+        (obj[prop].city &&
+          obj[prop].country &&
+          `${obj[prop].city}, ${obj[prop].country}`) ||
+        "";
       delete obj[prop];
     }
   }
