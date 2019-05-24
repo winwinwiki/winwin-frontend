@@ -180,3 +180,9 @@ export function deepFilter(array, indicator) {
     });
   });
 }
+
+export function orderByDate(arr, dateProp) {
+  return arr.slice().sort(function(a, b) {
+    return a[dateProp] > b[dateProp] ? -1 : 1;
+  });
+}
