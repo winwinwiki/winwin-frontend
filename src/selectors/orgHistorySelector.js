@@ -1,5 +1,5 @@
 import { createSelector } from "reselect";
-import { timeSince, titleCase } from "../util/util";
+import { timeSince, titleCase, orderByDate } from "../util/util";
 
 const orgHistory = state => state.orgHistory.orgHistory;
 
@@ -33,6 +33,7 @@ const orgHistorySelector = createSelector(
               x.modifiedBy
             )}' ${customModAt}'`,
             modifiedAt: customModAt,
+            timestamp: x.modifiedAt,
             details: [detail]
           });
         } else {
@@ -45,7 +46,7 @@ const orgHistorySelector = createSelector(
       });
     });
 
-    return [...filteredHistory];
+    return [...orderByDate(filteredHistory, "timestamp")];
   }
 );
 
