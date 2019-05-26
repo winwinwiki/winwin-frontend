@@ -567,8 +567,10 @@ class OrgDetailPage extends React.Component {
     let apiObj = this.state.orgDetail;
     apiObj = {
       ...apiObj,
-      naicsCode: this.state.orgDetail.naicsCode.id,
-      nteeCode: this.state.orgDetail.nteeCode.id
+      naicsCode:
+        this.state.orgDetail.naicsCode && this.state.orgDetail.naicsCode.id,
+      nteeCode:
+        this.state.orgDetail.nteeCode && this.state.orgDetail.nteeCode.id
     };
     this.props.onSaveOrgBasicInfo([apiObj]);
   };

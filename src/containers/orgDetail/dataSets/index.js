@@ -14,6 +14,7 @@ import {
   stopLoaderAction
 } from "../../../actions/common/loaderActions";
 import { PopupModal } from "../../ui/popupModal";
+import { PROGRAM } from "../../../constants";
 class DataSets extends React.Component {
   constructor(props) {
     super(props);
@@ -30,15 +31,15 @@ class DataSets extends React.Component {
         type: "",
         url: ""
       },
-      modaltitle: ""
+      modaltitle: "",
+      modal: false
     };
   }
 
   componentDidMount() {
-    const { orgId, type } = this.props;
+    const { orgId, programId, type } = this.props;
     this.props.startLoaderAction();
-    this.props.fetchOrgDataSets(orgId, type);
-    // this.props.fetchDataSetCategories(orgId, type);
+    this.props.fetchOrgDataSets(type === PROGRAM ? programId : orgId, type);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -103,8 +104,11 @@ class DataSets extends React.Component {
           dataSetList={dataSetList}
           type={this.props.type}
           orgId={this.props.orgId}
+          programId={this.props.programId}
           modalData={selectedData}
           title={modaltitle}
+          toggle={this.toggle}
+          showModal={this.state.modal}
         />
         <PopupModal
           modalid="deleteModal"
@@ -120,24 +124,36 @@ class DataSets extends React.Component {
     );
   }
 
+  toggle = () => {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
+  };
+
   selectedDataSet = dataSet => {
     dataSet &&
       this.setState({
         dataSet: {
           id: dataSet.id,
-          name: dataSet.organizationDataSetCategory.categoryName
+          name: dataSet.dataSetCategory.categoryName
         }
       });
   };
 
   handleDelete = () => {
     const { dataSet: { id: dataSetId } = {}, dataSetList } = this.state;
-    const { orgId, type } = this.props;
+    const { orgId, programId, type } = this.props;
     const filteredList = dataSetList.filter(x => x.id !== dataSetId);
-    this.props.deleteOrgDataSet({ orgId, dataSetId, type, filteredList });
+    this.props.deleteOrgDataSet(
+      orgId,
+      dataSetId,
+      type,
+      filteredList,
+      programId
+    );
     this.setState({
       selectedData: {
-        organizationDataSetCategory: { categoryName: "" },
+        dataSetCategory: { categoryName: "" },
         description: "",
         type: "",
         url: ""
@@ -148,8 +164,12 @@ class DataSets extends React.Component {
   //when edit is clicked
   changeModalData = dataSetId => {
     const { dataSetList } = this.state;
-    const { orgId, type } = this.props;
-    this.props.fetchDataSetCategories(orgId, type);
+    const { orgId, programId, type } = this.props;
+    this.props.fetchDataSetCategories(
+      type === PROGRAM ? programId : orgId,
+      type
+    );
+    this.toggle();
     this.setState({
       selectedData: dataSetList.filter(data => data.id === dataSetId)[0],
       modaltitle: "Edit Data Set"
@@ -158,11 +178,15 @@ class DataSets extends React.Component {
 
   //when add new is clicked
   addNewDataSetModal = () => {
-    const { orgId, type } = this.props;
-    this.props.fetchDataSetCategories(orgId, type);
+    this.toggle();
+    const { orgId, programId, type } = this.props;
+    this.props.fetchDataSetCategories(
+      type === PROGRAM ? programId : orgId,
+      type
+    );
     this.setState({
       selectedData: {
-        organizationDataSetCategory: { categoryName: "" },
+        dataSetCategory: { categoryName: "" },
         description: "",
         type: "",
         url: ""

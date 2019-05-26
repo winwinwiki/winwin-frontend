@@ -23,10 +23,7 @@ class Notes extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (
-      JSON.stringify(nextProps.notesList) !==
-      JSON.stringify(this.props.notesList)
-    ) {
+    if (nextProps.notesList !== this.props.notesList) {
       this.setState({
         notesList: nextProps.notesList.response
       });
@@ -171,7 +168,10 @@ class Notes extends React.Component {
       x => x.noteId !== selectedNoteId
     );
     this.setState({ notesList: filteredNotesList });
-    this.props.deleteNote({ noteId: selectedNoteId }, this.props.orgId);
+    this.props.deleteNote({
+      noteId: selectedNoteId,
+      organizationId: this.props.orgId
+    });
   };
 }
 

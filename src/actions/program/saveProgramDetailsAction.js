@@ -9,7 +9,7 @@ export const saveProgramDetailsAction = params => {
   return dispatch => {
     dispatch(saveProgRequest());
     api(
-      `/organization/${params.parentId}/program`,
+      `/organization/${params[0].orgId}/program`,
       "PUT",
       JSON.stringify(params),
       true

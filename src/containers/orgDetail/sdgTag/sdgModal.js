@@ -9,31 +9,25 @@ import {
   startLoaderAction,
   stopLoaderAction
 } from "../../../actions/common/loaderActions";
+import { PROGRAM } from "../../../constants";
 class SDGModal extends React.Component {
   state = {
     searchText: "",
-    checkedSDGTags: this.props.checkedSDGTags,
-    flag: false
+    checkedSDGTags: this.props.checkedSDGTags
   };
 
-  handleSearch = debounce(val => {
+  handleSearch = val => {
     let r = [];
     let list = this.props.SDGList.response;
     if (val) {
       r = deepFilter(cloneDeep(list), val); //deep clone list to avoid props from changing when state changes
-      this.props.startLoaderAction();
-      this.setState({ flag: true, SDGList: { response: r } }, () =>
-        this.props.stopLoaderAction()
-      );
+      this.setState({ SDGList: { response: r } });
     }
-    if (!r.length && this.state.flag) {
-      this.props.startLoaderAction();
+    if (this.state.searchText === "") {
       //SDG List in props persist coz we deepcloned the list
-      this.setState({ SDGList: this.props.SDGList }, () =>
-        this.props.stopLoaderAction()
-      );
+      this.setState({ SDGList: this.props.SDGList });
     }
-  }, 2000);
+  };
 
   componentDidMount() {
     let SDGList = this.props.SDGList;
@@ -163,8 +157,22 @@ class SDGModal extends React.Component {
   onSave = () => {
     const { checkedSDGTags } = this.state;
     const filteredTags = checkedSDGTags.filter(x => x.isChecked === true);
-    const { orgId, type } = this.props;
-    this.props.updateSDGData(checkedSDGTags, orgId, filteredTags, type);
+    const { orgId, type, programId } = this.props;
+    checkedSDGTags.map(x => {
+      x.organizationId = orgId;
+    });
+    if (type === PROGRAM) {
+      checkedSDGTags.map(x => {
+        x.programId = programId;
+      });
+    }
+    this.props.updateSDGData(
+      checkedSDGTags,
+      orgId,
+      filteredTags,
+      type,
+      programId
+    );
   };
 
   desiredSDGList(id) {

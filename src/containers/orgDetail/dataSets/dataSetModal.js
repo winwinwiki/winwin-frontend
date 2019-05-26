@@ -5,6 +5,16 @@ import { saveOrgDataSets } from "../../../actions/orgDetail/dataSetAction";
 import Autosuggest from "react-autosuggest";
 import { compareStrings } from "../../../util/util";
 import { fetchDataSetCategories } from "../../../actions/orgDetail/dataSetCategoriesAction";
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Input
+} from "reactstrap";
+import cloneDeep from "lodash/cloneDeep";
+import { PROGRAM } from "../../../constants";
 
 const getSuggestionValue = suggestion => suggestion.categoryName;
 
@@ -17,7 +27,12 @@ class DataSetModal extends Component {
     modalData: {
       type: "",
       url: "",
-      organizationDataSetCategory: { categoryName: "" }
+      dataSetCategory: { categoryName: "" }
+    },
+    formError: {
+      type: "",
+      url: "",
+      dataSetCategory: { categoryName: "" }
     }
   };
 
@@ -25,7 +40,7 @@ class DataSetModal extends Component {
     const { modalData } = this.props;
     if (nextProps.modalData.id !== modalData.id && nextProps.modalData) {
       this.setState({
-        modalData: nextProps.modalData,
+        modalData: cloneDeep(nextProps.modalData),
         categories:
           nextProps.categoriesList.data &&
           nextProps.categoriesList.data.response
@@ -35,15 +50,32 @@ class DataSetModal extends Component {
 
   saveDataSet = e => {
     e.preventDefault();
-    const { modalData } = this.state;
+    const {
+      modalData,
+      formError: { dataSetCategory: { categoryName } } = {}
+    } = this.state;
     const { orgId, type } = this.props;
+
+    if (!modalData.dataSetCategory.categoryName) {
+      this.validateDataSetForm(
+        "DataSet",
+        modalData.dataSetCategory.categoryName
+      );
+      return;
+    } else if (categoryName !== "") {
+      return;
+    }
+    this.props.toggle();
     if (!modalData.organizationId) modalData.organizationId = orgId;
+    if (this.props.type === PROGRAM) {
+      modalData.programId = this.props.programId;
+    }
     this.props.saveOrgDataSets(modalData, type);
     this.setState({
       modalData: {
         type: "",
         url: "",
-        organizationDataSetCategory: { categoryName: "" }
+        dataSetCategory: { categoryName: "" }
       }
     });
   };
@@ -54,8 +86,7 @@ class DataSetModal extends Component {
     const value = target.type === "checkbox" ? target.checked : target.value;
     let name = target.name;
     const { modalData } = this.state;
-    if (name === "categoryName")
-      modalData.organizationDataSetCategory[name] = value;
+    if (name === "categoryName") modalData.dataSetCategory[name] = value;
     else modalData[name] = value;
     this.setState({ modalData });
   };
@@ -97,15 +128,15 @@ class DataSetModal extends Component {
       categoriesList: { data: { response: categoriesList = [] } = {} } = {}
     } = this.props;
 
-    modalData.organizationDataSetCategory.categoryName = newValue;
+    modalData.dataSetCategory.categoryName = newValue;
 
     //find id in categories list to be updated
     let filteredCategory = categoriesList.find(x => {
       return compareStrings(x.categoryName, newValue) ? x : "";
     });
     if (filteredCategory && filteredCategory.id && filteredCategory.id !== -1)
-      modalData.organizationDataSetCategory.id = filteredCategory.id;
-    else modalData.organizationDataSetCategory.id = -1;
+      modalData.dataSetCategory.id = filteredCategory.id;
+    else modalData.dataSetCategory.id = -1;
     this.setState({ modalData, value: newValue });
   };
 
@@ -115,191 +146,368 @@ class DataSetModal extends Component {
     });
   };
 
+  validateForm = e => {
+    this.validateDataSetForm(e.target.name, e.target.value);
+  };
+
+  validateDataSetForm = (field, value) => {
+    const { formError } = this.state;
+    if (field === "DataSet") {
+      if (!value) {
+        formError.dataSetCategory.categoryName = "DataSet name is required.";
+        this.setState({ formError });
+        return;
+      }
+      formError.dataSetCategory.categoryName = "";
+      this.setState({ formError });
+      return;
+    }
+    return;
+  };
+
+  onClose = () => {
+    this.setState({
+      formError: {
+        type: "",
+        url: "",
+        dataSetCategory: { categoryName: "" }
+      },
+      modalData: cloneDeep(this.props.modalData)
+    });
+    this.props.toggle();
+  };
+
   render() {
-    const { value, suggestions } = this.state;
+    const { suggestions, formError } = this.state;
     const {
       modalData: {
         description,
         type,
         url,
-        organizationDataSetCategory: { categoryName, id } = {}
+        dataSetCategory: { categoryName, id } = {}
       } = {}
     } = this.state;
     const { title } = this.props;
 
     const inputProps = {
       id,
+      name: "DataSet",
       placeholder: "Enter Data Set Name",
       value: categoryName,
-      onChange: this.onChange
+      onChange: this.onChange,
+      onBlur: this.validateForm
     };
+
     return (
-      <div
-        className="modal fade show"
-        id="dataSetModal"
-        tabIndex="-1"
-        role="dialog"
-        aria-labelledby="dataSetModalLabel"
-        aria-hidden="true"
+      <Modal
+        isOpen={this.props.showModal}
+        fade={true}
+        toggle={() => this.props.toggle()}
+        className={this.props.className}
       >
-        <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <div className="dashboard-container">
-              <div className="dashboard-header">
-                <div className="modal-header flex-column">
-                  <div className="d-flex w-100 p-3">
-                    <h5 className="modal-title" id="dataSetModalLabel">
-                      {title}
-                    </h5>
-                    <button
-                      type="button"
-                      className="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
+        <ModalHeader toggle={this.toggle}>
+          <div className="d-flex w-100 p-3">
+            <h5 className="modal-title" id="dataSetModalLabel">
+              {title}
+            </h5>
+          </div>
+        </ModalHeader>
+        <ModalBody>
+          <form>
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item px-0">
+                <div className="row">
+                  <div className="col">
+                    <div className="form-group">
+                      <label htmlFor="new-dataSetName">Data Set Name</label>
+
+                      <Autosuggest
+                        id="categoryName"
+                        suggestions={suggestions}
+                        onSuggestionsFetchRequested={
+                          this.onSuggestionsFetchRequested
+                        }
+                        onSuggestionsClearRequested={
+                          this.onSuggestionsClearRequested
+                        }
+                        getSuggestionValue={getSuggestionValue}
+                        renderSuggestion={renderSuggestion}
+                        inputProps={inputProps}
+                      />
+                      {formError.dataSetCategory.categoryName && (
+                        <small className="form-element-hint text-danger">
+                          {formError.dataSetCategory.categoryName}
+                        </small>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="modal-body dashboard-content">
-                <form>
-                  <ul className="list-group list-group-flush">
-                    <li className="list-group-item px-0">
-                      <div className="row">
-                        <div className="col">
-                          <div className="form-group">
-                            <label htmlFor="new-dataSetName">
-                              Data Set Name
-                            </label>
-                            {/* <input
-                              type="text"
-                              className="form-control"
-                              id="new-dataSetName"
-                              name="categoryName"
-                              placeholder="Enter Data Set Name"
-                              onChange={this.handleChange}
-                              value={categoryName}
-                            /> */}
-                            <Autosuggest
-                              id="categoryName"
-                              suggestions={suggestions}
-                              onSuggestionsFetchRequested={
-                                this.onSuggestionsFetchRequested
-                              }
-                              onSuggestionsClearRequested={
-                                this.onSuggestionsClearRequested
-                              }
-                              getSuggestionValue={getSuggestionValue}
-                              renderSuggestion={renderSuggestion}
-                              inputProps={inputProps}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col">
-                          <div className="form-group">
-                            <label htmlFor="new-description">Description</label>
-                            <textarea
-                              className="form-control"
-                              id="new-description"
-                              name="description"
-                              rows="5"
-                              onChange={this.handleChange}
-                              placeholder="A desription about data set will go here"
-                              value={description}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col">
-                          <div className="form-group">
-                            <label htmlFor="type">Type</label>
-                            <br />
-                            <div
-                              className="btn-group btn-group-toggle mb-4"
-                              id="type"
-                              data-toggle="buttons"
-                            >
-                              <label
-                                onClick={this.handleOptionsChange}
-                                className={`btn btn-outline-secondary ${
-                                  type.toLowerCase() === "open" ? "active" : ""
-                                }`}
-                              >
-                                <input
-                                  type="radio"
-                                  name="type"
-                                  value="open"
-                                  checked={type.toLowerCase() === "open"}
-                                />{" "}
-                                Open
-                              </label>
-                              <label
-                                onClick={this.handleOptionsChange}
-                                className={`btn btn-outline-secondary ${
-                                  type.toLowerCase() === "closed"
-                                    ? "active"
-                                    : ""
-                                }`}
-                              >
-                                <input
-                                  type="radio"
-                                  name="type"
-                                  value="closed"
-                                  checked={type.toLowerCase() === "closed"}
-                                />{" "}
-                                Closed
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                        {type.toLowerCase() === "open" ? (
-                          <div className="col">
-                            <div className="form-group">
-                              <label htmlFor="new-url">URL</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                id="new-url"
-                                name="url"
-                                onChange={this.handleChange}
-                                placeholder="Website URL"
-                                value={url}
-                              />
-                            </div>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                      <div className="modal-footer">
-                        <button
-                          type="button"
-                          className="btn btn-secondary"
-                          data-dismiss="modal"
+                <div className="row">
+                  <div className="col">
+                    <div className="form-group">
+                      <label htmlFor="new-description">Description</label>
+                      <textarea
+                        className="form-control"
+                        id="new-description"
+                        name="description"
+                        rows="5"
+                        onChange={this.handleChange}
+                        placeholder="A desription about data set will go here"
+                        value={description}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col">
+                    <div className="form-group">
+                      <label htmlFor="type">Type</label>
+                      <br />
+                      <div
+                        className="btn-group btn-group-toggle"
+                        id="type"
+                        data-toggle="buttons"
+                      >
+                        <label
+                          onClick={this.handleOptionsChange}
+                          className={`btn btn-outline-secondary ${
+                            type.toLowerCase() === "open" ? "active" : ""
+                          }`}
                         >
-                          Close
-                        </button>
-                        <button
-                          type="submit"
-                          onClick={this.saveDataSet}
-                          data-dismiss="modal"
-                          className="btn btn-primary"
+                          <input
+                            type="radio"
+                            name="type"
+                            value="open"
+                            checked={type.toLowerCase() === "open"}
+                            readOnly
+                          />{" "}
+                          Open
+                        </label>
+                        <label
+                          onClick={this.handleOptionsChange}
+                          className={`btn btn-outline-secondary ${
+                            type.toLowerCase() === "closed" ? "active" : ""
+                          }`}
                         >
-                          Save changes
-                        </button>
+                          <input
+                            type="radio"
+                            name="type"
+                            value="closed"
+                            checked={type.toLowerCase() === "closed"}
+                            readOnly
+                          />{" "}
+                          Closed
+                        </label>
                       </div>
-                    </li>
-                  </ul>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                    </div>
+                  </div>
+                  {type.toLowerCase() === "open" ? (
+                    <div className="col">
+                      <div className="form-group">
+                        <label htmlFor="new-url">URL</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="new-url"
+                          name="url"
+                          onChange={this.handleChange}
+                          placeholder="Website URL"
+                          value={url}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </li>
+            </ul>
+          </form>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="secondary" onClick={this.onClose}>
+            Close
+          </Button>
+          <Button color="primary" onClick={this.saveDataSet}>
+            Save changes
+          </Button>{" "}
+        </ModalFooter>
+      </Modal>
+      // <div
+      //   className="modal fade show"
+      //   id="dataSetModal"
+      //   tabIndex="-1"
+      //   role="dialog"
+      //   aria-labelledby="dataSetModalLabel"
+      //   aria-hidden="true"
+      // >
+      //   <div className="modal-dialog modal-dialog-centered" role="document">
+      //     <div className="modal-content">
+      //       <div className="dashboard-container">
+      //         <div className="dashboard-header">
+      //           <div className="modal-header flex-column">
+      //             <div className="d-flex w-100 p-3">
+      //               <h5 className="modal-title" id="dataSetModalLabel">
+      //                 {title}
+      //               </h5>
+      //               <button
+      //                 type="button"
+      //                 className="close"
+      //                 data-dismiss="modal"
+      //                 aria-label="Close"
+      //               >
+      //                 <span aria-hidden="true">&times;</span>
+      //               </button>
+      //             </div>
+      //           </div>
+      //         </div>
+      //         <div className="modal-body dashboard-content">
+      //           <form>
+      //             <ul className="list-group list-group-flush">
+      //               <li className="list-group-item px-0">
+      //                 <div className="row">
+      //                   <div className="col">
+      //                     <div className="form-group">
+      //                       <label htmlFor="new-dataSetName">
+      //                         Data Set Name
+      //                       </label>
+      //                       {/* <input
+      //                         type="text"
+      //                         className="form-control"
+      //                         id="new-dataSetName"
+      //                         name="categoryName"
+      //                         placeholder="Enter Data Set Name"
+      //                         onChange={this.handleChange}
+      //                         value={categoryName}
+      //                       /> */}
+      //                       <Autosuggest
+      //                         id="categoryName"
+      //                         suggestions={suggestions}
+      //                         onSuggestionsFetchRequested={
+      //                           this.onSuggestionsFetchRequested
+      //                         }
+      //                         onSuggestionsClearRequested={
+      //                           this.onSuggestionsClearRequested
+      //                         }
+      //                         getSuggestionValue={getSuggestionValue}
+      //                         renderSuggestion={renderSuggestion}
+      //                         inputProps={inputProps}
+      //                       />
+      //                       {formError.dataSetCategory
+      //                         .categoryName && (
+      //                         <small className="form-element-hint text-danger">
+      //                           {
+      //                             formError.dataSetCategory
+      //                               .categoryName
+      //                           }
+      //                         </small>
+      //                       )}
+      //                     </div>
+      //                   </div>
+      //                 </div>
+      //                 <div className="row">
+      //                   <div className="col">
+      //                     <div className="form-group">
+      //                       <label htmlFor="new-description">Description</label>
+      //                       <textarea
+      //                         className="form-control"
+      //                         id="new-description"
+      //                         name="description"
+      //                         rows="5"
+      //                         onChange={this.handleChange}
+      //                         placeholder="A desription about data set will go here"
+      //                         value={description}
+      //                       />
+      //                     </div>
+      //                   </div>
+      //                 </div>
+      //                 <div className="row">
+      //                   <div className="col">
+      //                     <div className="form-group">
+      //                       <label htmlFor="type">Type</label>
+      //                       <br />
+      //                       <div
+      //                         className="btn-group btn-group-toggle mb-4"
+      //                         id="type"
+      //                         data-toggle="buttons"
+      //                       >
+      //                         <label
+      //                           onClick={this.handleOptionsChange}
+      //                           className={`btn btn-outline-secondary ${
+      //                             type.toLowerCase() === "open" ? "active" : ""
+      //                           }`}
+      //                         >
+      //                           <input
+      //                             type="radio"
+      //                             name="type"
+      //                             value="open"
+      //                             checked={type.toLowerCase() === "open"}
+      //                           />{" "}
+      //                           Open
+      //                         </label>
+      //                         <label
+      //                           onClick={this.handleOptionsChange}
+      //                           className={`btn btn-outline-secondary ${
+      //                             type.toLowerCase() === "closed"
+      //                               ? "active"
+      //                               : ""
+      //                           }`}
+      //                         >
+      //                           <input
+      //                             type="radio"
+      //                             name="type"
+      //                             value="closed"
+      //                             checked={type.toLowerCase() === "closed"}
+      //                           />{" "}
+      //                           Closed
+      //                         </label>
+      //                       </div>
+      //                     </div>
+      //                   </div>
+      //                   {type.toLowerCase() === "open" ? (
+      //                     <div className="col">
+      //                       <div className="form-group">
+      //                         <label htmlFor="new-url">URL</label>
+      //                         <input
+      //                           type="text"
+      //                           className="form-control"
+      //                           id="new-url"
+      //                           name="url"
+      //                           onChange={this.handleChange}
+      //                           placeholder="Website URL"
+      //                           value={url}
+      //                         />
+      //                       </div>
+      //                     </div>
+      //                   ) : (
+      //                     ""
+      //                   )}
+      //                 </div>
+      //                 <div className="modal-footer">
+      //                   <button
+      //                     type="button"
+      //                     className="btn btn-secondary"
+      //                     data-dismiss="modal"
+      //                   >
+      //                     Close
+      //                   </button>
+      //                   <button
+      //                     type="submit"
+      //                     onClick={this.saveDataSet}
+      //                     data-dismiss="modal"
+      //                     className="btn btn-primary"
+      //                   >
+      //                     Save changes
+      //                   </button>
+      //                 </div>
+      //               </li>
+      //             </ul>
+      //           </form>
+      //         </div>
+      //       </div>
+      //     </div>
+      //   </div>
+      // </div>
     );
   }
 }

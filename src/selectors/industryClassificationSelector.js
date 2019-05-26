@@ -12,7 +12,7 @@ const naicsListSelector = createSelector(
       details.data.map(x => {
         return {
           id: x.id,
-          name: x.name
+          name: `${x.code} - ${x.name}`
         };
       });
     return uiModel;
@@ -28,7 +28,7 @@ const nteeListSelector = createSelector(
       details.data.map(x => {
         return {
           id: x.id,
-          name: x.name
+          name: `${x.code} - ${x.name}`
         };
       });
     return uiModel;
@@ -40,4 +40,4 @@ const industryClassificationSelector = createStructuredSelector({
   nteeList: nteeListSelector
 });
 
-export { industryClassificationSelector };
+export { industryClassificationSelector, naicsListSelector, nteeListSelector };

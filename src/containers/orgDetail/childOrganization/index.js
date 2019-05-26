@@ -5,7 +5,12 @@ import { push } from "react-router-redux";
 import { onAddOrgChartChild } from "../../../actions/orgChart/onAddChild";
 import { fetchOrgHierarchy } from "../../../actions/orgDetail/orgChartAction";
 class addOrganization extends Component {
-  state = {};
+  state = {
+    formError: {
+      childOrgName: "",
+      childOrgType: ""
+    }
+  };
 
   componentDidMount() {
     this.props.fetchOrgHierarchy(this.props.match.params.id);
@@ -17,17 +22,43 @@ class addOrganization extends Component {
 
   onSave = e => {
     e.preventDefault();
-    const { childOrgName, childOrgType } = this.state;
+    const { childOrgName, childOrgType, formError } = this.state;
+    const { location: { state: { parentId } = {} } = {} } = this.props;
+    if (!childOrgName) {
+      this.validateAddForm("childOrgName", childOrgName);
+      return;
+    } else if (formError.childOrgName !== "") {
+      return;
+    }
     const apiObj = {
-      parentId: this.props.orgId,
+      parentId: parentId,
       childOrgType:
         childOrgType || this.props.history.location.search.replace(/\?/, ""),
       childOrgName
     };
     this.props.onAddOrgChartChild(apiObj);
+    this.props.changePage(this.props.orgId);
+  };
+
+  validateForm = e => {
+    this.validateAddForm(e.target.name, e.target.value);
+  };
+  validateAddForm = (field, value) => {
+    const { formError } = this.state;
+    if (field === "childOrgName") {
+      if (!value) {
+        formError[field] = "name is required.";
+        this.setState({ formError });
+        return;
+      }
+      formError[field] = "";
+      this.setState({ formError });
+      return;
+    }
   };
 
   render() {
+    const { formError } = this.state;
     return (
       <section className="dashboard-content p-0 py-3 org-details-container">
         <div className="col-md-18 m-auto card">
@@ -43,14 +74,15 @@ class addOrganization extends Component {
                       type="text"
                       className="form-control"
                       id="childOrganizationType"
-                      placeholder="Enter Program Name"
+                      placeholder="Enter Child Organization Type"
                       name="childOrgType"
-                      readOnly
+                      onBlur={this.validateForm}
+                      // readOnly
                       onChange={this.onChange}
-                      value={this.props.history.location.search.replace(
-                        /\?/,
-                        ""
-                      )}
+                      // value={this.props.history.location.search.replace(
+                      //   /\?/,
+                      //   ""
+                      // )}
                     />
                   </div>
                 </div>
@@ -67,8 +99,14 @@ class addOrganization extends Component {
                       id="childOrganizationName"
                       placeholder="Enter Child Organization Name"
                       name="childOrgName"
+                      onBlur={this.validateForm}
                       onChange={this.onChange}
                     />
+                    {formError.childOrgName && (
+                      <small className="form-element-hint text-danger">
+                        {formError.childOrgName}
+                      </small>
+                    )}
                   </div>
                 </div>
               </div>

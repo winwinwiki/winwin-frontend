@@ -14,6 +14,7 @@ import {
   stopLoaderAction
 } from "../../../actions/common/loaderActions";
 import { PopupModal } from "../../ui/popupModal";
+import { PROGRAM } from "../../../constants";
 class Resources extends React.Component {
   constructor(props) {
     super(props);
@@ -30,14 +31,15 @@ class Resources extends React.Component {
         count: "",
         description: ""
       },
-      modaltitle: ""
+      modaltitle: "",
+      modal: false
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    const { programId, orgId, type } = this.props;
     this.props.startLoaderAction();
-    const orgId = await this.props.orgId;
-    await this.props.fetchOrgResources(orgId, this.props.type);
+    this.props.fetchOrgResources(type === PROGRAM ? programId : orgId, type);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -75,9 +77,15 @@ class Resources extends React.Component {
     this.setState({
       resource: {
         id: resource.id,
-        name: resource.organizationResourceCategory.categoryName
+        name: resource.resourceCategory.categoryName
       }
     });
+  };
+
+  toggle = () => {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
   };
 
   render() {
@@ -125,6 +133,9 @@ class Resources extends React.Component {
           orgId={this.props.orgId}
           modalData={selectedData}
           title={modaltitle}
+          toggle={this.toggle}
+          showModal={this.state.modal}
+          programId={this.props.programId}
         />
         <PopupModal
           modalid="deleteModal"
@@ -142,12 +153,18 @@ class Resources extends React.Component {
 
   handleDelete = () => {
     const { resource: { id: resourceId } = {}, resourcesList } = this.state;
-    const { orgId, type } = this.props;
+    const { orgId, type, programId } = this.props;
     const filteredList = resourcesList.filter(x => x.id !== resourceId);
-    this.props.deleteOrgResource({ orgId, resourceId, type, filteredList });
+    this.props.deleteOrgResource(
+      orgId,
+      resourceId,
+      type,
+      filteredList,
+      programId
+    );
     this.setState({
       selectedData: {
-        organizationResourceCategory: { categoryName: "" },
+        resourceCategory: { categoryName: "" },
         count: "",
         description: ""
       }
@@ -157,8 +174,12 @@ class Resources extends React.Component {
   //when edit resource
   changeModalData = resourceId => {
     const { resourcesList } = this.state;
-    const { orgId, type } = this.props;
-    this.props.fetchResourceCategories(orgId, type);
+    const { orgId, programId, type } = this.props;
+    this.props.fetchResourceCategories(
+      type === PROGRAM ? programId : orgId,
+      type
+    );
+    this.toggle();
     this.setState({
       selectedData: resourcesList.filter(
         resource => resource.id === resourceId
@@ -169,11 +190,15 @@ class Resources extends React.Component {
 
   //add new resource
   addNewResourceModal = () => {
-    const { orgId, type } = this.props;
-    this.props.fetchResourceCategories(orgId, type);
+    const { orgId, programId, type } = this.props;
+    this.toggle();
+    this.props.fetchResourceCategories(
+      type === PROGRAM ? programId : orgId,
+      type
+    );
     this.setState({
       selectedData: {
-        organizationResourceCategory: { categoryName: "" },
+        resourceCategory: { categoryName: "" },
         count: "",
         description: ""
       },

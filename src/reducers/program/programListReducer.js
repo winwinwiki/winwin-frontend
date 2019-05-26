@@ -1,7 +1,10 @@
 import {
   FETCH_PROG_REQUEST,
   FETCH_PROG_SUCCESS,
-  FETCH_PROG_ERROR
+  FETCH_PROG_ERROR,
+  DELETE_PROGRAM_SUCCESS,
+  ADD_PROGRAM_SUCCESS,
+  RESET_PROGRAMLIST_SUCCESS
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -22,6 +25,32 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         isFetchProgramSuccess: true,
         programList: action.response
+      });
+
+    case ADD_PROGRAM_SUCCESS:
+      return Object.assign({}, state, {
+        isFetchProgramSuccess: true,
+        programList: {
+          response:
+            state.programList.response &&
+            state.programList.response.concat(action.response.response)
+        }
+      });
+
+    case RESET_PROGRAMLIST_SUCCESS:
+      return Object.assign({}, state, {
+        programList: []
+      });
+
+    case DELETE_PROGRAM_SUCCESS:
+      return Object.assign({}, state, {
+        isFetchProgramSuccess: true,
+        programList: {
+          response:
+            state.programList.response &&
+            state.programList.response.filter(x => x.id !== action.response)
+        },
+        fetchProgramError: false
       });
 
     case FETCH_PROG_ERROR:

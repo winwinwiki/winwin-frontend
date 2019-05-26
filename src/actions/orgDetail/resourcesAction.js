@@ -17,7 +17,7 @@ export const saveOrgResource = (params, type) => {
     dispatch(saveResourcesReq());
     let url =
       type === PROGRAM
-        ? `/program/${params.organizationId}/resource`
+        ? `/program/${params.programId}/resource`
         : `/organization/${params.organizationId}/resource`;
     if (!params.id) {
       api(url, "POST", JSON.stringify(params), true).then(
@@ -59,21 +59,26 @@ export const fetchOrgResources = (params, type) => {
   };
 };
 
-export const deleteOrgResource = ({
+export const deleteOrgResource = (
   orgId,
   resourceId,
   type,
-  filteredList
-}) => {
+  filteredList,
+  programId
+) => {
   return dispatch => {
     dispatch(deleteResourceReq());
     let url =
       type === PROGRAM
-        ? `/program/${orgId}/resource`
+        ? `/program/${programId}/resource`
         : `/organization/${orgId}/resource`;
     const deleteObj = {
       id: resourceId
     };
+    if (type === PROGRAM) {
+      deleteObj.programId = programId;
+      deleteObj.organizationId = orgId;
+    }
     api(url, "DELETE", JSON.stringify(deleteObj), true).then(
       response => {
         dispatch(deleteResourceSuccess(filteredList));

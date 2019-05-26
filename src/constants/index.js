@@ -5,10 +5,9 @@ export const sectorsList = ["Public", "Private", "Social"];
 export const entityList = ["Federal", "State", "County", "City", "District"];
 //order of theese elements is important do not change it
 export const tagStatusList = [
-  "Auto Tag",
   "Complete Tag",
-  "Organization Tag",
-  "Untagged"
+  "Unfinished Tag",
+  "Ready For Tagging"
 ];
 export const addressFields = [
   "city",

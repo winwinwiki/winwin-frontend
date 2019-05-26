@@ -3,12 +3,10 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Checkbox from "../../ui/checkbox";
 import { setAppliedFilters } from "../../../actions/orgLanding/orgLandingAction";
-import InputRange from "react-input-range";
 import ReactSelect from "react-select";
 import "react-input-range/lib/css/index.css";
 import {
   modifiyFilterList,
-  customNumberFormatter,
   getSPIDataByIndicators,
   getSDGDataBySubGoals
 } from "../../../util/util";
@@ -24,14 +22,14 @@ import {
 } from "../../../actions/orgLanding/orgLandingAction";
 import { spiTagsListSelector } from "../../../selectors/spiTagsSelector";
 import { sdgTagsListSelector } from "../../../selectors/sdgTagsSelector";
+import {
+  naicsListSelector,
+  nteeListSelector
+} from "../../../selectors/industryClassificationSelector";
 var classNames = require("classnames");
 
 const Priority = ["Normal", "High"];
-// const userList = [
-//   { value: "abc", label: "abc abc" },
-//   { value: "sumit", label: "sumit chaudhari" },
-//   { value: "Sunny", label: "Sunny tambi" }
-// ];
+
 export const frameworkTagList = [
   { value: "SPI", label: "Social Progress Index" },
   {
@@ -56,11 +54,6 @@ export const industryClassification = [
   { value: "NAICS", label: "NAICS" },
   { value: "NTEE", label: "NTEE" }
 ];
-// const SubIndustryClassification = [
-//   { value: "1", label: "select 1" },
-//   { value: "2", label: "select 2" },
-//   { value: "3", label: "select 3" }
-// ];
 class AppliedOrgFiltersList extends React.Component {
   state = {
     editedBy: [],
@@ -103,8 +96,6 @@ class AppliedOrgFiltersList extends React.Component {
       editedBy,
       sectorLevel,
       tagStatus,
-      revenue,
-      assets,
       priority,
       industryCls,
       subIndustryCls,
@@ -113,15 +104,8 @@ class AppliedOrgFiltersList extends React.Component {
       level2,
       level3,
       level1List
-      // level2List
-      // level3List
     } = this.state;
     const { isFilterModalVisible, activeOrg, orgDetail } = this.props;
-
-    let assestsMin = 0;
-    let assestsMax = 100;
-    let revenueMin = 0;
-    let revenueMax = 100;
 
     let userList = [];
     let SubIndustryClassification = [];
@@ -146,19 +130,17 @@ class AppliedOrgFiltersList extends React.Component {
     //SubIndustryClassification lists
 
     if (
-      this.props.NAICSList.data &&
+      this.props.NAICSList &&
       industryCls.value === industryClassification[0].value
     )
-      SubIndustryClassification = this.props.NAICSList.data.map(function(
-        value
-      ) {
+      SubIndustryClassification = this.props.NAICSList.map(function(value) {
         return { value: value.id, label: value.name };
       });
     if (
-      this.props.NTEEList.data &&
+      this.props.NTEEList &&
       industryCls.value === industryClassification[1].value
     )
-      SubIndustryClassification = this.props.NTEEList.data.map(function(value) {
+      SubIndustryClassification = this.props.NTEEList.map(function(value) {
         return { value: value.id, label: value.name };
       });
 
@@ -186,7 +168,7 @@ class AppliedOrgFiltersList extends React.Component {
         style={{ left: -500 }}
       >
         <div className="row">
-          <div className="col">
+          <div className="col col-sm-5">
             {isSectorLevelShow && <h5>Sector Level</h5>}
             {isSectorLevelShow && (
               <Checkbox
@@ -231,31 +213,31 @@ class AppliedOrgFiltersList extends React.Component {
 
             <h5 className={isSectorLevelShow ? "mt-4" : ""}>Status</h5>
             <Checkbox
-              name={tagStatusList[0]}
+              name="Auto Tag"
               label="Auto Tag"
+              checked={tagStatus.indexOf("Auto Tag") > -1}
+              onChange={this.onStatusCheckboxChange}
+            />
+            <Checkbox
+              name={tagStatusList[0]}
+              label="Complete Tag"
               checked={tagStatus.indexOf(tagStatusList[0]) > -1}
               onChange={this.onStatusCheckboxChange}
             />
             <Checkbox
               name={tagStatusList[1]}
-              label="Complete Tag"
+              label="Unfinished Tag"
               checked={tagStatus.indexOf(tagStatusList[1]) > -1}
               onChange={this.onStatusCheckboxChange}
             />
             <Checkbox
               name={tagStatusList[2]}
-              label="Organization Tag"
+              label="Ready For Tagging"
               checked={tagStatus.indexOf(tagStatusList[2]) > -1}
               onChange={this.onStatusCheckboxChange}
             />
-            <Checkbox
-              name={tagStatusList[3]}
-              label="Untagged"
-              checked={tagStatus.indexOf(tagStatusList[3]) > -1}
-              onChange={this.onStatusCheckboxChange}
-            />
           </div>
-          <div className="col">
+          <div className="col col-sm-6">
             <h5>Priority</h5>
             <div className="btn-group btn-group-toggle mb-4">
               <label
@@ -334,57 +316,79 @@ class AppliedOrgFiltersList extends React.Component {
               />
             )}
           </div>
-          <div className="col">
+          <div className="col col-sm-7">
             <h5>Revenue</h5>
-            <div className="my-4">
-              <InputRange
-                draggableTrack
-                maxValue={revenueMax}
-                minValue={revenueMin}
-                formatLabel={value => `$ ${customNumberFormatter(value, 2)}`}
-                value={revenue}
-                onChange={value => {
-                  const processedValues = { ...value };
-
-                  if (processedValues.min < revenueMin) {
-                    processedValues.min = revenueMin;
-                  }
-
-                  if (processedValues.max > revenueMax) {
-                    processedValues.max = revenueMax;
-                  }
-
-                  this.setState({ revenue: processedValues });
-                }}
-                onChangeComplete={value => {}}
+            <div className="input-group mb-3 my-4">
+              <h5 className="mt-2 mr-2">Min : </h5>
+              <div className="input-group-prepend">
+                <span className="input-group-text">$</span>
+              </div>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="min"
+                onChange={e =>
+                  this.setState({
+                    revenue: { ...this.state.revenue, min: e.target.value }
+                  })
+                }
+                value={this.state.revenue.min}
+              />
+            </div>
+            <div className="input-group mb-3 my-4">
+              <h5 className="mt-2 mr-2">Max : </h5>
+              <div className="input-group-prepend">
+                <span className="input-group-text">$</span>
+              </div>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="max"
+                onChange={e =>
+                  this.setState({
+                    revenue: { ...this.state.revenue, max: e.target.value }
+                  })
+                }
+                value={this.state.revenue.max}
               />
             </div>
             <h5>Assets</h5>
-            <div className="my-4">
-              <InputRange
-                draggableTrack
-                maxValue={assestsMax}
-                minValue={assestsMin}
-                formatLabel={value => `$ ${customNumberFormatter(value, 2)}`}
-                value={assets}
-                onChange={value => {
-                  const processedValues = { ...value };
-
-                  if (processedValues.min < assestsMin) {
-                    processedValues.min = assestsMin;
-                  }
-
-                  if (processedValues.max > assestsMax) {
-                    processedValues.max = assestsMax;
-                  }
-
-                  this.setState({ assets: processedValues });
-                }}
-                onChangeComplete={value => {}}
+            <div className="input-group mb-3 my-4">
+              <h5 className="mt-2 mr-2">Min : </h5>
+              <div className="input-group-prepend">
+                <span className="input-group-text">$</span>
+              </div>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="min"
+                onChange={e =>
+                  this.setState({
+                    assets: { ...this.state.assets, min: e.target.value }
+                  })
+                }
+                value={this.state.assets.min}
+              />
+            </div>
+            <div className="input-group mb-3 my-4">
+              <h5 className="mt-2 mr-2">Max : </h5>
+              <div className="input-group-prepend">
+                <span className="input-group-text">$</span>
+              </div>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="max"
+                onChange={e =>
+                  this.setState({
+                    assets: { ...this.state.assets, max: e.target.value }
+                  })
+                }
+                value={this.state.assets.max}
               />
             </div>
           </div>
-          <div className="col">
+          <div className="col col-sm-6">
             <h5>Framework Tag</h5>
             <ReactSelect
               name="frameworkTag"
@@ -563,8 +567,8 @@ const mapStateToProps = state => ({
   customSPIList: spiTagsListSelector(state),
   SPIList: state.orgList.spiList,
   SDGList: state.orgList.sdgList,
-  NAICSList: state.naicsList,
-  NTEEList: state.nteeList,
+  NAICSList: naicsListSelector(state),
+  NTEEList: nteeListSelector(state),
   userList: state.userManagement
 });
 

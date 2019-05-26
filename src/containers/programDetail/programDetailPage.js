@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { saveProgramDetailsAction } from "../../actions/program/saveProgramDetailsAction";
+import { deleteProgram } from "../../actions/program/deleteProgramAction";
+import { PopupModal } from "../ui/popupModal";
+import { push } from "react-router-redux";
 class ProgramDetailPage extends Component {
   state = {
     editProgramDetail: false,
@@ -40,13 +43,22 @@ class ProgramDetailPage extends Component {
                       }`}
                     >
                       <li>
-                        <a href="javascript:;" onClick={() => this.onEdit()}>
+                        <a href="javascript:;" onClick={this.onEdit}>
                           <i className="icon-edit" />
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="javascript:;"
+                          data-toggle="modal"
+                          data-target="#deleteModal"
+                        >
+                          <i className="icon-delete" />
                         </a>
                       </li>
                     </ul>
                   </div>
-                  <div className="row">
+                  <div className="row mt-2">
                     <div className="col">
                       <div className="form-group">
                         <label htmlFor="programName">Program Name</label>
@@ -79,6 +91,23 @@ class ProgramDetailPage extends Component {
                       </div>
                     </div>
                   </div>
+                  <div className="row">
+                    <div className="col">
+                      <div className="form-group">
+                        <label htmlFor="websiteUrl">Program URL</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="websiteUrl"
+                          name="websiteUrl"
+                          readOnly={`${!editProgramDetail ? "readOnly" : ""}`}
+                          placeholder="Enter Program URL"
+                          value={progDetail.websiteUrl}
+                          onChange={this.onChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
                   <div
                     className={`row justify-content-center footer-actions ${
                       editProgramDetail ? "active" : ""
@@ -102,9 +131,28 @@ class ProgramDetailPage extends Component {
             </form>
           </div>
         </div>
+        <PopupModal
+          modalid="deleteModal"
+          modaltitle="Alert!"
+          modalcontent={`Are you sure you want to delete '${
+            this.props.programDetail.data.response.name
+          }' ?`}
+          primarybuttontext="Delete Program"
+          secondarybuttontext="Cancel"
+          handleDelete={this.handleDelete}
+        />
       </section>
     );
   }
+
+  handleDelete = () => {
+    const {
+      programId,
+      programDetail: { data: { response = {} } = {} } = {}
+    } = this.props;
+    this.props.deleteProgram(response.orgId, response.id, programId);
+    this.props.changePage(response.organizationId);
+  };
 
   onChange = e => {
     const { programDetail: { response } = {} } = this.state;
@@ -132,6 +180,7 @@ class ProgramDetailPage extends Component {
     const {
       programDetail: { response: apiObj }
     } = this.state;
+
     this.props.saveProgramDetailsAction([apiObj]);
   };
 }
@@ -143,7 +192,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      saveProgramDetailsAction
+      changePage: orgId => push(`/organizations/${orgId}/programs`),
+      saveProgramDetailsAction,
+      deleteProgram
     },
     dispatch
   );

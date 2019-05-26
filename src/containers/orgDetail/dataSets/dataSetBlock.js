@@ -40,8 +40,7 @@ class DataSetBlock extends React.Component {
                 readOnly="readOnly"
                 placeholder="Enter Category"
                 value={
-                  data.organizationDataSetCategory &&
-                  data.organizationDataSetCategory.categoryName
+                  data.dataSetCategory && data.dataSetCategory.categoryName
                 }
               />
             </div>

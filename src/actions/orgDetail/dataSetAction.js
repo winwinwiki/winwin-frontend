@@ -14,7 +14,7 @@ export const saveOrgDataSets = (params, type) => {
     dispatch(saveDataSetReq());
     let url =
       type === PROGRAM
-        ? `/program/${params.organizationId}/dataset`
+        ? `/program/${params.programId}/dataset`
         : `/organization/${params.organizationId}/dataset`;
     if (!params.id) {
       api(url, "POST", JSON.stringify(params), true).then(

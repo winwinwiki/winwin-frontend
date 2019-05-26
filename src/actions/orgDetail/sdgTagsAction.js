@@ -28,12 +28,12 @@ export const fetchSdgTags = (orgId, type) => {
   };
 };
 
-export const updateSDGData = (apiObj, orgId, filteredObj, type) => {
+export const updateSDGData = (apiObj, orgId, filteredObj, type, programId) => {
   return dispatch => {
     dispatch(updateSDGDataReq());
     let url =
       type === PROGRAM
-        ? `/program/${orgId}/sdgdata`
+        ? `/program/${programId}/sdgdata`
         : `/organization/${orgId}/sdgdata`;
     api(url, "POST", JSON.stringify(apiObj), true).then(
       response => {

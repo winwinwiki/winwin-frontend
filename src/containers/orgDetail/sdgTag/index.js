@@ -8,12 +8,13 @@ import {
   startLoaderAction,
   stopLoaderAction
 } from "../../../actions/common/loaderActions";
+import { PROGRAM } from "../../../constants";
 class SdgTags extends React.Component {
   componentDidMount() {
-    const { orgId, type } = this.props;
+    const { orgId, type, programId } = this.props;
     this.props.startLoaderAction();
-    this.props.fetchSdgTags(orgId, type);
-    this.props.fetchSdgTagsList(orgId, type);
+    this.props.fetchSdgTags(type === PROGRAM ? programId : orgId, type);
+    this.props.fetchSdgTagsList(type === PROGRAM ? programId : orgId, type);
   }
 
   componentDidUpdate(prevProps) {
@@ -65,6 +66,7 @@ class SdgTags extends React.Component {
             orgId={orgId}
             checkedSDGTags={sdgTags.data.response}
             SDGList={this.props.SDGList}
+            programId={this.props.programId}
           />
         )}
       </section>
@@ -76,10 +78,12 @@ class SdgTags extends React.Component {
     let sdgTagsList = sdgTags.data.response;
     let desiredTagsList = {};
     sdgTagsList.map(tags => {
-      if (!desiredTagsList[tags["goalName"]])
-        desiredTagsList[tags["goalName"]] = [];
+      if (!desiredTagsList[tags["goalCode"] + ". " + tags["goalName"]])
+        desiredTagsList[tags["goalCode"] + ". " + tags["goalName"]] = [];
 
-      desiredTagsList[tags["goalName"]].push(tags["subGoalName"]);
+      desiredTagsList[tags["goalCode"] + ". " + tags["goalName"]].push(
+        tags["subGoalCode"] + " " + tags["subGoalName"]
+      );
       return desiredTagsList;
     });
     return Object.keys(desiredTagsList).map((goalName, idx) => (

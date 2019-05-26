@@ -4,7 +4,10 @@ import { connect } from "react-redux";
 
 import { Link } from "react-router-dom";
 
-import { fetchProgramsList } from "../../../actions/program/programListAction";
+import {
+  fetchProgramsList,
+  resetProgramList
+} from "../../../actions/program/programListAction";
 import Search from "../../ui/searchBar";
 import {
   startLoaderAction,
@@ -17,8 +20,9 @@ class ProgramList extends React.Component {
   };
 
   componentDidMount() {
-    this.props.startLoaderAction();
-    this.props.fetchProgramsList(this.props.match.params.id);
+    if (!(this.props.programList.length || this.props.programList.response)) {
+      this.props.fetchProgramsList(this.props.orgId);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -29,10 +33,8 @@ class ProgramList extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.programList !== this.props.programList) {
-      this.props.stopLoaderAction();
-    }
+  componentWillUnmount() {
+    this.props.resetProgramList();
   }
 
   render() {
@@ -43,7 +45,7 @@ class ProgramList extends React.Component {
     }
     if (searchText) {
       programList = programList.filter(x =>
-        x.name.toLowerCase().includes(searchText)
+        x.name.toLowerCase().includes(searchText.toLowerCase())
       );
     }
     return (
@@ -135,7 +137,8 @@ const mapDispatchToProps = dispatch =>
     {
       fetchProgramsList,
       startLoaderAction,
-      stopLoaderAction
+      stopLoaderAction,
+      resetProgramList
     },
     dispatch
   );
