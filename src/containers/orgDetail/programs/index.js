@@ -20,9 +20,9 @@ class ProgramList extends React.Component {
   };
 
   componentDidMount() {
-    if (!(this.props.programList.length || this.props.programList.response)) {
-      this.props.fetchProgramsList(this.props.orgId);
-    }
+    // if (!(this.props.programList.length || this.props.programList.response)) {
+    this.props.fetchProgramsList(this.props.orgId);
+    // }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -33,9 +33,9 @@ class ProgramList extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    this.props.resetProgramList();
-  }
+  // componentWillUnmount() {
+  //   this.props.resetProgramList();
+  // }
 
   render() {
     let { programList, searchText } = this.state;
