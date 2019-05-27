@@ -16,32 +16,44 @@ class CommonUtil {
     return serverUrl + endPoints + accessToken;
   }
 
-  static getHeaders() {
-    return {
-      "Content-Type": "application/json",
-      Accept: "application/json"
-    };
+  static getHeaders(contentType) {
+    return contentType
+      ? {
+          Accept: "application/json"
+        }
+      : {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        };
   }
 
-  static getToken() {
+  static getToken(contentType) {
     let token = localStorage.getItem("_auth")
       ? localStorage.getItem("_auth").accessToken
       : null;
-    return {
-      Authorization: "Bearer " + token,
-      "Content-Type": "application/json"
-    };
+    return contentType
+      ? {
+          Authorization: "Bearer " + token
+        }
+      : {
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json"
+        };
   }
 
-  static getAuthId() {
+  static getAuthId(contentType) {
     let authId = localStorage.getItem("_auth")
       ? JSON.parse(localStorage.getItem("_auth")).accessToken
       : null;
-    return {
-      "user-auth-id": authId,
-      "Content-Type": "application/json",
-      Accept: "application/json"
-    };
+    return contentType
+      ? {
+          "user-auth-id": authId
+        }
+      : {
+          "user-auth-id": authId,
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        };
   }
 }
 

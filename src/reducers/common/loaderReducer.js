@@ -47,7 +47,10 @@ import {
   FETCH_PROGDETAIL_SUCCESS,
   FETCH_NOTES_PENDING,
   FETCH_NOTES_SUCCESS,
-  FETCH_NOTES_ERROR
+  FETCH_NOTES_ERROR,
+  CREATE_BULK_ORG_REQUEST,
+  CREATE_BULK_ORG_SUCCESS,
+  CREATE_BULK_ORG_ERROR
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -314,6 +317,21 @@ export default (state = initialState, action) => {
         loading: false
       });
     case FETCH_NOTES_ERROR:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    // bulk upload
+    case CREATE_BULK_ORG_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
+    case CREATE_BULK_ORG_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false
+      });
+    case CREATE_BULK_ORG_ERROR:
       return Object.assign({}, state, {
         loading: false
       });

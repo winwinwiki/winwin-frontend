@@ -1,21 +1,7 @@
 import CommonUtil from "./commonUtil";
-import HandleError from "./handleError";
-export function api(url, method, body, isAuth) {
+export function api(url, method, body, isAuth, contentType) {
   let baseUrl = CommonUtil.createUrl(url);
   return new Promise((resolve, reject) => {
-    //Temp
-    // if (method == "GET") {
-    //     fetch(baseUrl).then((response) => response.json())
-    //     .then((responseJson) => resolve(HandleError.checkResponse(responseJson)))
-    //     .catch((error) => reject(error));
-    // } else{
-    //     fetch(baseUrl, {
-    //         method: method,
-    //         body: body
-    //     }).then((response) => response.json())
-    //     .then((responseJson) => resolve(HandleError.checkResponse(responseJson)))
-    //     .catch((error) => reject(error));
-    // }
     function handleErrors(response) {
       if (!response.ok) {
         response
@@ -31,7 +17,9 @@ export function api(url, method, body, isAuth) {
     if (method.toUpperCase() === "GET") {
       fetch(baseUrl, {
         method: method,
-        headers: isAuth ? CommonUtil.getAuthId() : CommonUtil.getHeaders()
+        headers: isAuth
+          ? CommonUtil.getAuthId(contentType)
+          : CommonUtil.getHeaders(contentType)
       })
         .then(handleErrors)
         .then(responseJson => resolve(responseJson))
@@ -39,7 +27,9 @@ export function api(url, method, body, isAuth) {
     } else {
       fetch(baseUrl, {
         method: method,
-        headers: isAuth ? CommonUtil.getAuthId() : CommonUtil.getHeaders(),
+        headers: isAuth
+          ? CommonUtil.getAuthId(contentType)
+          : CommonUtil.getHeaders(contentType),
         body: body
       })
         .then(handleErrors) //return a promise
