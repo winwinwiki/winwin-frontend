@@ -1,6 +1,9 @@
 //loading
 export const LOADER_START = "loader/LOADER_START";
 export const LOADER_STOP = "loader/LOADER_STOP";
+//notifications
+export const ADD_NOTIFICATION = "notifications/ADD_NOTIFICATION";
+export const REMOVE_NOTIFICATION = "notifications/REMOVE_NOTIFICATION";
 //login
 export const LOGIN_REQUEST = "auth/LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "auth/LOGIN_SUCCESS";
@@ -235,6 +238,9 @@ export const SAVE_NOTES_ERROR = "org/SAVE_NOTES_ERROR";
 export const DELETE_NOTES_PENDING = "org/DELETE_NOTES_PENDING";
 export const DELETE_NOTES_SUCCESS = "org/DELETE_NOTES_SUCCESS";
 export const DELETE_NOTES_ERROR = "org/DELETE_NOTES_ERROR";
+export const UPDATE_NOTES_PENDING = "org/UPDATE_NOTES_PENDING";
+export const UPDATE_NOTES_SUCCESS = "org/UPDATE_NOTES_SUCCESS";
+export const UPDATE_NOTES_ERROR = "org/UPDATE_NOTES_ERROR";
 
 //org chart
 export const ADD_ORG_CHART_CHILD_REQUEST = "org/ADD_ORG_CHART_CHILD_REQUEST";
