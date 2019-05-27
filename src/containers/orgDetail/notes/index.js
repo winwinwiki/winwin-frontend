@@ -5,10 +5,12 @@ import { connect } from "react-redux";
 import {
   fetchOrgNotes,
   deleteNote,
-  saveNote
+  saveNote,
+  updateNote
 } from "../../../actions/orgDetail/notesAction";
 
 import { NoteModal } from "./noteModal";
+import { PopupModal } from "../../ui/popupModal";
 class Notes extends React.Component {
   state = {
     modaltitle: "",
@@ -54,6 +56,7 @@ class Notes extends React.Component {
                       key={index}
                       data={note}
                       selectedNote={this.setNodeId}
+                      onUpdateNote={this.onUpdateNote}
                     />
                   ))}
                 <li className="list-group-item px-0 pt-4">
@@ -78,64 +81,21 @@ class Notes extends React.Component {
         />
 
         {/* Delete Modal */}
-        <div
-          className="modal fade"
-          id="deleteModal"
-          tabIndex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div
-            className="modal-dialog modal-sm modal-dialog-centered"
-            role="document"
-          >
-            <div className="modal-content">
-              <div className="dashboard-container">
-                <div className="dashboard-header">
-                  <div className="modal-header flex-column">
-                    <div className="d-flex w-100 p-3">
-                      <h5 className="modal-title" id="exampleModalLabel">
-                        Alert!
-                      </h5>
-                      <button
-                        type="button"
-                        className="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="modal-body dashboard-content">
-                  Are you sure you want to delete this Note?
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    data-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    data-dismiss="modal"
-                    onClick={this.onDeleteNote}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <PopupModal
+          modalid="deleteModal"
+          modaltitle="Alert!"
+          modalcontent={`Are you sure you want to delete this note ?`}
+          primarybuttontext="Delete Note"
+          secondarybuttontext="Cancel"
+          handleDelete={() => this.onDeleteNote(this.props.orgId)}
+        />
       </section>
     );
   }
+
+  onUpdateNote = apiObj => {
+    this.props.updateNote(apiObj);
+  };
 
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -163,11 +123,7 @@ class Notes extends React.Component {
   };
 
   onDeleteNote = () => {
-    const { selectedNoteId, notesList } = this.state;
-    const filteredNotesList = notesList.filter(
-      x => x.noteId !== selectedNoteId
-    );
-    this.setState({ notesList: filteredNotesList });
+    const { selectedNoteId } = this.state;
     this.props.deleteNote({
       noteId: selectedNoteId,
       organizationId: this.props.orgId
@@ -185,7 +141,8 @@ const mapDispatchToProps = dispatch =>
     {
       fetchOrgNotes,
       deleteNote,
-      saveNote
+      saveNote,
+      updateNote
     },
     dispatch
   );

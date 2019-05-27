@@ -1,32 +1,45 @@
 import React from "react";
 
 class Note extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isEditable: false
-    };
-    this.editNote = this.editNote.bind(this);
-    this.saveNote = this.saveNote.bind(this);
-    this.cancelNote = this.cancelNote.bind(this);
-  }
+  state = {
+    isEditable: false,
+    data: {
+      noteId: "",
+      note: ""
+    }
+  };
+
+  static getDerivedStateFromProps = (nextProps, prevState) => {
+    if (nextProps.data.noteId !== prevState.data.noteId) {
+      return {
+        ...prevState,
+        data: {
+          noteId: nextProps.data.noteId,
+          note: nextProps.data.note
+        }
+      };
+    }
+
+    return null;
+  };
 
   render() {
     const { isEditable } = this.state;
-    const { data, selectedNote } = this.props;
+    const { selectedNote } = this.props;
+    const { data } = this.state;
     return (
       <li className="list-group-item border-0 px-0">
         {!isEditable && (
           <div className="row">
             <ul className="action-icons">
-              {/* <li>
+              <li>
                 <a
                   href="javascript:;"
                   onClick={() => this.editNote(data.noteId)}
                 >
                   <i className="icon-edit" />
                 </a>
-              </li> */}
+              </li>
               <li>
                 <a
                   href="javascript:;"
@@ -53,6 +66,7 @@ class Note extends React.Component {
                   id="note"
                   placeholder="Enter Note"
                   value={data.note}
+                  onChange={this.onChange}
                 />
               ) : (
                 <p className="mt-3 readOnlyTextarea">{data.note}</p>
@@ -62,13 +76,10 @@ class Note extends React.Component {
         </div>
         {isEditable && (
           <div className="row mx-0 justify-content-end footer-actions active">
-            <button className="btn btn-sm" onClick={() => this.cancelNote()}>
+            <button className="btn btn-sm" onClick={this.cancelNote}>
               Cancel
             </button>
-            <button
-              className="btn btn-sm btn-primary"
-              onSubmit={() => this.saveNote()}
-            >
+            <button className="btn btn-sm btn-primary" onClick={this.saveNote}>
               Save
             </button>
           </div>
@@ -77,23 +88,41 @@ class Note extends React.Component {
     );
   }
 
-  editNote(id) {
+  onChange = e => {
     this.setState({
-      isEditable: true
+      data: {
+        ...this.state.data,
+        note: e.target.value
+      }
     });
-  }
+  };
 
-  saveNote() {
+  editNote = id => {
+    this.setState({
+      isEditable: true,
+      noteId: id
+    });
+  };
+
+  saveNote = e => {
+    e.preventDefault();
+    const { data: { noteId, note } = {} } = this.state;
     this.setState({
       isEditable: false
     });
-  }
+    const apiObj = {
+      noteId,
+      note,
+      organizationId: this.props.data.organizationId
+    };
+    this.props.onUpdateNote(apiObj);
+  };
 
-  cancelNote() {
+  cancelNote = () => {
     this.setState({
       isEditable: false
     });
-  }
+  };
 }
 
 export default Note;
