@@ -1,4 +1,7 @@
 import CommonUtil from "./commonUtil";
+import { store } from "../index";
+import { showNotification } from "../actions/common/showNotificationAction";
+
 export function api(url, method, body, isAuth, contentType) {
   let baseUrl = CommonUtil.createUrl(url);
   return new Promise((resolve, reject) => {
@@ -8,9 +11,11 @@ export function api(url, method, body, isAuth, contentType) {
           .clone()
           .json()
           .then(json => {
+            store.dispatch(showNotification(json.response));
             reject(Error(json.response));
           });
       }
+      store.dispatch(showNotification({ type: "INFO" }));
       return response.json();
     }
 

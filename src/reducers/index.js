@@ -33,6 +33,7 @@ import resourceCategories from "./orgDetail/resourceCategoriesReducer";
 import naicsList from "./orgDetail/fetchNAICSListReducer";
 import nteeList from "./orgDetail/fetchNTEEListReducer";
 import createBulkOrgReducer from "./dataFeed/createBulkOrgReducer";
+import notificationsReducer from "./common/notificationsReducer";
 
 export default combineReducers({
   routing: routerReducer,
@@ -62,5 +63,6 @@ export default combineReducers({
   datasetCategories,
   resourceCategories,
   naicsList,
-  nteeList
+  nteeList,
+  notifications: notificationsReducer
 });

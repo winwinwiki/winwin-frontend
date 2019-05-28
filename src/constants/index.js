@@ -24,3 +24,5 @@ export const isUserProfile = true;
 
 // to check in userdetails page wether it is logged user or selected user
 export const USER = { isLoggedInUser: "isLoggedInUser", isUser: "isUser" };
+
+export const notificationPopupTimeout = 4000;

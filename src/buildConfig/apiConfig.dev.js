@@ -1,6 +1,7 @@
 export const apiConfig = {
   protocol: "http",
   host: "ec2-54-209-46-206.compute-1.amazonaws.com",
+  // host: "172.19.20.47:8088",
   s3: {
     REGION: "us-east-2",
     BUCKET: "winwin-frontend-bucket"
