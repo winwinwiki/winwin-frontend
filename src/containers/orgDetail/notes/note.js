@@ -32,14 +32,14 @@ class Note extends React.Component {
         {!isEditable && (
           <div className="row">
             <ul className="action-icons">
-              <li>
+              {/* <li>
                 <a
                   href="javascript:;"
                   onClick={() => this.editNote(data.noteId)}
                 >
                   <i className="icon-edit" />
                 </a>
-              </li>
+              </li> */}
               <li>
                 <a
                   href="javascript:;"
