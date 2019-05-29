@@ -6,7 +6,10 @@ const programListSelector = createSelector(
   [programsList],
   details => {
     if (!details) return null;
-    return details.response && details.response[0].organizationId;
+    return (
+      details.response &&
+      (details.response.length !== 0 ? details.response[0].organizationId : 0)
+    );
   }
 );
 

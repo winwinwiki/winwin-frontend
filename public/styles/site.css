@@ -8755,10 +8755,14 @@ h5.modal-title {
 .program-details-container {
   background-color: #F2F2F2; }
   .program-details-container .list-group-item .action-icons {
-    transition: ease all .3s;
+    transition: ease all 0.3s;
     display: none; }
     .program-details-container .list-group-item .action-icons.active {
       display: block; }
+
+.disabled-text {
+  background-color: #ebebec;
+  color: #9c9c9c; }
 
 .action-icons {
   list-style: none;
@@ -8776,9 +8780,9 @@ h5.modal-title {
   .footer-actions.active {
     display: flex; }
   .footer-actions > :not(:last-child) {
-    margin-right: .25rem; }
+    margin-right: 0.25rem; }
   .footer-actions > :not(:first-child) {
-    margin-left: .25rem; }
+    margin-left: 0.25rem; }
 
 .section-login {
   background-size: cover; }
