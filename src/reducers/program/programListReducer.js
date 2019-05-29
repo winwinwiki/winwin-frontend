@@ -5,7 +5,8 @@ import {
   DELETE_PROGRAM_SUCCESS,
   ADD_PROGRAM_SUCCESS,
   RESET_PROGRAMLIST_SUCCESS,
-  SAVE_PROG_SUCCESS
+  SAVE_PROG_SUCCESS,
+  FILTER_PROG_SUCCESS
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -36,6 +37,12 @@ export default (state = initialState, action) => {
             state.programList.response &&
             state.programList.response.concat(action.response.response)
         }
+      });
+
+    case FILTER_PROG_SUCCESS:
+      return Object.assign({}, state, {
+        isFetchProgramSuccess: true,
+        programList: action.response
       });
 
     case SAVE_PROG_SUCCESS:
