@@ -38,7 +38,7 @@ class UploadDataFeed extends React.Component {
         <div className="row ">
           <div className="col-sm-12 mx-auto my-3">
             <div className="d-flex align-content-center">
-              <div>File Selection</div>
+              <div className="mt-1">File Selection</div>
               <a
                 className="btn btn-primary ml-auto"
                 href={apiConfig.bulkUploadTemplateUrl}
