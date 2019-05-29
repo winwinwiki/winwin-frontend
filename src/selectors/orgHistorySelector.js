@@ -22,9 +22,9 @@ const orgHistorySelector = createSelector(
         let found = filteredHistory.some(el => el.modifiedAt === customModAt);
 
         //sentence construction  - detail property
-        let detail = `${actionLabels[key]} ${
-          entityLabels[x.entityType && x.entityType.replace(/ /g, "")]
-        } ${x.entityName ? x.entityName : ""}`;
+        let detail = `${actionLabels[key]} ${entityLabels[x.entityType]} ${
+          x.entityName ? x.entityName : ""
+        }`;
 
         //create a new record when modifiedAt is not found
         if (!found) {
@@ -46,6 +46,7 @@ const orgHistorySelector = createSelector(
       });
     });
 
+    //sort the list by timestamp
     return [...orderByDate(filteredHistory, "timestamp")];
   }
 );
