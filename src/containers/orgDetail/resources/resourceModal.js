@@ -80,7 +80,7 @@ class ResourceModal extends Component {
 
     //find id in categories list to be updated
     let filteredCategory = categoriesList.find(x => {
-      return compareStrings(x.categoryName, newValue) ? x : "";
+      return x.categoryName === newValue ? x : "";
     });
     if (filteredCategory && filteredCategory.id)
       modalData.resourceCategory.id = filteredCategory.id;
