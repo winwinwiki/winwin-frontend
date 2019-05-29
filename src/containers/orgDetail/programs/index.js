@@ -97,15 +97,22 @@ class ProgramList extends React.Component {
       const { response } = programList;
       filteredProgramList = response;
     }
-    return filteredProgramList.map(program => (
-      <Link
-        key={program.id}
-        to={`${this.props.match.url}/${program.id}`}
-        className="list-group-item list-group-item-action"
-      >
-        {program.name}
-      </Link>
-    ));
+    return filteredProgramList.length ? (
+      filteredProgramList.map(program => (
+        <Link
+          key={program.id}
+          to={`${this.props.match.url}/${program.id}`}
+          className="list-group-item list-group-item-action"
+        >
+          {program.name}
+        </Link>
+      ))
+    ) : (
+      <div className="disabled-text list-group-item list-group-item-action">
+        {" "}
+        No programs containing your search terms were found
+      </div>
+    );
   };
 }
 
