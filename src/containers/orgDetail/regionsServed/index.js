@@ -133,7 +133,7 @@ class RegionsServed extends Component {
                       <FilterableSelect
                         className="position-relative mt-2"
                         name="regionName"
-                        placeholder="Search regions (for ex. Seattle, WA, USA)"
+                        placeholder="Search regions (for ex. Seattle, Washington, United States)"
                         options={this.props.regionsList}
                         onSuggestChange={this.onSuggestChange}
                         value={regionName}
