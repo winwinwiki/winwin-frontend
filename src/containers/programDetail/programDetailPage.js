@@ -134,9 +134,9 @@ class ProgramDetailPage extends Component {
         <PopupModal
           modalid="deleteModal"
           modaltitle="Alert!"
-          modalcontent={`Are you sure you want to delete '${
-            this.props.programDetail.data.response.name
-          }' ?`}
+          modalcontent={`Are you sure you want to delete '${this.props
+            .programDetail.data.response.name ||
+            this.props.programDetail.data.response[0].name}' ?`}
           primarybuttontext="Delete Program"
           secondarybuttontext="Cancel"
           handleDelete={this.handleDelete}
@@ -148,10 +148,12 @@ class ProgramDetailPage extends Component {
   handleDelete = () => {
     const {
       programId,
+      orgId,
+      match: { params: { id } = {} } = {},
       programDetail: { data: { response = {} } = {} } = {}
     } = this.props;
-    this.props.deleteProgram(response.orgId, response.id, programId);
-    this.props.changePage(response.organizationId);
+    this.props.deleteProgram(orgId, response.id || response[0].id, programId);
+    this.props.changePage(orgId);
   };
 
   onChange = e => {
@@ -181,7 +183,7 @@ class ProgramDetailPage extends Component {
       programDetail: { response: apiObj }
     } = this.state;
 
-    this.props.saveProgramDetailsAction([apiObj]);
+    this.props.saveProgramDetailsAction(apiObj.length ? apiObj : [apiObj]);
   };
 }
 
