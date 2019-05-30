@@ -66,7 +66,7 @@ class UploadDataFeed extends React.Component {
               Cancel
             </button>
             <button
-              className="btn btn-lg btn-primary w-50 mt-4"
+              className="btn btn-lg btn-primary w-50 mt-4 cursor-not-allowed"
               onClick={this.onDataFeed}
               disabled={!file || formError.file}
             >
