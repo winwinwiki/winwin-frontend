@@ -108,29 +108,13 @@ class OrgList extends React.Component {
       this.props.orgList.data &&
       this.props.orgList.data.response
     ) {
-      console.log("new org list received 2", this.props.orgList);
-      //if (!this.props.orgList.error) {
       this.setState({
         orgList: this.props.orgList.data.response.payload
       });
-      //} else {
-      //}
+
       this.props.stopLoaderAction();
     }
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps && nextProps.orgList !== this.props.orgList) {
-  //     console.log("new org list received 1", nextProps.orgList);
-  //     if (!nextProps.orgList.error) {
-  //       this.setState({
-  //         orgList: nextProps.orgList.data.response
-  //       });
-  //     } else {
-  //     }
-  //     this.props.stopLoaderAction();
-  //   }
-  // }
 
   toggleRow = name => {
     const newSelected = Object.assign({}, this.state.selected);
@@ -427,6 +411,7 @@ class OrgList extends React.Component {
             }}
           />
         </div>
+
         <PopupModal
           modalid="deleteModal"
           modaltitle="Alert!"
