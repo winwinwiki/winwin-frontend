@@ -91,7 +91,7 @@ class UserList extends React.Component {
 
     if (this.state.selectAll === 0) {
       this.state.userList.data.forEach(x => {
-        newSelected[x.email] = true;
+        newSelected[x.email] = "true";
       });
     }
 
@@ -195,14 +195,19 @@ class UserList extends React.Component {
       Header: "",
       accessor: "email",
       sortable: false,
-      Cell: row => (
-        <span
-          className="centerText"
-          data-toggle="modal"
-          data-target="#deleteModal"
-          onClick={() => this.setUser(row.value, row.original.userDisplayName)}
-        />
-      ),
+      Cell: row =>
+        row.original.email !== this.props.loggedInUserEmail ? (
+          <span
+            className="centerText"
+            data-toggle="modal"
+            data-target="#deleteModal"
+            onClick={() =>
+              this.setUser(row.value, row.original.userDisplayName)
+            }
+          />
+        ) : (
+          ""
+        ),
       width: 50
     }
   ];
@@ -425,15 +430,20 @@ class UserList extends React.Component {
     }
     if (field === "action" && value === "Make Active")
       filteredList = filteredList.map(x => {
-        x.isActive = true;
+        x.isActive = "true";
         return x;
       });
     if (field === "action" && value === "Make Inactive")
       filteredList = filteredList.map(x => {
-        x.isActive = false;
+        x.isActive = "false";
         return x;
       });
     this.props.onSaveUserInfo(filteredList, !isUserProfile);
+    this.setState({
+      selected: {},
+      selectAll: 0,
+      filteredList: []
+    });
   };
 
   onCreateUserDownload = () => {
@@ -527,7 +537,8 @@ class UserList extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  userList: state.userManagement
+  userList: state.userManagement,
+  loggedInUserEmail: state.session.user.email
 });
 
 const mapDispatchToProps = dispatch =>
