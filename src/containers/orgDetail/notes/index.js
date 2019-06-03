@@ -118,7 +118,7 @@ class Notes extends React.Component {
   saveNewNote = () => {
     this.props.saveNote({
       organizationId: this.props.orgId,
-      note: this.state.note
+      name: this.state.note
     });
   };
 

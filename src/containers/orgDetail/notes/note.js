@@ -111,8 +111,8 @@ class Note extends React.Component {
       isEditable: false
     });
     const apiObj = {
-      noteId,
-      note,
+      id: noteId,
+      name: note,
       organizationId: this.props.data.organizationId
     };
     this.props.onUpdateNote(apiObj);
