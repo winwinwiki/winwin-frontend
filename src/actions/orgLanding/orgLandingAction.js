@@ -18,7 +18,12 @@ export const fetchOrganisationsList = params => {
   return dispatch => {
     dispatch(fetchOrgRequest());
     let queryString = qs.stringify(params);
-    api("/organization", "GET", {}, true).then(
+    api(
+      `/organization${queryString ? "?" + queryString : ""}`,
+      "GET",
+      {},
+      true
+    ).then(
       response => {
         dispatch(fetchOrgSuccess(response));
       },
