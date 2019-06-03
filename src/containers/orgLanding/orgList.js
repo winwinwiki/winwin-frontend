@@ -25,6 +25,7 @@ import { Link } from "react-router-dom";
 import { PopupModal } from "../ui/popupModal";
 import Can from "../Can";
 import isEqual from "lodash/isEqual";
+import { modifiyFilterList } from "../../util/util";
 
 const setPriorityHigh = "Set Priority High";
 const setPriorityNormal = "Set Priority Normal";
@@ -79,7 +80,9 @@ const filtersObj = {
   assets: { min: 0, max: 0 },
   level1List: [],
   level2List: [],
-  level3List: []
+  level3List: [],
+  pageNo: 0,
+  pageSize: 10
 };
 
 class OrgList extends React.Component {
@@ -94,12 +97,17 @@ class OrgList extends React.Component {
     revenueMin: 0,
     revenueMax: 100,
     selected: {},
-    selectAll: 0
+    selectAll: 0,
+    pageNo: 0,
+    pageSize: 10,
+    page: 0,
+    totalPages: 0
   };
 
   componentDidMount() {
+    const { pageNo, pageSize } = this.state;
     this.props.startLoaderAction();
-    this.props.fetchOrganisationsList();
+    this.props.fetchOrganisationsList({ pageNo, pageSize: 10 });
   }
 
   componentDidUpdate(prevProps) {
@@ -109,7 +117,8 @@ class OrgList extends React.Component {
       this.props.orgList.data.response
     ) {
       this.setState({
-        orgList: this.props.orgList.data.response.payload
+        orgList: this.props.orgList.data.response.payload,
+        totalPages: this.props.orgList.data.response.filter.maxPage
       });
 
       this.props.stopLoaderAction();
@@ -315,7 +324,13 @@ class OrgList extends React.Component {
   ];
 
   render() {
-    const { entity, activeButton, searchText } = this.state;
+    const {
+      entity,
+      activeButton,
+      searchText,
+      pageSize,
+      totalPages
+    } = this.state;
     const { appliedFilterList } = this.props;
 
     let orgList = this.state.orgList;
@@ -334,9 +349,7 @@ class OrgList extends React.Component {
         ]
       });
     }
-    {
-      /* /**` */
-    }
+
     //search by sector
     if (this.state.activeButton.length === 1) {
       if (this.state.activeButton.indexOf("Public") > -1)
@@ -346,9 +359,7 @@ class OrgList extends React.Component {
       if (this.state.activeButton.indexOf("Social") > -1)
         orgList = orgList.filter(row => row.sector === "Social");
     }
-    {
-      /* /**` */
-    }
+
     return (
       <section className="dashboard-content p-0">
         <OrgFilters
@@ -385,9 +396,11 @@ class OrgList extends React.Component {
         </div>
         <div>
           <ReactTable
-            pageSize={orgList.length > 10 ? 10 : orgList.length}
+            pageSize={orgList.length > pageSize ? pageSize : orgList.length}
             minRows={3}
+            manual //allow server side pagination
             showPageSizeOptions={false}
+            pages={totalPages} //indicates total number of pages
             noDataText="No organization found"
             data={orgList}
             columns={this.columns}
@@ -409,6 +422,10 @@ class OrgList extends React.Component {
                 }
               };
             }}
+            onPageChange={page => {
+              this.setState({ page });
+              this.handlePageChange(page);
+            }}
           />
         </div>
 
@@ -425,6 +442,25 @@ class OrgList extends React.Component {
       </section>
     );
   }
+
+  handlePageChange = page => {
+    const { pageSize } = this.state;
+    const { appliedFilterList } = this.props;
+    if (appliedFilterList) {
+      appliedFilterList.pageNo = page;
+      appliedFilterList.pageSize = pageSize;
+
+      let filters = modifiyFilterList(appliedFilterList);
+      this.props.fetchOrganisationsList({
+        ...filters
+      });
+    } else {
+      this.props.fetchOrganisationsList({
+        pageNo: page,
+        pageSize
+      });
+    }
+  };
 
   // //when checkbox is checked
   // onSelectCheckbox = (e, id) => {
@@ -494,7 +530,7 @@ class OrgList extends React.Component {
   };
 
   filterOrgList = filter => {
-    const { activeButton } = this.state;
+    const { activeButton, pageNo, pageSize } = this.state;
     let newSectors = activeButton.slice();
     if (filter["sector"] === "All") {
       newSectors = ["All"];
@@ -506,7 +542,7 @@ class OrgList extends React.Component {
         : (newSectors[0] = filter["sector"]);
     }
     if (newSectors.length === 0) newSectors.push("All");
-    this.props.fetchOrganisationsList({ newSectors });
+    this.props.fetchOrganisationsList({ newSectors, pageNo, pageSize });
 
     this.setState({
       activeButton: newSectors
@@ -514,8 +550,9 @@ class OrgList extends React.Component {
   };
 
   resetAllFilters = () => {
-    this.props.fetchOrganisationsList({});
-    this.props.setAppliedFilters(null, {});
+    const { pageNo, pageSize } = this.state;
+    this.props.fetchOrganisationsList({ pageNo, pageSize });
+    this.props.setAppliedFilters(filtersObj, { pageNo, pageSize });
     this.setState({
       activeButton: ["All"]
     });
