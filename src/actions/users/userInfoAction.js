@@ -9,6 +9,7 @@ import {
 import { Auth } from "aws-amplify";
 import { api } from "../../api/api";
 import { USER } from "../../constants";
+import qs from "qs";
 // export const fetchUserInfo = () => {
 //   return dispatch => {
 //     dispatch(userInfoRequest());
@@ -35,7 +36,13 @@ export const fetchUserInfo = (email, userState) => {
   return dispatch => {
     if (USER.isUser === userState) dispatch(userInfoRequest());
     if (USER.isLoggedInUser === userState) dispatch(loggedInUserInfoRequest());
-    return api("/user/info", "POST", JSON.stringify({ email }), true).then(
+    let queryString = qs.stringify({ email });
+    return api(
+      `/user/info${queryString ? "?" + queryString : ""}`,
+      "GET",
+      {},
+      true
+    ).then(
       response => {
         if (USER.isUser === userState) dispatch(userInfoSuccess(response));
         if (USER.isLoggedInUser === userState)
