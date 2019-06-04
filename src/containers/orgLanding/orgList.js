@@ -25,6 +25,7 @@ import { Link } from "react-router-dom";
 import { PopupModal } from "../ui/popupModal";
 import Can from "../Can";
 import isEqual from "lodash/isEqual";
+import findKey from "lodash/findKey";
 import { modifiyFilterList } from "../../util/util";
 
 const setPriorityHigh = "Set Priority High";
@@ -101,7 +102,8 @@ class OrgList extends React.Component {
     pageNo: 0,
     pageSize: 10,
     page: 0,
-    totalPages: 0
+    totalPages: 0,
+    orgCount: 0
   };
 
   componentDidMount() {
@@ -118,7 +120,10 @@ class OrgList extends React.Component {
     ) {
       this.setState({
         orgList: this.props.orgList.data.response.payload,
-        totalPages: this.props.orgList.data.response.filter.maxPage
+        totalPages: Math.ceil(
+          this.props.orgList.data.response.filter.orgCount / this.state.pageSize
+        ),
+        orgCount: this.props.orgList.data.response.filter.orgCount
       });
 
       this.props.stopLoaderAction();
@@ -213,7 +218,7 @@ class OrgList extends React.Component {
       width: 50
     },
     {
-      id: "org",
+      id: "name",
       Header: "Organization Name",
       accessor: "name",
       Cell: row => (
@@ -260,14 +265,29 @@ class OrgList extends React.Component {
       // },
       width: 280,
       resizable: false,
+      placeholder: "Search by Organization Name",
       sortable: true,
       filterable: true,
-      filterMethod: (filter, rows) => {
-        return matchSorter(rows, filter.value, {
-          keys: [{ threshold: matchSorter.rankings.CONTAINS, key: "org" }]
-        });
+      //Allow filter on enter key press
+      Filter: ({ filter, onChange }) => {
+        return (
+          <input
+            style={{ width: "100%" }}
+            placeholder="Search"
+            onKeyPress={event => {
+              if (event.keyCode === 13 || event.which === 13) {
+                this.handleFilteredChange(event.target.value);
+              }
+            }}
+          />
+        );
       },
-      filterAll: true,
+      // filterMethod: (filter, rows) => {
+      //   return matchSorter(rows, filter.value, {
+      //     keys: [{ threshold: matchSorter.rankings.CONTAINS, key: "org" }]
+      //   });
+      // },
+      // filterAll: true,
       style: {
         height: 50
       }
@@ -276,7 +296,7 @@ class OrgList extends React.Component {
       id: "sector",
       Header: "Sector",
       accessor: "sector",
-      sortable: false,
+      sortable: true,
       Cell: row => <div className="centerText">{row.value}</div>
     },
     {
@@ -329,6 +349,7 @@ class OrgList extends React.Component {
       activeButton,
       searchText,
       pageSize,
+      orgCount,
       totalPages
     } = this.state;
     const { appliedFilterList } = this.props;
@@ -337,28 +358,28 @@ class OrgList extends React.Component {
     if (!orgList) {
       return null;
     }
-    //filter by searched text
-    if (this.state.searchText) {
-      orgList = matchSorter(orgList, this.state.searchText, {
-        keys: [
-          { threshold: matchSorter.rankings.CONTAINS, key: "name" },
-          { threshold: matchSorter.rankings.CONTAINS, key: "address.city" },
-          { threshold: matchSorter.rankings.CONTAINS, key: "address.county" },
-          { threshold: matchSorter.rankings.CONTAINS, key: "address.country" },
-          { threshold: matchSorter.rankings.CONTAINS, key: "address.street" }
-        ]
-      });
-    }
+    // //filter by searched text
+    // if (this.state.searchText) {
+    //   orgList = matchSorter(orgList, this.state.searchText, {
+    //     keys: [
+    //       { threshold: matchSorter.rankings.CONTAINS, key: "name" },
+    //       { threshold: matchSorter.rankings.CONTAINS, key: "address.city" },
+    //       { threshold: matchSorter.rankings.CONTAINS, key: "address.county" },
+    //       { threshold: matchSorter.rankings.CONTAINS, key: "address.country" },
+    //       { threshold: matchSorter.rankings.CONTAINS, key: "address.street" }
+    //     ]
+    //   });
+    // }
 
-    //search by sector
-    if (this.state.activeButton.length === 1) {
-      if (this.state.activeButton.indexOf("Public") > -1)
-        orgList = orgList.filter(row => row.sector === "Public");
-      if (this.state.activeButton.indexOf("Private") > -1)
-        orgList = orgList.filter(row => row.sector === "Private");
-      if (this.state.activeButton.indexOf("Social") > -1)
-        orgList = orgList.filter(row => row.sector === "Social");
-    }
+    // //search by sector
+    // if (this.state.activeButton.length === 1) {
+    //   if (this.state.activeButton.indexOf("Public") > -1)
+    //     orgList = orgList.filter(row => row.sector === "Public");
+    //   if (this.state.activeButton.indexOf("Private") > -1)
+    //     orgList = orgList.filter(row => row.sector === "Private");
+    //   if (this.state.activeButton.indexOf("Social") > -1)
+    //     orgList = orgList.filter(row => row.sector === "Social");
+    // }
 
     return (
       <section className="dashboard-content p-0">
@@ -378,9 +399,7 @@ class OrgList extends React.Component {
             onChange={this.onDropdownChange}
             items={filterList}
           />
-          <div className="result-count">
-            {orgList.length} organizations found
-          </div>
+          <div className="result-count">{orgCount} organizations found</div>
           <AppliedOrgFilters />
           {appliedFilterList && !isEqual(appliedFilterList, filtersObj) && (
             <div className="clear-filters">
@@ -396,8 +415,7 @@ class OrgList extends React.Component {
         </div>
         <div>
           <ReactTable
-            pageSize={orgList.length > pageSize ? pageSize : orgList.length}
-            minRows={3}
+            pageSize={pageSize}
             manual //allow server side pagination
             showPageSizeOptions={false}
             pages={totalPages} //indicates total number of pages
@@ -407,6 +425,9 @@ class OrgList extends React.Component {
             className="-highlight"
             sortable={true}
             multiSort={true}
+            // onFilteredChange={(e, filtered) =>
+            //   this.handleFilteredChange(e, filtered)
+            // }
             defaultSorted={[
               {
                 id: "org",
@@ -426,6 +447,7 @@ class OrgList extends React.Component {
               this.setState({ page });
               this.handlePageChange(page);
             }}
+            onSortedChange={sorted => this.handleSortedChange(sorted)}
           />
         </div>
 
@@ -442,6 +464,32 @@ class OrgList extends React.Component {
       </section>
     );
   }
+
+  handleSortedChange = sorted => {
+    const { page, pageSize } = this.state;
+    const sortOrder = findKey(sorted[0], v => v === true);
+    this.props.fetchOrganisationsList({
+      pageNo: page,
+      pageSize,
+      sortBy: sorted[0].id,
+      sortOrder
+    });
+  };
+
+  handleFilteredChange = searchedText => {
+    const { page, pageSize } = this.state;
+    if (searchedText)
+      this.props.fetchOrganisationsList({
+        pageNo: page,
+        pageSize,
+        nameSearch: searchedText
+      });
+    else
+      this.props.fetchOrganisationsList({
+        pageNo: page,
+        pageSize
+      });
+  };
 
   handlePageChange = page => {
     const { pageSize } = this.state;
@@ -542,10 +590,14 @@ class OrgList extends React.Component {
         : (newSectors[0] = filter["sector"]);
     }
     if (newSectors.length === 0) newSectors.push("All");
-    this.props.fetchOrganisationsList({ newSectors, pageNo, pageSize });
-
     this.setState({
       activeButton: newSectors
+    });
+    const apiObj = newSectors.find(x => x === "All") ? [] : newSectors;
+    this.props.fetchOrganisationsList({
+      sectors: apiObj,
+      pageNo,
+      pageSize
     });
   };
 
