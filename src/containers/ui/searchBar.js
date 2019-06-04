@@ -13,6 +13,7 @@ const SearchBar = props => {
         placeholder={props.placeholder}
         className="form-control"
         onChange={props.onChange}
+        onKeyPress={props.onKeyPress}
         value={props.value}
       />
       <small id="emailHelp" className="sr-only">
