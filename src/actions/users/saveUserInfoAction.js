@@ -11,7 +11,7 @@ export const onSaveUserInfo = (obj, params) => {
   return dispatch => {
     dispatch(saveUserInfoRequest());
     let url = params === isUserProfile ? "/user/update" : "/user/updateAll";
-    return api(url, "POST", JSON.stringify(obj), true).then(
+    return api(url, "PUT", JSON.stringify(obj), true).then(
       response => {
         dispatch(saveUserInfoSuccess(response));
       },
