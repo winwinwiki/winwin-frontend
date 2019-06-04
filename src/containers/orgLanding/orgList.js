@@ -387,6 +387,7 @@ class OrgList extends React.Component {
           activeButton={activeButton}
           buttonList={buttonList}
           searchText={searchText}
+          getSearchedText={this.getSearchedText}
           getFilteredListOfOrg={this.getFilteredListOfOrg}
           filterOrgList={this.filterOrgList}
         />
@@ -539,9 +540,29 @@ class OrgList extends React.Component {
     this.setState({ orgId: org.id, orgName: org.name });
   };
 
-  getFilteredListOfOrg = e => {
+  getFilteredListOfOrg = val => {
+    this.setState(
+      {
+        searchText: val
+      },
+      () => {
+        return this.state.searchText
+          ? this.props.fetchOrganisationsList({
+              pageNo: this.state.pageNo,
+              pageSize: this.state.pageSize,
+              address: this.state.searchText
+            })
+          : this.props.fetchOrganisationsList({
+              pageNo: this.state.pageNo,
+              pageSize: this.state.pageSize
+            });
+      }
+    );
+  };
+
+  getSearchedText = val => {
     this.setState({
-      searchText: e.target.value
+      searchText: val
     });
   };
 
