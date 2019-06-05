@@ -3,7 +3,6 @@ import { push } from "react-router-redux";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ReactTable from "react-table";
-import matchSorter from "match-sorter";
 import "react-table/react-table.css";
 import OrgFilters from "./orgFilter";
 import AppliedOrgFilters from "./appliedOrgFilters/index";
@@ -468,8 +467,11 @@ class OrgList extends React.Component {
 
   handleSortedChange = sorted => {
     const { page, pageSize } = this.state;
+    const { appliedFilterList, filters } = this.props;
     const sortOrder = findKey(sorted[0], v => v === true);
     this.props.fetchOrganisationsList({
+      ...filters,
+      ...modifiyFilterList(appliedFilterList),
       pageNo: page,
       pageSize,
       sortBy: sorted[0].id,
@@ -479,14 +481,19 @@ class OrgList extends React.Component {
 
   handleFilteredChange = searchedText => {
     const { page, pageSize } = this.state;
-    if (searchedText)
+    const { appliedFilterList, filters } = this.props;
+
+    if (searchedText && appliedFilterList)
       this.props.fetchOrganisationsList({
+        ...filters,
+        ...modifiyFilterList(appliedFilterList),
         pageNo: page,
         pageSize,
         nameSearch: searchedText
       });
     else
       this.props.fetchOrganisationsList({
+        ...filters,
         pageNo: page,
         pageSize
       });
@@ -494,17 +501,18 @@ class OrgList extends React.Component {
 
   handlePageChange = page => {
     const { pageSize } = this.state;
-    const { appliedFilterList } = this.props;
+    const { appliedFilterList, filters } = this.props;
+
     if (appliedFilterList) {
       appliedFilterList.pageNo = page;
       appliedFilterList.pageSize = pageSize;
-
-      let filters = modifiyFilterList(appliedFilterList);
       this.props.fetchOrganisationsList({
-        ...filters
+        ...filters,
+        ...modifiyFilterList(appliedFilterList)
       });
     } else {
       this.props.fetchOrganisationsList({
+        ...filters,
         pageNo: page,
         pageSize
       });
@@ -600,6 +608,7 @@ class OrgList extends React.Component {
 
   filterOrgList = filter => {
     const { activeButton, pageNo, pageSize } = this.state;
+    const { appliedFilterList, filters } = this.props;
     let newSectors = activeButton.slice();
     if (filter["sector"] === "All") {
       newSectors = ["All"];
@@ -616,6 +625,8 @@ class OrgList extends React.Component {
     });
     const apiObj = newSectors.find(x => x === "All") ? [] : newSectors;
     this.props.fetchOrganisationsList({
+      ...filters,
+      ...modifiyFilterList(appliedFilterList),
       sectors: apiObj,
       pageNo,
       pageSize
@@ -635,7 +646,8 @@ class OrgList extends React.Component {
 const mapStateToProps = state => ({
   orgList: state.orgList,
   appliedFilterList: state.orgList.appliedFilterList,
-  userRole: state.session.user.role
+  userRole: state.session.user.role,
+  filters: state.orgList.filters
 });
 
 const mapDispatchToProps = dispatch =>

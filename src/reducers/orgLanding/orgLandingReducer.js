@@ -8,7 +8,8 @@ import {
   SET_SPILIST_REQUEST,
   SET_SPILIST_SUCCESS,
   SET_SPILIST_ERROR,
-  SET_APPLIED_FILTER
+  SET_APPLIED_FILTER,
+  SET_FILTERS
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -17,6 +18,7 @@ const initialState = {
   error: false,
   appliedFilterList: null,
   isAppliedFilterVisible: false,
+  filters: null,
   spiList: null,
   sdgList: null
 };
@@ -69,6 +71,10 @@ export default (state = initialState, action) => {
     case SET_APPLIED_FILTER:
       return Object.assign({}, state, {
         appliedFilterList: action.appliedFilterList
+      });
+    case SET_FILTERS:
+      return Object.assign({}, state, {
+        filters: action.filters
       });
 
     default:
