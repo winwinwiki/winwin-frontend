@@ -155,6 +155,7 @@ class Tree extends Component {
                         <button
                           className="btn f-36"
                           onClick={() => this.addNode(rowInfo)}
+                          title={"Add Child"}
                           onMouseOver={this.onHover}
                         >
                           +

@@ -7,7 +7,10 @@ import {
   DELETE_NOTES_ERROR,
   SAVE_NOTES_REQ,
   SAVE_NOTES_SUCCESS,
-  SAVE_NOTES_ERROR
+  SAVE_NOTES_ERROR,
+  UPDATE_NOTES_PENDING,
+  UPDATE_NOTES_SUCCESS,
+  UPDATE_NOTES_ERROR
 } from "../../constants/dispatch";
 import { api } from "../../api/api";
 export const fetchOrgNotes = orgId => {
@@ -38,6 +41,25 @@ export const saveNote = params => {
       },
       error => {
         dispatch(saveNoteError(error));
+      }
+    );
+  };
+};
+
+export const updateNote = params => {
+  return dispatch => {
+    dispatch(updateNotesPending());
+    api(
+      `/organization/${params.organizationId}/notes`,
+      "PUT",
+      JSON.stringify(params),
+      true
+    ).then(
+      response => {
+        dispatch(updateNotesSuccess(response));
+      },
+      error => {
+        dispatch(updateNotesError(error));
       }
     );
   };
@@ -120,6 +142,26 @@ function saveNoteSuccess(response) {
 function saveNoteError(error) {
   return {
     type: SAVE_NOTES_ERROR,
+    error
+  };
+}
+
+function updateNotesPending() {
+  return {
+    type: UPDATE_NOTES_PENDING
+  };
+}
+
+function updateNotesSuccess(response) {
+  return {
+    type: UPDATE_NOTES_SUCCESS,
+    response
+  };
+}
+
+function updateNotesError(error) {
+  return {
+    type: UPDATE_NOTES_ERROR,
     error
   };
 }

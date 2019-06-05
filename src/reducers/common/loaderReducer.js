@@ -47,7 +47,16 @@ import {
   FETCH_PROGDETAIL_SUCCESS,
   FETCH_NOTES_PENDING,
   FETCH_NOTES_SUCCESS,
-  FETCH_NOTES_ERROR
+  FETCH_NOTES_ERROR,
+  CREATE_BULK_ORG_REQUEST,
+  CREATE_BULK_ORG_SUCCESS,
+  CREATE_BULK_ORG_ERROR,
+  FETCH_REGIONSERVED_REQUEST,
+  FETCH_REGIONSERVED_SUCCESS,
+  FETCH_REGIONSERVED_ERROR,
+  FETCH_REGIONSLIST_REQUEST,
+  FETCH_REGIONSLIST_SUCCESS,
+  FETCH_REGIONSLIST_ERROR
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -314,6 +323,50 @@ export default (state = initialState, action) => {
         loading: false
       });
     case FETCH_NOTES_ERROR:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    // bulk upload
+    case CREATE_BULK_ORG_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
+    case CREATE_BULK_ORG_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false
+      });
+    case CREATE_BULK_ORG_ERROR:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    // regions served
+    case FETCH_REGIONSERVED_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
+    case FETCH_REGIONSERVED_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false
+      });
+    case FETCH_REGIONSERVED_ERROR:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    case FETCH_REGIONSLIST_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
+    case FETCH_REGIONSLIST_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false
+      });
+    case FETCH_REGIONSLIST_ERROR:
       return Object.assign({}, state, {
         loading: false
       });

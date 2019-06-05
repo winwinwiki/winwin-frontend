@@ -51,6 +51,12 @@ export function modifiyFilterList(list) {
   if (list["editedBy"] && list["editedBy"].length) {
     desiredList["editedBy"] = list["editedBy"].map(editedBy => editedBy.value);
   }
+
+  if (list["pageNo"] || list["pageSize"]) {
+    desiredList["pageNo"] = list["pageNo"];
+    desiredList["pageSize"] = list["pageSize"];
+  }
+
   return desiredList;
 }
 
@@ -186,3 +192,12 @@ export function orderByDate(arr, dateProp) {
     return a[dateProp] > b[dateProp] ? -1 : 1;
   });
 }
+
+export const formatBytes = (bytes, decimals) => {
+  if (bytes === 0) return "0 Bytes";
+  var k = 1024,
+    dm = decimals <= 0 ? 0 : decimals || 2,
+    sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
+    i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+};

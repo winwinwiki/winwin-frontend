@@ -402,6 +402,19 @@ class OrgDetailPage extends React.Component {
                     />
                   </div>
                   <div className="form-group">
+                    <label htmlFor="instagram">Instagram</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="twitter"
+                      name="instagramUrl"
+                      onChange={this.onChange}
+                      readOnly={readOnly}
+                      placeholder="Enter Instagram url"
+                      value={orgDetail.instagramUrl || ""}
+                    />
+                  </div>
+                  <div className="form-group">
                     <label htmlFor="description">Contact Info</label>
                     <input
                       type="text"

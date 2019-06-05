@@ -32,6 +32,7 @@ import datasetCategories from "./orgDetail/dataSetCategoriesReducer";
 import resourceCategories from "./orgDetail/resourceCategoriesReducer";
 import naicsList from "./orgDetail/fetchNAICSListReducer";
 import nteeList from "./orgDetail/fetchNTEEListReducer";
+import createBulkOrgReducer from "./dataFeed/createBulkOrgReducer";
 
 export default combineReducers({
   routing: routerReducer,
@@ -42,7 +43,7 @@ export default combineReducers({
   changePassword,
   createOrg,
   createUser,
-  dataFeed,
+  dataFeed: createBulkOrgReducer,
   orgList: orgLanding,
   spiTags,
   sdgTags,

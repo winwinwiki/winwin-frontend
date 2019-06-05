@@ -1,42 +1,46 @@
 .program-details-container {
-    background-color: $org-detail-bg;
-  
-    .list-group-item {
-      .action-icons {
-        transition: ease all .3s;
-        display: none;
-        &.active{
-            display: block;
-        }
-      }
-    }
-  }
-  
-  .action-icons {
-    list-style:none;
-    position: absolute;
-    top:0;
-    right:0;
-  
-    li {
-      float: left;
-      display: inline-block;
-  
-      + li {
-        margin-left: 10px;
-      }
-    }
-  }
+  background-color: $org-detail-bg;
 
-  .footer-actions{
-    display: none;
-    &.active{
-        display: flex;
+  .list-group-item {
+    .action-icons {
+      transition: ease all 0.3s;
+      display: none;
+      &.active {
+        display: block;
+      }
     }
-    &>:not(:last-child) {
-      margin-right: .25rem;
+  }
+}
+
+.disabled-text {
+  background-color: #ebebec;
+  color: #9c9c9c;
+}
+.action-icons {
+  list-style: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  li {
+    float: left;
+    display: inline-block;
+
+    + li {
+      margin-left: 10px;
     }
-    &>:not(:first-child) {
-      margin-left: .25rem;
-    }
+  }
+}
+
+.footer-actions {
+  display: none;
+  &.active {
+    display: flex;
+  }
+  & > :not(:last-child) {
+    margin-right: 0.25rem;
+  }
+  & > :not(:first-child) {
+    margin-left: 0.25rem;
+  }
 }

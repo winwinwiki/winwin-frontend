@@ -6,48 +6,37 @@ import { Link } from "react-router-dom";
 
 import {
   fetchProgramsList,
-  resetProgramList
+  resetProgramList,
+  filterProgramsList
 } from "../../../actions/program/programListAction";
 import Search from "../../ui/searchBar";
 import {
   startLoaderAction,
   stopLoaderAction
 } from "../../../actions/common/loaderActions";
+import debounce from "lodash/debounce";
+import { programListSelector } from "../../../selectors/programListSelector";
 class ProgramList extends React.Component {
   state = {
-    programList: [],
     searchText: ""
   };
 
   componentDidMount() {
-    if (!(this.props.programList.length || this.props.programList.response)) {
+    if (
+      !(this.props.programList.length || this.props.programList.response) ||
+      this.props.currentOrgId !== parseInt(this.props.orgId, 10)
+    ) {
       this.props.fetchProgramsList(this.props.orgId);
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.programList !== this.props.programList) {
-      this.setState({
-        programList: nextProps.programList.response
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    this.props.resetProgramList();
-  }
-
   render() {
-    let { programList, searchText } = this.state;
-    const { isFetchProgramSuccess } = this.props;
-    if (!isFetchProgramSuccess || !programList) {
+    let { searchText } = this.state;
+    const { programList } = this.props;
+    if (!programList) {
       return null;
     }
-    if (searchText) {
-      programList = programList.filter(x =>
-        x.name.toLowerCase().includes(searchText.toLowerCase())
-      );
-    }
+
     return (
       <section className="dashboard-content p-0 py-3 org-details-container">
         <div className="col-md-18 m-auto card">
@@ -90,46 +79,46 @@ class ProgramList extends React.Component {
   }
 
   onChange = e => {
-    this.setState({
-      searchText: e.target.value
-    });
+    this.setState(
+      {
+        searchText: e.target.value
+      },
+      () => this.handleSearchProgram({ nameSearch: this.state.searchText })
+    );
   };
+
+  handleSearchProgram = debounce(apiObj => {
+    this.props.filterProgramsList(this.props.orgId, apiObj);
+  }, 500);
 
   renderProgramList = (programList, searchText) => {
-    let filteredProgramList = this.getFilteredListOfPrograms(
-      programList,
-      searchText
-    );
-    return filteredProgramList.map(program => (
-      <Link
-        key={program.id}
-        to={`${this.props.match.url}/${program.id}`}
-        className="list-group-item list-group-item-action"
-      >
-        {program.name}
-      </Link>
-    ));
-  };
-
-  getFilteredListOfPrograms = (programList, searchText) => {
-    var filteredProgramList = [];
-    if (searchText) {
-      filteredProgramList = programList.filter(
-        program =>
-          program.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1
-      );
-    } else {
-      filteredProgramList = programList.slice();
+    let filteredProgramList = [];
+    if (programList.response) {
+      const { response } = programList;
+      filteredProgramList = response;
     }
-    return filteredProgramList;
+    return filteredProgramList.length ? (
+      filteredProgramList.map(program => (
+        <Link
+          key={program.id}
+          to={`${this.props.match.url}/${program.id}`}
+          className="list-group-item list-group-item-action"
+        >
+          {program.name}
+        </Link>
+      ))
+    ) : (
+      <div className="disabled-text list-group-item list-group-item-action">
+        {" "}
+        No programs containing your search terms were found
+      </div>
+    );
   };
 }
 
 const mapStateToProps = state => ({
-  isFetchProgramPending: state.programList.isFetchProgramPending,
-  isFetchProgramSuccess: state.programList.isFetchProgramSuccess,
-  fetchProgramError: state.programList.fetchProgramError,
-  programList: state.programList.programList
+  programList: state.programList.programList,
+  currentOrgId: programListSelector(state)
 });
 
 const mapDispatchToProps = dispatch =>
@@ -138,7 +127,8 @@ const mapDispatchToProps = dispatch =>
       fetchProgramsList,
       startLoaderAction,
       stopLoaderAction,
-      resetProgramList
+      resetProgramList,
+      filterProgramsList
     },
     dispatch
   );

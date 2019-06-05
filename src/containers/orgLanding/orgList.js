@@ -25,6 +25,8 @@ import { Link } from "react-router-dom";
 import { PopupModal } from "../ui/popupModal";
 import Can from "../Can";
 import isEqual from "lodash/isEqual";
+import findKey from "lodash/findKey";
+import { modifiyFilterList } from "../../util/util";
 
 const setPriorityHigh = "Set Priority High";
 const setPriorityNormal = "Set Priority Normal";
@@ -79,7 +81,9 @@ const filtersObj = {
   assets: { min: 0, max: 0 },
   level1List: [],
   level2List: [],
-  level3List: []
+  level3List: [],
+  pageNo: 0,
+  pageSize: 10
 };
 
 class OrgList extends React.Component {
@@ -94,12 +98,18 @@ class OrgList extends React.Component {
     revenueMin: 0,
     revenueMax: 100,
     selected: {},
-    selectAll: 0
+    selectAll: 0,
+    pageNo: 0,
+    pageSize: 10,
+    page: 0,
+    totalPages: 0,
+    orgCount: 0
   };
 
   componentDidMount() {
+    const { pageNo, pageSize } = this.state;
     this.props.startLoaderAction();
-    this.props.fetchOrganisationsList();
+    this.props.fetchOrganisationsList({ pageNo, pageSize: 10 });
   }
 
   componentDidUpdate(prevProps) {
@@ -108,29 +118,17 @@ class OrgList extends React.Component {
       this.props.orgList.data &&
       this.props.orgList.data.response
     ) {
-      console.log("new org list received 2", this.props.orgList);
-      //if (!this.props.orgList.error) {
       this.setState({
-        orgList: this.props.orgList.data.response.payload
+        orgList: this.props.orgList.data.response.payload,
+        totalPages: Math.ceil(
+          this.props.orgList.data.response.filter.orgCount / this.state.pageSize
+        ),
+        orgCount: this.props.orgList.data.response.filter.orgCount
       });
-      //} else {
-      //}
+
       this.props.stopLoaderAction();
     }
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps && nextProps.orgList !== this.props.orgList) {
-  //     console.log("new org list received 1", nextProps.orgList);
-  //     if (!nextProps.orgList.error) {
-  //       this.setState({
-  //         orgList: nextProps.orgList.data.response
-  //       });
-  //     } else {
-  //     }
-  //     this.props.stopLoaderAction();
-  //   }
-  // }
 
   toggleRow = name => {
     const newSelected = Object.assign({}, this.state.selected);
@@ -220,7 +218,7 @@ class OrgList extends React.Component {
       width: 50
     },
     {
-      id: "org",
+      id: "name",
       Header: "Organization Name",
       accessor: "name",
       Cell: row => (
@@ -267,14 +265,29 @@ class OrgList extends React.Component {
       // },
       width: 280,
       resizable: false,
+      placeholder: "Search by Organization Name",
       sortable: true,
       filterable: true,
-      filterMethod: (filter, rows) => {
-        return matchSorter(rows, filter.value, {
-          keys: [{ threshold: matchSorter.rankings.CONTAINS, key: "org" }]
-        });
+      //Allow filter on enter key press
+      Filter: ({ filter, onChange }) => {
+        return (
+          <input
+            style={{ width: "100%" }}
+            placeholder="Search"
+            onKeyPress={event => {
+              if (event.keyCode === 13 || event.which === 13) {
+                this.handleFilteredChange(event.target.value);
+              }
+            }}
+          />
+        );
       },
-      filterAll: true,
+      // filterMethod: (filter, rows) => {
+      //   return matchSorter(rows, filter.value, {
+      //     keys: [{ threshold: matchSorter.rankings.CONTAINS, key: "org" }]
+      //   });
+      // },
+      // filterAll: true,
       style: {
         height: 50
       }
@@ -283,7 +296,7 @@ class OrgList extends React.Component {
       id: "sector",
       Header: "Sector",
       accessor: "sector",
-      sortable: false,
+      sortable: true,
       Cell: row => <div className="centerText">{row.value}</div>
     },
     {
@@ -331,46 +344,50 @@ class OrgList extends React.Component {
   ];
 
   render() {
-    const { entity, activeButton, searchText } = this.state;
+    const {
+      entity,
+      activeButton,
+      searchText,
+      pageSize,
+      orgCount,
+      totalPages
+    } = this.state;
     const { appliedFilterList } = this.props;
 
     let orgList = this.state.orgList;
     if (!orgList) {
       return null;
     }
-    //filter by searched text
-    if (this.state.searchText) {
-      orgList = matchSorter(orgList, this.state.searchText, {
-        keys: [
-          { threshold: matchSorter.rankings.CONTAINS, key: "name" },
-          { threshold: matchSorter.rankings.CONTAINS, key: "address.city" },
-          { threshold: matchSorter.rankings.CONTAINS, key: "address.county" },
-          { threshold: matchSorter.rankings.CONTAINS, key: "address.country" },
-          { threshold: matchSorter.rankings.CONTAINS, key: "address.street" }
-        ]
-      });
-    }
-    {
-      /* /**` */
-    }
-    //search by sector
-    if (this.state.activeButton.length === 1) {
-      if (this.state.activeButton.indexOf("Public") > -1)
-        orgList = orgList.filter(row => row.sector === "Public");
-      if (this.state.activeButton.indexOf("Private") > -1)
-        orgList = orgList.filter(row => row.sector === "Private");
-      if (this.state.activeButton.indexOf("Social") > -1)
-        orgList = orgList.filter(row => row.sector === "Social");
-    }
-    {
-      /* /**` */
-    }
+    // //filter by searched text
+    // if (this.state.searchText) {
+    //   orgList = matchSorter(orgList, this.state.searchText, {
+    //     keys: [
+    //       { threshold: matchSorter.rankings.CONTAINS, key: "name" },
+    //       { threshold: matchSorter.rankings.CONTAINS, key: "address.city" },
+    //       { threshold: matchSorter.rankings.CONTAINS, key: "address.county" },
+    //       { threshold: matchSorter.rankings.CONTAINS, key: "address.country" },
+    //       { threshold: matchSorter.rankings.CONTAINS, key: "address.street" }
+    //     ]
+    //   });
+    // }
+
+    // //search by sector
+    // if (this.state.activeButton.length === 1) {
+    //   if (this.state.activeButton.indexOf("Public") > -1)
+    //     orgList = orgList.filter(row => row.sector === "Public");
+    //   if (this.state.activeButton.indexOf("Private") > -1)
+    //     orgList = orgList.filter(row => row.sector === "Private");
+    //   if (this.state.activeButton.indexOf("Social") > -1)
+    //     orgList = orgList.filter(row => row.sector === "Social");
+    // }
+
     return (
       <section className="dashboard-content p-0">
         <OrgFilters
           activeButton={activeButton}
           buttonList={buttonList}
           searchText={searchText}
+          getSearchedText={this.getSearchedText}
           getFilteredListOfOrg={this.getFilteredListOfOrg}
           filterOrgList={this.filterOrgList}
         />
@@ -383,9 +400,7 @@ class OrgList extends React.Component {
             onChange={this.onDropdownChange}
             items={filterList}
           />
-          <div className="result-count">
-            {orgList.length} organizations found
-          </div>
+          <div className="result-count">{orgCount} organizations found</div>
           <AppliedOrgFilters />
           {appliedFilterList && !isEqual(appliedFilterList, filtersObj) && (
             <div className="clear-filters">
@@ -401,15 +416,19 @@ class OrgList extends React.Component {
         </div>
         <div>
           <ReactTable
-            pageSize={orgList.length > 10 ? 10 : orgList.length}
-            minRows={3}
+            pageSize={pageSize}
+            manual //allow server side pagination
             showPageSizeOptions={false}
+            pages={totalPages} //indicates total number of pages
             noDataText="No organization found"
             data={orgList}
             columns={this.columns}
             className="-highlight"
             sortable={true}
             multiSort={true}
+            // onFilteredChange={(e, filtered) =>
+            //   this.handleFilteredChange(e, filtered)
+            // }
             defaultSorted={[
               {
                 id: "org",
@@ -425,8 +444,14 @@ class OrgList extends React.Component {
                 }
               };
             }}
+            onPageChange={page => {
+              this.setState({ page });
+              this.handlePageChange(page);
+            }}
+            onSortedChange={sorted => this.handleSortedChange(sorted)}
           />
         </div>
+
         <PopupModal
           modalid="deleteModal"
           modaltitle="Alert!"
@@ -440,6 +465,51 @@ class OrgList extends React.Component {
       </section>
     );
   }
+
+  handleSortedChange = sorted => {
+    const { page, pageSize } = this.state;
+    const sortOrder = findKey(sorted[0], v => v === true);
+    this.props.fetchOrganisationsList({
+      pageNo: page,
+      pageSize,
+      sortBy: sorted[0].id,
+      sortOrder
+    });
+  };
+
+  handleFilteredChange = searchedText => {
+    const { page, pageSize } = this.state;
+    if (searchedText)
+      this.props.fetchOrganisationsList({
+        pageNo: page,
+        pageSize,
+        nameSearch: searchedText
+      });
+    else
+      this.props.fetchOrganisationsList({
+        pageNo: page,
+        pageSize
+      });
+  };
+
+  handlePageChange = page => {
+    const { pageSize } = this.state;
+    const { appliedFilterList } = this.props;
+    if (appliedFilterList) {
+      appliedFilterList.pageNo = page;
+      appliedFilterList.pageSize = pageSize;
+
+      let filters = modifiyFilterList(appliedFilterList);
+      this.props.fetchOrganisationsList({
+        ...filters
+      });
+    } else {
+      this.props.fetchOrganisationsList({
+        pageNo: page,
+        pageSize
+      });
+    }
+  };
 
   // //when checkbox is checked
   // onSelectCheckbox = (e, id) => {
@@ -470,9 +540,29 @@ class OrgList extends React.Component {
     this.setState({ orgId: org.id, orgName: org.name });
   };
 
-  getFilteredListOfOrg = e => {
+  getFilteredListOfOrg = val => {
+    this.setState(
+      {
+        searchText: val
+      },
+      () => {
+        return this.state.searchText
+          ? this.props.fetchOrganisationsList({
+              pageNo: this.state.pageNo,
+              pageSize: this.state.pageSize,
+              address: this.state.searchText
+            })
+          : this.props.fetchOrganisationsList({
+              pageNo: this.state.pageNo,
+              pageSize: this.state.pageSize
+            });
+      }
+    );
+  };
+
+  getSearchedText = val => {
     this.setState({
-      searchText: e.target.value
+      searchText: val
     });
   };
 
@@ -509,7 +599,7 @@ class OrgList extends React.Component {
   };
 
   filterOrgList = filter => {
-    const { activeButton } = this.state;
+    const { activeButton, pageNo, pageSize } = this.state;
     let newSectors = activeButton.slice();
     if (filter["sector"] === "All") {
       newSectors = ["All"];
@@ -521,16 +611,21 @@ class OrgList extends React.Component {
         : (newSectors[0] = filter["sector"]);
     }
     if (newSectors.length === 0) newSectors.push("All");
-    this.props.fetchOrganisationsList({ newSectors });
-
     this.setState({
       activeButton: newSectors
+    });
+    const apiObj = newSectors.find(x => x === "All") ? [] : newSectors;
+    this.props.fetchOrganisationsList({
+      sectors: apiObj,
+      pageNo,
+      pageSize
     });
   };
 
   resetAllFilters = () => {
-    this.props.fetchOrganisationsList({});
-    this.props.setAppliedFilters(null, {});
+    const { pageNo, pageSize } = this.state;
+    this.props.fetchOrganisationsList({ pageNo, pageSize });
+    this.props.setAppliedFilters(filtersObj, { pageNo, pageSize });
     this.setState({
       activeButton: ["All"]
     });

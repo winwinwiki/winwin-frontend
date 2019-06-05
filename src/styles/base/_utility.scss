@@ -6,6 +6,10 @@
   cursor: pointer;
 }
 
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
 //Font
 .f-36{
   font-size: rem(36px) !important;
