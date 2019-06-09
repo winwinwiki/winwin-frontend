@@ -14,8 +14,8 @@ class Note extends React.Component {
       return {
         ...prevState,
         data: {
-          noteId: nextProps.data.noteId,
-          note: nextProps.data.note
+          noteId: nextProps.data.id,
+          note: nextProps.data.name
         }
       };
     }

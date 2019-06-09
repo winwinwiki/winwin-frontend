@@ -75,7 +75,7 @@ export const deleteNote = params => {
       true
     ).then(
       response => {
-        dispatch(deleteNotesSuccess(response, params.noteId));
+        dispatch(deleteNotesSuccess(response, params.id));
       },
       error => {
         dispatch(deleteNotesError(error));
