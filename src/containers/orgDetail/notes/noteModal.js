@@ -1,6 +1,13 @@
 import React from "react";
 
-export const NoteModal = ({ note, title, handleChange, saveNote }) => (
+export const NoteModal = ({
+  note,
+  title,
+  handleChange,
+  saveNote,
+  formError,
+  validateField
+}) => (
   <div
     className="modal fade show"
     id="noteModal"
@@ -43,9 +50,15 @@ export const NoteModal = ({ note, title, handleChange, saveNote }) => (
                           name="note"
                           rows="5"
                           onChange={handleChange}
+                          onBlur={validateField}
                           placeholder="Add Text"
                           value={note}
                         />
+                        {formError.note && (
+                          <small className="form-element-hint text-danger">
+                            {formError.note}
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
