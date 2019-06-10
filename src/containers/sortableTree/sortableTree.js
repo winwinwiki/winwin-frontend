@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import SortableTree from "react-sortable-tree";
+import SortableTree, { toggleExpandedForAll } from "react-sortable-tree";
 import { push } from "react-router-redux";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -54,7 +54,18 @@ class Tree extends Component {
   };
 
   onSave = () => {
+    this.toggleNodeExpansion(false);
     return null;
+  };
+
+  toggleNodeExpansion = expanded => {
+    this.setState(prevState => ({
+      isEdited: false,
+      orgTreeData: toggleExpandedForAll({
+        treeData: prevState.orgTreeData,
+        expanded
+      })
+    }));
   };
 
   // handleSearchOnChange = e => {
@@ -65,6 +76,7 @@ class Tree extends Component {
 
   render() {
     const { isEdited, searchString, searchFocusIndex } = this.state;
+
     return (
       <section className="dashboard-content p-0 py-3 org-details-container">
         <div className="col-md-18 m-auto card">
