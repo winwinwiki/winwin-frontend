@@ -125,7 +125,7 @@ class Notes extends React.Component {
   onDeleteNote = () => {
     const { selectedNoteId } = this.state;
     this.props.deleteNote({
-      noteId: selectedNoteId,
+      id: selectedNoteId,
       organizationId: this.props.orgId
     });
   };
