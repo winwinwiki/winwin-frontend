@@ -120,6 +120,7 @@ class Notes extends React.Component {
   };
 
   handleChange = e => {
+    this.validateNoteForm(e.target.name, e.target.value);
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -141,8 +142,6 @@ class Notes extends React.Component {
   saveNewNote = () => {
     if (!this.state.note) {
       this.validateNoteForm("note", this.state.note);
-      return;
-    } else if (this.state.note !== "") {
       return;
     }
     this.props.saveNote({
