@@ -158,7 +158,10 @@ class AppliedOrgFiltersList extends React.Component {
       frameworkTag.value === frameworkTagList[1].value
     )
       level2List = this.props.customSDGList.map(value => {
-        return { value: value.subGoalCode, label: value.subGoalName };
+        return {
+          value: value.subGoalCode,
+          label: `${value.subGoalCode} ${value.subGoalName}`
+        };
       });
 
     return (
