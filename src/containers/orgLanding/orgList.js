@@ -107,8 +107,14 @@ class OrgList extends React.Component {
 
   componentDidMount() {
     const { pageNo, pageSize } = this.state;
+    const { appliedFilterList, filters } = this.props;
     this.props.startLoaderAction();
-    this.props.fetchOrganisationsList({ pageNo, pageSize: 10 });
+    this.props.fetchOrganisationsList({
+      ...filters,
+      ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
+      pageNo,
+      pageSize: 10
+    });
   }
 
   componentDidUpdate(prevProps) {
