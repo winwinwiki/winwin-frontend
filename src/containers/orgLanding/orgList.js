@@ -479,24 +479,24 @@ class OrgList extends React.Component {
     });
   };
 
-  handleFilteredChange = searchedText => {
+  handleFilteredChange = nameSearch => {
     const { page, pageSize } = this.state;
     const { appliedFilterList, filters } = this.props;
 
-    if (searchedText && appliedFilterList)
-      this.props.fetchOrganisationsList({
-        ...filters,
-        ...modifiyFilterList(appliedFilterList),
-        pageNo: page,
-        pageSize,
-        nameSearch: searchedText
-      });
-    else
-      this.props.fetchOrganisationsList({
-        ...filters,
-        pageNo: page,
-        pageSize
-      });
+    // if (searchedText)
+    this.props.fetchOrganisationsList({
+      ...filters,
+      ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
+      pageNo: page,
+      pageSize,
+      nameSearch
+    });
+    // else
+    //   this.props.fetchOrganisationsList({
+    //     ...filters,
+    //     pageNo: page,
+    //     pageSize
+    //   });
   };
 
   handlePageChange = page => {
@@ -626,7 +626,7 @@ class OrgList extends React.Component {
     const apiObj = newSectors.find(x => x === "All") ? [] : newSectors;
     this.props.fetchOrganisationsList({
       ...filters,
-      ...modifiyFilterList(appliedFilterList),
+      ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
       sectors: apiObj,
       pageNo,
       pageSize
