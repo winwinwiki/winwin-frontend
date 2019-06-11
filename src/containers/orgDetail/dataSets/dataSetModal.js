@@ -62,6 +62,9 @@ class DataSetModal extends Component {
         modalData.dataSetCategory.categoryName
       );
       return;
+    } else if (!modalData.type) {
+      this.validateDataSetForm("type", modalData.type);
+      return;
     } else if (categoryName !== "") {
       return;
     }
@@ -162,7 +165,16 @@ class DataSetModal extends Component {
       this.setState({ formError });
       return;
     }
-    return;
+    if (field === "type") {
+      if (!value) {
+        formError.type = "DataSet type is required.";
+        this.setState({ formError });
+        return;
+      }
+      formError.type = "";
+      this.setState({ formError });
+      return;
+    }
   };
 
   onClose = () => {
@@ -279,6 +291,7 @@ class DataSetModal extends Component {
                             name="type"
                             value="open"
                             checked={type.toLowerCase() === "open"}
+                            onBlur={this.validateForm}
                             readOnly
                           />{" "}
                           Open
@@ -294,11 +307,18 @@ class DataSetModal extends Component {
                             name="type"
                             value="closed"
                             checked={type.toLowerCase() === "closed"}
+                            onBlur={this.validateForm}
                             readOnly
                           />{" "}
                           Closed
                         </label>
                       </div>
+                      <br />
+                      {formError.type && (
+                        <small className="form-element-hint text-danger">
+                          {formError.type}
+                        </small>
+                      )}
                     </div>
                   </div>
                   {type.toLowerCase() === "open" ? (
