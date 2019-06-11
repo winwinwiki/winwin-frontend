@@ -23,7 +23,7 @@ class SPIModal extends Component {
       r = deepFilter(cloneDeep(list), val); //deep clone list to avoid props from changing when state changes
       this.setState({ SPIList: { response: r } });
     }
-    if (this.state.searchText === "") {
+    if (val === "") {
       //SPI List in props persist coz we deepcloned the list
       this.setState({ SPIList: this.props.SPIList });
     }

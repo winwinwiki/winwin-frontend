@@ -23,7 +23,7 @@ class SDGModal extends React.Component {
       r = deepFilter(cloneDeep(list), val); //deep clone list to avoid props from changing when state changes
       this.setState({ SDGList: { response: r } });
     }
-    if (this.state.searchText === "") {
+    if (val === "") {
       //SDG List in props persist coz we deepcloned the list
       this.setState({ SDGList: this.props.SDGList });
     }
