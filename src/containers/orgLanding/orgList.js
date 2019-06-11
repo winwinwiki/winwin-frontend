@@ -477,8 +477,8 @@ class OrgList extends React.Component {
     const sortOrder = findKey(sorted[0], v => v === true);
     this.props.fetchOrganisationsList({
       ...filters,
-      ...modifiyFilterList(appliedFilterList),
-      pageNo: page,
+      ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
+      pageNo: 0,
       pageSize,
       sortBy: sorted[0].id,
       sortOrder
@@ -493,7 +493,7 @@ class OrgList extends React.Component {
     this.props.fetchOrganisationsList({
       ...filters,
       ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
-      pageNo: page,
+      pageNo: 0,
       pageSize,
       nameSearch
     });
