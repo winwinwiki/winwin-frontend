@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Dropdown from "../ui/dropdown";
 import validate from "../../util/validation";
 
-const rolesList = ["Administrator", "Data Seeder", "All"];
+const rolesList = ["Administrator", "Data Seeder"];
 
 class CreateUser extends Component {
   state = {
