@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { onSubmit } from "../../../actions/auth/forgetPasswordAction";
 import validate from "../../../util/validation";
 import { push } from "react-router-redux";
+import NotificationToaster from "../../ui/notificationToaster";
 class ForgetPassword extends React.Component {
   constructor(props) {
     super(props);
@@ -37,6 +38,7 @@ class ForgetPassword extends React.Component {
     let { forgetPassword } = this.props;
     return (
       <div className="w-100 flex-fill d-flex flex-column justify-content-center">
+        <NotificationToaster />
         {!forgetPassword.data && !forgetPassword.error ? (
           <div>
             {forgetPassword.error && <div>{forgetPassword.data}</div>}

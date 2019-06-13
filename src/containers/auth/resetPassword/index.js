@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { onResetPassword } from "../../../actions/auth/resetPasswordAction";
 
 import validate from "../../../util/validation";
+import NotificationToaster from "../../ui/notificationToaster";
 
 class ResetPassword extends React.Component {
   state = {
@@ -40,6 +41,7 @@ class ResetPassword extends React.Component {
     let { resetPassword } = this.props;
     return (
       <div className="w-100 flex-fill d-flex flex-column justify-content-center">
+        <NotificationToaster />
         {resetPassword.error && <div>{resetPassword.data}</div>}
         <div className="form-group w-100 mb-4 login-form-group">
           <label htmlFor="code" className="sr-only">

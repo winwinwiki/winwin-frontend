@@ -5,6 +5,7 @@ import { onNewUserChangePassword } from "../../../actions/auth/changePasswordAct
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import { Auth } from "aws-amplify";
+import NotificationToaster from "../../ui/notificationToaster";
 
 class NewUserChangePassword extends React.Component {
   state = {
@@ -40,6 +41,7 @@ class NewUserChangePassword extends React.Component {
     let { retypeNewPass, newPassword, oldPassword, formError } = this.state;
     return (
       <div className="w-100 flex-fill d-flex flex-column justify-content-center">
+        <NotificationToaster />
         <div className="form-group w-100 mb-4 login-form-group">
           <label htmlFor="oldPassword" className="sr-only">
             Old Password

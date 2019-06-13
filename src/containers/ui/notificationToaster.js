@@ -10,7 +10,7 @@ class NotificationToaster extends Component {
       case "SUCCESS":
         return toast.success(notification.message);
       case "INFO":
-        return toast.info("notification.message");
+        return toast.info(notification.message);
       case "ERROR":
         return toast.error(notification.message);
       case "WARNING":
@@ -34,9 +34,9 @@ class NotificationToaster extends Component {
         closeOnClick
         rtl={false}
         pauseOnVisibilityChange
-        draggable={false}
+        draggable
         pauseOnHover
-        closeButton={false}
+        // closeButton={false}
       />
       //   <ToastContainer position={toast.POSITION.TOP_CENTER} />
     );
