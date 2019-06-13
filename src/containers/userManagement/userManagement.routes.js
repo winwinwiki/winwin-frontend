@@ -8,9 +8,11 @@ import UserList from "./userList";
 import UserProfile from "./userProfile";
 import ChangePassword from "../auth/changePassword";
 import CreateUser from "../createUser";
+import NotificationToaster from "../ui/notificationToaster";
 
 const OrgLandingRoutes = props => (
   <UserManagement history={props.history} match={props.match}>
+    <NotificationToaster />
     <Switch>
       <PrivateRoute
         title="User Management"

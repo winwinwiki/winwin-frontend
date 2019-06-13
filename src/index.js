@@ -64,7 +64,7 @@ const enhancer = composeEnhancers(
   // other store enhancers if any
 );
 
-const store = createStore(
+export const store = createStore(
   reducer,
   enhancer
   // initialState,
