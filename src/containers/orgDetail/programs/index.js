@@ -6,20 +6,26 @@ import { Link } from "react-router-dom";
 
 import {
   fetchProgramsList,
-  resetProgramList
+  resetProgramList,
+  filterProgramsList
 } from "../../../actions/program/programListAction";
 import Search from "../../ui/searchBar";
 import {
   startLoaderAction,
   stopLoaderAction
 } from "../../../actions/common/loaderActions";
+import debounce from "lodash/debounce";
+import { programListSelector } from "../../../selectors/programListSelector";
 class ProgramList extends React.Component {
   state = {
     searchText: ""
   };
 
   componentDidMount() {
-    if (!(this.props.programList.length || this.props.programList.response)) {
+    if (
+      !(this.props.programList.length || this.props.programList.response) ||
+      this.props.currentOrgId !== parseInt(this.props.orgId, 10)
+    ) {
       this.props.fetchProgramsList(this.props.orgId);
     }
   }
@@ -73,10 +79,17 @@ class ProgramList extends React.Component {
   }
 
   onChange = e => {
-    this.setState({
-      searchText: e.target.value
-    });
+    this.setState(
+      {
+        searchText: e.target.value
+      },
+      () => this.handleSearchProgram({ nameSearch: this.state.searchText })
+    );
   };
+
+  handleSearchProgram = debounce(apiObj => {
+    this.props.filterProgramsList(this.props.orgId, apiObj);
+  }, 500);
 
   renderProgramList = (programList, searchText) => {
     let filteredProgramList = [];
@@ -84,20 +97,28 @@ class ProgramList extends React.Component {
       const { response } = programList;
       filteredProgramList = response;
     }
-    return filteredProgramList.map(program => (
-      <Link
-        key={program.id}
-        to={`${this.props.match.url}/${program.id}`}
-        className="list-group-item list-group-item-action"
-      >
-        {program.name}
-      </Link>
-    ));
+    return filteredProgramList.length ? (
+      filteredProgramList.map(program => (
+        <Link
+          key={program.id}
+          to={`${this.props.match.url}/${program.id}`}
+          className="list-group-item list-group-item-action"
+        >
+          {program.name}
+        </Link>
+      ))
+    ) : (
+      <div className="disabled-text list-group-item list-group-item-action">
+        {" "}
+        No programs containing your search terms were found
+      </div>
+    );
   };
 }
 
 const mapStateToProps = state => ({
-  programList: state.programList.programList
+  programList: state.programList.programList,
+  currentOrgId: programListSelector(state)
 });
 
 const mapDispatchToProps = dispatch =>
@@ -106,7 +127,8 @@ const mapDispatchToProps = dispatch =>
       fetchProgramsList,
       startLoaderAction,
       stopLoaderAction,
-      resetProgramList
+      resetProgramList,
+      filterProgramsList
     },
     dispatch
   );

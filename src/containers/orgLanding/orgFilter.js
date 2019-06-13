@@ -36,8 +36,13 @@ class OrgFilters extends React.Component {
             Search
           </label>
           <Search
-            placeholder="Search State/County/City/District"
-            onChange={getFilteredListOfOrg}
+            placeholder="Search City/County/State/Country"
+            onChange={event => props.getSearchedText(event.target.value)}
+            onKeyPress={event => {
+              if (event.keyCode === 13 || event.which === 13) {
+                getFilteredListOfOrg(event.target.value);
+              }
+            }}
             value={searchText}
           />
         </div>

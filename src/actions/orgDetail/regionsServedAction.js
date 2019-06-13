@@ -32,7 +32,7 @@ export const saveOrgRegionsServed = (
       type === PROGRAM
         ? `/program/${programId}/region`
         : `/organization/${orgId}/region`;
-    api(url, "POST", JSON.stringify(updatedRegions), true).then(
+    api(url, "PUT", JSON.stringify(updatedRegions), true).then(
       response => {
         dispatch(saveRegionsServedSuccess(response));
       },

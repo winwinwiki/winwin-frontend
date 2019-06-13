@@ -38,7 +38,7 @@ export default (state = initialState, action) => {
         notesList: {
           ...state.notesList,
           response: state.notesList.response.filter(
-            x => x.noteId !== action.noteId
+            x => x.id !== action.noteId
           )
         }
       };

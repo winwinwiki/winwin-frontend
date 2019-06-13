@@ -8,7 +8,8 @@ import {
   SET_SPILIST_REQUEST,
   SET_SPILIST_SUCCESS,
   SET_SPILIST_ERROR,
-  SET_APPLIED_FILTER
+  SET_APPLIED_FILTER,
+  SET_FILTERS
 } from "../../constants/dispatch";
 import { api } from "../../api/api";
 import qs from "qs";
@@ -16,9 +17,15 @@ import { PROGRAM } from "../../constants";
 
 export const fetchOrganisationsList = params => {
   return dispatch => {
+    dispatch(setFilters(params))
     dispatch(fetchOrgRequest());
     let queryString = qs.stringify(params);
-    api("/organization", "GET", {}, true).then(
+    api(
+      `/organization${queryString ? "?" + queryString : ""}`,
+      "GET",
+      {},
+      true
+    ).then(
       response => {
         dispatch(fetchOrgSuccess(response));
       },
@@ -147,4 +154,11 @@ function setAppliedFiltersList(appliedFilterList) {
     type: SET_APPLIED_FILTER,
     appliedFilterList
   };
+}
+
+function setFilters(filters){
+  return {
+    type: SET_FILTERS,
+    filters
+  }
 }

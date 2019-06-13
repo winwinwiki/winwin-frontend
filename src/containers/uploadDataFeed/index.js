@@ -7,6 +7,7 @@ import Upload from "../ui/upload";
 import { onCreateBulkOrg as onDataFeed } from "../../actions/organization/createBulkOrgAction";
 import validate from "../../util/validation";
 import { titleCase, formatBytes } from "../../util/util";
+import apiConfig from "../../buildConfig/apiConfig";
 
 class UploadDataFeed extends React.Component {
   state = {
@@ -36,14 +37,23 @@ class UploadDataFeed extends React.Component {
       <div className="container">
         <div className="row ">
           <div className="col-sm-12 mx-auto my-3">
-            <p>File Selection</p>
+            <div className="d-flex align-content-center">
+              <div className="mt-1">File Selection</div>
+              <a
+                className="btn btn-primary ml-auto"
+                href={apiConfig.bulkUploadTemplateUrl}
+              >
+                Download Template
+              </a>
+            </div>
+
             <hr />
             <Upload
               type="file"
               name="file"
               onDrop={this.onDrop}
               accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-              text=".csv or .xls files only"
+              text=".csv files only"
             />
             {formError.file && (
               <div className="text-danger small">{formError.file}</div>
@@ -56,7 +66,7 @@ class UploadDataFeed extends React.Component {
               Cancel
             </button>
             <button
-              className="btn btn-lg btn-primary w-50 mt-4"
+              className="btn btn-lg btn-primary w-50 mt-4 cursor-not-allowed"
               onClick={this.onDataFeed}
               disabled={!file || formError.file}
             >

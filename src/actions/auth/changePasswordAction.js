@@ -18,7 +18,7 @@ export const onChangePassword = params => {
     };
     return api(
       "/user/changePassword",
-      "POST",
+      "PUT",
       JSON.stringify(userObj),
       true
     ).then(

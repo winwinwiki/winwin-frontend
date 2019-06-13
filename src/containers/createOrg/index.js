@@ -343,7 +343,7 @@ class CreateOrg extends React.Component {
       county,
       zipcode
     } = this.state;
-    if (!orgName || !country) {
+    if (!orgName) {
       this.validateCreateOrgForm("orgName", orgName);
       this.validateCreateOrgForm("zipcode", zipcode);
       return;

@@ -158,7 +158,10 @@ class AppliedOrgFiltersList extends React.Component {
       frameworkTag.value === frameworkTagList[1].value
     )
       level2List = this.props.customSDGList.map(value => {
-        return { value: value.subGoalCode, label: value.subGoalName };
+        return {
+          value: value.subGoalCode,
+          label: `${value.subGoalCode} ${value.subGoalName}`
+        };
       });
 
     return (
@@ -525,29 +528,36 @@ class AppliedOrgFiltersList extends React.Component {
 
   addFiltersTag = () => {
     let filters = modifiyFilterList(this.state);
+    //pagination
+    filters.pageNo = 0;
+    filters.pageSize = 10;
     this.props.setAppliedFilters(this.state, filters);
     this.props.toggleAppliedFilterModal();
   };
 
   clearAppliedFilters = () => {
-    this.props.setAppliedFilters(null, {});
-    this.setState({
-      editedBy: [],
-      industryCls: "",
-      subIndustryCls: "",
-      frameworkTag: "",
-      level1: "",
-      level2: "",
-      level3: "",
-      sectorLevel: [],
-      tagStatus: [],
-      priority: "",
-      revenue: { min: 0, max: 0 },
-      assets: { min: 0, max: 0 },
-      level1List: [],
-      level2List: [],
-      level3List: []
-    });
+    this.setState(
+      {
+        pageNo: 0,
+        pageSize: 10,
+        editedBy: [],
+        industryCls: "",
+        subIndustryCls: "",
+        frameworkTag: "",
+        level1: "",
+        level2: "",
+        level3: "",
+        sectorLevel: [],
+        tagStatus: [],
+        priority: "",
+        revenue: { min: 0, max: 0 },
+        assets: { min: 0, max: 0 },
+        level1List: [],
+        level2List: [],
+        level3List: []
+      },
+      () => this.props.setAppliedFilters(null, { pageNo: 0, pageSize: 10 })
+    );
   };
 
   percentFormatter = v => {

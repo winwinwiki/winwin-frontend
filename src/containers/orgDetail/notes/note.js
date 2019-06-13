@@ -14,8 +14,8 @@ class Note extends React.Component {
       return {
         ...prevState,
         data: {
-          noteId: nextProps.data.noteId,
-          note: nextProps.data.note
+          noteId: nextProps.data.id,
+          note: nextProps.data.name
         }
       };
     }
@@ -111,8 +111,8 @@ class Note extends React.Component {
       isEditable: false
     });
     const apiObj = {
-      noteId,
-      note,
+      id: noteId,
+      name: note,
       organizationId: this.props.data.organizationId
     };
     this.props.onUpdateNote(apiObj);

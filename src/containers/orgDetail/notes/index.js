@@ -16,7 +16,8 @@ class Notes extends React.Component {
     modaltitle: "",
     selectedNoteId: "",
     note: "",
-    notesList: ""
+    notesList: "",
+    formError: { note: "" }
   };
 
   componentDidMount() {
@@ -78,6 +79,8 @@ class Notes extends React.Component {
           title={modaltitle}
           handleChange={this.handleChange}
           saveNote={this.saveNewNote}
+          formError={this.state.formError}
+          validateField={this.validateField}
         />
 
         {/* Delete Modal */}
@@ -92,6 +95,25 @@ class Notes extends React.Component {
       </section>
     );
   }
+
+  validateField = e => {
+    this.validateNoteForm(e.target.name, e.target.value);
+  };
+
+  validateNoteForm = (field, value) => {
+    const { formError } = this.state;
+
+    if (field === "note") {
+      if (!value) {
+        formError.note = "This field is required.";
+        this.setState({ formError });
+        return;
+      }
+      formError.note = "";
+      this.setState({ formError });
+      return;
+    }
+  };
 
   onUpdateNote = apiObj => {
     this.props.updateNote(apiObj);
@@ -111,21 +133,28 @@ class Notes extends React.Component {
   addNewNoteModal = () => {
     this.setState({
       note: "",
-      modaltitle: "Add Note"
+      modaltitle: "Add Note",
+      formError: { note: "" }
     });
   };
 
   saveNewNote = () => {
+    if (!this.state.note) {
+      this.validateNoteForm("note", this.state.note);
+      return;
+    } else if (this.state.note !== "") {
+      return;
+    }
     this.props.saveNote({
       organizationId: this.props.orgId,
-      note: this.state.note
+      name: this.state.note
     });
   };
 
   onDeleteNote = () => {
     const { selectedNoteId } = this.state;
     this.props.deleteNote({
-      noteId: selectedNoteId,
+      id: selectedNoteId,
       organizationId: this.props.orgId
     });
   };
