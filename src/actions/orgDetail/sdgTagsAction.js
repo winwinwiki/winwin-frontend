@@ -35,7 +35,7 @@ export const updateSDGData = (apiObj, orgId, filteredObj, type, programId) => {
       type === PROGRAM
         ? `/program/${programId}/sdgdata`
         : `/organization/${orgId}/sdgdata`;
-    api(url, "POST", JSON.stringify(apiObj), true).then(
+    api(url, "PUT", JSON.stringify(apiObj), true).then(
       response => {
         dispatch(updateSDGDataSuccess(response, filteredObj));
       },
