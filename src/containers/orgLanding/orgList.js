@@ -319,9 +319,9 @@ class OrgList extends React.Component {
       Cell: row => <div className="centerText">{row.value}</div>
     },
     {
-      id: "industryClassification",
-      Header: "Industry Classification",
-      accessor: "industryCls",
+      id: "lastEditedBy",
+      Header: "Edited By",
+      accessor: "lastEditedBy",
       sortable: false,
       Cell: row => <div className="centerText">{row.value}</div>
     },
