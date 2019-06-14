@@ -355,6 +355,7 @@ class CreateOrg extends React.Component {
       parentId: null, // since it is org
       type: "organization", // since it is org
       tagStatus: tagStatusList[1],
+      priority: 'Normal',
       address: {
         country: country,
         state: state,
