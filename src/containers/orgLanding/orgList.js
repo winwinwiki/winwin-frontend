@@ -237,7 +237,7 @@ class OrgList extends React.Component {
               >
                 {row.original.tagStatus
                   ? tagIcon[tags[row.original.tagStatus]]
-                  : tagIcon["readyfortagging"]}
+                  : tagIcon["unfinishedtag"]}
               </h1>
             </div>
             {/* <div className="org-tag-footer" /> */}
@@ -355,7 +355,8 @@ class OrgList extends React.Component {
       searchText,
       pageSize,
       orgCount,
-      totalPages
+      totalPages,
+      page
     } = this.state;
     const { appliedFilterList } = this.props;
 
@@ -363,28 +364,6 @@ class OrgList extends React.Component {
     if (!orgList) {
       return null;
     }
-    // //filter by searched text
-    // if (this.state.searchText) {
-    //   orgList = matchSorter(orgList, this.state.searchText, {
-    //     keys: [
-    //       { threshold: matchSorter.rankings.CONTAINS, key: "name" },
-    //       { threshold: matchSorter.rankings.CONTAINS, key: "address.city" },
-    //       { threshold: matchSorter.rankings.CONTAINS, key: "address.county" },
-    //       { threshold: matchSorter.rankings.CONTAINS, key: "address.country" },
-    //       { threshold: matchSorter.rankings.CONTAINS, key: "address.street" }
-    //     ]
-    //   });
-    // }
-
-    // //search by sector
-    // if (this.state.activeButton.length === 1) {
-    //   if (this.state.activeButton.indexOf("Public") > -1)
-    //     orgList = orgList.filter(row => row.sector === "Public");
-    //   if (this.state.activeButton.indexOf("Private") > -1)
-    //     orgList = orgList.filter(row => row.sector === "Private");
-    //   if (this.state.activeButton.indexOf("Social") > -1)
-    //     orgList = orgList.filter(row => row.sector === "Social");
-    // }
 
     return (
       <section className="dashboard-content p-0">
@@ -425,6 +404,7 @@ class OrgList extends React.Component {
             manual //allow server side pagination
             showPageSizeOptions={false}
             pages={totalPages} //indicates total number of pages
+            page={page}
             noDataText="No organization found"
             data={orgList}
             columns={this.columns}
@@ -627,7 +607,8 @@ class OrgList extends React.Component {
     }
     if (newSectors.length === 0) newSectors.push("All");
     this.setState({
-      activeButton: newSectors
+      activeButton: newSectors,
+      page: 0
     });
     const apiObj = newSectors.find(x => x === "All") ? [] : newSectors;
     this.props.fetchOrganisationsList({

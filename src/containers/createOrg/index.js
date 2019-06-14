@@ -7,7 +7,7 @@ import Dropdown from "../ui/dropdown";
 import { onCreateOrg } from "../../actions/organization/createOrgAction";
 import "./createOrg.css";
 import validate from "../../util/validation";
-import { sectorsList, entityList } from "../../constants";
+import { sectorsList, entityList, tagStatusList } from "../../constants";
 
 class CreateOrg extends React.Component {
   constructor(props) {
@@ -354,6 +354,8 @@ class CreateOrg extends React.Component {
       sectorLevel: entity,
       parentId: null, // since it is org
       type: "organization", // since it is org
+      tagStatus: tagStatusList[1],
+      priority: 'Normal',
       address: {
         country: country,
         state: state,
