@@ -110,7 +110,7 @@ class ProgramList extends React.Component {
     ) : (
       <div className="disabled-text list-group-item list-group-item-action">
         {" "}
-        No programs containing your search terms were found
+        No programs were found
       </div>
     );
   };
