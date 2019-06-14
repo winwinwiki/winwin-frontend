@@ -142,9 +142,7 @@ class Notes extends React.Component {
     if (!this.state.note) {
       this.validateNoteForm("note", this.state.note);
       return;
-    } else if (this.state.note !== "") {
-      return;
-    }
+    } 
     this.props.saveNote({
       organizationId: this.props.orgId,
       name: this.state.note
