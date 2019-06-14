@@ -237,7 +237,7 @@ class OrgList extends React.Component {
               >
                 {row.original.tagStatus
                   ? tagIcon[tags[row.original.tagStatus]]
-                  : tagIcon["readyfortagging"]}
+                  : tagIcon["unfinishedtag"]}
               </h1>
             </div>
             {/* <div className="org-tag-footer" /> */}
