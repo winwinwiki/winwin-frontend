@@ -123,7 +123,6 @@ class RegionsServed extends Component {
                         options={this.state.regionsList || []}
                         backspaceRemoves={false}
                         onSuggestChange={this.onChange}
-                        counter={100}
                         loadOptions={(input, callback) =>
                           this._getOptionsAsync(
                             input,
