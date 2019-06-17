@@ -10,7 +10,7 @@ const Header = props => {
   const { session, history } = props;
   let userInfo = session && session.user ? session.user : {};
   return (
-    <nav className="navbar fixed-top navbar-dark bg-dark navbar-expand-md">
+    <nav className="navbar main-nav navbar-dark bg-dark navbar-expand-md">
       <div className="container">
         <a href="#" className="navbar-brand" onClick={() => history.push("/")}>
           <img
