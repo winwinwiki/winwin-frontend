@@ -15,7 +15,9 @@ export function api(url, method, body, isAuth, contentType) {
             store.dispatch(
               showNotification({
                 type: "ERROR",
-                message: titleCase(json.response || "")
+                message: titleCase(
+                  json.response || "Oops! Something went wrong."
+                )
               })
             );
             reject(Error(json.response));
