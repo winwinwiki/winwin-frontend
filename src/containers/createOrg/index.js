@@ -117,11 +117,17 @@ class CreateOrg extends React.Component {
                   <div className="form-group">
                     <label htmlFor="entity">Sector Level</label>
                     <Dropdown
-                      selectedItem={entity}
+                      selectedItem={
+                        sector && sector.toLowerCase() !== "public"
+                          ? ""
+                          : entity
+                      }
+                      placeholder="Select Sector Level"
                       name="entity"
                       containerClass="dropdown dropdown-with-searchbox"
                       onChange={this.onDropdownChange.bind(this)}
                       items={entityList}
+                      disabled={sector && sector.toLowerCase() !== "public"}
                     />
                   </div>
                 </div>
@@ -288,6 +294,9 @@ class CreateOrg extends React.Component {
   }
 
   onDropdownChange(field, value) {
+    if (field === "sector" && value.toLowerCase() !== "public") {
+      this.setState({ entity: "" });
+    }
     this.setState({ [field]: value });
   }
 
@@ -355,7 +364,7 @@ class CreateOrg extends React.Component {
       parentId: null, // since it is org
       type: "organization", // since it is org
       tagStatus: tagStatusList[1],
-      priority: 'Normal',
+      priority: "Normal",
       address: {
         country: country,
         state: state,
