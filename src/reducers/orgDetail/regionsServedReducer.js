@@ -6,7 +6,9 @@ import {
   SAVE_REGIONSERVED_SUCCESS,
   SAVE_REGIONSERVED_ERROR,
   REMOVE_REGIONSERVED_SUCCESS,
-  FETCH_REGIONSLIST_SUCCESS
+  FETCH_REGIONSLIST_SUCCESS,
+  FETCH_REGIONSLIST_REQUEST,
+  FETCH_REGIONSLIST_ERROR
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -30,9 +32,20 @@ export default (state = initialState, action) => {
         error: false
       });
 
+    case FETCH_REGIONSLIST_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
     case FETCH_REGIONSLIST_SUCCESS:
       return Object.assign({}, state, {
+        loading: false,
         regionsList: action.response
+      });
+
+    case FETCH_REGIONSLIST_ERROR:
+      return Object.assign({}, state, {
+        loading: false
       });
 
     case FETCH_REGIONSERVED_ERROR:

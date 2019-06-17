@@ -201,3 +201,10 @@ export const formatBytes = (bytes, decimals) => {
     i = Math.floor(Math.log(bytes) / Math.log(k));
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
 };
+
+export const mapOptionsToRegions = regionsList => {
+  return regionsList.map(x => ({
+    label: x.regionName,
+    value: x.regionId
+  }));
+};

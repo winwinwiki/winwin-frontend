@@ -2,30 +2,31 @@ import React, { Component, Fragment } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-import {
-  startLoaderAction,
-  stopLoaderAction
-} from "../../../actions/common/loaderActions";
-
+import debounce from "lodash/debounce";
 import {
   saveOrgRegionsServed,
   fetchOrgRegionsServed,
   removeRegionAction,
   resetRegionsAction,
   updateRegionsAction,
-  fetchRegionsList
+  // fetchRegionsList,
+  _loadRegionsMaster
 } from "../../../actions/orgDetail/regionsServedAction";
 import Can from "../../Can";
 import { regionsListSelector } from "../../../selectors/regionsListSelector";
 
 import FilterableSelect from "../../common/virtualizedSelect";
 import { PROGRAM } from "../../../constants";
+import { mapOptionsToRegions } from "../../../util/util";
 
 class RegionsServed extends Component {
   state = {
     isEdited: false,
+    isLoading: false,
     suggestions: [],
-
+    regionsList: [],
+    pageNo: 0,
+    pageSize: 10,
     regionsServed: {
       region: { regionName: "" }
     }
@@ -33,7 +34,6 @@ class RegionsServed extends Component {
 
   componentDidMount() {
     const { orgId, programId, type } = this.props;
-    this.props.startLoaderAction();
     this.props.fetchOrgRegionsServed(
       type === PROGRAM ? programId : orgId,
       type
@@ -48,31 +48,14 @@ class RegionsServed extends Component {
       this.onEdit();
   }
 
-  componentDidUpdate(prevProps) {
-    if (
-      prevProps.regionsServed !== this.props.regionsServed &&
-      prevProps.regionsList !== this.props.regionsList &&
-      this.props.regionsServed.data
-    ) {
-      this.props.stopLoaderAction();
-    }
-  }
+  onChange = (name, valObj) => {
+    const { regionsServed, masterRegionsList } = this.state;
+    regionsServed.region[name] = valObj.label;
 
-  onChange = e => {
-    e.preventDefault();
-    const {
-      regionsServed: { regionsList: { response: regionsList = [] } = {} } = {}
-    } = this.props;
-    const target = e.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    let name = target.name;
-    const { regionsServed } = this.state;
-    regionsServed.region[name] = value;
-
-    if (value) {
+    if (valObj) {
       //to find the regionId from masters region list
-      let filteredRegion = regionsList.find(x => {
-        return x.regionName.toLowerCase() === value.toLowerCase() ? x : "";
+      let filteredRegion = masterRegionsList.find(x => {
+        return x.regionId === valObj.value ? x : "";
       });
 
       //check if regions id is not already present
@@ -84,14 +67,16 @@ class RegionsServed extends Component {
         regionsServed.region.regionId = filteredRegion.regionId;
       //add region if not present in masters list
       else regionsServed.region.regionId = -1;
-      this.setState({ regionsServed });
+      this.setState({ regionsServed }, () => this.onSubmit());
     }
   };
 
   render() {
     const {
       isEdited,
-      regionsServed: { region: { regionId, regionName } = {} } = {}
+      regionsServed: { region: { regionId, regionName } = {} } = {},
+      pageNo,
+      pageSize
     } = this.state;
     if (
       !this.props.regionsServed ||
@@ -127,16 +112,37 @@ class RegionsServed extends Component {
                     </div>
                   </li>
                 )}
-                {isEdited && this.props.regionsList && (
+                {isEdited && (
                   <div className="row mt-2">
                     <div className="col-sm-22">
                       <FilterableSelect
+                        async
                         className="position-relative mt-2"
                         name="regionName"
                         placeholder="Search regions (for ex. Seattle, Washington, United States)"
-                        options={this.props.regionsList}
-                        onSuggestChange={this.onSuggestChange}
-                        value={regionName}
+                        options={this.state.regionsList || []}
+                        backspaceRemoves={false}
+                        onSuggestChange={this.onChange}
+                        counter={100}
+                        loadOptions={(input, callback) =>
+                          this._getOptionsAsync(
+                            input,
+                            callback,
+                            pageNo,
+                            pageSize
+                          )
+                        }
+                        isValidNewOption={(
+                          inputValue,
+                          selectValue,
+                          selectOptions
+                        ) => {
+                          const isNotDuplicated = !selectOptions
+                            .map(option => option.label)
+                            .includes(inputValue);
+                          const isNotEmpty = inputValue !== "";
+                          return isNotEmpty && isNotDuplicated;
+                        }}
                       />
                     </div>
                   </div>
@@ -180,6 +186,37 @@ class RegionsServed extends Component {
     );
   }
 
+  fetchDebouncedRecords = debounce(
+    (type, orgId, programId, input, callback, pageNo, pageSize) => {
+      _loadRegionsMaster(type === PROGRAM ? programId : orgId, type, {
+        pageNo: 0,
+        pageSize: 2147483647,
+        nameSearch: input
+      })
+        .then(res => {
+          const regionsList = mapOptionsToRegions(res.response);
+          this.setState({ regionsList, masterRegionsList: res.response });
+          callback(regionsList);
+        })
+        .catch(error => callback(error, null));
+    },
+    1000
+  );
+
+  _getOptionsAsync = (input, callback, pageNo, pageSize) => {
+    const { orgId, programId, type } = this.props;
+    if (input.length >= 3)
+      this.fetchDebouncedRecords(
+        type,
+        orgId,
+        programId,
+        input,
+        callback,
+        pageNo,
+        pageSize
+      );
+  };
+
   onSuggestChange = (field, val) => {
     this.setState(
       {
@@ -191,15 +228,17 @@ class RegionsServed extends Component {
     );
   };
 
-  onSubmit = data => {
+  onSubmit = () => {
     const { type, orgId, programId } = this.props;
-    const { regionsServed: { region } = {} } = this.state;
+    const {
+      regionsServed: { region: { regionId, regionName } } = {}
+    } = this.state;
     const updatedRegions = [
       {
         organizationId: orgId,
         region: {
-          regionId: data.value,
-          regionName: data.label
+          regionId,
+          regionName
         }
       }
     ];
@@ -221,7 +260,6 @@ class RegionsServed extends Component {
 
   onClose = () => {
     const { orgId, programId, type } = this.props;
-    this.props.startLoaderAction();
     this.props.fetchOrgRegionsServed(type === PROGRAM ? programId : orgId);
     this.setState({ isEdited: false });
   };
@@ -239,8 +277,6 @@ class RegionsServed extends Component {
   };
 
   onEdit = () => {
-    const { orgId, programId, type } = this.props;
-    this.props.fetchRegionsList(type === PROGRAM ? programId : orgId, type);
     this.setState({
       isEdited: true
     });
@@ -263,73 +299,11 @@ class RegionsServed extends Component {
 
     this.props.saveOrgRegionsServed(filteredRegion, orgId, type, programId);
   };
-
-  // //when selected from suggested list call on submit method
-  // onSuggestionSelected = (e, data) => {
-  //   e.preventDefault();
-  //   this.onSubmit(e, data);
-  // };
-
-  // onSuggestSelect = place => {
-  //   this._geoSuggest.clear(); //clear inputtext
-  //   const {
-  //     regionsServed: { data: { response: regionsServedList } = {} } = {}
-  //   } = this.props;
-  //   let placesObj = {};
-
-  //   //convert places api response to extract address properties
-  //   const { gmaps: { address_components } = {}, placeId } = place;
-  //   for (let i = 0; i < address_components.length; i++) {
-  //     let addressType = address_components[i].types[0];
-  //     if (addressComponents[addressType]) {
-  //       let val = address_components[i][addressComponents[addressType]];
-  //       placesObj[addressType] = typeof val !== undefined ? val : null;
-  //     }
-  //   }
-  //   const {
-  //     administrative_area_level_1,
-  //     administrative_area_level_2,
-  //     country,
-  //     locality,
-  //     postal_code,
-  //     street_number,
-  //     route
-  //   } = placesObj;
-
-  //   let apiObj = {
-  //     organizationId: this.props.orgId,
-  //     isActive: true,
-  //     address: {
-  //       placeId,
-  //       street:
-  //         street_number && !route
-  //           ? street_number
-  //           : !street_number && route
-  //           ? route
-  //           : street_number && route
-  //           ? street_number + " " + route
-  //           : null,
-  //       state: administrative_area_level_1,
-  //       county: administrative_area_level_2 || null,
-  //       country,
-  //       city: locality || null,
-  //       zip: postal_code || null
-  //     }
-  //   };
-
-  //   //add only unique addresses according to placeId
-  //   if (!regionsServedList.filter(x => x.address.placeId === placeId).length) {
-  //     this.props.updateRegionsAction(apiObj);
-  //   }
-  //   this.setState({
-  //     location: place
-  //   });
-  // };
 }
 
 const mapStateToProps = state => ({
-  regionsServed: state.regionsServed,
-  regionsList: regionsListSelector(state)
+  regionsServed: state.regionsServed
+  // regionsList: regionsListSelector(state)
 });
 
 const mapDispatchToProps = dispatch =>
@@ -339,10 +313,8 @@ const mapDispatchToProps = dispatch =>
       fetchOrgRegionsServed,
       removeRegionAction,
       resetRegionsAction,
-      updateRegionsAction,
-      startLoaderAction,
-      stopLoaderAction,
-      fetchRegionsList
+      updateRegionsAction
+      // fetchRegionsList
     },
     dispatch
   );
