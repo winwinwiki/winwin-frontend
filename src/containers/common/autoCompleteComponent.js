@@ -26,8 +26,11 @@ class AutoSuggestComponent extends Component {
     return inputLength === 0
       ? []
       : this.props.suggestions &&
-          this.props.suggestions.filter(
-            el => el.name.toLowerCase().slice(0, inputLength) === inputValue
+          this.props.suggestions.filter(el =>
+            el.name
+              .toLowerCase()
+              // .slice(0, inputLength)
+              .includes(inputValue)
           );
   };
 

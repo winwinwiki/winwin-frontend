@@ -178,16 +178,7 @@ class OrgDetailPage extends React.Component {
                   </div>
                   <div className="form-group">
                     <label htmlFor="naicsCode">NAICS Code</label>
-                    {/* <input
-                      type="text"
-                      className="form-control"
-                      name="naicsCode"
-                      id="naicsCode"
-                      readOnly={readOnly}
-                      onChange={this.onChange}
-                      placeholder="Enter NAICS Code"
-                      value={orgDetail.naicsCode || ""}
-                    /> */}
+
                     {industryCodes.naicsList && (
                       <AutoSuggestComponent
                         suggestions={industryCodes.naicsList}
@@ -198,7 +189,11 @@ class OrgDetailPage extends React.Component {
                         }
                         readOnly={readOnly}
                         value={
-                          (orgDetail.naicsCode && orgDetail.naicsCode.name) ||
+                          (orgDetail.naicsCode.code
+                            ? `${orgDetail.naicsCode.code} - ${
+                                orgDetail.naicsCode.name
+                              }`
+                            : orgDetail.naicsCode.name) ||
                           orgDetail.naicsCode ||
                           ""
                         }
@@ -207,16 +202,6 @@ class OrgDetailPage extends React.Component {
                   </div>
                   <div className="form-group">
                     <label htmlFor="nteeCode">NTEE Code</label>
-                    {/* <input
-                      type="text"
-                      className="form-control"
-                      name="nteeCode"
-                      id="nteeCode"
-                      readOnly={readOnly}
-                      onChange={this.onChange}
-                      placeholder="Enter NTEE Code"
-                      value={orgDetail.nteeCode || ""}
-                    /> */}
                     {industryCodes.nteeList && (
                       <AutoSuggestComponent
                         suggestions={industryCodes.nteeList}
@@ -227,7 +212,11 @@ class OrgDetailPage extends React.Component {
                         }
                         readOnly={readOnly}
                         value={
-                          (orgDetail.nteeCode && orgDetail.nteeCode.name) ||
+                          (orgDetail.nteeCode.code
+                            ? `${orgDetail.nteeCode.code} - ${
+                                orgDetail.nteeCode.name
+                              }`
+                            : orgDetail.nteeCode.name) ||
                           orgDetail.nteeCode ||
                           ""
                         }
