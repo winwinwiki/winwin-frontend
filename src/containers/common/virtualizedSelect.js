@@ -1,5 +1,6 @@
 import React from "react";
-import Select from "react-virtualized-select"; // or from 'react-select'
+import { Async } from "react-select";
+import VirtualizedSelect from "react-virtualized-select"; // or from 'react-select'
 import "react-virtualized/styles.css";
 import "react-virtualized-select/styles.css";
 
@@ -9,12 +10,16 @@ import { getIndexedOptions } from "../../selectors/regionsListSelector";
 // Render your Select, complete with the fast-filter index
 const FilterableSelect = props => {
   return (
-    <Select {...props} onChange={o => props.onSuggestChange(props.name, o)} />
+    <VirtualizedSelect
+      {...props}
+      selectComponent={Async}
+      onChange={o => props.onSuggestChange(props.name, o)}
+    />
   );
 };
 
 const mapStateToProps = state => ({
-  filterOptions: getIndexedOptions(state)
+  // filterOptions: getIndexedOptions(state)
 });
 
 export default connect(mapStateToProps)(FilterableSelect);

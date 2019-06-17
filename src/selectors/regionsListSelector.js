@@ -1,21 +1,22 @@
 import { createSelector } from "reselect";
 import createFilterOptions from "react-select-fast-filter-options";
 
-const regionsList = state => state.regionsServed.regionsList;
+const regionsList = state => state.regionsServed;
 
 export const regionsListSelector = createSelector(
   [regionsList],
   details => {
-    if (!details) return null;
-    return (
-      details.response &&
-      details.response.map(x => {
+    if (!details.regionsList) return null;
+
+    let list =
+      details.regionsList.response &&
+      details.regionsList.response.map(x => {
         return {
           value: x.regionId,
           label: x.regionName
         };
-      })
-    );
+      });
+    return { regionsList: list, isLoading: details.loading };
   }
 );
 

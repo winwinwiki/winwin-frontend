@@ -18,6 +18,7 @@ import {
 } from "../../constants/dispatch";
 import { api } from "../../api/api";
 import { PROGRAM } from "../../constants";
+import qs from "qs";
 
 //change method
 export const saveOrgRegionsServed = (
@@ -94,22 +95,40 @@ export const fetchOrgRegionsServed = (organizationId, type) => {
 };
 
 //Regions Master List API
-export const fetchRegionsList = (organizationId, type) => {
-  return dispatch => {
-    dispatch(fetchRegionsListReq());
-    let url =
-      type === PROGRAM
-        ? `/program/${organizationId}/regionmasters`
-        : `/organization/${organizationId}/regionmasters`;
-    api(url, "GET", {}, true).then(
-      response => {
-        dispatch(fetchRegionsListSuccess(response));
-      },
-      error => {
-        dispatch(fetchRegionsListError(error));
-      }
-    );
-  };
+// export const fetchRegionsList = (organizationId, type, params) => {
+//   return dispatch => {
+//     dispatch(fetchRegionsListReq());
+//     let queryString = qs.stringify(params);
+//     let url =
+//       type === PROGRAM
+//         ? `/program/${organizationId}/regionmasters${
+//             queryString ? "?" + queryString : ""
+//           }`
+//         : `/organization/${organizationId}/regionmasters${
+//             queryString ? "?" + queryString : ""
+//           }`;
+//     api(url, "GET", {}, true).then(
+//       response => {
+//         dispatch(fetchRegionsListSuccess(response));
+//       },
+//       error => {
+//         dispatch(fetchRegionsListError(error));
+//       }
+//     );
+//   };
+// };
+
+export const _loadRegionsMaster = (organizationId, type, params) => {
+  let queryString = qs.stringify(params);
+  let url =
+    type === PROGRAM
+      ? `/program/${organizationId}/regionmasters${
+          queryString ? "?" + queryString : ""
+        }`
+      : `/organization/${organizationId}/regionmasters${
+          queryString ? "?" + queryString : ""
+        }`;
+  return api(url, "GET", {}, true).then(res => res);
 };
 
 function fetchRegionsServedReq() {
