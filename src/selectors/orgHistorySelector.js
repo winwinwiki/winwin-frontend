@@ -23,7 +23,11 @@ const orgHistorySelector = createSelector(
 
         //sentence construction  - detail property
         let detail = `${actionLabels[key]} ${entityLabels[x.entityType]} ${
-          x.entityName ? x.entityName : ""
+          x.entityName
+            ? x.entityCode
+              ? `${x.entityCode} ${x.entityName}`
+              : x.entityName
+            : ""
         }`;
 
         //create a new record when modifiedAt is not found
