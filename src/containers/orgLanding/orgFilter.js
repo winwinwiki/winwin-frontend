@@ -87,6 +87,7 @@ class OrgFilters extends React.Component {
               activeOrg={activeButton}
               toggleAppliedFilterModal={this.toggleAppliedFilterModal}
               isFilterModalVisible={isFilterModalVisible}
+              resetFilters={this.props.resetFilters}
             />
           </div>
         </div>
