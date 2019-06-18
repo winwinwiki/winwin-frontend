@@ -404,7 +404,7 @@ class OrgList extends React.Component {
             pageSize={pageSize}
             manual //allow server side pagination
             showPageSizeOptions
-            pageSizeOptions={[10, 25, 50, 100, 500]}
+            pageSizeOptions={[10, 25, 50, 100]}
             onPageSizeChange={this.onPageSizeChange}
             pages={totalPages} //indicates total number of pages
             page={page}
