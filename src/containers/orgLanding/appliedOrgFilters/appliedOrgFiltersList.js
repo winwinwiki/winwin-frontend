@@ -536,6 +536,7 @@ class AppliedOrgFiltersList extends React.Component {
   };
 
   clearAppliedFilters = () => {
+    this.props.resetFilters();
     this.setState(
       {
         pageNo: 0,
