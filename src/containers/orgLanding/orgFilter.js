@@ -16,7 +16,35 @@ class OrgFilters extends React.Component {
     this.changePage = this.changePage.bind(this);
     this.toggleAppliedFilterModal = this.toggleAppliedFilterModal.bind(this);
     this.setActiveButton = this.setActiveButton.bind(this);
+    this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
   }
+
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+
+  /**
+   * Set the wrapper ref
+   */
+  setWrapperRef(node) {
+    this.wrapperRef = node;
+  }
+
+  /**
+   * Alert if clicked on outside of element
+   */
+  handleClickOutside(event) {
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+      // alert("You clicked outside of me!");
+      this.setState({ isFilterModalVisible: false });
+    }
+  }
+
   render() {
     const {
       activeButton,
@@ -61,7 +89,7 @@ class OrgFilters extends React.Component {
           />
         </div>
 
-        <div>
+        <div ref={this.setWrapperRef}>
           <label
             htmlFor="filter"
             className="d-block p-0 mb-0 col-form-label-sm"
@@ -88,6 +116,7 @@ class OrgFilters extends React.Component {
               toggleAppliedFilterModal={this.toggleAppliedFilterModal}
               isFilterModalVisible={isFilterModalVisible}
               resetFilters={this.props.resetFilters}
+              resetPagination={this.props.resetPagination}
             />
           </div>
         </div>
