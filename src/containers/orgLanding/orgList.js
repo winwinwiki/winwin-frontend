@@ -375,6 +375,7 @@ class OrgList extends React.Component {
           getFilteredListOfOrg={this.getFilteredListOfOrg}
           filterOrgList={this.filterOrgList}
           resetFilters={this.resetFilters}
+          resetPagination={this.resetPagination}
         />
         <div className="d-flex py-3 align-items-center applied-filters-container">
           <Dropdown
@@ -454,25 +455,21 @@ class OrgList extends React.Component {
     );
   }
 
-  resetFilters = () => {
-    this.setState({ searchText: "", pageSize: 10 });
-    const { pageSize } = this.state;
-    const { appliedFilterList, filters } = this.props;
+  resetPagination = resetAll =>
+    resetAll
+      ? this.setState({ searchText: "", page: 0, pageSize: 10 })
+      : this.setState({ page: 0, pageSize: 10 });
 
-    if (appliedFilterList) {
-      appliedFilterList.pageNo = 0;
-      appliedFilterList.pageSize = 10;
-      this.props.fetchOrganisationsList({
-        ...filters,
-        ...modifiyFilterList(appliedFilterList)
-      });
-    } else {
-      this.props.fetchOrganisationsList({
-        ...filters,
-        pageNo: 0,
-        pageSize
-      });
-    }
+  resetFilters = () => {
+    this.resetPagination({ resetAll: true });
+    const { pageSize } = this.state;
+    const { filters } = this.props;
+
+    this.props.fetchOrganisationsList({
+      ...filters,
+      pageNo: 0,
+      pageSize
+    });
   };
 
   onPageSizeChange = pageSize => {
@@ -664,6 +661,7 @@ class OrgList extends React.Component {
     this.props.setAppliedFilters(filtersObj, { pageNo, pageSize: 10 });
     this.setState({
       searchText: "",
+      page: 0,
       pageSize: 10,
       activeButton: ["All"]
     });

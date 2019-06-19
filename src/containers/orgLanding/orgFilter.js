@@ -88,6 +88,7 @@ class OrgFilters extends React.Component {
               toggleAppliedFilterModal={this.toggleAppliedFilterModal}
               isFilterModalVisible={isFilterModalVisible}
               resetFilters={this.props.resetFilters}
+              resetPagination={this.props.resetPagination}
             />
           </div>
         </div>
