@@ -20,14 +20,15 @@ class ResetPassword extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    const { resetPassword } = this.props;
+    const { resetPassword, location: { state } = {} } = this.props;
     if (
       nextProps &&
       nextProps.resetPassword !== resetPassword &&
       nextProps.resetPassword.data
     ) {
       if (!nextProps.resetPassword.error) {
-        this.props.changePage();
+        !nextProps.resetPassword.resendCode &&
+          this.props.changePage({ source: "forgotPasswordPage" });
         this.setState({
           confirmPassword: "",
           password: ""
@@ -39,6 +40,20 @@ class ResetPassword extends React.Component {
   render() {
     let { confirmPassword, password, code, formError } = this.state;
     let { resetPassword } = this.props;
+    if (resetPassword.error)
+      return (
+        <div className="mt-4" style={{ color: "white" }}>
+          {" "}
+          Oops! Something Bad Happened!{" "}
+          <span
+            className="cursor-pointer"
+            style={{ color: "blue" }}
+            onClick={() => window.location.reload()}
+          >
+            Reload
+          </span>
+        </div>
+      );
     return (
       <div className="w-100 flex-fill d-flex flex-column justify-content-center">
         <NotificationToaster />
@@ -113,9 +128,26 @@ class ResetPassword extends React.Component {
         >
           Reset
         </button>
+        <div className="mt-4" style={{ color: "white" }}>
+          {" "}
+          Haven't recieved verification email?{" "}
+          <span
+            className="cursor-pointer"
+            style={{ color: "blue" }}
+            onClick={this.onResendCode}
+          >
+            Resend
+          </span>
+        </div>
       </div>
     );
   }
+
+  onResendCode = e => {
+    e.preventDefault();
+    const { location: { state: email } = {} } = this.props;
+    this.props.onResetPassword({ email }, true);
+  };
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -183,7 +215,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      changePage: () => push("/"),
+      changePage: source => push("/", source),
       onResetPassword
     },
     dispatch

@@ -1,8 +1,13 @@
-import { RESETPASSWORD_REQUEST, RESETPASSWORD_SUCCESS, RESETPASSWORD_ERROR } from '../../constants/dispatch';
+import {
+  RESETPASSWORD_REQUEST,
+  RESETPASSWORD_SUCCESS,
+  RESETPASSWORD_ERROR
+} from "../../constants/dispatch";
 
 const initialState = {
   loading: false,
   data: null,
+  resendCode: false,
   error: false
 };
 
@@ -19,6 +24,7 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         loading: false,
         data: action.response,
+        resendCode: action.resendCode,
         error: false
       });
 
