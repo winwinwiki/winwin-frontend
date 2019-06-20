@@ -200,13 +200,13 @@ class OrgDetailPage extends React.Component {
                         }
                         readOnly={readOnly}
                         value={
-                          (orgDetail.naicsCode.code
-                            ? `${orgDetail.naicsCode.code} - ${
-                                orgDetail.naicsCode.name
-                              }`
-                            : orgDetail.naicsCode.name) ||
-                          orgDetail.naicsCode ||
-                          ""
+                          orgDetail.naicsCode
+                            ? orgDetail.naicsCode.code
+                              ? `${orgDetail.naicsCode.code} - ${
+                                  orgDetail.naicsCode.name
+                                }`
+                              : orgDetail.naicsCode.name
+                            : ""
                         }
                       />
                     )}
@@ -223,13 +223,13 @@ class OrgDetailPage extends React.Component {
                         }
                         readOnly={readOnly}
                         value={
-                          (orgDetail.nteeCode.code
-                            ? `${orgDetail.nteeCode.code} - ${
-                                orgDetail.nteeCode.name
-                              }`
-                            : orgDetail.nteeCode.name) ||
-                          orgDetail.nteeCode ||
-                          ""
+                          orgDetail.nteeCode
+                            ? orgDetail.nteeCode.code
+                              ? `${orgDetail.nteeCode.code} - ${
+                                  orgDetail.nteeCode.name
+                                }`
+                              : orgDetail.nteeCode.name
+                            : ""
                         }
                       />
                     )}
