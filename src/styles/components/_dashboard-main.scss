@@ -10,7 +10,7 @@
 }
 
 .dashboard-container{
-  overflow: hidden;
+  // overflow: hidden;
   //overflow-x: hidden;
   //overflow-y: auto;
   //overflow: auto;
@@ -23,8 +23,8 @@
   .dashboard-content{
     padding: 1rem;
     flex: 1;
-    overflow-x: hidden;
-    overflow-y: auto;
+    // overflow-x: hidden;
+    // overflow-y: auto;
     -webkit-overflow-scrolling: touch; //momentum scroll
   }
   .dashboard-footer{

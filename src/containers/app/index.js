@@ -2,6 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import LoadingSpinner from "../common/loadingSpinner";
+import FooterComponent from "../footer";
+import Header from "../header";
 import { loadUserFromStorageAction } from "../../actions/common/localStorageAction";
 
 class App extends React.Component {
@@ -27,9 +29,10 @@ class App extends React.Component {
         {loader.loading && (
           <LoadingSpinner message={loader.message} fullscreen={true} />
         )}
-        <div className="main-content d-flex container">
+        <div className="main-content d-flex flex-column container">
           {this.props.children}
         </div>
+        <FooterComponent />
       </React.Fragment>
     );
   }
