@@ -85,6 +85,16 @@ const filtersObj = {
   pageSize: 10
 };
 
+const getNoDataProps = props => ({
+  loading: props.loading
+});
+
+const NoDataComponent = props => {
+  const { children, loading } = props;
+
+  return loading ? null : <div className="rt-noData">{children}</div>;
+};
+
 class OrgList extends React.Component {
   state = {
     entity: "",
@@ -358,7 +368,7 @@ class OrgList extends React.Component {
       totalPages,
       page
     } = this.state;
-    const { appliedFilterList } = this.props;
+    const { appliedFilterList, orgList: { loading } = {} } = this.props;
 
     let orgList = this.state.orgList;
     if (!orgList) {
@@ -386,7 +396,11 @@ class OrgList extends React.Component {
             onChange={this.onDropdownChange}
             items={filterList}
           />
-          <div className="result-count">{orgCount} organizations found</div>
+          {orgCount ? (
+            <div className="result-count">{orgCount} organizations found</div>
+          ) : (
+            ""
+          )}
           <AppliedOrgFilters />
           {appliedFilterList && !isEqual(appliedFilterList, filtersObj) && (
             <div className="clear-filters">
@@ -409,15 +423,15 @@ class OrgList extends React.Component {
             onPageSizeChange={this.onPageSizeChange}
             pages={totalPages} //indicates total number of pages
             page={page}
-            noDataText="No organization found"
+            // noDataText={!this.props.loading ? "No organizations found" : ""}
+            getNoDataProps={getNoDataProps}
+            NoDataComponent={NoDataComponent}
             data={orgList}
             columns={this.columns}
             className="-highlight"
             sortable={true}
             multiSort={true}
-            // onFilteredChange={(e, filtered) =>
-            //   this.handleFilteredChange(e, filtered)
-            // }
+            loading={loading}
             defaultSorted={[
               {
                 id: "org",
@@ -457,7 +471,12 @@ class OrgList extends React.Component {
 
   resetPagination = resetAll =>
     resetAll
-      ? this.setState({ searchText: "", page: 0, pageSize: 10 })
+      ? this.setState({
+          searchText: "",
+          page: 0,
+          pageSize: 10,
+          activeButton: ["All"]
+        })
       : this.setState({ page: 0, pageSize: 10 });
 
   resetFilters = () => {
@@ -470,6 +489,13 @@ class OrgList extends React.Component {
       pageNo: 0,
       pageSize
     });
+  };
+
+  resetAllFilters = () => {
+    const { pageNo } = this.state;
+    this.props.fetchOrganisationsList({ pageNo, pageSize: 10 });
+    this.props.setAppliedFilters(filtersObj, { pageNo, pageSize: 10 });
+    this.resetPagination({ resetAll: true });
   };
 
   onPageSizeChange = pageSize => {
@@ -652,18 +678,6 @@ class OrgList extends React.Component {
       sectors: apiObj,
       pageNo,
       pageSize
-    });
-  };
-
-  resetAllFilters = () => {
-    const { pageNo } = this.state;
-    this.props.fetchOrganisationsList({ pageNo, pageSize: 10 });
-    this.props.setAppliedFilters(filtersObj, { pageNo, pageSize: 10 });
-    this.setState({
-      searchText: "",
-      page: 0,
-      pageSize: 10,
-      activeButton: ["All"]
     });
   };
 }
