@@ -1,5 +1,5 @@
 import React from "react";
-import { Async } from "react-select";
+import { Async, AsyncCreatable } from "react-select";
 import VirtualizedSelect from "react-virtualized-select"; // or from 'react-select'
 import "react-virtualized/styles.css";
 import "react-virtualized-select/styles.css";
@@ -12,7 +12,7 @@ const FilterableSelect = props => {
   return (
     <VirtualizedSelect
       {...props}
-      selectComponent={Async}
+      selectComponent={AsyncCreatable}
       onChange={o => props.onSuggestChange(props.name, o)}
     />
   );
