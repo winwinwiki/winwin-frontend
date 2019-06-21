@@ -54,10 +54,10 @@ export function api(url, method, body, isAuth, contentType, timeout = 7000) {
           }) //resolve the above promise
           .catch(error => reject(error));
       }
-    }),
-    new Promise((_, reject) =>
-      setTimeout(() => reject(new Error("Connection Timeout!!")), timeout)
-    )
+    })
+    // new Promise((_, reject) =>
+    //   setTimeout(() => reject(new Error("Connection Timeout!!")), timeout)
+    // )
   ]);
 }
 
