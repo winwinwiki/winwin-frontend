@@ -22,9 +22,16 @@ const orgHistorySelector = createSelector(
         let found = filteredHistory.some(el => el.modifiedAt === customModAt);
 
         //sentence construction  - detail property
-        let detail = `${actionLabels[key]} ${entityLabels[x.entityType]} ${
-          x.entityName ? x.entityName : ""
-        }`;
+        let detail = `${actionLabels[key]} ${entityLabels(
+          x.entityType,
+          x.parentEntityType
+        )} ${
+          x.entityName
+            ? x.entityCode
+              ? `${x.entityCode} ${x.entityName}`
+              : x.entityName
+            : ""
+        } - ${x.parentEntityName}`;
 
         //create a new record when modifiedAt is not found
         if (!found) {
@@ -51,20 +58,31 @@ const orgHistorySelector = createSelector(
   }
 );
 
+const entityLabels = (label, parentLabel) => {
+  switch (label) {
+    case "spi tag":
+      return `${titleCase(parentLabel)} Level Tag: SPI -`;
+    case "sdg tag":
+      return `${titleCase(parentLabel)} Level Tag: SDG -`;
+    case "dataset":
+      return `${titleCase(parentLabel)} Level Data Set:`;
+    case "organization":
+      return "Organization:";
+    case "note":
+      return "a Note -";
+    case "resource":
+      return `${titleCase(parentLabel)} Level Resource:`;
+    case "region Served":
+      return `${titleCase(parentLabel)} Level Region Served -`;
+    default:
+      return "";
+  }
+};
+
 const actionLabels = {
   create: "Created",
   update: "Updated",
   delete: "Removed"
-};
-
-const entityLabels = {
-  "spi tag": "Organization Level Tag: SPI -",
-  "sdg tag": "Organization Level Tag: SDG -",
-  dataset: "Data Set:",
-  organization: "Organization:",
-  note: "a Note -",
-  resource: "Resource:",
-  "region Served": "Region Served -"
 };
 
 export { orgHistorySelector };

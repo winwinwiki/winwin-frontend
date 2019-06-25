@@ -5,17 +5,13 @@ import {
 } from "../../constants/dispatch";
 import { api } from "../../api/api";
 
-export const onResetPassword = params => {
+export const onResetPassword = (params, resendCode) => {
   return dispatch => {
     dispatch(rpRequest());
-    api(
-      "/user/confirmResetPassword",
-      "POST",
-      JSON.stringify(params),
-      true
-    ).then(
+    let url = resendCode ? "/user/resetPassword" : "/user/confirmResetPassword";
+    api(url, "POST", JSON.stringify(params), true).then(
       response => {
-        dispatch(rpSuccess(response));
+        dispatch(rpSuccess(response, resendCode));
       },
       error => {
         dispatch(rpError(error));
@@ -30,10 +26,11 @@ function rpRequest() {
   };
 }
 
-function rpSuccess(response) {
+function rpSuccess(response, resendCode) {
   return {
     type: RESETPASSWORD_SUCCESS,
-    response
+    response,
+    resendCode
   };
 }
 

@@ -50,7 +50,7 @@ class RegionsServed extends Component {
 
   onChange = (name, valObj) => {
     const { regionsServed, masterRegionsList } = this.state;
-    regionsServed.region[name] = valObj.label;
+    if (valObj) regionsServed.region[name] = valObj.label;
 
     if (valObj) {
       //to find the regionId from masters region list
@@ -117,6 +117,7 @@ class RegionsServed extends Component {
                     <div className="col-sm-22">
                       <FilterableSelect
                         async
+                        isClearable
                         className="position-relative mt-2"
                         name="regionName"
                         placeholder="Search regions (for ex. Seattle, Washington, United States)"

@@ -85,6 +85,16 @@ const filtersObj = {
   pageSize: 10
 };
 
+const getNoDataProps = props => ({
+  loading: props.loading
+});
+
+const NoDataComponent = props => {
+  const { children, loading } = props;
+
+  return loading ? null : <div className="rt-noData">{children}</div>;
+};
+
 class OrgList extends React.Component {
   state = {
     entity: "",
@@ -358,7 +368,7 @@ class OrgList extends React.Component {
       totalPages,
       page
     } = this.state;
-    const { appliedFilterList } = this.props;
+    const { appliedFilterList, orgList: { loading } = {} } = this.props;
 
     let orgList = this.state.orgList;
     if (!orgList) {
@@ -374,6 +384,8 @@ class OrgList extends React.Component {
           getSearchedText={this.getSearchedText}
           getFilteredListOfOrg={this.getFilteredListOfOrg}
           filterOrgList={this.filterOrgList}
+          resetFilters={this.resetFilters}
+          resetPagination={this.resetPagination}
         />
         <div className="d-flex py-3 align-items-center applied-filters-container">
           <Dropdown
@@ -384,7 +396,11 @@ class OrgList extends React.Component {
             onChange={this.onDropdownChange}
             items={filterList}
           />
-          <div className="result-count">{orgCount} organizations found</div>
+          {orgCount ? (
+            <div className="result-count">{orgCount} organizations found</div>
+          ) : (
+            ""
+          )}
           <AppliedOrgFilters />
           {appliedFilterList && !isEqual(appliedFilterList, filtersObj) && (
             <div className="clear-filters">
@@ -402,18 +418,20 @@ class OrgList extends React.Component {
           <ReactTable
             pageSize={pageSize}
             manual //allow server side pagination
-            showPageSizeOptions={false}
+            showPageSizeOptions
+            pageSizeOptions={[10, 25, 50, 100]}
+            onPageSizeChange={this.onPageSizeChange}
             pages={totalPages} //indicates total number of pages
             page={page}
-            noDataText="No organization found"
+            // noDataText={!this.props.loading ? "No organizations found" : ""}
+            getNoDataProps={getNoDataProps}
+            NoDataComponent={NoDataComponent}
             data={orgList}
             columns={this.columns}
             className="-highlight"
             sortable={true}
             multiSort={true}
-            // onFilteredChange={(e, filtered) =>
-            //   this.handleFilteredChange(e, filtered)
-            // }
+            loading={loading}
             defaultSorted={[
               {
                 id: "org",
@@ -451,6 +469,56 @@ class OrgList extends React.Component {
     );
   }
 
+  resetPagination = resetAll =>
+    resetAll
+      ? this.setState({
+          searchText: "",
+          page: 0,
+          pageSize: 10,
+          activeButton: ["All"]
+        })
+      : this.setState({ page: 0, pageSize: 10 });
+
+  resetFilters = () => {
+    this.resetPagination({ resetAll: true });
+    const { pageSize } = this.state;
+    const { filters } = this.props;
+
+    this.props.fetchOrganisationsList({
+      ...filters,
+      pageNo: 0,
+      pageSize
+    });
+  };
+
+  resetAllFilters = () => {
+    const { pageNo } = this.state;
+    this.props.fetchOrganisationsList({ pageNo, pageSize: 10 });
+    this.props.setAppliedFilters(filtersObj, { pageNo, pageSize: 10 });
+    this.resetPagination({ resetAll: true });
+  };
+
+  onPageSizeChange = pageSize => {
+    const { page } = this.state;
+    this.setState({ pageSize });
+    const { appliedFilterList, filters } = this.props;
+
+    if (appliedFilterList) {
+      appliedFilterList.pageNo = page;
+      appliedFilterList.pageSize = pageSize;
+      this.props.fetchOrganisationsList({
+        ...filters,
+        ...modifiyFilterList(appliedFilterList)
+      });
+    } else {
+      this.props.fetchOrganisationsList({
+        ...filters,
+        pageNo: page,
+        pageSize: pageSize
+      });
+    }
+  };
+
   handleSortedChange = sorted => {
     const { page, pageSize } = this.state;
     const { appliedFilterList, filters } = this.props;
@@ -466,10 +534,9 @@ class OrgList extends React.Component {
   };
 
   handleFilteredChange = nameSearch => {
-    const { page, pageSize } = this.state;
+    const { pageSize } = this.state;
     const { appliedFilterList, filters } = this.props;
 
-    // if (searchedText)
     this.props.fetchOrganisationsList({
       ...filters,
       ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
@@ -477,12 +544,6 @@ class OrgList extends React.Component {
       pageSize,
       nameSearch
     });
-    // else
-    //   this.props.fetchOrganisationsList({
-    //     ...filters,
-    //     pageNo: page,
-    //     pageSize
-    //   });
   };
 
   handlePageChange = page => {
@@ -617,15 +678,6 @@ class OrgList extends React.Component {
       sectors: apiObj,
       pageNo,
       pageSize
-    });
-  };
-
-  resetAllFilters = () => {
-    const { pageNo, pageSize } = this.state;
-    this.props.fetchOrganisationsList({ pageNo, pageSize });
-    this.props.setAppliedFilters(filtersObj, { pageNo, pageSize });
-    this.setState({
-      activeButton: ["All"]
     });
   };
 }

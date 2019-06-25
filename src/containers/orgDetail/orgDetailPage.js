@@ -132,7 +132,13 @@ class OrgDetailPage extends React.Component {
 
                     <Dropdown
                       placeholder="Select Sector Level"
-                      selectedItem={orgDetail.sectorLevel}
+                      className="form-control"
+                      selectedItem={
+                        orgDetail.sector &&
+                        orgDetail.sector.toLowerCase() !== "public"
+                          ? ""
+                          : orgDetail.sectorLevel
+                      }
                       name="sectorLevel"
                       containerClass="dropdown dropdown-with-searchbox"
                       onChange={this.onDropdownChange}
@@ -158,7 +164,12 @@ class OrgDetailPage extends React.Component {
                           orgDetail.sector.toLowerCase() !== "public")
                       }
                       placeholder="Enter Sector Level Name"
-                      value={orgDetail.sectorLevelName || ""}
+                      value={
+                        orgDetail.sector &&
+                        orgDetail.sector.toLowerCase() !== "public"
+                          ? ""
+                          : orgDetail.sectorLevelName || ""
+                      }
                     />
                   </div>
                   <div className="form-group">
@@ -189,13 +200,13 @@ class OrgDetailPage extends React.Component {
                         }
                         readOnly={readOnly}
                         value={
-                          (orgDetail.naicsCode.code
-                            ? `${orgDetail.naicsCode.code} - ${
-                                orgDetail.naicsCode.name
-                              }`
-                            : orgDetail.naicsCode.name) ||
-                          orgDetail.naicsCode ||
-                          ""
+                          orgDetail.naicsCode
+                            ? orgDetail.naicsCode.code
+                              ? `${orgDetail.naicsCode.code} - ${
+                                  orgDetail.naicsCode.name
+                                }`
+                              : orgDetail.naicsCode.name
+                            : ""
                         }
                       />
                     )}
@@ -212,13 +223,13 @@ class OrgDetailPage extends React.Component {
                         }
                         readOnly={readOnly}
                         value={
-                          (orgDetail.nteeCode.code
-                            ? `${orgDetail.nteeCode.code} - ${
-                                orgDetail.nteeCode.name
-                              }`
-                            : orgDetail.nteeCode.name) ||
-                          orgDetail.nteeCode ||
-                          ""
+                          orgDetail.nteeCode
+                            ? orgDetail.nteeCode.code
+                              ? `${orgDetail.nteeCode.code} - ${
+                                  orgDetail.nteeCode.name
+                                }`
+                              : orgDetail.nteeCode.name
+                            : ""
                         }
                       />
                     )}
