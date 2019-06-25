@@ -1,6 +1,6 @@
 export const apiConfig = {
   protocol: "http",
-  host: "ec2-54-209-46-206.compute-1.amazonaws.com",
+  host: "ec2-35-166-208-134.us-west-2.compute.amazonaws.com",
   bulkUploadTemplateUrl:
     "https://s3.amazonaws.com/winwin-public-bucket-dev/admin_bulk_create_template.csv",
   s3: {

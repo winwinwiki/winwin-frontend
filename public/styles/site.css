@@ -7271,7 +7271,6 @@ html {
 html, body {
   min-height: 100vh;
   height: 100%;
-  overflow: hidden;
   font-weight: 400;
   padding: 0;
   margin: 0;
@@ -7281,6 +7280,10 @@ html, body {
     outline: 0;
     /* or */
     outline: none; }
+
+footer {
+  height: 50px;
+  background-color: #F5F5F6; }
 
 h3 {
   font-size: 0.875rem; }
@@ -7308,6 +7311,13 @@ p {
 
 .bg-dark {
   background-color: #4D4D4D !important; }
+
+.main-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1030; }
 
 .card-login ::-webkit-input-placeholder {
   text-transform: uppercase;
@@ -7515,7 +7525,6 @@ textarea {
   min-height: 0; }
 
 .dashboard-container {
-  overflow: hidden;
   display: flex;
   flex: 1 100%;
   flex-direction: column;
@@ -7524,8 +7533,6 @@ textarea {
   .dashboard-container .dashboard-content {
     padding: 1rem;
     flex: 1;
-    overflow-x: hidden;
-    overflow-y: auto;
     -webkit-overflow-scrolling: touch; }
   .dashboard-container.dashboard-compressed .dashboard-header,
   .dashboard-container.dashboard-compressed .dashboard-content {
