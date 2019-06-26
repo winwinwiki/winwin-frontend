@@ -22,6 +22,7 @@ import {
   fetchNTEEList
 } from "../../actions/orgDetail/industryClassificationAction";
 import AutoSuggestComponent from "../common/autoCompleteComponent";
+import { orgDetailsSelector } from "../../selectors/orgDetailsSelector";
 class OrgDetailPage extends React.Component {
   state = {
     orgDetail: null,
@@ -199,15 +200,7 @@ class OrgDetailPage extends React.Component {
                           this.onSuggestChange("naicsCode", value, e)
                         }
                         readOnly={readOnly}
-                        value={
-                          orgDetail.naicsCode
-                            ? orgDetail.naicsCode.code
-                              ? `${orgDetail.naicsCode.code} - ${
-                                  orgDetail.naicsCode.name
-                                }`
-                              : orgDetail.naicsCode.name
-                            : ""
-                        }
+                        value={orgDetail.naicsCode ? orgDetail.naicsCode : ""}
                       />
                     )}
                   </div>
@@ -222,15 +215,7 @@ class OrgDetailPage extends React.Component {
                           this.onSuggestChange("nteeCode", value, e)
                         }
                         readOnly={readOnly}
-                        value={
-                          orgDetail.nteeCode
-                            ? orgDetail.nteeCode.code
-                              ? `${orgDetail.nteeCode.code} - ${
-                                  orgDetail.nteeCode.name
-                                }`
-                              : orgDetail.nteeCode.name
-                            : ""
-                        }
+                        value={orgDetail.nteeCode ? orgDetail.nteeCode : ""}
                       />
                     )}
                   </div>
@@ -598,7 +583,7 @@ class OrgDetailPage extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  organizationDetail: state.orgDetail,
+  organizationDetail: orgDetailsSelector(state),
   industryCodes: industryClassificationSelector(state)
 });
 
