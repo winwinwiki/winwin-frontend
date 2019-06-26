@@ -74,11 +74,17 @@ class AppliedOrgFiltersList extends React.Component {
   };
 
   componentDidMount() {
-    this.props.fetchUsersList();
-    this.props.fetchNAICSList();
-    this.props.fetchNTEEList();
-    this.props.fetchSpiTagsList();
-    this.props.fetchSdgTagsList();
+    this.timer = setTimeout(() => {
+      this.props.fetchUsersList();
+      this.props.fetchNAICSList();
+      this.props.fetchNTEEList();
+      this.props.fetchSpiTagsList();
+      this.props.fetchSdgTagsList();
+    }, 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
   }
 
   componentWillReceiveProps(nextProps) {
