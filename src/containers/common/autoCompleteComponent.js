@@ -56,11 +56,10 @@ class AutoSuggestComponent extends Component {
     const inputProps = {
       placeholder,
       className,
-      value,
+      value: value ? (value.name ? value.name : value) : "",
       onChange: this.props.onChange,
       disabled: this.props.readOnly
     };
-
     // Finally, render it!
     return (
       <Autosuggest
