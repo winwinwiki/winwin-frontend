@@ -66,8 +66,8 @@ const enhancer = composeEnhancers(
 
 export const store = createStore(
   reducer,
+  initialState,
   enhancer
-  // initialState,
   // compose(applyMiddleware(...middleware))
 );
 

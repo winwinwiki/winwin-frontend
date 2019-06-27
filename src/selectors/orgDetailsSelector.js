@@ -6,18 +6,19 @@ const orgDetailsSelector = createSelector(
   [orgDetails],
   details => {
     if (!details) return null;
-    const { data: { response } = {} } = details;
-    if (response.naicsCode)
+    // const { data: { response } = {} } = details;
+    const response = details && details.response;
+    if (response && response.naicsCode)
       response.naicsCode.name = `${response.naicsCode.code} - ${
         response.naicsCode.name
       }`;
 
-    if (response.nteeCode)
+    if (response && response.nteeCode)
       response.nteeCode.name = `${response.nteeCode.code} - ${
         response.nteeCode.name
       }`;
 
-    return details;
+    return details || {};
   }
 );
 
