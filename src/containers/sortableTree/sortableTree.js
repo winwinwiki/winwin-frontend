@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { fetchOrgHierarchy } from "../../actions/orgDetail/orgChartAction";
 import { resetOrgHierarchyData } from "../../actions/orgDetail/orgChartAction";
+import { fetchOrganisationDetail } from "../../actions/orgDetail/orgDetailAction";
 import {
   startLoaderAction,
   stopLoaderAction
@@ -22,6 +23,11 @@ class Tree extends Component {
   };
 
   componentDidMount() {
+    //detech when browser's back button is clicked!
+    window.onpopstate = () => {
+      this.props.fetchOrganisationDetail({ orgId: this.props.match.params.id });
+    };
+
     this.props.fetchOrgHierarchy(this.props.match.params.id);
   }
 
@@ -213,7 +219,8 @@ const mapDispatchToProps = dispatch =>
       fetchOrgHierarchy,
       resetOrgHierarchyData,
       startLoaderAction,
-      stopLoaderAction
+      stopLoaderAction,
+      fetchOrganisationDetail
     },
     dispatch
   );
