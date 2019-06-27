@@ -170,7 +170,7 @@ class SideBar extends React.Component {
             </Link>
           </li>
         </ul>
-        <div className="social-footer mt-auto">
+        <div className="social-footer mt-4">
           <ul className="d-flex flex-row justify-content-between pl-1 pr-3">
             <li>
               <a href="javascript:;">
