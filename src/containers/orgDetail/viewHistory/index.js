@@ -29,7 +29,10 @@ class OrgHistory extends React.Component {
       return null;
     }
     return (
-      <section className="dashboard-content p-0 py-3 org-details-container">
+      <section
+        className="dashboard-content p-0 py-3 org-details-container"
+        style={{ minWidth: 0 }}
+      >
         <div className="col-md-18 m-auto card">
           <div className="col-md-18 m-auto d-flex flex-column py-3">
             <div className="row mb-4 py-3 border-bottom">
