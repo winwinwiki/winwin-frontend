@@ -36,7 +36,7 @@ deploy:
     bucket: "winwin-frontend-bucket-prod"
 after_deploy: 
   - echo "Deployment is complete"
-  # The below command creates a invalidation on cloud front which clears all the caches on server to reflect fresh changes
+  #The below command creates a invalidation on cloud front which clears all the caches on server to reflect fresh changes
   aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID \ --paths /*
   #- travis-ci-cloudfront-invalidation -a $AWS_ACCESS_KEY -s $AWS_SECRET_KEY -c $AWS_CLOUDFRONT_DIST_ID -i '/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST
 
