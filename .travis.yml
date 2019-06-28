@@ -34,4 +34,6 @@ deploy:
   region: "us-east-2"
   on:
     branch: master
-after_deploy: "echo 'Deployment is complete on $TRAVIS_BRANCH.'"
+after_deploy: 
+  - travis-ci-cloudfront-invalidation -a $AWS_ACCESS_KEY -s $AWS_SECRET_KEY -c $AWS_CLOUDFRONT_DIST_ID -i '/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST
+"echo 'Deployment is complete on $TRAVIS_BRANCH.'"
