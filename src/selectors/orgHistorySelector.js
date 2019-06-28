@@ -74,6 +74,8 @@ const entityLabels = (label, parentLabel) => {
       return `${titleCase(parentLabel)} Level Resource:`;
     case "region Served":
       return `${titleCase(parentLabel)} Level Region Served -`;
+    case "program":
+      return `Program -`;
     default:
       return "";
   }
