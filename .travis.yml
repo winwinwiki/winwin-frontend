@@ -12,7 +12,10 @@ script:
 before_install:
   # set up awscli packages
   - pip install --user awscli
-  - aws configure
+  - export AWS_DEFAULT_REGION=[secure]
+  - export AWS_ACCESS_KEY_ID=[secure]
+  - export AWS_SECRET_ACCESS_KEY=[secure]
+  #- aws configure
 install: true
 before_deploy: 
   - echo "Deployment in progress"
