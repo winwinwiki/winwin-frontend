@@ -9,6 +9,10 @@ script:
   - npm install
   - unset CI #To avoid build failure due to warnings
   - npm run build
+before_install:
+  # set up awscli packages
+  - pip install --user awscli
+install: true
 before_deploy: 
   - echo "Deployment in progress"
 
