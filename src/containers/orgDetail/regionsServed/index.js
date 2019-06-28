@@ -117,13 +117,19 @@ class RegionsServed extends Component {
                     <div className="col-sm-22">
                       <FilterableSelect
                         async
-                        isClearable
+                        // isClearable
+                        // allowCreateWhileLoading
                         className="position-relative mt-2"
                         name="regionName"
                         placeholder="Search regions (for ex. Seattle, Washington, United States)"
                         options={this.state.regionsList || []}
                         backspaceRemoves={false}
+                        noOptionsMessage={() => "Type atleast 3 characters."}
+                        // loadingMessage={() =>
+                        //   "Loading....(Type atleast 3 characters.)"
+                        // }
                         onSuggestChange={this.onChange}
+                        value //this clears the input search bar on selecting an option
                         loadOptions={(input, callback) =>
                           this._getOptionsAsync(
                             input,
