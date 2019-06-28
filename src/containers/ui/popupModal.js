@@ -15,7 +15,7 @@ export const PopupModal = ({ handleDelete, ...m }) => {
         className="modal-dialog modal-sm modal-dialog-centered"
         role="document"
       >
-        <div className="modal-content">
+        <div className="modal-content" style={{ overflow: "hidden" }}>
           <div className="dashboard-container">
             <div className="dashboard-header">
               <div className="modal-header flex-column">
