@@ -11,7 +11,7 @@ script:
   - npm run build
 before_install:
   # set up awscli packages
-  - pip install --user awscl
+  - pip install --user awscli
   - aws configure
 install: true
 before_deploy: 
