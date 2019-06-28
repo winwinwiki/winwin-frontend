@@ -205,19 +205,19 @@ class OrgList extends React.Component {
         );
       },
       Header: (
-        <span>
-          <input
-            type="checkbox"
-            className="checkbox"
-            checked={this.state.selectAll === 1}
-            ref={input => {
-              if (input) {
-                input.indeterminate = this.state.selectAll === 2;
-              }
-            }}
-            onChange={() => this.toggleSelectAll()}
-          />
-        </span>
+        x //adding fat arrow fixed the checkbox not showing when checked
+      ) => (
+        <input
+          type="checkbox"
+          className="checkbox"
+          checked={this.state.selectAll === 1}
+          ref={input => {
+            if (input) {
+              input.indeterminate = this.state.selectAll === 2;
+            }
+          }}
+          onChange={() => this.toggleSelectAll()}
+        />
       ),
 
       accessor: "id",
