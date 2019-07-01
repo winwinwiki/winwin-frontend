@@ -7,7 +7,7 @@ const orgDetailsSelector = createSelector(
   details => {
     if (!details) return null;
     // const { data: { response } = {} } = details;
-    const response = details && details.response;
+    let response = details && details.data.response;
     if (response && response.naicsCode)
       response.naicsCode.name = `${response.naicsCode.code} - ${
         response.naicsCode.name
