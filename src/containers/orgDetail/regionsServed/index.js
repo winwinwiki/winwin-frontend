@@ -124,7 +124,7 @@ class RegionsServed extends Component {
                         placeholder="Search regions (for ex. Seattle, Washington, United States)"
                         options={this.state.regionsList || []}
                         backspaceRemoves={false}
-                        noOptionsMessage={() => "Type atleast 3 characters."}
+                        noOptionsMessage={() => "Type at least 3 characters."}
                         // loadingMessage={() =>
                         //   "Loading....(Type atleast 3 characters.)"
                         // }
