@@ -22,7 +22,7 @@ class AppliedOrgFilters extends React.Component {
         {this.createTag(valueArr)}
         {/* {appliedFilterList.map(filter => <span className="badge badge-pill badge-secondary"> {filter} <a href="javascript:;" className=""><i className="icon-close"></i></a></span>)} */}
         {!tagCount && <span> No filters applied</span>}
-        {tagCount > 3 && (
+        {tagCount > 4 && (
           <a
             href="javascript:;"
             className="dropdown-toggle plain text-primary"
@@ -32,10 +32,10 @@ class AppliedOrgFilters extends React.Component {
             aria-haspopup="true"
             aria-expanded="false"
           >
-            + {tagCount - 3} More
+            + {tagCount - 4} More
           </a>
         )}
-        {tagCount > 3 && (
+        {tagCount > 4 && (
           <div
             className="dropdown-menu dropdown-menu-left"
             aria-labelledby="dropdownMenuLink1"
@@ -126,7 +126,7 @@ class AppliedOrgFilters extends React.Component {
           ]
         : valueArr;
     return tagValues.map((val, idx) => {
-      if (val && count <= 2) {
+      if (val && count <= 3) {
         count++;
         return (
           <span key={idx} className="badge badge-pill badge-secondary">
@@ -202,7 +202,7 @@ class AppliedOrgFilters extends React.Component {
         : valueArr;
     return tagValues.map((val, idx) => {
       if (val) {
-        if (count > 2) {
+        if (count > 3) {
           return (
             <span key={idx} className="badge badge-pill badge-secondary">
               {" "}
