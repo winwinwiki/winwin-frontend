@@ -396,11 +396,9 @@ class OrgList extends React.Component {
             onChange={this.onDropdownChange}
             items={filterList}
           />
-          {orgCount ? (
-            <div className="result-count">{orgCount} organizations found</div>
-          ) : (
-            ""
-          )}
+
+          <div className="result-count">{orgCount} organizations found</div>
+
           <AppliedOrgFilters />
           {appliedFilterList && !isEqual(appliedFilterList, filtersObj) && (
             <div className="clear-filters">
