@@ -397,7 +397,9 @@ class OrgList extends React.Component {
             items={filterList}
           />
 
-          <div className="result-count">{orgCount} organizations found</div>
+          <div className="result-count">
+            {orgCount.toLocaleString()} organizations found
+          </div>
 
           <AppliedOrgFilters />
           {appliedFilterList && !isEqual(appliedFilterList, filtersObj) && (
