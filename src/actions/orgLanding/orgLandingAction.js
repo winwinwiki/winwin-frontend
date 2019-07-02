@@ -17,7 +17,7 @@ import { PROGRAM } from "../../constants";
 
 export const fetchOrganisationsList = params => {
   return dispatch => {
-    dispatch(setFilters(params))
+    dispatch(setFilters(params));
     dispatch(fetchOrgRequest());
     let queryString = qs.stringify(params);
     api(
@@ -60,10 +60,7 @@ export const setAppliedFilters = (appliedFilterList, params) => {
 export const fetchSdgTagsList = (orgId, type) => {
   return dispatch => {
     dispatch(setSdgListReq());
-    let url =
-      type === PROGRAM
-        ? `/program/${orgId}/sdgdata`
-        : `/organization/${orgId}/sdgdata`;
+    let url = type === PROGRAM ? `/program/sdgdata` : `/organization/sdgdata`;
     api(url, "GET", {}, true).then(
       response => {
         dispatch(setSdgListSuccess(response));
@@ -78,10 +75,7 @@ export const fetchSdgTagsList = (orgId, type) => {
 export const fetchSpiTagsList = (organizationId, type) => {
   return dispatch => {
     dispatch(setSpiListReq());
-    let url =
-      type === PROGRAM
-        ? `/program/${organizationId}/spidata`
-        : `/organization/${organizationId}/spidata`;
+    let url = type === PROGRAM ? `/program/spidata` : `/organization/spidata`;
     api(url, "GET", {}, true).then(
       response => {
         dispatch(setSpiListSuccess(response));
@@ -156,9 +150,9 @@ function setAppliedFiltersList(appliedFilterList) {
   };
 }
 
-function setFilters(filters){
+function setFilters(filters) {
   return {
     type: SET_FILTERS,
     filters
-  }
+  };
 }
