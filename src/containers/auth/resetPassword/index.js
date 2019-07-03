@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { push } from "react-router-redux";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -76,7 +76,9 @@ class ResetPassword extends React.Component {
           <small id="codeDesc" className="sr-only">
             The confirmation code seems to be invalid.
           </small>
-          {formError.code && <div>{formError.code}</div>}
+          <small className="form-element-hint text-danger">
+            {formError.code && <div>{formError.code}</div>}
+          </small>
         </div>
         <div className="form-group w-100 mb-4 login-form-group">
           <label htmlFor="userName" className="sr-only">
@@ -88,7 +90,7 @@ class ResetPassword extends React.Component {
             aria-describedby="userNameDesc"
             placeholder="Password"
             className="form-control"
-            // onBlur={this.validateForm}
+            onBlur={this.validateForm}
             onChange={this.onChange}
             name="password"
             value={password}
@@ -96,7 +98,38 @@ class ResetPassword extends React.Component {
           <small id="userNameDesc" className="sr-only">
             Password
           </small>
-          {formError.password && <div>{formError.password}</div>}
+          <small className="form-element-hint text-danger">
+            {formError.password && (
+              <Fragment>
+                {formError.password}
+                <span>
+                  <i
+                    className="icon-circle-question"
+                    id="passwordInfo"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  />
+                  <div
+                    className="dropdown-menu dropdown-menu-left"
+                    aria-labelledby="passwordInfo"
+                  >
+                    <div className="row">
+                      <div className="col">
+                        Password must
+                        <ul>
+                          <li>Be at least 8 characters long</li>
+                          <li>Include at least one capital letter (A-Z)</li>
+                          <li>Include at least one small letter (a-z)</li>
+                          <li>Include at least one number (0-9)</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </span>
+              </Fragment>
+            )}
+          </small>
         </div>
         <div className="form-group w-100 mb-4 login-form-group">
           <label htmlFor="userPassword" className="sr-only">
@@ -108,7 +141,7 @@ class ResetPassword extends React.Component {
             aria-describedby="passwordDesc"
             placeholder="Confirm Password"
             className="form-control"
-            // onBlur={this.validateForm}
+            onBlur={this.validateForm}
             onChange={this.onChange}
             name="confirmPassword"
             value={confirmPassword}
@@ -116,15 +149,16 @@ class ResetPassword extends React.Component {
           <small id="passwordDesc" className="sr-only">
             confirmPassword
           </small>
-          {formError.confirmPassword ? (
-            <div>{formError.confirmPassword}</div>
-          ) : (
-            <div>&nbsp;</div>
-          )}
+          <small className="form-element-hint text-danger">
+            {formError.confirmPassword ? formError.confirmPassword : ""}
+          </small>
         </div>
         <button
           className="btn btn-lg btn-light w-100 mt-4"
           onClick={this.onSubmit}
+          disabled={
+            formError.code || formError.confirmPassword || formError.password
+          }
         >
           Reset
         </button>
@@ -161,13 +195,13 @@ class ResetPassword extends React.Component {
     const { formError } = this.state;
     if (field === "password") {
       if (!value) {
-        formError.password = "password is required.";
+        formError.password = "Password is required.";
         this.setState({ formError });
         return;
       }
       let isValid = validate.password(value);
       if (!isValid) {
-        formError.password = "enter valid password.";
+        formError.password = "Enter a valid password.";
         this.setState({ formError });
         return;
       }
@@ -176,13 +210,13 @@ class ResetPassword extends React.Component {
       return;
     }
     if (!value) {
-      formError.confirmPassword = "confirm password is required.";
+      formError.confirmPassword = "Confirm password is required.";
       this.setState({ formError });
       return;
     }
     let isValidPwd = validate.confirmPassword(value);
     if (!isValidPwd) {
-      formError.confirmPassword = "password does not match";
+      formError.confirmPassword = "Password does not match";
       this.setState({ formError });
       return;
     }
