@@ -150,11 +150,11 @@ class ResetPassword extends React.Component {
             confirmPassword
           </small>
           <small className="form-element-hint text-danger">
-            {formError.confirmPassword ? formError.confirmPassword : ""}
+            {formError.confirmPassword}
           </small>
         </div>
         <button
-          className="btn btn-lg btn-light w-100 mt-4"
+          className="btn btn-lg btn-light w-100"
           onClick={this.onSubmit}
           disabled={
             formError.code || formError.confirmPassword || formError.password
@@ -214,7 +214,7 @@ class ResetPassword extends React.Component {
       this.setState({ formError });
       return;
     }
-    let isValidPwd = validate.confirmPassword(value);
+    let isValidPwd = validate.confirmPassword(this.state.password, value);
     if (!isValidPwd) {
       formError.confirmPassword = "Password does not match";
       this.setState({ formError });

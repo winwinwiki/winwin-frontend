@@ -164,12 +164,6 @@ class UserProfile extends React.Component {
         this.setState({ formError });
         return;
       }
-      // let isValid = validate.password(value);
-      // if (!isValid) {
-      //   formError[field] = "enter valid password.";
-      //   this.setState({ formError });
-      //   return;
-      // }
       formError[field] = "";
       this.setState({ formError });
       return;
