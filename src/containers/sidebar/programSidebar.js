@@ -84,35 +84,6 @@ class ProgramSidebar extends React.Component {
             </div>
           </li>
         </ul>
-        <div className="social-footer mt-auto">
-          <ul className="d-flex flex-row justify-content-between pl-1 pr-3">
-            <li>
-              <a href="javascript:;">
-                <i className="icon-globe" />
-              </a>
-            </li>
-            <li>
-              <a href="javascript:;">
-                <i className="icon-facebook" />
-              </a>
-            </li>
-            <li>
-              <a href="javascript:;">
-                <i className="icon-twitter" />
-              </a>
-            </li>
-            <li>
-              <a href="javascript:;">
-                <i className="icon-linkedin" />
-              </a>
-            </li>
-            <li>
-              <a href="javascript:;">
-                <i className="icon-pinterest" />
-              </a>
-            </li>
-          </ul>
-        </div>
       </div>
     );
   }
