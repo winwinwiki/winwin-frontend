@@ -56,7 +56,7 @@ after_deploy:
   - <<: *s3_deploy
     on:
       branch: dev
-    - echo "Deployment is complete"
+    - echo "Deployment is complete "
     # Allow 'awscli' to make requests to CloudFront.
     - aws configure set preview.cloudfront true
     # Invalidate every object in the targeted distribution.
@@ -67,7 +67,7 @@ after_deploy:
   - <<: *s3_deploy
     on:
       branch: staging
-    - echo "Deployment is complete"
+    - echo "Deployment is complete "
     # Allow 'awscli' to make requests to CloudFront.
     - aws configure set preview.cloudfront true
     # Invalidate every object in the targeted distribution.
