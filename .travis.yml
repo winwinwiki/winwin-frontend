@@ -56,8 +56,15 @@ after_deploy:
   - aws configure set preview.cloudfront true
   # Invalidate every object in the targeted distribution.
   # The below command creates a invalidation on cloud front which clears all the caches on server to reflect fresh changes
-  - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID --paths "/*"
-  #- travis-ci-cloudfront-invalidation -a $AWS_ACCESS_KEY_ID -s $AWS_SECRET_ACCESS_KEY -c $AWS_CLOUDFRONT_DIST_ID -i '/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST
+  - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_DEV --paths "/*"
+    on:
+      branch: dev
+  - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_STAG --paths "/*"
+    on:
+      branch: staging
+  - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_PROD --paths "/*"
+    on:
+      branch: master
 
 notifications:
   slack:
