@@ -59,12 +59,15 @@ after_deploy:
   - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_DEV --paths "/*"
     on:
       branch: dev
+      
   - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_STAG --paths "/*"
     on:
       branch: staging
+      
   - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_PROD --paths "/*"
     on:
       branch: master
+      
 
 notifications:
   slack:
