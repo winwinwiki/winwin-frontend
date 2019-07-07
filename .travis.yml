@@ -36,12 +36,20 @@ deploy:
     on:
       branch: dev
     bucket: "winwin-frontend-bucket"
+    
+ # make stag build and deploy in stag bucket
+  - <<: *s3_deploy
+    on:
+      branch: staging
+    bucket: "winwin-frontend-bucket-stag"
+    region: "us-west-2"
   
   # make prod build and deploy in prod bucket
   - <<: *s3_deploy
     on:
       branch: master
     bucket: "winwin-frontend-bucket-prod"
+    region: "us-west-2"
 after_deploy: 
   - echo "Deployment is complete"
   # Allow 'awscli' to make requests to CloudFront.
