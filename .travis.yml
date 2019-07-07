@@ -59,14 +59,17 @@ after_deploy:
   - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_DEV --paths "/*"
     on:
       branch: dev
+      condition: $TRAVIS_BRANCH = dev
       
   - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_STAG --paths "/*"
     on:
       branch: staging
+      condition: $TRAVIS_BRANCH = staging
       
   - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_PROD --paths "/*"
     on:
       branch: master
+      condition: $TRAVIS_BRANCH = master
       
 
 notifications:
