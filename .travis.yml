@@ -58,7 +58,14 @@ after_deploy:
   # Invalidate every object in the targeted distribution.
   # The below command creates a invalidation on cloud front which clears all the caches on server to reflect fresh changes
   - if [ "$TRAVIS_BRANCH" = "dev"]; then
-    - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_DEV --paths "/*"
+    - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_DEV --paths "/*" 
+    fi
+  - if [ "$TRAVIS_BRANCH" = "staging"]; then
+    - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_STAG --paths "/*" 
+    fi
+  - if [ "$TRAVIS_BRANCH" = "master"]; then
+    - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_PROD --paths "/*" 
+    fi
     
       
 notifications:
