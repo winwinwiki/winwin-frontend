@@ -27,7 +27,7 @@ before_deploy:
       #secure: "Rug6OasQDa/+nCGTgTcmktSE3XQYm1m7hx1Y4T5gozOqbXqtRdC2WySKYJboPw420RdhnDaIh5ctjLcKXGfvDIWhFiMnAsGS5ptwLfP/wJae0JgANq+DbXxXjEMctD1T/uWBpDJKiI1HdnjLRIygrX7L8nvWMzmdPMIn1b5xQ8whG76U/rKxtzrATbeNjYyQ/623LEHr4U0umQT2dN7d4YTaDPlJ5gQgQR5WX29CD9xIHC+X/p55wYn/p605tft8Y246acLoAFYK1KmcWOAJLxMlmV6Sq0Pv3QEsyOYTVtiHpLdfveYjxQORQihny4K3zlX5zBoNVbGasSFjNyhUW2NHucFJ6NrclC8YEms+0LCj8jYoR0sWjUuSSv2gyg9C2Nhv8iVhILN8GdZmG8CaTv6y2iPY0dbEsOPtb3k+tEqIYD5+fi8+mz920rUQ4CsgdyZoPLPoc968zT0WjnRKvGJNx96qMTXOFwodOQ/prepOHKg6gBbmTPLVYggJowj/coBGTThbxVpQ3/nJho9eNOk0LUc5B07iLigiWlI+DZVqMl+zQG81lylo+ldDSuwgXrmgamgoHFDxuytjxTOh8gowvrz8wd/WBcNpOpWP43YWwi04rIua7RDfVoKHEGGPjVx9hXkTTZwoY/QBjYxxX97Y9sE1qAEJpkmtLLMTGpM="
     local_dir: build #Upload only this directory
     skip_cleanup: true #Skip cleaning up the build folder before deploy/upload
-    #region: "us-east-2"
+    region: "us-east-2"
     wait-until-deployed: true
 
 deploy:
@@ -51,8 +51,9 @@ deploy:
       branch: master
     bucket: "winwin-frontend-bucket-prod"
     region: "us-west-2"
+    
 after_deploy:
-   # make dev build and deploy in dev bucket
+   # creates a cloudfront invalidation for dev
   - <<: *s3_deploy
     on:
       branch: dev
@@ -63,7 +64,7 @@ after_deploy:
     # The below command creates a invalidation on cloud front which clears all the caches on server to reflect fresh changes
     - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_DEV --paths "/*"
   
-  # make stag build and deploy in stag bucket
+  # creates a cloudfront invalidation for stag
   - <<: *s3_deploy
     on:
       branch: staging
@@ -74,7 +75,7 @@ after_deploy:
     # The below command creates a invalidation on cloud front which clears all the caches on server to reflect fresh changes
     - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_STAG --paths "/*"
   
-  # make prod build and deploy in prod bucket
+  # creates a cloudfront invalidation for prod
   - <<: *s3_deploy
     on:
       branch: master 
