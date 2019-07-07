@@ -36,55 +36,20 @@ deploy:
     on:
       branch: dev
     bucket: "winwin-frontend-bucket"
-    region: "us-east-2"
-  
-  # make stag build and deploy in stag bucket
-  - <<: *s3_deploy
-    on:
-      branch: staging
-    bucket: "winwin-frontend-bucket-stag"
-    region: "us-west-2"
   
   # make prod build and deploy in prod bucket
   - <<: *s3_deploy
     on:
       branch: master
     bucket: "winwin-frontend-bucket-prod"
-    region: "us-west-2"
-    
-after_deploy:
-   # creates a cloudfront invalidation for dev
-  - <<: *s3_deploy
-    on:
-      branch: dev
-    - echo "Deployment is complete "
-    # Allow 'awscli' to make requests to CloudFront.
-    - aws configure set preview.cloudfront true
-    # Invalidate every object in the targeted distribution.
-    # The below command creates a invalidation on cloud front which clears all the caches on server to reflect fresh changes
-    - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_DEV --paths "/*"
-  
-  # creates a cloudfront invalidation for stag
-  - <<: *s3_deploy
-    on:
-      branch: staging
-    - echo "Deployment is complete "
-    # Allow 'awscli' to make requests to CloudFront.
-    - aws configure set preview.cloudfront true
-    # Invalidate every object in the targeted distribution.
-    # The below command creates a invalidation on cloud front which clears all the caches on server to reflect fresh changes
-    - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_STAG --paths "/*"
-  
-  # creates a cloudfront invalidation for prod
-  - <<: *s3_deploy
-    on:
-      branch: master 
-    - echo "Deployment is complete"
-    # Allow 'awscli' to make requests to CloudFront.
-    - aws configure set preview.cloudfront true
-    # Invalidate every object in the targeted distribution.
-    # The below command creates a invalidation on cloud front which clears all the caches on server to reflect fresh changes
-    - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_PROD --paths "/*"
+after_deploy: 
+  - echo "Deployment is complete"
+  # Allow 'awscli' to make requests to CloudFront.
+  - aws configure set preview.cloudfront true
+  # Invalidate every object in the targeted distribution.
+  # The below command creates a invalidation on cloud front which clears all the caches on server to reflect fresh changes
+  - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID --paths "/*"
+  #- travis-ci-cloudfront-invalidation -a $AWS_ACCESS_KEY_ID -s $AWS_SECRET_ACCESS_KEY -c $AWS_CLOUDFRONT_DIST_ID -i '/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST
 
 notifications:
   slack:
