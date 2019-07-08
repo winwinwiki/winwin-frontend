@@ -10,33 +10,33 @@ import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import reducer from "./reducers";
-import Amplify from "aws-amplify";
-import apiConfig from "./buildConfig/apiConfig";
+//import Amplify from "aws-amplify";
+//import apiConfig from "./buildConfig/apiConfig";
 import { checkTokenExpiration } from "./middlewares/checkTokenExpiration";
 
-Amplify.configure({
-  Auth: {
-    mandatorySignIn: true,
-    region: apiConfig.cognito.REGION,
-    userPoolId: apiConfig.cognito.USER_POOL_ID,
-    identityPoolId: apiConfig.cognito.IDENTITY_POOL_ID,
-    userPoolWebClientId: apiConfig.cognito.APP_CLIENT_ID
-  },
-  Storage: {
-    region: apiConfig.s3.REGION,
-    bucket: apiConfig.s3.BUCKET,
-    identityPoolId: apiConfig.cognito.IDENTITY_POOL_ID
-  },
-  API: {
-    endpoints: [
-      {
-        name: "image",
-        endpoint: apiConfig.apiGateway.URL,
-        region: apiConfig.apiGateway.REGION
-      }
-    ]
-  }
-});
+// Amplify.configure({
+//   Auth: {
+//     mandatorySignIn: true,
+//     region: apiConfig.cognito.REGION,
+//     userPoolId: apiConfig.cognito.USER_POOL_ID,
+//     identityPoolId: apiConfig.cognito.IDENTITY_POOL_ID,
+//     userPoolWebClientId: apiConfig.cognito.APP_CLIENT_ID
+//   },
+//   Storage: {
+//     region: apiConfig.s3.REGION,
+//     bucket: apiConfig.s3.BUCKET,
+//     identityPoolId: apiConfig.cognito.IDENTITY_POOL_ID
+//   },
+//   API: {
+//     endpoints: [
+//       {
+//         name: "image",
+//         endpoint: apiConfig.apiGateway.URL,
+//         region: apiConfig.apiGateway.REGION
+//       }
+//     ]
+//   }
+// });
 
 export const history = createHistory();
 
