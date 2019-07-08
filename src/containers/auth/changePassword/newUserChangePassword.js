@@ -4,7 +4,6 @@ import { bindActionCreators } from "redux";
 import { onNewUserChangePassword } from "../../../actions/auth/changePasswordAction";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
-import { Auth } from "aws-amplify";
 import NotificationToaster from "../../ui/notificationToaster";
 
 class NewUserChangePassword extends React.Component {

@@ -30,23 +30,6 @@ export const onChangePassword = params => {
       }
     );
   };
-
-  // using amplify
-  // return dispatch => {
-  //   dispatch(changePasswordRequest());
-  //   Auth.changePassword(
-  //     params.currentUser,
-  //     params.oldPassword,
-  //     params.newPassword
-  //   ).then(
-  //     response => {
-  //       dispatch(changePasswordSuccess(response));
-  //     },
-  //     error => {
-  //       dispatch(changePasswordError(error));
-  //     }
-  //   );
-  // };
 };
 
 export const onNewUserChangePassword = params => {
