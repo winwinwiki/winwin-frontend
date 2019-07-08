@@ -7,16 +7,16 @@ cache:
 script:
   - echo "Starting build on $TRAVIS_BRANCH branch"
   - |
-   if [ "$TRAVIS_BRANCH" = "dev" ]; then 
+   if [ "$TRAVIS_BRANCH" == "dev" ]; then 
      export NODE_ENV="development"
     fi
-   if [ "$TRAVIS_BRANCH" = "staging" ]; then
+   if [ "$TRAVIS_BRANCH" == "staging" ]; then
      export NODE_ENV="staging"
     fi
-   if [ "$TRAVIS_BRANCH" = "master" ]; then
+   if [ "$TRAVIS_BRANCH" == "master" ]; then
      export NODE_ENV="production"
     fi
-  - echo "NODE_ENV = $NODE_ENV"
+  - echo "NODE ENV = $NODE_ENV"
   # - npm install
   - unset CI #To avoid build failure due to warnings
   # - npm run build
