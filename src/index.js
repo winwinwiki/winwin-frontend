@@ -11,7 +11,7 @@ import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import reducer from "./reducers";
 //import Amplify from "aws-amplify";
-import apiConfig from "./buildConfig/apiConfig";
+//import apiConfig from "./buildConfig/apiConfig";
 import { checkTokenExpiration } from "./middlewares/checkTokenExpiration";
 
 // Amplify.configure({

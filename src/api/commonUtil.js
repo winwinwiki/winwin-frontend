@@ -1,9 +1,9 @@
-import apiConfig from "../buildConfig/apiConfig";
+import {REACT_APP_API_SERVER} from "../buildConfig/apiConfig";
 //Temp
 const url = "https://demo8782246.mockable.io";
 const url1 = "https://demo4705881.mockable.io";
 
-const serverUrl = apiConfig.protocol + "://" + apiConfig.host;
+const serverUrl = REACT_APP_API_SERVER;
 
 class CommonUtil {
   static createUrl(endPoints) {

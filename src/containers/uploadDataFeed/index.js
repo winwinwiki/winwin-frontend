@@ -7,7 +7,7 @@ import Upload from "../ui/upload";
 import { onCreateBulkOrg as onDataFeed } from "../../actions/organization/createBulkOrgAction";
 import validate from "../../util/validation";
 import { titleCase, formatBytes } from "../../util/util";
-import apiConfig from "../../buildConfig/apiConfig";
+import {REACT_APP_BULK_UPLOAD_TEMPLATE_URL} from "../../buildConfig/apiConfig";
 
 class UploadDataFeed extends React.Component {
   state = {
@@ -41,7 +41,7 @@ class UploadDataFeed extends React.Component {
               <div className="mt-1">File Selection</div>
               <a
                 className="btn btn-primary ml-auto"
-                href={apiConfig.bulkUploadTemplateUrl}
+                href={REACT_APP_BULK_UPLOAD_TEMPLATE_URL}
               >
                 Download Template
               </a>

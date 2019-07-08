@@ -1,21 +1,4 @@
-import { apiConfig as apiConfigDev } from "./apiConfig.dev";
-import { apiConfig as apiConfigQa } from "./apiConfig.qa";
-import { apiConfig as apiConfigStag } from "./apiConfig.stag";
-import { apiConfig as apiConfigProd } from "./apiConfig.prod";
-let apiConfig = apiConfigDev;
 console.log("env=",process.env.NODE_ENV);
-if (process.env.NODE_ENV === "development") {
-  apiConfig = apiConfigDev;
-}
-if (process.env.NODE_ENV === "test") {
-  apiConfig = apiConfigQa;
-}
-if (process.env.NODE_ENV === "staging") {
-  apiConfig = apiConfigStag;
-}
 
-if (process.env.NODE_ENV === "production") {
-  apiConfig = apiConfigProd;
-}
-
-export default apiConfig;
+export const REACT_APP_API_SERVER = process.env.REACT_APP_API_SERVER;
+export const REACT_APP_BULK_UPLOAD_TEMPLATE_URL = process.env.REACT_APP_BULK_UPLOAD_TEMPLATE_URL;
