@@ -16,7 +16,7 @@ script:
    if [ "$TRAVIS_BRANCH" = "master" ]; then
      SET NODE_ENV=production
     fi
-  - echo "NODE_ENV=$NODE_ENV"
+  - echo "NODE_ENV = $NODE_ENV"
   # - npm install
   - unset CI #To avoid build failure due to warnings
   # - npm run build
