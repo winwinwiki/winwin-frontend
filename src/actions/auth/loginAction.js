@@ -4,7 +4,6 @@ import {
   LOGIN_ERROR,
   LOGOUT
 } from "../../constants/dispatch";
-// import { Auth } from "aws-amplify";
 import { api } from "../../api/api";
 
 export const onLogin = params => {

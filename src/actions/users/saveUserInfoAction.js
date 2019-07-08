@@ -3,7 +3,6 @@ import {
   SAVEUSERINFO_SUCCESS,
   SAVEUSERINFO_ERROR
 } from "../../constants/dispatch";
-import { Auth } from "aws-amplify";
 import { api } from "../../api/api";
 import { isUserProfile } from "../../constants";
 

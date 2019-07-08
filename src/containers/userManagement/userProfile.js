@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import Upload from "../ui/upload";
 import { onSaveUserInfo } from "../../actions/users/saveUserInfoAction";
 import { fetchUserInfo } from "../../actions/users/userInfoAction";
-import { Auth, API } from "aws-amplify";
 import { updateObject } from "../../util/util";
 import { rolesList, USER, isUserProfile } from "../../constants";
 import Dropdown from "../ui/dropdown";

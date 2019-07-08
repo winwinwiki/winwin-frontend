@@ -4,7 +4,6 @@ import { bindActionCreators } from "redux";
 import { onChangePassword } from "../../../actions/auth/changePasswordAction";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
-import { Auth } from "aws-amplify";
 
 class UserProfile extends React.Component {
   state = {
