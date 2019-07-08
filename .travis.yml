@@ -8,13 +8,13 @@ script:
   - echo "Starting build on $TRAVIS_BRANCH branch"
   - |
    if [ "$TRAVIS_BRANCH" = "dev" ]; then 
-     SET NODE_ENV=development
+     export NODE_ENV=development
     fi
    if [ "$TRAVIS_BRANCH" = "staging" ]; then
-     SET NODE_ENV=staging
+     export NODE_ENV=staging
     fi
    if [ "$TRAVIS_BRANCH" = "master" ]; then
-     SET NODE_ENV=production
+     export NODE_ENV=production
     fi
   - echo "NODE_ENV = $NODE_ENV"
   # - npm install
