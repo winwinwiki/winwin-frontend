@@ -8,18 +8,17 @@ script:
   - echo "Starting build on $TRAVIS_BRANCH branch"
   - |
    if [ "$TRAVIS_BRANCH" == "dev" ]; then 
-     export NODE_ENV="development"
+     export BUILD_CMD="build-dev"     
     fi
    if [ "$TRAVIS_BRANCH" == "staging" ]; then
-     export NODE_ENV="staging"
+     export BUILD_CMD="build-staging"     
     fi
    if [ "$TRAVIS_BRANCH" == "master" ]; then
-     export NODE_ENV="production"
+     export BUILD_CMD="build"     
     fi
-  - echo "NODE ENV = $NODE_ENV"
-  - npm install
+  - echo "Build command = $BUILD_CMD"
   - unset CI #To avoid build failure due to warnings
-  - npm run build
+  - npm install && npm run "$BUILD_CMD"
 before_install:
   # set up awscli packages
   - pip install --user awscli
