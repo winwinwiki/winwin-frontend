@@ -6,12 +6,23 @@ cache:
     - node_modules
 script:
   - echo "Starting build on $TRAVIS_BRANCH branch"
-  - npm install
+  - |
+   if [ "$TRAVIS_BRANCH" == "dev" ]; then 
+     export NODE_ENV="development"
+    fi
+   if [ "$TRAVIS_BRANCH" == "staging" ]; then
+     export NODE_ENV="staging"
+    fi
+   if [ "$TRAVIS_BRANCH" == "master" ]; then
+     export NODE_ENV="production"
+    fi
+  - echo "NODE ENV = $NODE_ENV"
+  # - npm install
   - unset CI #To avoid build failure due to warnings
-  - npm run build
+  # - npm run build
 before_install:
   # set up awscli packages
-  - pip install --user awscli
+  # - pip install --user awscli
   #- export AWS_DEFAULT_REGION=[secure]
   #- export AWS_ACCESS_KEY_ID=[secure]
   #- export AWS_SECRET_ACCESS_KEY=[secure]
@@ -32,41 +43,41 @@ before_deploy:
 
 deploy:
   # make dev build and deploy in dev bucket
-  - <<: *s3_deploy
-    on:
-      branch: dev
-    bucket: "winwin-frontend-bucket"
+  # - <<: *s3_deploy
+    # on:
+      # branch: dev
+    # bucket: "winwin-frontend-bucket"
     
  # make stag build and deploy in stag bucket
-  - <<: *s3_deploy
-    on:
-      branch: staging
-    bucket: "winwin-frontend-bucket-stag"
-    region: "us-west-2"
+  # - <<: *s3_deploy
+    # on:
+      # branch: staging
+    # bucket: "winwin-frontend-bucket-stag"
+    # region: "us-west-2"
   
   # make prod build and deploy in prod bucket
-  - <<: *s3_deploy
-    on:
-      branch: master
-    bucket: "winwin-frontend-bucket-prod"
-    region: "us-west-2"
+  # - <<: *s3_deploy
+    # on:
+      # branch: master
+    # bucket: "winwin-frontend-bucket-prod"
+    # region: "us-west-2"
     
 after_deploy: 
   - echo "Deployment is complete"
   # Allow 'awscli' to make requests to CloudFront.
-  - aws configure set preview.cloudfront true
+  # - aws configure set preview.cloudfront true
   # Invalidate every object in the targeted distribution.
   # The below command creates a invalidation on cloud front which clears all the caches on server to reflect fresh changes
-  - |
-   if [ "$TRAVIS_BRANCH" = "dev" ]; then 
-     aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_DEV --paths "/*"
-    fi
-   if [ "$TRAVIS_BRANCH" = "staging" ]; then
-     aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_STAG --paths "/*"
-     fi
-   if [ "$TRAVIS_BRANCH" = "master" ]; then
-     aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_PROD --paths "/*"
-     fi
+  # - |
+   # if [ "$TRAVIS_BRANCH" = "dev" ]; then 
+     # aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_DEV --paths "/*"
+    # fi
+   # if [ "$TRAVIS_BRANCH" = "staging" ]; then
+     # aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_STAG --paths "/*"
+     # fi
+   # if [ "$TRAVIS_BRANCH" = "master" ]; then
+     # aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DIST_ID_PROD --paths "/*"
+     # fi
 
 notifications:
   slack:
