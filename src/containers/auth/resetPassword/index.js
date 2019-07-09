@@ -50,7 +50,7 @@ class ResetPassword extends React.Component {
             style={{ color: "blue" }}
             onClick={() => window.location.reload()}
           >
-            Reload
+            Please try again
           </span>
         </div>
       );
