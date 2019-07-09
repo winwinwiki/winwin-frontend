@@ -1,10 +1,72 @@
-import React from "react";
+import React, { Fragment } from "react";
 import validate from "../../../util/validation";
 import { bindActionCreators } from "redux";
 import { onNewUserChangePassword } from "../../../actions/auth/changePasswordAction";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import NotificationToaster from "../../ui/notificationToaster";
+
+const passowordValidation = formError => (
+  <small className="form-element-hint text-danger">
+    {formError && formError}
+  </small>
+);
+
+const validationMessages = {
+  oldPassword: () =>
+    "We've sent a temporary password. Please check your inbox.",
+  newPassword: () => (
+    <div className="row">
+      <div className="col">
+        Passwords must
+        <ul>
+          <li>Be at least 8 characters long</li>
+          <li>Include at least one capital letter (A-Z)</li>
+          <li>Include at least one small letter (a-z)</li>
+          <li>Include at least one number (0-9)</li>
+        </ul>
+      </div>
+    </div>
+  ),
+  confirmPassword: () => (
+    <div className="row">
+      <div className="col">
+        Password must
+        <ul>
+          <li>Match the new password</li>
+          <li>Be at least 8 characters long</li>
+          <li>Include at least one capital letter (A-Z)</li>
+          <li>Include at least one small letter (a-z)</li>
+          <li>Include at least one number (0-9)</li>
+        </ul>
+      </div>
+    </div>
+  )
+};
+
+const validationPopup = messageType => (
+  <span>
+    <i
+      className="icon-circle-question cursor-pointer"
+      id="passwordInfo"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+      style={{
+        fontWeight: "bolder",
+        fontSize: "larger",
+        marginTop: "1rem",
+        marginLeft: "1rem"
+      }}
+    />
+    <div
+      className="dropdown-menu dropdown-menu-left"
+      aria-labelledby="passwordInfo"
+    >
+      {validationMessages[messageType]()}
+    </div>
+  </span>
+);
 
 class NewUserChangePassword extends React.Component {
   state = {
@@ -42,72 +104,64 @@ class NewUserChangePassword extends React.Component {
       <div className="w-100 flex-fill d-flex flex-column justify-content-center">
         <NotificationToaster />
         <div className="form-group w-100 mb-4 login-form-group">
-          <label htmlFor="oldPassword" className="sr-only">
-            Old Password
-          </label>
-          <input
-            id="oldPassword"
-            type="password"
-            aria-describedby="oldPasswordDesc"
-            placeholder="Old Password"
-            className="form-control"
-            onBlur={this.validateField}
-            onChange={this.onChange}
-            name="oldPassword"
-            value={oldPassword}
-          />
-
-          {formError.oldPassword && (
-            <small className="form-element-hint text-danger">
-              {formError.oldPassword}
-            </small>
-          )}
+          <div className="d-flex">
+            <input
+              id="oldPassword"
+              type="password"
+              aria-describedby="oldPasswordDesc"
+              placeholder="Old Password"
+              className="form-control"
+              onBlur={this.validateField}
+              onChange={this.onChange}
+              name="oldPassword"
+              value={oldPassword}
+            />
+            {validationPopup("oldPassword")}
+          </div>
+          {passowordValidation(formError.oldPassword)}
         </div>
         <div className="form-group w-100 mb-4 login-form-group">
-          <label htmlFor="newPassword" className="sr-only">
-            New Password
-          </label>
-          <input
-            id="newPassword"
-            type="password"
-            aria-describedby="newPasswordDesc"
-            placeholder="New Password"
-            className="form-control"
-            onBlur={this.validateField}
-            onChange={this.onChange}
-            name="newPassword"
-            value={newPassword}
-          />
-          {formError.newPassword && (
-            <small className="form-element-hint text-danger">
-              {formError.newPassword}
-            </small>
-          )}
+          <div className="d-flex">
+            <input
+              id="newPassword"
+              type="password"
+              aria-describedby="newPasswordDesc"
+              placeholder="New Password"
+              className="form-control"
+              onBlur={this.validateField}
+              onChange={this.onChange}
+              name="newPassword"
+              value={newPassword}
+            />
+            {validationPopup("newPassword")}
+          </div>
+          {passowordValidation(formError.newPassword)}
         </div>
         <div className="form-group w-100 mb-4 login-form-group">
-          <label htmlFor="retypeNewPass" className="sr-only">
-            Confirm Password
-          </label>
-          <input
-            id="retypeNewPass"
-            type="password"
-            aria-describedby="retypeNewPassDesc"
-            placeholder="Confirm Password"
-            className="form-control"
-            onBlur={this.validateField}
-            onChange={this.onChange}
-            name="retypeNewPass"
-            value={retypeNewPass}
-          />
-          {formError.retypeNewPass && (
-            <small className="form-element-hint text-danger">
-              {formError.retypeNewPass}
-            </small>
-          )}
+          <div className="d-flex">
+            <input
+              id="retypeNewPass"
+              type="password"
+              aria-describedby="retypeNewPassDesc"
+              placeholder="Confirm Password"
+              className="form-control"
+              onBlur={this.validateField}
+              onChange={this.onChange}
+              name="retypeNewPass"
+              value={retypeNewPass}
+            />
+            {validationPopup("confirmPassword")}
+          </div>
+          {passowordValidation(formError.retypeNewPass)}
         </div>
         <button
           className="btn btn-lg btn-light w-100 mt-4"
           onClick={this.onSubmit}
+          disabled={
+            formError.oldPassword ||
+            formError.newPassword ||
+            formError.retypeNewPass
+          }
         >
           Change Password
         </button>
@@ -131,12 +185,12 @@ class NewUserChangePassword extends React.Component {
         this.setState({ formError });
         return;
       }
-      // let isValid = validate.password(value);
-      // if (!isValid) {
-      //   formError[field] = "enter valid password.";
-      //   this.setState({ formError });
-      //   return;
-      // }
+      let isValid = field !== "oldPassword" ? validate.password(value) : true;
+      if (!isValid) {
+        formError[field] = "enter valid password.";
+        this.setState({ formError });
+        return;
+      }
       formError[field] = "";
       this.setState({ formError });
       return;
@@ -148,7 +202,7 @@ class NewUserChangePassword extends React.Component {
     }
     let isValidPwd = validate.confirmPassword(newPassword, retypeNewPass);
     if (!isValidPwd) {
-      formError[field] = "password does not match";
+      formError[field] = "These passwords don't match. Try again?";
       this.setState({ formError });
       return;
     }
@@ -161,6 +215,7 @@ class NewUserChangePassword extends React.Component {
     const { oldPassword, retypeNewPass, newPassword } = this.state;
     const { location: { state: email } = {} } = this.props;
     if (!retypeNewPass || !newPassword) {
+      this.validateChangetPasswordForm("oldPassword", oldPassword);
       this.validateChangetPasswordForm("retypeNewPass", retypeNewPass);
       this.validateChangetPasswordForm("newPassword", newPassword);
       return;
