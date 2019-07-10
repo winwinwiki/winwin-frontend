@@ -21,13 +21,12 @@ export function api(url, method, body, isAuth, contentType, timeout = 7000) {
                   )
                 })
               );
-              reject(Error(json.response));
+              reject(json.response);
             });
         } else {
           handleNotifications(method);
+          resolve(response.json());
         }
-
-        return response.json();
       }
 
       if (method.toUpperCase() === "GET") {
@@ -38,8 +37,8 @@ export function api(url, method, body, isAuth, contentType, timeout = 7000) {
             : CommonUtil.getHeaders(contentType)
         })
           .then(handleErrors)
-          .then(responseJson => resolve(responseJson))
-          .catch(error => reject(error));
+          .catch(error => reject(error))
+          .then(responseJson => resolve(responseJson));
       } else {
         fetch(baseUrl, {
           method: method,
@@ -49,10 +48,8 @@ export function api(url, method, body, isAuth, contentType, timeout = 7000) {
           body: body
         })
           .then(handleErrors) //return a promise
-          .then(responseJson => {
-            resolve(responseJson);
-          }) //resolve the above promise
-          .catch(error => reject(error));
+          .catch(error => reject(error))
+          .then(responseJson => resolve(responseJson));
       }
     })
     // new Promise((_, reject) =>

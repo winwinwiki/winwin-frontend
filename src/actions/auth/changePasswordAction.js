@@ -35,14 +35,9 @@ export const onChangePassword = params => {
 export const onNewUserChangePassword = params => {
   return dispatch => {
     dispatch(changePasswordRequest());
-    return api("/user/login", "POST", JSON.stringify(params), false).then(
-      response => {
-        dispatch(changePasswordSuccess(response));
-      },
-      error => {
-        dispatch(changePasswordError(error));
-      }
-    );
+    return api("/user/login", "POST", JSON.stringify(params), false)
+      .then(response => dispatch(changePasswordSuccess(response)))
+      .catch(error => dispatch(changePasswordError(error)));
   };
 };
 
