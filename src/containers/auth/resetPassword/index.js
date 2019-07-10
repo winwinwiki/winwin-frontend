@@ -6,6 +6,7 @@ import { onResetPassword } from "../../../actions/auth/resetPasswordAction";
 
 import validate from "../../../util/validation";
 import NotificationToaster from "../../ui/notificationToaster";
+import { validationPopup } from "../changePassword/newUserChangePassword";
 
 class ResetPassword extends React.Component {
   state = {
@@ -59,9 +60,6 @@ class ResetPassword extends React.Component {
         <NotificationToaster />
         {resetPassword.error && <div>{resetPassword.data}</div>}
         <div className="form-group w-100 mb-4 login-form-group">
-          <label htmlFor="code" className="sr-only">
-            Confirmation Code
-          </label>
           <input
             id="code"
             type="text"
@@ -73,17 +71,14 @@ class ResetPassword extends React.Component {
             name="code"
             value={code}
           />
-          <small id="codeDesc" className="sr-only">
-            The confirmation code seems to be invalid.
-          </small>
-          <small className="form-element-hint text-danger">
-            {formError.code && <div>{formError.code}</div>}
-          </small>
+          {formError.code && (
+            <small className="form-element-hint text-danger">
+              {formError.code}
+            </small>
+          )}
+          {validationPopup("verificationCode", "asasdads")}
         </div>
         <div className="form-group w-100 mb-4 login-form-group">
-          <label htmlFor="userName" className="sr-only">
-            Password
-          </label>
           <input
             id="userName"
             type="password"
@@ -95,46 +90,14 @@ class ResetPassword extends React.Component {
             name="password"
             value={password}
           />
-          <small id="userNameDesc" className="sr-only">
-            Password
-          </small>
-          <small className="form-element-hint text-danger">
-            {formError.password && (
-              <Fragment>
-                {formError.password}
-                <span>
-                  <i
-                    className="icon-circle-question"
-                    id="passwordInfo"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  />
-                  <div
-                    className="dropdown-menu dropdown-menu-left"
-                    aria-labelledby="passwordInfo"
-                  >
-                    <div className="row">
-                      <div className="col">
-                        Password must
-                        <ul>
-                          <li>Be at least 8 characters long</li>
-                          <li>Include at least one capital letter (A-Z)</li>
-                          <li>Include at least one small letter (a-z)</li>
-                          <li>Include at least one number (0-9)</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </span>
-              </Fragment>
-            )}
-          </small>
+          {formError.password && (
+            <small className="form-element-hint text-danger">
+              {formError.password}
+            </small>
+          )}
+          {validationPopup("newPassword")}
         </div>
         <div className="form-group w-100 mb-4 login-form-group">
-          <label htmlFor="userPassword" className="sr-only">
-            Confirm Password
-          </label>
           <input
             id="userPassword"
             type="password"
@@ -146,12 +109,12 @@ class ResetPassword extends React.Component {
             name="confirmPassword"
             value={confirmPassword}
           />
-          <small id="passwordDesc" className="sr-only">
-            confirmPassword
-          </small>
-          <small className="form-element-hint text-danger">
-            {formError.confirmPassword}
-          </small>
+          {formError.confirmPassword && (
+            <small className="form-element-hint text-danger">
+              {formError.confirmPassword}
+            </small>
+          )}
+          {validationPopup("confirmPassword")}
         </div>
         <button
           className="btn btn-lg btn-light w-100"
