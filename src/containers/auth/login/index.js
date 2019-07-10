@@ -84,11 +84,11 @@ class Login extends React.Component {
     return (
       <div className="w-100 flex-fill d-flex flex-column justify-content-center">
         <NotificationToaster />
-        {session && session.error && (
+        {/* {session && session.error && (
           <small className="form-element-hint text-danger">
             {session.data.message}
           </small>
-        )}
+        )} */}
         <div className="form-group w-100 mb-4 login-form-group">
           <label htmlFor="userName" className="sr-only">
             User Name
