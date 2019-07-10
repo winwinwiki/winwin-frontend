@@ -44,8 +44,8 @@ const validationMessages = {
   )
 };
 
-const validationPopup = messageType => (
-  <span>
+export const validationPopup = messageType => (
+  <Fragment>
     <i
       className="icon-circle-question cursor-pointer"
       id="passwordInfo"
@@ -65,7 +65,7 @@ const validationPopup = messageType => (
     >
       {validationMessages[messageType]()}
     </div>
-  </span>
+  </Fragment>
 );
 
 class NewUserChangePassword extends React.Component {

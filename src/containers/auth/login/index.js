@@ -11,8 +11,8 @@ import {
   startLoaderAction,
   stopLoaderAction
 } from "../../../actions/common/loaderActions";
-import { USER } from "../../../constants";
-
+import { validationPopup } from "../changePassword/newUserChangePassword";
+import "./login.css";
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -112,15 +112,12 @@ class Login extends React.Component {
           )}
         </div>
         <div className="form-group w-100 mb-4 login-form-group">
-          <label htmlFor="userPassword" className="sr-only">
-            User Password
-          </label>
           <input
             id="userPassword"
             type="password"
             aria-describedby="passwordDesc"
             placeholder="Password"
-            className="form-control"
+            className="custom-form-control"
             onBlur={this.validateForm}
             onChange={this.onChange}
             onKeyUp={e => this.onKeyUp(e)}
@@ -132,6 +129,29 @@ class Login extends React.Component {
               {formError.password}
             </small>
           )}
+          <i
+            className="icon-circle-question custom-icon cursor-pointer"
+            id="passwordInfo"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          />
+          <div
+            className="dropdown-menu dropdown-menu-left"
+            aria-labelledby="passwordInfo"
+          >
+            <div className="row">
+              <div className="col">
+                Password must
+                <ul>
+                  <li>Be at least 8 characters long</li>
+                  <li>Include at least one capital letter (A-Z)</li>
+                  <li>Include at least one small letter (a-z)</li>
+                  <li>Include at least one number (0-9)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
         <Link to="/forget-password" className="px-4 text-white">
           Forgot password?
@@ -178,12 +198,12 @@ class Login extends React.Component {
       this.setState({ formError });
       return;
     }
-    // let isValidPwd = validate.password(value);
-    // if (!isValidPwd) {
-    //   formError.password = "enter valid password";
-    //   this.setState({ formError });
-    //   return;
-    // }
+    let isValidPwd = validate.password(value);
+    if (!isValidPwd) {
+      formError.password = "enter valid password";
+      this.setState({ formError });
+      return;
+    }
     formError.password = "";
     this.setState({ formError });
     return;
