@@ -11,6 +11,7 @@ import {
   startLoaderAction,
   stopLoaderAction
 } from "../../../actions/common/loaderActions";
+import NotificationToaster from "../../ui/notificationToaster";
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -82,11 +83,12 @@ class Login extends React.Component {
     let { session } = this.props;
     return (
       <div className="w-100 flex-fill d-flex flex-column justify-content-center">
-        {session && session.error && (
+        <NotificationToaster />
+        {/* {session && session.error && (
           <small className="form-element-hint text-danger">
             {session.data.message}
           </small>
-        )}
+        )} */}
         <div className="form-group w-100 mb-4 login-form-group">
           <label htmlFor="userName" className="sr-only">
             User Name

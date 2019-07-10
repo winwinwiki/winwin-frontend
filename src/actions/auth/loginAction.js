@@ -13,14 +13,9 @@ export const onLogin = params => {
       userName: params.username,
       password: params.password
     };
-    api("/user/login", "POST", JSON.stringify(userObj), false).then(
-      response => {
-        dispatch(loginSuccess(response));
-      },
-      error => {
-        dispatch(loginError(error));
-      }
-    );
+    api("/user/login", "POST", JSON.stringify(userObj), false)
+      .then(response => dispatch(loginSuccess(response)))
+      .catch(error => dispatch(loginError(error)));
     //Temp
     // Auth.signIn(params.username, params.password).then(
     //   () => {
