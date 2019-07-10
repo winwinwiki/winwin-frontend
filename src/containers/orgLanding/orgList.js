@@ -145,25 +145,25 @@ class OrgList extends React.Component {
     }
   }
 
-  toggleRow = name => {
+  toggleRow = id => {
     const newSelected = Object.assign({}, this.state.selected);
-    newSelected[name] = !this.state.selected[name];
+    newSelected[id] = !this.state.selected[id];
     this.setState({
       selected: newSelected,
       selectAll: 2
     });
     //when selected row is found
-    if (newSelected[name]) {
+    if (newSelected[id]) {
       this.setState({
         selectedOrgList: [
           ...this.state.selectedOrgList,
-          this.state.orgList.find(x => x.name === name)
+          this.state.orgList.find(x => x.id === id)
         ]
       });
     }
-    if (!newSelected[name]) {
+    if (!newSelected[id]) {
       this.setState({
-        selectedOrgList: this.state.selectedOrgList.filter(x => x.name !== name)
+        selectedOrgList: this.state.selectedOrgList.filter(x => x.id !== id)
       });
     }
   };
@@ -173,7 +173,7 @@ class OrgList extends React.Component {
 
     if (this.state.selectAll === 0) {
       this.state.orgList.forEach(x => {
-        newSelected[x.name] = true;
+        newSelected[x.id] = true;
       });
     }
 
@@ -198,8 +198,8 @@ class OrgList extends React.Component {
             <input
               type="checkbox"
               className="checkbox"
-              checked={this.state.selected[original.name] === true}
-              onChange={() => this.toggleRow(original.name)}
+              checked={this.state.selected[original.id] === true}
+              onChange={() => this.toggleRow(original.id)}
             />
           </div>
         );

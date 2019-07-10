@@ -66,7 +66,7 @@ class ResetPassword extends React.Component {
             aria-describedby="codeDesc"
             placeholder="Enter Confirmation Code"
             className="form-control"
-            // onBlur={this.validateForm}
+            onBlur={this.validateForm}
             onChange={this.onChange}
             name="code"
             value={code}
@@ -156,6 +156,16 @@ class ResetPassword extends React.Component {
 
   validateResetPasswordForm = (field, value) => {
     const { formError } = this.state;
+    if (field === "code") {
+      if (!value) {
+        formError[field] = "Code is required.";
+        this.setState({ formError });
+        return;
+      }
+      formError[field] = "";
+      this.setState({ formError });
+      return;
+    }
     if (field === "password") {
       if (!value) {
         formError.password = "Password is required.";
