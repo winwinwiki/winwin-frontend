@@ -126,7 +126,7 @@ class NewUserChangePassword extends React.Component {
               type="password"
               aria-describedby="oldPasswordDesc"
               placeholder="Old Password"
-              className="custom-form-control"
+              className="form-control"
               onBlur={this.validateField}
               onChange={this.onChange}
               name="oldPassword"
@@ -143,7 +143,7 @@ class NewUserChangePassword extends React.Component {
               type="password"
               aria-describedby="newPasswordDesc"
               placeholder="New Password"
-              className="custom-form-control"
+              className="form-control"
               onBlur={this.validateField}
               onChange={this.onChange}
               name="newPassword"
@@ -160,7 +160,7 @@ class NewUserChangePassword extends React.Component {
               type="password"
               aria-describedby="retypeNewPassDesc"
               placeholder="Confirm Password"
-              className="custom-form-control"
+              className="form-control"
               onBlur={this.validateField}
               onChange={this.onChange}
               name="retypeNewPass"

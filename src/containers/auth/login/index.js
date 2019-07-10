@@ -117,7 +117,7 @@ class Login extends React.Component {
             type="password"
             aria-describedby="passwordDesc"
             placeholder="Password"
-            className="custom-form-control"
+            className="form-control"
             onBlur={this.validateForm}
             onChange={this.onChange}
             onKeyUp={e => this.onKeyUp(e)}

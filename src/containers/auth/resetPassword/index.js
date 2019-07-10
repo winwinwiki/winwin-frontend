@@ -65,7 +65,7 @@ class ResetPassword extends React.Component {
             type="text"
             aria-describedby="codeDesc"
             placeholder="Enter Confirmation Code"
-            className="custom-form-control"
+            className="form-control"
             // onBlur={this.validateForm}
             onChange={this.onChange}
             name="code"
@@ -84,7 +84,7 @@ class ResetPassword extends React.Component {
             type="password"
             aria-describedby="userNameDesc"
             placeholder="Password"
-            className="custom-form-control"
+            className="form-control"
             onBlur={this.validateForm}
             onChange={this.onChange}
             name="password"
