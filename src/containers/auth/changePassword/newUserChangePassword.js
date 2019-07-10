@@ -17,7 +17,10 @@ const validationMessages = {
     "We've sent a temporary password. Please check your inbox.",
   newPassword: () => (
     <div className="row">
-      <div className="col">
+      <div
+        className="col"
+        style={{ paddingLeft: "30px", paddingRight: "30px" }}
+      >
         Passwords must
         <ul>
           <li>Be at least 8 characters long</li>
@@ -30,7 +33,10 @@ const validationMessages = {
   ),
   confirmPassword: () => (
     <div className="row">
-      <div className="col">
+      <div
+        className="col"
+        style={{ paddingLeft: "30px", paddingRight: "30px" }}
+      >
         Password must
         <ul>
           <li>Match the new password</li>
@@ -41,10 +47,26 @@ const validationMessages = {
         </ul>
       </div>
     </div>
+  ),
+  verificationCode: param => (
+    <div className="row">
+      <div
+        className="col"
+        style={{ paddingLeft: "30px", paddingRight: "30px" }}
+      >
+        {`A code was sent to your registered email-id: ${param}`}
+        <ul>
+          <li>
+            Once you've recieved your confirmation code, Please enter it here.
+          </li>
+          <li>This will help confirm your account ownership.</li>
+        </ul>
+      </div>
+    </div>
   )
 };
 
-export const validationPopup = messageType => (
+export const validationPopup = (messageType, param) => (
   <Fragment>
     <i
       className="icon-circle-question custom-icon cursor-pointer"
@@ -57,7 +79,7 @@ export const validationPopup = messageType => (
       className="dropdown-menu dropdown-menu-left"
       aria-labelledby="passwordInfo"
     >
-      {validationMessages[messageType]()}
+      {validationMessages[messageType](param)}
     </div>
   </Fragment>
 );
