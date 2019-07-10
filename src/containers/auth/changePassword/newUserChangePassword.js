@@ -47,17 +47,11 @@ const validationMessages = {
 export const validationPopup = messageType => (
   <Fragment>
     <i
-      className="icon-circle-question cursor-pointer"
+      className="icon-circle-question custom-icon cursor-pointer"
       id="passwordInfo"
       data-toggle="dropdown"
       aria-haspopup="true"
       aria-expanded="false"
-      style={{
-        fontWeight: "bolder",
-        fontSize: "larger",
-        marginTop: "1rem",
-        marginLeft: "1rem"
-      }}
     />
     <div
       className="dropdown-menu dropdown-menu-left"
@@ -110,7 +104,7 @@ class NewUserChangePassword extends React.Component {
               type="password"
               aria-describedby="oldPasswordDesc"
               placeholder="Old Password"
-              className="form-control"
+              className="custom-form-control"
               onBlur={this.validateField}
               onChange={this.onChange}
               name="oldPassword"
@@ -127,7 +121,7 @@ class NewUserChangePassword extends React.Component {
               type="password"
               aria-describedby="newPasswordDesc"
               placeholder="New Password"
-              className="form-control"
+              className="custom-form-control"
               onBlur={this.validateField}
               onChange={this.onChange}
               name="newPassword"
@@ -144,7 +138,7 @@ class NewUserChangePassword extends React.Component {
               type="password"
               aria-describedby="retypeNewPassDesc"
               placeholder="Confirm Password"
-              className="form-control"
+              className="custom-form-control"
               onBlur={this.validateField}
               onChange={this.onChange}
               name="retypeNewPass"

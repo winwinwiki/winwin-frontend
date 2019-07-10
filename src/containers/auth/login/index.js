@@ -11,8 +11,6 @@ import {
   startLoaderAction,
   stopLoaderAction
 } from "../../../actions/common/loaderActions";
-import { validationPopup } from "../changePassword/newUserChangePassword";
-import "./login.css";
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -198,12 +196,12 @@ class Login extends React.Component {
       this.setState({ formError });
       return;
     }
-    let isValidPwd = validate.password(value);
-    if (!isValidPwd) {
-      formError.password = "enter valid password";
-      this.setState({ formError });
-      return;
-    }
+    // let isValidPwd = validate.password(value);
+    // if (!isValidPwd) {
+    //   formError.password = "enter valid password";
+    //   this.setState({ formError });
+    //   return;
+    // }
     formError.password = "";
     this.setState({ formError });
     return;
