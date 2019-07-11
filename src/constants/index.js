@@ -1,4 +1,4 @@
-export const rolesList = ["Administrator", "Data Seeder"];
+export const rolesList = ["Administrator", "DataSeeder"];
 export const sectorsList = ["Public", "Private", "Social"];
 
 //order of theese elements is important do not change it
