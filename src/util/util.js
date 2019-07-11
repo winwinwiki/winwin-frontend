@@ -208,3 +208,18 @@ export const mapOptionsToRegions = regionsList => {
     value: x.regionId
   }));
 };
+
+//remove node by id from deeply nested array of objects
+export const removeFromTree = (root, idToDelete, parent, idx) => {
+  if (root.id === idToDelete) {
+    if (parent) {
+      parent.children.splice(idx, 1);
+    } else return null;
+  }
+
+  for (const [i, e] of root.children.entries()) {
+    removeFromTree(e, idToDelete, root, i);
+  }
+
+  return root;
+};
