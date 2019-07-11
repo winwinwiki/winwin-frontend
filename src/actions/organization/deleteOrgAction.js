@@ -13,7 +13,7 @@ export const onDeleteOrg = params => {
     };
     api("/organization", "DELETE", JSON.stringify(deleteObj), true).then(
       response => {
-        dispatch(deleteOrgSuccess(response));
+        dispatch(deleteOrgSuccess(deleteObj.id));
       },
       error => {
         dispatch(deleteOrgError(error));

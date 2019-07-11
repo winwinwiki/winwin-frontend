@@ -6,13 +6,13 @@ import { connect } from "react-redux";
 import { fetchOrgHierarchy } from "../../actions/orgDetail/orgChartAction";
 import { resetOrgHierarchyData } from "../../actions/orgDetail/orgChartAction";
 import { fetchOrganisationDetail } from "../../actions/orgDetail/orgDetailAction";
+import { onDeleteOrg } from "../../actions/organization/deleteOrgAction";
 import {
   startLoaderAction,
   stopLoaderAction
 } from "../../actions/common/loaderActions";
 import { OrgHierarchySelector } from "../../selectors/OrgHierarchySelector";
 import "./sortableTree.css";
-import Search from "../ui/searchBar";
 class Tree extends Component {
   state = {
     isEdited: false,
@@ -53,6 +53,10 @@ class Tree extends Component {
     this.props.addChildOrganisation(this.props.orgId, rowInfo.node.id);
   };
 
+  removeOrg = ({ node: { id } }) => {
+    this.props.onDeleteOrg(id);
+  };
+
   onCancel = () => {
     this.setState({
       isEdited: false
@@ -81,7 +85,7 @@ class Tree extends Component {
   // };
 
   render() {
-    const { isEdited, searchString, searchFocusIndex } = this.state;
+    const { isEdited } = this.state;
 
     return (
       <section className="dashboard-content p-0 py-3 org-details-container">
@@ -170,14 +174,23 @@ class Tree extends Component {
                     },
                     buttons: [
                       isEdited && (
-                        <button
-                          className="btn f-36"
-                          onClick={() => this.addNode(rowInfo)}
-                          title={"Add Child"}
-                          onMouseOver={this.onHover}
-                        >
-                          +
-                        </button>
+                        <Fragment>
+                          <button
+                            className="btn f-36"
+                            onClick={() => this.addNode(rowInfo)}
+                            title={"Add Child"}
+                            onMouseOver={this.onHover}
+                          >
+                            +
+                          </button>
+                          <button
+                            className="btn f-36 ml-1"
+                            title={"Remove Child"}
+                            onClick={() => this.removeOrg(rowInfo)}
+                          >
+                            -
+                          </button>
+                        </Fragment>
                       )
                     ]
                   })}
@@ -220,7 +233,8 @@ const mapDispatchToProps = dispatch =>
       resetOrgHierarchyData,
       startLoaderAction,
       stopLoaderAction,
-      fetchOrganisationDetail
+      fetchOrganisationDetail,
+      onDeleteOrg
     },
     dispatch
   );

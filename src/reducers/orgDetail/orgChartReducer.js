@@ -3,8 +3,11 @@ import {
   SET_FETCHORGHEIRARCHY_SUCCESS,
   SET_FECTHORGHEIRARCHY_ERROR,
   ADD_ORG_CHART_CHILD_SUCCESS,
-  RESET_ORGHIRARCHY_SUCCESS
+  RESET_ORGHIRARCHY_SUCCESS,
+  DELETEORG_SUCCESS
 } from "../../constants/dispatch";
+
+import { removeFromTree } from "../../util/util";
 
 const initialState = {
   loading: false,
@@ -45,6 +48,21 @@ export default (state = initialState, action) => {
                 state.orgHierarchy.response.children),
               action.response.response
             ]
+          }
+        }
+      };
+
+    case DELETEORG_SUCCESS:
+      const updatedTree = removeFromTree(
+        state.orgHierarchy.response,
+        action.response
+      );
+      return {
+        ...state,
+        orgHierarchy: {
+          ...state.orgHierarchy,
+          response: {
+            ...updatedTree
           }
         }
       };
