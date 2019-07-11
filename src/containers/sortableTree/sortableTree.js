@@ -183,13 +183,15 @@ class Tree extends Component {
                           >
                             +
                           </button>
-                          <button
-                            className="btn f-36 ml-1"
-                            title={"Remove Child"}
-                            onClick={() => this.removeOrg(rowInfo)}
-                          >
-                            -
-                          </button>
+                          {rowInfo.parentNode && (
+                            <button
+                              className="btn f-36 ml-1"
+                              title={"Remove Child"}
+                              onClick={() => this.removeOrg(rowInfo)}
+                            >
+                              -
+                            </button>
+                          )}
                         </Fragment>
                       )
                     ]
