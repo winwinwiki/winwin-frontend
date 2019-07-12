@@ -155,7 +155,7 @@ class Tree extends Component {
                         <Fragment>
                           {subtitle}
                           <div>&nbsp;</div>
-                          {`${children.length} children`}
+                          {`${children ? children.length : ""} children`}
                         </Fragment>
                       );
                     },
