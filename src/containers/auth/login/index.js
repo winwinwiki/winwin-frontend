@@ -148,6 +148,10 @@ class Login extends React.Component {
                   <li>Include at least one capital letter (A-Z)</li>
                   <li>Include at least one small letter (a-z)</li>
                   <li>Include at least one number (0-9)</li>
+                  <li>
+                    Include at least one special character ({" "}
+                    {`{^$*.[]{}()?-"!@#%&/\,><':;|_~`}`} )
+                  </li>
                 </ul>
               </div>
             </div>
