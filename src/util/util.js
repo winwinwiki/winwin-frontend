@@ -52,9 +52,16 @@ export function modifiyFilterList(list) {
     desiredList["editedBy"] = list["editedBy"].map(editedBy => editedBy.value);
   }
 
-  if (list["pageNo"] || list["pageSize"]) {
+  if (
+    list["pageNo"] ||
+    list["pageSize"] ||
+    list["created_by"] ||
+    list["updated_by"]
+  ) {
     desiredList["pageNo"] = list["pageNo"];
     desiredList["pageSize"] = list["pageSize"];
+    desiredList["created_by"] = list["created_by"];
+    desiredList["updated_by"] = list["updated_by"];
   }
 
   return desiredList;

@@ -329,10 +329,10 @@ class OrgList extends React.Component {
       Cell: row => <div className="centerText">{row.value}</div>
     },
     {
-      id: "createdBy",
+      id: "created_by",
       Header: "Created By",
       accessor: "createdBy",
-      sortable: false,
+      sortable: true,
       Cell: row => (
         <div title={row.original.createdByEmail} className="centerText">
           <a href={`mailto:${row.original.createdByEmail}`}>{row.value}</a>
@@ -340,10 +340,10 @@ class OrgList extends React.Component {
       )
     },
     {
-      id: "lastEditedBy",
+      id: "updated_by",
       Header: "Edited By",
       accessor: "lastEditedBy",
-      sortable: false,
+      sortable: true,
       Cell: row => (
         <div title={row.original.lastEditedByEmail} className="centerText">
           <a href={`mailto:${row.original.lastEditedByEmail}`}>{row.value}</a>
