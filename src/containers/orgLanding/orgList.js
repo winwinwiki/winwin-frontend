@@ -333,14 +333,22 @@ class OrgList extends React.Component {
       Header: "Created By",
       accessor: "createdBy",
       sortable: false,
-      Cell: row => <div className="centerText">{row.value}</div>
+      Cell: row => (
+        <div className="centerText">
+          <a href={`mailto:${row.original.createdByEmail}`}>{row.value}</a>
+        </div>
+      )
     },
     {
       id: "lastEditedBy",
       Header: "Edited By",
       accessor: "lastEditedBy",
       sortable: false,
-      Cell: row => <div className="centerText">{row.value}</div>
+      Cell: row => (
+        <div className="centerText">
+          <a href={`mailto:${row.original.lastEditedByEmail}`}>{row.value}</a>
+        </div>
+      )
     },
     {
       id: "delete",
