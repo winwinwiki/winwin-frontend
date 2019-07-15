@@ -59,7 +59,10 @@ import {
   FETCH_REGIONSLIST_ERROR,
   CHANGEPASSWORD_REQUEST,
   CHANGEPASSWORD_SUCCESS,
-  CHANGEPASSWORD_ERROR
+  CHANGEPASSWORD_ERROR,
+  DELETEORG_REQUEST,
+  DELETEORG_SUCCESS,
+  DELETEORG_ERROR
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -385,6 +388,21 @@ export default (state = initialState, action) => {
         loading: false
       });
     case CHANGEPASSWORD_ERROR:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    // delete org chart
+    case DELETEORG_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
+    case DELETEORG_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false
+      });
+    case DELETEORG_ERROR:
       return Object.assign({}, state, {
         loading: false
       });
