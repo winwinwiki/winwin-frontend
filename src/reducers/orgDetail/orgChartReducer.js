@@ -7,7 +7,7 @@ import {
   DELETEORG_SUCCESS
 } from "../../constants/dispatch";
 
-import { removeFromTree, addToTree, findObjectById } from "../../util/util";
+import { removeFromTree, findItemNested } from "../../util/util";
 
 const initialState = {
   loading: false,
@@ -38,7 +38,7 @@ export default (state = initialState, action) => {
 
     case ADD_ORG_CHART_CHILD_SUCCESS:
       var obj = state.orgHierarchy.response;
-      var bla = findObjectById(obj, action.parentId);
+      var bla = findItemNested([obj], action.parentId);
       bla.children.push(action.response.response);
       return {
         ...state,
