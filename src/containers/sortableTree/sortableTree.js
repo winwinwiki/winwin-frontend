@@ -13,6 +13,7 @@ import {
 } from "../../actions/common/loaderActions";
 import { OrgHierarchySelector } from "../../selectors/OrgHierarchySelector";
 import "./sortableTree.css";
+import { PopupModal } from "../ui/popupModal";
 class Tree extends Component {
   state = {
     isEdited: false,
@@ -53,8 +54,13 @@ class Tree extends Component {
     this.props.addChildOrganisation(this.props.orgId, rowInfo.node.id);
   };
 
-  removeOrg = ({ node: { id } }) => {
+  setTobeRemovedOrg = ({ node: { id, title } }) => {
+    this.setState({ nodeId: id, nodeTitile: title });
+  };
+
+  removeOrg = id => {
     this.props.onDeleteOrg(id);
+    this.onCancel();
   };
 
   onCancel = () => {
@@ -187,7 +193,9 @@ class Tree extends Component {
                             <button
                               className="btn f-36 ml-1"
                               title={"Remove Child"}
-                              onClick={() => this.removeOrg(rowInfo)}
+                              data-toggle="modal"
+                              data-target="#deleteModal"
+                              onClick={() => this.setTobeRemovedOrg(rowInfo)}
                             >
                               -
                             </button>
@@ -214,6 +222,16 @@ class Tree extends Component {
             </ul>
           </div>
         </div>
+        <PopupModal
+          modalid="deleteModal"
+          modaltitle="Alert!"
+          modalcontent={`Are you sure you want to delete '${
+            this.state.nodeTitile
+          }' ?`}
+          primarybuttontext="Delete Organization"
+          secondarybuttontext="Cancel"
+          handleDelete={() => this.removeOrg(this.state.nodeId)}
+        />
       </section>
     );
   }
