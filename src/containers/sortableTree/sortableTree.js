@@ -28,8 +28,8 @@ class Tree extends Component {
     window.onpopstate = () => {
       this.props.fetchOrganisationDetail({ orgId: this.props.match.params.id });
     };
-
-    this.props.fetchOrgHierarchy(this.props.match.params.id);
+    if (!this.props.orgHierarchy.length)
+      this.props.fetchOrgHierarchy(this.props.match.params.id);
   }
 
   componentWillReceiveProps(nextProps) {
