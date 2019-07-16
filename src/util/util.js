@@ -223,23 +223,20 @@ export const removeFromTree = (root, idToDelete, parent, idx) => {
       parent.children.splice(idx, 1);
     } else return null;
   }
-
-  for (const [i, e] of root.children.entries()) {
-    removeFromTree(e, idToDelete, root, i);
+  if (root.children) {
+    for (const [i, e] of root.children.entries()) {
+      removeFromTree(e, idToDelete, root, i);
+    }
   }
 
   return root;
 };
 
 //find child node by id
-export function findObjectById(root, id) {
-  if (root.children) {
-    for (var k in root.children) {
-      if (root.children[k].id == id) {
-        return root.children[k];
-      } else if (root.children.length) {
-        return findObjectById(root.children[k], id);
-      }
-    }
-  }
-}
+export const findItemNested = (arr, itemId, nestingKey = "children") =>
+  arr.reduce((a, item) => {
+    if (a) return a;
+    if (item.id === itemId) return item;
+    if (item[nestingKey])
+      return findItemNested(item[nestingKey], itemId, nestingKey);
+  }, null);
