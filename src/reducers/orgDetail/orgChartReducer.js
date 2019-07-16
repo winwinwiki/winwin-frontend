@@ -7,7 +7,7 @@ import {
   DELETEORG_SUCCESS
 } from "../../constants/dispatch";
 
-import { removeFromTree } from "../../util/util";
+import { removeFromTree, addToTree, findObjectById } from "../../util/util";
 
 const initialState = {
   loading: false,
@@ -37,23 +37,21 @@ export default (state = initialState, action) => {
       });
 
     case ADD_ORG_CHART_CHILD_SUCCESS:
+      var obj = state.orgHierarchy.response;
+      var bla = findObjectById(obj, action.parentId);
+      bla.children.push(action.response.response);
       return {
         ...state,
         orgHierarchy: {
           ...state.orgHierarchy,
           response: {
-            ...state.orgHierarchy.response,
-            children: [
-              ...(state.orgHierarchy.response &&
-                state.orgHierarchy.response.children),
-              action.response.response
-            ]
+            ...obj
           }
         }
       };
 
     case DELETEORG_SUCCESS:
-      const updatedTree = removeFromTree(
+      const filteredTree = removeFromTree(
         state.orgHierarchy.response,
         action.response
       );
@@ -62,7 +60,7 @@ export default (state = initialState, action) => {
         orgHierarchy: {
           ...state.orgHierarchy,
           response: {
-            ...updatedTree
+            ...filteredTree
           }
         }
       };

@@ -230,3 +230,16 @@ export const removeFromTree = (root, idToDelete, parent, idx) => {
 
   return root;
 };
+
+//find child node by id
+export function findObjectById(root, id) {
+  if (root.children) {
+    for (var k in root.children) {
+      if (root.children[k].id == id) {
+        return root.children[k];
+      } else if (root.children.length) {
+        return findObjectById(root.children[k], id);
+      }
+    }
+  }
+}
