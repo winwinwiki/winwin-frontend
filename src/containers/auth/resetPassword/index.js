@@ -201,14 +201,14 @@ class ResetPassword extends React.Component {
   onSubmit = e => {
     e.preventDefault();
     const { confirmPassword, password, code } = this.state;
-    const { location: { state: email } = {} } = this.props;
+    const { location: { state } = {} } = this.props;
     if (!confirmPassword || !password) {
       this.validateResetPasswordForm("confirmPassword", confirmPassword);
       this.validateResetPasswordForm("password", password);
       return;
     }
     this.props.onResetPassword({
-      userName: email,
+      userName: state.email,
       confirmationCode: code,
       newPassword: password
     });

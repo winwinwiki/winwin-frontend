@@ -128,7 +128,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      changePage: email => push("/reset-password", email),
+      changePage: email => push("/reset-password", { isAuth: true, email }),
       onSubmit
     },
     dispatch
