@@ -18,12 +18,19 @@ const AuthRoutes = ({ location: { state } }) => (
         <Route exact path="/" component={Login} />
         <Route exact path="/forget-password" component={ForgetPassword} />
         <PrivateRoute
+          title={"Reset Forgotten Password"}
           authenticated={(state && state.isAuth) || false}
           exact
           path="/reset-password"
           component={ResetPassword}
         />
-        <Route exact path="/verify-user" component={newUserChangePassword} />
+        <PrivateRoute
+          title={"Verify User"}
+          authenticated={state && state.length ? true : false}
+          exact
+          path="/verify-user"
+          component={newUserChangePassword}
+        />
         <Route path="*" component={PageNotFound} />
       </Switch>
       {/* </BrowserRouter> */}
