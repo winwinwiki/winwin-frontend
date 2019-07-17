@@ -8,6 +8,7 @@ import ForgetPassword from "./forgetPassword";
 import ResetPassword from "./resetPassword";
 import newUserChangePassword from "./changePassword/newUserChangePassword";
 import PrivateRoute from "../privateRouter";
+import PageNotFound from "./pageNotFound";
 
 const AuthRoutes = ({ location: { state } }) => (
   <React.Fragment>
@@ -23,6 +24,7 @@ const AuthRoutes = ({ location: { state } }) => (
           component={ResetPassword}
         />
         <Route exact path="/verify-user" component={newUserChangePassword} />
+        <Route path="*" component={PageNotFound} />
       </Switch>
       {/* </BrowserRouter> */}
     </Auth>
