@@ -383,7 +383,11 @@ class OrgList extends React.Component {
       totalPages,
       page
     } = this.state;
-    const { appliedFilterList, orgList: { loading } = {} } = this.props;
+    const {
+      userRole,
+      appliedFilterList,
+      orgList: { loading } = {}
+    } = this.props;
 
     let orgList = this.state.orgList;
     if (!orgList) {
@@ -401,6 +405,7 @@ class OrgList extends React.Component {
           filterOrgList={this.filterOrgList}
           resetFilters={this.resetFilters}
           resetPagination={this.resetPagination}
+          userRole={userRole}
         />
         <div className="d-flex py-3 align-items-center applied-filters-container">
           <Dropdown
