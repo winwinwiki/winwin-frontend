@@ -56,12 +56,12 @@ const Header = props => {
                 className="nav-link dropdown-toggle active"
               >
                 {userInfo.userDisplayName}
-                <img
+                {/* <img
                   src="/images/profile-pic.png"
                   alt="Profile Pic"
                   width="30"
                   className="mb-2 mx-2"
-                />
+                /> */}
               </a>
               <div
                 aria-labelledby="navbarDropdownMenuLink"

@@ -193,7 +193,7 @@ class UserProfile extends React.Component {
                   </div>
                 </form>
               </div>
-              <div className="col-8 ml-auto">
+              {/* <div className="col-8 ml-auto">
                 {isEditable && !file ? (
                   <Fragment>
                     <Upload
@@ -224,7 +224,7 @@ class UserProfile extends React.Component {
                   </div>
                 )}
                 {this.renderSelectedFile()}
-              </div>
+              </div> */}
             </div>
             {isEditable ? (
               <div className="row justify-content-center footer-actions active">
