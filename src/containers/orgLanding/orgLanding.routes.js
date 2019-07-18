@@ -9,11 +9,9 @@ import OrgList from "./orgList";
 import CreateOrg from "../createOrg";
 import UploadDataFeed from "../uploadDataFeed";
 import { titleCase } from "../../util/util";
-import NotificationToaster from "../ui/notificationToaster";
 
 const OrgLandingRoutes = props => (
   <OrgLanding history={props.history} match={props.match}>
-    <NotificationToaster />
     <Switch>
       <PrivateRoute
         title={"Organizations - WinWin"}

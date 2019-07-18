@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { push } from "react-router-redux";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -7,8 +7,15 @@ import Upload from "../ui/upload";
 import { onCreateBulkOrg as onDataFeed } from "../../actions/organization/createBulkOrgAction";
 import validate from "../../util/validation";
 import { titleCase, formatBytes } from "../../util/util";
-import {REACT_APP_BULK_UPLOAD_TEMPLATE_URL} from "../../buildConfig/apiConfig";
+import { REACT_APP_BULK_UPLOAD_TEMPLATE_URL } from "../../buildConfig/apiConfig";
+import { toast } from "react-toastify";
 
+const message = () => (
+  <Fragment>
+    <div>Please wait while the upload is in progress.</div>
+    <div>We will send you a notification on your registered slack channel.</div>
+  </Fragment>
+);
 class UploadDataFeed extends React.Component {
   state = {
     file: null,
@@ -148,6 +155,15 @@ class UploadDataFeed extends React.Component {
     this.props.onDataFeed({ file });
     //clear file after upload
     this.dropFile();
+    //custom notification toaster
+    toast.info(message(), {
+      position: "top-right",
+      autoClose: 10000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true
+    });
   };
 }
 
