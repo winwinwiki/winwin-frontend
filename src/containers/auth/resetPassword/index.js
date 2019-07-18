@@ -72,7 +72,7 @@ class ResetPassword extends React.Component {
               onBlur={this.validateForm}
               onChange={this.onChange}
               name="email"
-              disabled={state && state.email}
+              // disabled={state && state.email}
               value={state && state.email ? state.email : email}
             />
             {formError.email && (
