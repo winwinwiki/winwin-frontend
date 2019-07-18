@@ -26,6 +26,7 @@ import Can from "../Can";
 import isEqual from "lodash/isEqual";
 import findKey from "lodash/findKey";
 import { modifiyFilterList } from "../../util/util";
+import NotificationToaster from "../ui/notificationToaster";
 
 const setPriorityHigh = "Set Priority High";
 const setPriorityNormal = "Set Priority Normal";
@@ -396,6 +397,7 @@ class OrgList extends React.Component {
 
     return (
       <section className="dashboard-content p-0">
+        <NotificationToaster />
         <OrgFilters
           activeButton={activeButton}
           buttonList={buttonList}
