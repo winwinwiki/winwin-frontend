@@ -62,7 +62,10 @@ import {
   CHANGEPASSWORD_ERROR,
   DELETEORG_REQUEST,
   DELETEORG_SUCCESS,
-  DELETEORG_ERROR
+  DELETEORG_ERROR,
+  RESETPASSWORD_REQUEST,
+  RESETPASSWORD_SUCCESS,
+  RESETPASSWORD_ERROR
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -403,6 +406,21 @@ export default (state = initialState, action) => {
         loading: false
       });
     case DELETEORG_ERROR:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    // reset password
+    case RESETPASSWORD_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
+    case RESETPASSWORD_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false
+      });
+    case RESETPASSWORD_ERROR:
       return Object.assign({}, state, {
         loading: false
       });
