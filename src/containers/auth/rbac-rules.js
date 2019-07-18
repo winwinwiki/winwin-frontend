@@ -8,6 +8,7 @@ const rules = {
       "organizations:list",
       "organizations:create",
       "organizations:edit",
+      "organizations:delete",
       //orgdetails
       "organizationDetails:list",
       //org chart
