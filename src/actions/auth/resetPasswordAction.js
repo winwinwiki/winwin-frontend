@@ -9,7 +9,7 @@ export const onResetPassword = (params, resendCode) => {
   return dispatch => {
     dispatch(rpRequest());
     let url = resendCode ? "/user/resetPassword" : "/user/confirmResetPassword";
-    api(url, "POST", JSON.stringify(params), true).then(
+    api(url, "POST", JSON.stringify(params || params.email), true).then(
       response => {
         dispatch(rpSuccess(response, resendCode));
       },
