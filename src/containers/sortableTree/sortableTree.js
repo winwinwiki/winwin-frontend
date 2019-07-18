@@ -43,6 +43,10 @@ class Tree extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.resetOrgHierarchyData();
+  }
+
   onEdit = () => {
     this.setState({
       isEdited: true
