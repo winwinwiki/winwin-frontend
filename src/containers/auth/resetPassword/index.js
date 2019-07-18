@@ -10,10 +10,12 @@ import { validationPopup } from "../changePassword/newUserChangePassword";
 
 class ResetPassword extends React.Component {
   state = {
+    email: "",
     password: "",
     confirmPassword: "",
     code: "",
     formError: {
+      email: "",
       password: "",
       confirmPassword: "",
       code: ""
@@ -39,8 +41,8 @@ class ResetPassword extends React.Component {
   }
 
   render() {
-    let { confirmPassword, password, code, formError } = this.state;
-    let { resetPassword } = this.props;
+    let { email, confirmPassword, password, code, formError } = this.state;
+    let { resetPassword, location: { state } = {} } = this.props;
     if (resetPassword.error)
       return (
         <div className="mt-4" style={{ color: "white" }}>
@@ -59,6 +61,28 @@ class ResetPassword extends React.Component {
       <div className="w-100 flex-fill d-flex flex-column justify-content-center">
         <NotificationToaster />
         {resetPassword.error && <div>{resetPassword.data}</div>}
+        {
+          <div className="form-group w-100 mb-4 login-form-group">
+            <input
+              id="email"
+              type="email"
+              aria-describedby="emailDesc"
+              placeholder="Enter E-mail"
+              className="form-control"
+              onBlur={this.validateForm}
+              onChange={this.onChange}
+              name="email"
+              disabled={state && state.email}
+              value={state && state.email ? state.email : email}
+            />
+            {formError.email && (
+              <small className="form-element-hint text-danger">
+                {formError.email}
+              </small>
+            )}
+            {validationPopup("missingEmail")}
+          </div>
+        }
         <div className="form-group w-100 mb-4 login-form-group">
           <input
             id="code"
@@ -76,7 +100,7 @@ class ResetPassword extends React.Component {
               {formError.code}
             </small>
           )}
-          {validationPopup("verificationCode", "asasdads")}
+          {validationPopup("verificationCode", state && state.email)}
         </div>
         <div className="form-group w-100 mb-4 login-form-group">
           <input
@@ -125,24 +149,28 @@ class ResetPassword extends React.Component {
         >
           Reset
         </button>
-        <div className="mt-4" style={{ color: "white" }}>
-          {" "}
-          Haven't recieved verification email?{" "}
-          <span
-            className="cursor-pointer"
-            style={{ color: "blue" }}
-            onClick={this.onResendCode}
-          >
-            Resend
-          </span>
-        </div>
+        {validate.email((state && state.email) || email) && (
+          <div className="mt-4" style={{ color: "white" }}>
+            {" "}
+            Haven't recieved verification email?{" "}
+            <span
+              className="cursor-pointer"
+              style={{ color: "blue" }}
+              onClick={this.onResendCode}
+            >
+              Resend
+            </span>
+          </div>
+        )}
       </div>
     );
   }
 
   onResendCode = e => {
     e.preventDefault();
-    const { location: { state: email } = {} } = this.props;
+    let { location: { state: email } = {} } = this.props;
+    const { email: missingMail } = this.state;
+    email = missingMail ? missingMail : email;
     this.props.onResetPassword({ email }, true);
   };
 
@@ -156,6 +184,22 @@ class ResetPassword extends React.Component {
 
   validateResetPasswordForm = (field, value) => {
     const { formError } = this.state;
+    if (field === "email") {
+      if (!value) {
+        formError[field] = "E-mail is required.";
+        this.setState({ formError });
+        return;
+      }
+      let isValid = validate.email(value);
+      if (!isValid) {
+        formError.email = "Enter a valid email.";
+        this.setState({ formError });
+        return;
+      }
+      formError.email = "";
+      this.setState({ formError });
+      return;
+    }
     if (field === "code") {
       if (!value) {
         formError[field] = "Code is required.";
@@ -200,7 +244,7 @@ class ResetPassword extends React.Component {
 
   onSubmit = e => {
     e.preventDefault();
-    const { confirmPassword, password, code } = this.state;
+    const { email, confirmPassword, password, code } = this.state;
     const { location: { state } = {} } = this.props;
     if (!confirmPassword || !password) {
       this.validateResetPasswordForm("confirmPassword", confirmPassword);
@@ -208,7 +252,7 @@ class ResetPassword extends React.Component {
       return;
     }
     this.props.onResetPassword({
-      userName: state.email,
+      userName: email ? email : state.email,
       confirmationCode: code,
       newPassword: password
     });

@@ -62,7 +62,7 @@ const validationMessages = {
         className="col"
         style={{ paddingLeft: "30px", paddingRight: "30px" }}
       >
-        {`A code was sent to your registered email-id: ${param}`}
+        {`A code was sent to your registered email-id: ${param ? param : ""}`}
         <ul>
           <li>
             Once you've recieved your confirmation code, Please enter it here.
@@ -71,7 +71,8 @@ const validationMessages = {
         </ul>
       </div>
     </div>
-  )
+  ),
+  missingEmail: () => "Registered email-address, to reset password"
 };
 
 export const validationPopup = (messageType, param) => (
