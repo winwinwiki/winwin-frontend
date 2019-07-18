@@ -17,13 +17,14 @@ const AuthRoutes = ({ location: { state } }) => (
       <Switch>
         <Route exact path="/" component={Login} />
         <Route exact path="/forget-password" component={ForgetPassword} />
-        <PrivateRoute
+        <Route exact path="/reset-password" component={ResetPassword} />
+        {/* <PrivateRoute
           title={"Reset Forgotten Password"}
           authenticated={(state && state.isAuth) || false}
           exact
           path="/reset-password"
           component={ResetPassword}
-        />
+        /> */}
         <PrivateRoute
           title={"Verify User"}
           authenticated={state && state.length ? true : false}
