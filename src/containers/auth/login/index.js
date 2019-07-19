@@ -11,8 +11,7 @@ import {
   startLoaderAction,
   stopLoaderAction
 } from "../../../actions/common/loaderActions";
-import { USER } from "../../../constants";
-
+import NotificationToaster from "../../ui/notificationToaster";
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -84,11 +83,12 @@ class Login extends React.Component {
     let { session } = this.props;
     return (
       <div className="w-100 flex-fill d-flex flex-column justify-content-center">
-        {session && session.error && (
+        <NotificationToaster />
+        {/* {session && session.error && (
           <small className="form-element-hint text-danger">
             {session.data.message}
           </small>
-        )}
+        )} */}
         <div className="form-group w-100 mb-4 login-form-group">
           <label htmlFor="userName" className="sr-only">
             User Name
@@ -112,9 +112,6 @@ class Login extends React.Component {
           )}
         </div>
         <div className="form-group w-100 mb-4 login-form-group">
-          <label htmlFor="userPassword" className="sr-only">
-            User Password
-          </label>
           <input
             id="userPassword"
             type="password"
@@ -132,6 +129,33 @@ class Login extends React.Component {
               {formError.password}
             </small>
           )}
+          <i
+            className="icon-circle-question custom-icon cursor-pointer"
+            id="passwordInfo"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          />
+          <div
+            className="dropdown-menu dropdown-menu-left"
+            aria-labelledby="passwordInfo"
+          >
+            <div className="row">
+              <div className="col">
+                Password must
+                <ul>
+                  <li>Be at least 8 characters long</li>
+                  <li>Include at least one capital letter (A-Z)</li>
+                  <li>Include at least one small letter (a-z)</li>
+                  <li>Include at least one number (0-9)</li>
+                  <li>
+                    Include at least one special character ({" "}
+                    {`{^$*.[]{}()?-"!@#%&/\,><':;|_~`}`} )
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
         <Link to="/forget-password" className="px-4 text-white">
           Forgot password?

@@ -8,6 +8,7 @@ import { onCreateOrg } from "../../actions/organization/createOrgAction";
 import "./createOrg.css";
 import validate from "../../util/validation";
 import { sectorsList, entityList, tagStatusList } from "../../constants";
+import NotificationToaster from "../ui/notificationToaster";
 
 class CreateOrg extends React.Component {
   constructor(props) {
@@ -71,6 +72,7 @@ class CreateOrg extends React.Component {
     } = this.state;
     return (
       <div className="container">
+        <NotificationToaster />
         <div className="row ">
           <div className="col-sm-12 mx-auto my-3">
             <form>
@@ -323,9 +325,9 @@ class CreateOrg extends React.Component {
       //   this.setState({ formError });
       //   return;
       // }
-      // formError.orgName = "";
-      // this.setState({ formError });
-      // return;
+      formError.orgName = "";
+      this.setState({ formError });
+      return;
     }
     if (field === "zipcode") {
       let isValid = validate.number(value);

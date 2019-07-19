@@ -52,9 +52,16 @@ export function modifiyFilterList(list) {
     desiredList["editedBy"] = list["editedBy"].map(editedBy => editedBy.value);
   }
 
-  if (list["pageNo"] || list["pageSize"]) {
+  if (
+    list["pageNo"] ||
+    list["pageSize"] ||
+    list["created_by"] ||
+    list["updated_by"]
+  ) {
     desiredList["pageNo"] = list["pageNo"];
     desiredList["pageSize"] = list["pageSize"];
+    desiredList["created_by"] = list["created_by"];
+    desiredList["updated_by"] = list["updated_by"];
   }
 
   return desiredList;
@@ -208,3 +215,28 @@ export const mapOptionsToRegions = regionsList => {
     value: x.regionId
   }));
 };
+
+//remove node by id from deeply nested array of objects
+export const removeFromTree = (root, idToDelete, parent, idx) => {
+  if (root.id === idToDelete) {
+    if (parent) {
+      parent.children.splice(idx, 1);
+    } else return null;
+  }
+  if (root.children) {
+    for (const [i, e] of root.children.entries()) {
+      removeFromTree(e, idToDelete, root, i);
+    }
+  }
+
+  return root;
+};
+
+//find child node by id
+export const findItemNested = (arr, itemId, nestingKey = "children") =>
+  arr.reduce((a, item) => {
+    if (a) return a;
+    if (item.id === itemId) return item;
+    if (item[nestingKey])
+      return findItemNested(item[nestingKey], itemId, nestingKey);
+  }, null);

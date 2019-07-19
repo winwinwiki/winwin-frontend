@@ -17,7 +17,7 @@ export const onAddOrgChartChild = params => {
       true
     ).then(
       response => {
-        dispatch(addOrgChartChildSuccess(response));
+        dispatch(addOrgChartChildSuccess(response, params.parentId));
         dispatch(stopLoader());
       },
       error => {
@@ -33,10 +33,11 @@ function addOrgChartChildReq() {
   };
 }
 
-function addOrgChartChildSuccess(response) {
+function addOrgChartChildSuccess(response, parentId) {
   return {
     type: ADD_ORG_CHART_CHILD_SUCCESS,
-    response
+    response,
+    parentId
   };
 }
 

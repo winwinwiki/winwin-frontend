@@ -524,8 +524,8 @@ class OrgDetailPage extends React.Component {
   onSuggestChange = (field, { newValue }, e) => {
     this.setState({
       orgDetail: {
-        ...this.state.orgDetail,
-        [field]: newValue
+        ...JSON.parse(JSON.stringify(this.state.orgDetail)),
+        [field]: JSON.parse(JSON.stringify(newValue))
       }
     });
   };
@@ -537,16 +537,17 @@ class OrgDetailPage extends React.Component {
   };
 
   onChange = e => {
-    const { orgDetail } = this.state;
+    let orgDetailCopy = JSON.parse(JSON.stringify(this.state.orgDetail));
     const { target: { name, value } = {} } = e;
     if (addressFields.includes(name.toLowerCase())) {
-      orgDetail.address[name] = value;
-    } else orgDetail[name] = value;
-    this.setState({ orgDetail });
+      orgDetailCopy.address[name] = value;
+    } else orgDetailCopy[name] = value;
+    this.setState({ orgDetail: orgDetailCopy });
   };
 
   onDropdownChange = (field, value) => {
-    const { orgDetail } = this.state;
+    // const { orgDetail } = this.state;
+    let orgDetail = JSON.parse(JSON.stringify(this.state.orgDetail));
     orgDetail[field] = value;
     this.setState({ orgDetail });
   };
@@ -577,7 +578,8 @@ class OrgDetailPage extends React.Component {
 
   onCancelBasicInfo = () => {
     this.setState({
-      isEditable: false
+      isEditable: false,
+      orgDetail: this.props.organizationDetail.data.response
     });
   };
 }

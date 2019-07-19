@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import ButtonGroup from "../ui/buttonGroup";
 import Search from "../ui/searchBar";
 import AppliedOrgFiltersList from "./appliedOrgFilters/appliedOrgFiltersList";
+import Can from "../Can";
 
 class OrgFilters extends React.Component {
   constructor(props) {
@@ -128,13 +129,19 @@ class OrgFilters extends React.Component {
           >
             <i className="icon-add mr-1" /> Create
           </a>
-          <a
-            href="javascript:;"
-            onClick={() => this.changePage("uploadDataFeed")}
-            className="btn btn-link pr-0"
-          >
-            <i className="icon-upload mr-1" /> Upload
-          </a>
+          <Can
+            role={this.props.userRole}
+            perform="organizations:multiCreate"
+            yes={() => (
+              <a
+                href="javascript:;"
+                onClick={() => this.changePage("uploadDataFeed")}
+                className="btn btn-link pr-0"
+              >
+                <i className="icon-upload mr-1" /> Upload
+              </a>
+            )}
+          />
         </div>
       </div>
     );

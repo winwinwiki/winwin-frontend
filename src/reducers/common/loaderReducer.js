@@ -56,7 +56,16 @@ import {
   FETCH_REGIONSERVED_ERROR,
   FETCH_REGIONSLIST_REQUEST,
   FETCH_REGIONSLIST_SUCCESS,
-  FETCH_REGIONSLIST_ERROR
+  FETCH_REGIONSLIST_ERROR,
+  CHANGEPASSWORD_REQUEST,
+  CHANGEPASSWORD_SUCCESS,
+  CHANGEPASSWORD_ERROR,
+  DELETEORG_REQUEST,
+  DELETEORG_SUCCESS,
+  DELETEORG_ERROR,
+  RESETPASSWORD_REQUEST,
+  RESETPASSWORD_SUCCESS,
+  RESETPASSWORD_ERROR
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -367,6 +376,51 @@ export default (state = initialState, action) => {
         loading: false
       });
     case FETCH_REGIONSLIST_ERROR:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    // change password
+    case CHANGEPASSWORD_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
+    case CHANGEPASSWORD_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false
+      });
+    case CHANGEPASSWORD_ERROR:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    // delete org chart
+    case DELETEORG_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
+    case DELETEORG_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false
+      });
+    case DELETEORG_ERROR:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    // reset password
+    case RESETPASSWORD_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
+    case RESETPASSWORD_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false
+      });
+    case RESETPASSWORD_ERROR:
       return Object.assign({}, state, {
         loading: false
       });

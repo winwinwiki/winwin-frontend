@@ -26,6 +26,7 @@ import Can from "../Can";
 import isEqual from "lodash/isEqual";
 import findKey from "lodash/findKey";
 import { modifiyFilterList } from "../../util/util";
+import NotificationToaster from "../ui/notificationToaster";
 
 const setPriorityHigh = "Set Priority High";
 const setPriorityNormal = "Set Priority Normal";
@@ -145,25 +146,25 @@ class OrgList extends React.Component {
     }
   }
 
-  toggleRow = name => {
+  toggleRow = id => {
     const newSelected = Object.assign({}, this.state.selected);
-    newSelected[name] = !this.state.selected[name];
+    newSelected[id] = !this.state.selected[id];
     this.setState({
       selected: newSelected,
       selectAll: 2
     });
     //when selected row is found
-    if (newSelected[name]) {
+    if (newSelected[id]) {
       this.setState({
         selectedOrgList: [
           ...this.state.selectedOrgList,
-          this.state.orgList.find(x => x.name === name)
+          this.state.orgList.find(x => x.id === id)
         ]
       });
     }
-    if (!newSelected[name]) {
+    if (!newSelected[id]) {
       this.setState({
-        selectedOrgList: this.state.selectedOrgList.filter(x => x.name !== name)
+        selectedOrgList: this.state.selectedOrgList.filter(x => x.id !== id)
       });
     }
   };
@@ -173,7 +174,7 @@ class OrgList extends React.Component {
 
     if (this.state.selectAll === 0) {
       this.state.orgList.forEach(x => {
-        newSelected[x.name] = true;
+        newSelected[x.id] = true;
       });
     }
 
@@ -198,8 +199,8 @@ class OrgList extends React.Component {
             <input
               type="checkbox"
               className="checkbox"
-              checked={this.state.selected[original.name] === true}
-              onChange={() => this.toggleRow(original.name)}
+              checked={this.state.selected[original.id] === true}
+              onChange={() => this.toggleRow(original.id)}
             />
           </div>
         );
@@ -329,11 +330,26 @@ class OrgList extends React.Component {
       Cell: row => <div className="centerText">{row.value}</div>
     },
     {
-      id: "lastEditedBy",
+      id: "created_by",
+      Header: "Created By",
+      accessor: "createdBy",
+      sortable: true,
+      Cell: row => (
+        <div title={row.original.createdByEmail} className="centerText">
+          <a href={`mailto:${row.original.createdByEmail}`}>{row.value}</a>
+        </div>
+      )
+    },
+    {
+      id: "updated_by",
       Header: "Edited By",
       accessor: "lastEditedBy",
-      sortable: false,
-      Cell: row => <div className="centerText">{row.value}</div>
+      sortable: true,
+      Cell: row => (
+        <div title={row.original.lastEditedByEmail} className="centerText">
+          <a href={`mailto:${row.original.lastEditedByEmail}`}>{row.value}</a>
+        </div>
+      )
     },
     {
       id: "delete",
@@ -368,7 +384,11 @@ class OrgList extends React.Component {
       totalPages,
       page
     } = this.state;
-    const { appliedFilterList, orgList: { loading } = {} } = this.props;
+    const {
+      userRole,
+      appliedFilterList,
+      orgList: { loading } = {}
+    } = this.props;
 
     let orgList = this.state.orgList;
     if (!orgList) {
@@ -377,6 +397,7 @@ class OrgList extends React.Component {
 
     return (
       <section className="dashboard-content p-0">
+        <NotificationToaster />
         <OrgFilters
           activeButton={activeButton}
           buttonList={buttonList}
@@ -386,6 +407,7 @@ class OrgList extends React.Component {
           filterOrgList={this.filterOrgList}
           resetFilters={this.resetFilters}
           resetPagination={this.resetPagination}
+          userRole={userRole}
         />
         <div className="d-flex py-3 align-items-center applied-filters-container">
           <Dropdown

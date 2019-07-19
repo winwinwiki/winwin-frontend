@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Dropdown from "../ui/dropdown";
 import validate from "../../util/validation";
 
-const rolesList = ["Administrator", "Data Seeder"];
+const rolesList = ["Administrator", "DataSeeder"];
 
 class CreateUser extends Component {
   state = {
@@ -10,38 +10,16 @@ class CreateUser extends Component {
     role: rolesList[0],
     email: "",
     team: "",
-    status: "",
-    location: null,
     formError: {
       fullName: "",
       email: "",
-      team: "",
-      status: "",
-      location: ""
+      team: ""
     }
   };
 
   componentDidMount() {
     document.title = "New User - WinWin";
   }
-
-  static getDerivedStateFromProps = (nextProps, prevState) => {
-    if (
-      nextProps &&
-      nextProps.createUser !== prevState.createUser &&
-      nextProps.createUser.data &&
-      !nextProps.createUser.error
-    ) {
-      return {
-        fullName: "",
-        role: rolesList[0],
-        email: "",
-        team: ""
-      };
-    }
-
-    return null;
-  };
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });

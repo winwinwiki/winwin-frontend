@@ -19,9 +19,11 @@ import AddChildOrganisation from "./childOrganization";
 
 import ProgramDetailRoutes from "../programDetail/programDetail.routes";
 import Tree from "../sortableTree/sortableTree";
+import NotificationToaster from "../ui/notificationToaster";
 
 const OrgDetailRoutes = props => (
   <OrgDetail match={props.match} history={props.history}>
+    <NotificationToaster />
     <Switch>
       <CrumbRoute
         title="View History"

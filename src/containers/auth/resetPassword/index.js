@@ -6,13 +6,16 @@ import { onResetPassword } from "../../../actions/auth/resetPasswordAction";
 
 import validate from "../../../util/validation";
 import NotificationToaster from "../../ui/notificationToaster";
+import { validationPopup } from "../changePassword/newUserChangePassword";
 
 class ResetPassword extends React.Component {
   state = {
+    email: "",
     password: "",
     confirmPassword: "",
     code: "",
     formError: {
+      email: "",
       password: "",
       confirmPassword: "",
       code: ""
@@ -38,8 +41,8 @@ class ResetPassword extends React.Component {
   }
 
   render() {
-    let { confirmPassword, password, code, formError } = this.state;
-    let { resetPassword } = this.props;
+    let { email, confirmPassword, password, code, formError } = this.state;
+    let { resetPassword, location: { state } = {} } = this.props;
     if (resetPassword.error)
       return (
         <div className="mt-4" style={{ color: "white" }}>
@@ -50,7 +53,7 @@ class ResetPassword extends React.Component {
             style={{ color: "blue" }}
             onClick={() => window.location.reload()}
           >
-            Reload
+            Please try again
           </span>
         </div>
       );
@@ -58,32 +61,48 @@ class ResetPassword extends React.Component {
       <div className="w-100 flex-fill d-flex flex-column justify-content-center">
         <NotificationToaster />
         {resetPassword.error && <div>{resetPassword.data}</div>}
+        {
+          <div className="form-group w-100 mb-4 login-form-group">
+            <input
+              id="email"
+              type="email"
+              aria-describedby="emailDesc"
+              placeholder="Enter E-mail"
+              className="form-control"
+              onBlur={this.validateForm}
+              onChange={this.onChange}
+              name="email"
+              disabled={state && state.email}
+              value={state && state.email ? state.email : email}
+            />
+            {formError.email && (
+              <small className="form-element-hint text-danger">
+                {formError.email}
+              </small>
+            )}
+            {validationPopup("missingEmail")}
+          </div>
+        }
         <div className="form-group w-100 mb-4 login-form-group">
-          <label htmlFor="code" className="sr-only">
-            Confirmation Code
-          </label>
           <input
             id="code"
             type="text"
             aria-describedby="codeDesc"
             placeholder="Enter Confirmation Code"
             className="form-control"
-            // onBlur={this.validateForm}
+            onBlur={this.validateForm}
             onChange={this.onChange}
             name="code"
             value={code}
           />
-          <small id="codeDesc" className="sr-only">
-            The confirmation code seems to be invalid.
-          </small>
-          <small className="form-element-hint text-danger">
-            {formError.code && <div>{formError.code}</div>}
-          </small>
+          {formError.code && (
+            <small className="form-element-hint text-danger">
+              {formError.code}
+            </small>
+          )}
+          {validationPopup("verificationCode", state && state.email)}
         </div>
         <div className="form-group w-100 mb-4 login-form-group">
-          <label htmlFor="userName" className="sr-only">
-            Password
-          </label>
           <input
             id="userName"
             type="password"
@@ -95,46 +114,14 @@ class ResetPassword extends React.Component {
             name="password"
             value={password}
           />
-          <small id="userNameDesc" className="sr-only">
-            Password
-          </small>
-          <small className="form-element-hint text-danger">
-            {formError.password && (
-              <Fragment>
-                {formError.password}
-                <span>
-                  <i
-                    className="icon-circle-question"
-                    id="passwordInfo"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  />
-                  <div
-                    className="dropdown-menu dropdown-menu-left"
-                    aria-labelledby="passwordInfo"
-                  >
-                    <div className="row">
-                      <div className="col">
-                        Password must
-                        <ul>
-                          <li>Be at least 8 characters long</li>
-                          <li>Include at least one capital letter (A-Z)</li>
-                          <li>Include at least one small letter (a-z)</li>
-                          <li>Include at least one number (0-9)</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </span>
-              </Fragment>
-            )}
-          </small>
+          {formError.password && (
+            <small className="form-element-hint text-danger">
+              {formError.password}
+            </small>
+          )}
+          {validationPopup("newPassword")}
         </div>
         <div className="form-group w-100 mb-4 login-form-group">
-          <label htmlFor="userPassword" className="sr-only">
-            Confirm Password
-          </label>
           <input
             id="userPassword"
             type="password"
@@ -146,12 +133,12 @@ class ResetPassword extends React.Component {
             name="confirmPassword"
             value={confirmPassword}
           />
-          <small id="passwordDesc" className="sr-only">
-            confirmPassword
-          </small>
-          <small className="form-element-hint text-danger">
-            {formError.confirmPassword}
-          </small>
+          {formError.confirmPassword && (
+            <small className="form-element-hint text-danger">
+              {formError.confirmPassword}
+            </small>
+          )}
+          {validationPopup("confirmPassword")}
         </div>
         <button
           className="btn btn-lg btn-light w-100"
@@ -162,24 +149,28 @@ class ResetPassword extends React.Component {
         >
           Reset
         </button>
-        <div className="mt-4" style={{ color: "white" }}>
-          {" "}
-          Haven't recieved verification email?{" "}
-          <span
-            className="cursor-pointer"
-            style={{ color: "blue" }}
-            onClick={this.onResendCode}
-          >
-            Resend
-          </span>
-        </div>
+        {validate.email((state && state.email) || email) && (
+          <div className="mt-4" style={{ color: "white" }}>
+            {" "}
+            Haven't recieved verification email?{" "}
+            <span
+              className="cursor-pointer"
+              style={{ color: "blue" }}
+              onClick={this.onResendCode}
+            >
+              Resend
+            </span>
+          </div>
+        )}
       </div>
     );
   }
 
   onResendCode = e => {
     e.preventDefault();
-    const { location: { state: email } = {} } = this.props;
+    let { location: { state: email } = {} } = this.props;
+    const { email: missingMail } = this.state;
+    email = missingMail ? missingMail : email;
     this.props.onResetPassword({ email }, true);
   };
 
@@ -193,6 +184,32 @@ class ResetPassword extends React.Component {
 
   validateResetPasswordForm = (field, value) => {
     const { formError } = this.state;
+    if (field === "email") {
+      if (!value) {
+        formError[field] = "E-mail is required.";
+        this.setState({ formError });
+        return;
+      }
+      let isValid = validate.email(value);
+      if (!isValid) {
+        formError.email = "Enter a valid email.";
+        this.setState({ formError });
+        return;
+      }
+      formError.email = "";
+      this.setState({ formError });
+      return;
+    }
+    if (field === "code") {
+      if (!value) {
+        formError[field] = "Code is required.";
+        this.setState({ formError });
+        return;
+      }
+      formError[field] = "";
+      this.setState({ formError });
+      return;
+    }
     if (field === "password") {
       if (!value) {
         formError.password = "Password is required.";
@@ -227,15 +244,15 @@ class ResetPassword extends React.Component {
 
   onSubmit = e => {
     e.preventDefault();
-    const { confirmPassword, password, code } = this.state;
-    const { location: { state: email } = {} } = this.props;
+    const { email, confirmPassword, password, code } = this.state;
+    const { location: { state } = {} } = this.props;
     if (!confirmPassword || !password) {
       this.validateResetPasswordForm("confirmPassword", confirmPassword);
       this.validateResetPasswordForm("password", password);
       return;
     }
     this.props.onResetPassword({
-      userName: email,
+      userName: email ? email : state.email,
       confirmationCode: code,
       newPassword: password
     });

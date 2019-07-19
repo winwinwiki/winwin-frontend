@@ -6,13 +6,14 @@ import { connect } from "react-redux";
 import { fetchOrgHierarchy } from "../../actions/orgDetail/orgChartAction";
 import { resetOrgHierarchyData } from "../../actions/orgDetail/orgChartAction";
 import { fetchOrganisationDetail } from "../../actions/orgDetail/orgDetailAction";
+import { onDeleteOrg } from "../../actions/organization/deleteOrgAction";
 import {
   startLoaderAction,
   stopLoaderAction
 } from "../../actions/common/loaderActions";
 import { OrgHierarchySelector } from "../../selectors/OrgHierarchySelector";
 import "./sortableTree.css";
-import Search from "../ui/searchBar";
+import { PopupModal } from "../ui/popupModal";
 class Tree extends Component {
   state = {
     isEdited: false,
@@ -27,8 +28,8 @@ class Tree extends Component {
     window.onpopstate = () => {
       this.props.fetchOrganisationDetail({ orgId: this.props.match.params.id });
     };
-
-    this.props.fetchOrgHierarchy(this.props.match.params.id);
+    if (!this.props.orgHierarchy.length)
+      this.props.fetchOrgHierarchy(this.props.match.params.id);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -42,6 +43,10 @@ class Tree extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.resetOrgHierarchyData();
+  }
+
   onEdit = () => {
     this.setState({
       isEdited: true
@@ -51,6 +56,15 @@ class Tree extends Component {
   //add new node
   addNode = rowInfo => {
     this.props.addChildOrganisation(this.props.orgId, rowInfo.node.id);
+  };
+
+  setTobeRemovedOrg = ({ node: { id, title } }) => {
+    this.setState({ nodeId: id, nodeTitile: title });
+  };
+
+  removeOrg = id => {
+    this.props.onDeleteOrg(id);
+    this.onCancel();
   };
 
   onCancel = () => {
@@ -81,7 +95,7 @@ class Tree extends Component {
   // };
 
   render() {
-    const { isEdited, searchString, searchFocusIndex } = this.state;
+    const { isEdited } = this.state;
 
     return (
       <section className="dashboard-content p-0 py-3 org-details-container">
@@ -151,7 +165,7 @@ class Tree extends Component {
                         <Fragment>
                           {subtitle}
                           <div>&nbsp;</div>
-                          {`${children.length} children`}
+                          {`${children ? children.length : ""} children`}
                         </Fragment>
                       );
                     },
@@ -170,14 +184,27 @@ class Tree extends Component {
                     },
                     buttons: [
                       isEdited && (
-                        <button
-                          className="btn f-36"
-                          onClick={() => this.addNode(rowInfo)}
-                          title={"Add Child"}
-                          onMouseOver={this.onHover}
-                        >
-                          +
-                        </button>
+                        <Fragment>
+                          <button
+                            className="btn f-36"
+                            onClick={() => this.addNode(rowInfo)}
+                            title={"Add Child"}
+                            onMouseOver={this.onHover}
+                          >
+                            +
+                          </button>
+                          {rowInfo.parentNode && (
+                            <button
+                              className="btn f-36 ml-1"
+                              title={"Remove Child"}
+                              data-toggle="modal"
+                              data-target="#deleteModal"
+                              onClick={() => this.setTobeRemovedOrg(rowInfo)}
+                            >
+                              -
+                            </button>
+                          )}
+                        </Fragment>
                       )
                     ]
                   })}
@@ -199,6 +226,16 @@ class Tree extends Component {
             </ul>
           </div>
         </div>
+        <PopupModal
+          modalid="deleteModal"
+          modaltitle="Alert!"
+          modalcontent={`Are you sure you want to delete '${
+            this.state.nodeTitile
+          }' ?`}
+          primarybuttontext="Delete Organization"
+          secondarybuttontext="Cancel"
+          handleDelete={() => this.removeOrg(this.state.nodeId)}
+        />
       </section>
     );
   }
@@ -220,7 +257,8 @@ const mapDispatchToProps = dispatch =>
       resetOrgHierarchyData,
       startLoaderAction,
       stopLoaderAction,
-      fetchOrganisationDetail
+      fetchOrganisationDetail,
+      onDeleteOrg
     },
     dispatch
   );

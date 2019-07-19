@@ -7,8 +7,8 @@ const rules = {
       //orglist page
       "organizations:list",
       "organizations:create",
-      "organizations:multiCreate",
       "organizations:edit",
+      "organizations:delete",
       //orgdetails
       "organizationDetails:list",
       //org chart
