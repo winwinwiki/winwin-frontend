@@ -3,6 +3,7 @@ import {
   frameworkTagList,
   industryClassification
 } from "../containers/orgLanding/appliedOrgFilters/appliedOrgFiltersList";
+import { CITY, COUNTY, STATE, COUNTRY } from "../constants";
 
 export function modifiyFilterList(list) {
   let desiredList = {};
@@ -62,6 +63,13 @@ export function modifiyFilterList(list) {
     desiredList["pageSize"] = list["pageSize"];
     desiredList["created_by"] = list["created_by"];
     desiredList["updated_by"] = list["updated_by"];
+  }
+
+  if (list[CITY] || list[COUNTY] || list[STATE] || list[COUNTRY]) {
+    desiredList[CITY] = list[CITY];
+    desiredList[COUNTY] = list[COUNTY];
+    desiredList[STATE] = list[STATE];
+    desiredList[COUNTRY] = list[COUNTRY];
   }
 
   return desiredList;

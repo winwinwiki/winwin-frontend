@@ -3,6 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { setAppliedFilters } from "../../../actions/orgLanding/orgLandingAction";
 import { modifiyFilterList } from "../../../util/util";
+import { CITY, COUNTY, STATE, COUNTRY } from "../../../constants";
 
 class AppliedOrgFilters extends React.Component {
   constructor(props) {
@@ -66,6 +67,14 @@ class AppliedOrgFilters extends React.Component {
     ) {
       count++;
     }
+    if (
+      appliedFilterList[CITY].length ||
+      appliedFilterList[COUNTY].length ||
+      appliedFilterList[STATE].length ||
+      appliedFilterList[COUNTRY].length
+    ) {
+      count++;
+    }
     return count;
   }
 
@@ -83,6 +92,22 @@ class AppliedOrgFilters extends React.Component {
     });
     let flatAssetsObj = {};
     let flatRevenueObj = {};
+    let flatCityArray = appliedFilterList[CITY] && [
+      { type: CITY, value: `City: ${appliedFilterList[CITY]}` }
+    ];
+    let flatCountyrArray = appliedFilterList[COUNTY] && [
+      { type: COUNTY, value: `County: ${appliedFilterList[COUNTY]}` }
+    ];
+    let flatStateArray = appliedFilterList[STATE] && [
+      { type: STATE, value: `State: ${appliedFilterList[STATE]}` }
+    ];
+    let flatCountryArray = appliedFilterList[COUNTRY] && [
+      {
+        type: COUNTRY,
+        value: `Country: ${appliedFilterList[COUNTRY]}`
+      }
+    ];
+
     if (
       appliedFilterList["revenue"].min >= 0 &&
       appliedFilterList["revenue"].max > 0
@@ -116,13 +141,21 @@ class AppliedOrgFilters extends React.Component {
       flatSectorArray &&
       flatRevenueObj &&
       flatAssetsObj
-        ? [
+        ? // flatCityArray &&
+          // flatCountyrArray &&
+          // flatStateArray &&
+          // flatCountryArray
+          [
             ...valueArr,
             ...flatUserModArray,
             ...flatStatusArray,
             ...flatSectorArray,
             ...flatRevenueObj,
-            ...flatAssetsObj
+            ...flatAssetsObj,
+            ...flatCityArray,
+            ...flatCountyrArray,
+            ...flatStateArray,
+            ...flatCountryArray
           ]
         : valueArr;
     return tagValues.map((val, idx) => {
@@ -158,6 +191,21 @@ class AppliedOrgFilters extends React.Component {
     });
     let flatAssetsObj = {};
     let flatRevenueObj = {};
+    let flatCityArray = appliedFilterList[CITY] && [
+      { type: CITY, value: `City: ${appliedFilterList[CITY]}` }
+    ];
+    let flatCountyrArray = appliedFilterList[COUNTY] && [
+      { type: COUNTY, value: `County: ${appliedFilterList[COUNTY]}` }
+    ];
+    let flatStateArray = appliedFilterList[STATE] && [
+      { type: STATE, value: `State: ${appliedFilterList[STATE]}` }
+    ];
+    let flatCountryArray = appliedFilterList[COUNTRY] && [
+      {
+        type: COUNTRY,
+        value: `Country: ${appliedFilterList[COUNTRY]}`
+      }
+    ];
     if (
       appliedFilterList["revenue"].min >= 0 &&
       appliedFilterList["revenue"].max > 0
@@ -191,13 +239,21 @@ class AppliedOrgFilters extends React.Component {
       flatSectorArray &&
       flatRevenueObj &&
       flatAssetsObj
-        ? [
+        ? // flatCityArray &&
+          // flatCountyrArray &&
+          // flatStateArray &&
+          // flatCountryArray
+          [
             ...valueArr,
             ...flatUserModArray,
             ...flatStatusArray,
             ...flatSectorArray,
             ...flatRevenueObj,
-            ...flatAssetsObj
+            ...flatAssetsObj,
+            ...flatCityArray,
+            ...flatCountyrArray,
+            ...flatStateArray,
+            ...flatCountryArray
           ]
         : valueArr;
     return tagValues.map((val, idx) => {
@@ -300,6 +356,18 @@ class AppliedOrgFilters extends React.Component {
           case "tagStatus":
           case "sectorLevel":
             filterList[type].splice(filterList[type].indexOf(value), 1);
+            break;
+          case CITY:
+            filterList[CITY] = "";
+            break;
+          case COUNTY:
+            filterList[COUNTY] = "";
+            break;
+          case STATE:
+            filterList[STATE] = "";
+            break;
+          case COUNTRY:
+            filterList[COUNTRY] = "";
             break;
           default:
             break;

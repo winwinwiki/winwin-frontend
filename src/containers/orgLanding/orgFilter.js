@@ -7,6 +7,7 @@ import ButtonGroup from "../ui/buttonGroup";
 import Search from "../ui/searchBar";
 import AppliedOrgFiltersList from "./appliedOrgFilters/appliedOrgFiltersList";
 import Can from "../Can";
+import ReactSelect from "../ui/reactSelect";
 
 class OrgFilters extends React.Component {
   constructor(props) {
@@ -64,7 +65,8 @@ class OrgFilters extends React.Component {
           >
             Search
           </label>
-          <Search
+          <ReactSelect />
+          {/* <Search
             placeholder="Search City/County/State/Country"
             onChange={event => props.getSearchedText(event.target.value)}
             onKeyPress={event => {
@@ -73,7 +75,7 @@ class OrgFilters extends React.Component {
               }
             }}
             value={searchText}
-          />
+          /> */}
         </div>
 
         <div>
