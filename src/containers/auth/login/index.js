@@ -30,6 +30,7 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
+    this.nameInput.focus();
     const { session } = this.props;
     if (session && session.isAuthenticated && session.user && !session.error) {
       console.log(
@@ -149,8 +150,8 @@ class Login extends React.Component {
                   <li>Include at least one small letter (a-z)</li>
                   <li>Include at least one number (0-9)</li>
                   <li>
-                    Include at least one special character ({" "}
-                    {`{^$*.[]{}()?-"!@#%&/\,><':;|_~`}`} )
+                    Include at least one special character{" "}
+                    {`{^$*.[]{}()?-"!@#%&/\,><':;|_~`}`}
                   </li>
                 </ul>
               </div>
@@ -161,6 +162,9 @@ class Login extends React.Component {
           Forgot password?
         </Link>
         <button
+          ref={input => {
+            this.nameInput = input;
+          }}
           className="btn btn-lg btn-light w-100 mt-4"
           onClick={this.onLoginSubmit}
         >
