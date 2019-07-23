@@ -6,7 +6,7 @@ export default {
     return re.test(email);
   },
   password: function(pwd) {
-    let regex = /^(?=.*[0-9])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+    let regex = /^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$/;
     return regex.test(pwd);
   },
   confirmPassword: function(pwd, cnfPwd) {
