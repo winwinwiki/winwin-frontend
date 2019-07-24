@@ -67,7 +67,7 @@ class RegionsServed extends Component {
         regionsServed.region.regionId = filteredRegion.regionId;
       //add region if not present in masters list
       else regionsServed.region.regionId = -1;
-      this.setState({ regionsServed }, () => this.onSubmit());
+      this.setState({ regionsServed }, e => this.onSubmit(e));
     }
   };
 
@@ -230,11 +230,12 @@ class RegionsServed extends Component {
           region: { regionName: val.label }
         }
       },
-      () => this.onSubmit(val)
+      e => this.onSubmit(e)
     );
   };
 
-  onSubmit = () => {
+  onSubmit = e => {
+    e && e.preventDefault();
     const { type, orgId, programId } = this.props;
     const {
       regionsServed: { region: { regionId, regionName } } = {}
@@ -248,6 +249,8 @@ class RegionsServed extends Component {
         }
       }
     ];
+    if (!regionId) return;
+
     if (type === PROGRAM) {
       updatedRegions[0].programId = programId;
     }
