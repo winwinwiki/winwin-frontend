@@ -6,6 +6,7 @@ import { setAppliedFilters } from "../../actions/orgLanding/orgLandingAction";
 import { connect } from "react-redux";
 import { CITY, COUNTY, STATE, COUNTRY } from "../../constants";
 import { filtersObj } from "../orgLanding/orgList";
+import { cleanObj } from "../../util/util";
 
 class ReactSelect extends Component {
   state = {
@@ -13,22 +14,29 @@ class ReactSelect extends Component {
   };
 
   handleChange = option => {
-    const optionObj = { [option.id]: option.value };
+    let optionObj = { [option.id]: option.value, pageNo: 0, pageSize: 10 };
     let filters = {
       ...filtersObj,
       ...this.props.appliedFilterList,
       ...optionObj
-      // pageNo: 0,
-      // pageSize: 10
     };
-    this.props.setAppliedFilters(filters, optionObj);
+
+    for (var prop in filters) {
+      if (["city", "country", "state", "county"].includes(prop)) {
+        if (optionObj[prop]) optionObj[prop] = option.value;
+        else optionObj[prop] = filters[prop];
+      }
+    }
+
+    this.props.setAppliedFilters(filters, cleanObj(optionObj));
   };
 
   render() {
+    const { placeholder } = this.props;
     return (
       <Select
         className="customSelect"
-        // defaultValue={this.searchOptions}
+        placeholder={placeholder}
         isSearchable={true}
         name="reactSelect"
         options={[

@@ -60,24 +60,13 @@ class OrgFilters extends React.Component {
       <div className="d-flex align-content-center border-bottom py-2">
         <div>
           <label
-            htmlFor="search"
+            htmlFor="Address"
             className="d-block p-0 mb-0 col-form-label-sm"
           >
             Search
           </label>
-          <ReactSelect />
-          {/* <Search
-            placeholder="Search City/County/State/Country"
-            onChange={event => props.getSearchedText(event.target.value)}
-            onKeyPress={event => {
-              if (event.keyCode === 13 || event.which === 13) {
-                getFilteredListOfOrg(event.target.value);
-              }
-            }}
-            value={searchText}
-          /> */}
+          <ReactSelect placeholder="Start typing..." />
         </div>
-
         <div>
           <label
             htmlFor="sector"

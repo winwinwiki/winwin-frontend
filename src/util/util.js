@@ -65,12 +65,10 @@ export function modifiyFilterList(list) {
     desiredList["updated_by"] = list["updated_by"];
   }
 
-  if (list[CITY] || list[COUNTY] || list[STATE] || list[COUNTRY]) {
-    desiredList[CITY] = list[CITY];
-    desiredList[COUNTY] = list[COUNTY];
-    desiredList[STATE] = list[STATE];
-    desiredList[COUNTRY] = list[COUNTRY];
-  }
+  if (list[CITY]) desiredList[CITY] = list[CITY];
+  if (list[COUNTY]) desiredList[COUNTY] = list[COUNTY];
+  if (list[STATE]) desiredList[STATE] = list[STATE];
+  if (list[COUNTRY]) desiredList[COUNTRY] = list[COUNTRY];
 
   return desiredList;
 }
@@ -248,3 +246,16 @@ export const findItemNested = (arr, itemId, nestingKey = "children") =>
     if (item[nestingKey])
       return findItemNested(item[nestingKey], itemId, nestingKey);
   }, null);
+
+export function cleanObj(obj) {
+  for (var propName in obj) {
+    if (
+      obj[propName] === "" ||
+      obj[propName] === null ||
+      obj[propName] === undefined
+    ) {
+      delete obj[propName];
+    }
+  }
+  return obj;
+}
