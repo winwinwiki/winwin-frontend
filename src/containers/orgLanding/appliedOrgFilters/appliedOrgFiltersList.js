@@ -70,7 +70,11 @@ class AppliedOrgFiltersList extends React.Component {
     assets: { min: 0, max: 0 },
     level1List: [],
     level2List: [],
-    level3List: []
+    level3List: [],
+    city: "",
+    county: "",
+    state: "",
+    country: ""
   };
 
   componentDidMount() {
@@ -562,7 +566,11 @@ class AppliedOrgFiltersList extends React.Component {
         assets: { min: 0, max: 0 },
         level1List: [],
         level2List: [],
-        level3List: []
+        level3List: [],
+        city: "",
+        county: "",
+        state: "",
+        country: ""
       },
       () => this.props.setAppliedFilters(null, { pageNo: 0, pageSize: 10 })
     );

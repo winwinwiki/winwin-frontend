@@ -66,7 +66,7 @@ const tagColor = {
   High: "red"
 };
 
-const filtersObj = {
+export const filtersObj = {
   editedBy: [],
   industryCls: "",
   subIndustryCls: "",
@@ -82,6 +82,10 @@ const filtersObj = {
   level1List: [],
   level2List: [],
   level3List: [],
+  city: "",
+  county: "",
+  state: "",
+  country: "",
   pageNo: 0,
   pageSize: 10
 };

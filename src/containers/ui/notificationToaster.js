@@ -36,9 +36,7 @@ class NotificationToaster extends Component {
         pauseOnVisibilityChange
         draggable
         pauseOnHover
-        // closeButton={false}
       />
-      //   <ToastContainer position={toast.POSITION.TOP_CENTER} />
     );
   }
 }

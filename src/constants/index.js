@@ -19,6 +19,10 @@ export const addressFields = [
 ];
 
 export const PROGRAM = "Program";
+export const CITY = "city";
+export const COUNTY = "county";
+export const STATE = "state";
+export const COUNTRY = "country";
 
 export const isUserProfile = true;
 
