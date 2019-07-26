@@ -62,7 +62,7 @@ class OrgFilters extends React.Component {
             htmlFor="search"
             className="d-block p-0 mb-0 col-form-label-sm"
           >
-            Search
+            Search by location
           </label>
           <Search
             placeholder="Search City/County/State/Country"
@@ -95,7 +95,7 @@ class OrgFilters extends React.Component {
             htmlFor="filter"
             className="d-block p-0 mb-0 col-form-label-sm"
           >
-            Filter
+            Filter Options
           </label>
           <div
             className="btn-group dropdown dropdown-with-checkbox"
