@@ -234,10 +234,14 @@ class UserList extends React.Component {
     if (this.state.search) {
       userList = userList.filter(row => {
         return (
-          row.userDisplayName
-            .toLowerCase()
-            .includes(this.state.search.toLowerCase()) ||
-          row.team.toLowerCase().includes(this.state.search.toLowerCase())
+          (row.userDisplayName
+            ? row.userDisplayName
+                .toLowerCase()
+                .includes(this.state.search.toLowerCase())
+            : "") ||
+          (row.team
+            ? row.team.toLowerCase().includes(this.state.search.toLowerCase())
+            : "")
         );
       });
     }
