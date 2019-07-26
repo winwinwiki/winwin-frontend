@@ -115,7 +115,7 @@ class addOrganization extends Component {
                   className="btn"
                   onClick={e => {
                     e.preventDefault();
-                    this.props.history.goBack();
+                    this.props.changePage(this.props.match.params.id);
                   }}
                 >
                   Go Back
