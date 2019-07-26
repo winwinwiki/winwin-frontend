@@ -6,7 +6,7 @@ import { setAppliedFilters } from "../../actions/orgLanding/orgLandingAction";
 import { connect } from "react-redux";
 import { CITY, COUNTY, STATE, COUNTRY } from "../../constants";
 import { filtersObj } from "../orgLanding/orgList";
-import { cleanObj } from "../../util/util";
+import { cleanObj, modifiyFilterList } from "../../util/util";
 
 class ReactSelect extends Component {
   state = {
@@ -27,8 +27,15 @@ class ReactSelect extends Component {
         else optionObj[prop] = filters[prop];
       }
     }
+    const { appliedFilterList } = this.props;
 
-    this.props.setAppliedFilters(filters, cleanObj(optionObj));
+    this.props.setAppliedFilters(
+      filters,
+      cleanObj({
+        ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
+        ...optionObj
+      })
+    );
   };
 
   render() {
