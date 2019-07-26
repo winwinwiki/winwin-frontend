@@ -94,9 +94,13 @@ class Tree extends Component {
   //   });
   // };
 
+  goToParent = rowInfo => {
+    this.props.goToParentOrgChart(rowInfo.node.parentId);
+    this.props.fetchOrgHierarchy(rowInfo.node.parentId);
+  };
+
   render() {
     const { isEdited } = this.state;
-
     return (
       <section className="dashboard-content p-0 py-3 org-details-container">
         <div className="col-md-18 m-auto card">
@@ -171,19 +175,16 @@ class Tree extends Component {
                     },
                     onClick: event => {
                       if (
-                        (event.target.parentElement.className.includes(
-                          "rst__rowContents"
-                        ) ||
-                          event.target.parentElement.className.includes(
-                            "rst__rowLabel"
-                          )) &&
+                        event.target.parentElement.className.includes(
+                          "rst__row"
+                        ) &&
                         rowInfo.node.id !== parseInt(this.props.orgId, 10)
                       ) {
                         this.props.changePage(rowInfo.node.id);
                       }
                     },
                     buttons: [
-                      isEdited && (
+                      isEdited ? (
                         <Fragment>
                           <button
                             className="btn f-36"
@@ -205,6 +206,20 @@ class Tree extends Component {
                             </button>
                           )}
                         </Fragment>
+                      ) : (
+                        !rowInfo.parentNode &&
+                        rowInfo.node.parentId && (
+                          <button
+                            className="btn f-15"
+                            onClick={() => this.goToParent(rowInfo)}
+                            title={`Go to parent organization: ${
+                              rowInfo.node.parentName
+                            }`}
+                            onMouseOver={this.onHover}
+                          >
+                            <i className="icon-arrow-up" />
+                          </button>
+                        )
                       )
                     ]
                   })}
@@ -249,6 +264,8 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       changePage: id => push("/organizations/" + id),
+      goToParentOrgChart: id =>
+        push("/organizations/" + id + "/organization-chart"),
       addChildOrganisation: (orgId, parentId) =>
         push("/organizations/" + orgId + "/new-child-organization?", {
           parentId
