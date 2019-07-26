@@ -22,7 +22,12 @@ import Tree from "../sortableTree/sortableTree";
 import NotificationToaster from "../ui/notificationToaster";
 
 const OrgDetailRoutes = props => (
-  <OrgDetail match={props.match} history={props.history}>
+  <OrgDetail
+    match={props.match}
+    history={props.history}
+    parentId={props.parentId}
+    parentName={props.parentName}
+  >
     <NotificationToaster />
     <Switch>
       <CrumbRoute
@@ -151,6 +156,8 @@ const OrgDetailRoutes = props => (
         exact
         orgId={props.match.params.id}
         path={`${props.match.path}/organization-chart`}
+        parentId={props.parentId}
+        parentName={props.parentName}
         // component={OrgChart}
         component={Tree}
         type={"Organization"}

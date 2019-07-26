@@ -16,6 +16,7 @@ import {
   startLoaderAction,
   stopLoaderAction
 } from "../../actions/common/loaderActions";
+import { setOrgContext } from "../../actions/orgDetail/orgChartAction";
 import { industryClassificationSelector } from "../../selectors/industryClassificationSelector";
 import {
   fetchNAICSList,
@@ -34,11 +35,14 @@ class OrgDetailPage extends React.Component {
       organizationDetail,
       match: { params: { id: paramsOrgId } = {} } = {}
     } = this.props;
-    const { data: { response: { id: orgId } = {} } = {} } = organizationDetail;
+    const {
+      data: { response: { id: orgId, parentId } = {} } = {}
+    } = organizationDetail;
     if (paramsOrgId !== orgId) {
       this.props.fetchOrganisationDetail({ orgId: this.props.match.params.id });
       this.props.fetchNAICSList();
       this.props.fetchNTEEList();
+      // parentId && this.props.setOrgContext(parentId);
     }
   }
 
@@ -598,7 +602,8 @@ const mapDispatchToProps = dispatch =>
       startLoaderAction,
       stopLoaderAction,
       fetchNAICSList,
-      fetchNTEEList
+      fetchNTEEList,
+      setOrgContext
     },
 
     dispatch

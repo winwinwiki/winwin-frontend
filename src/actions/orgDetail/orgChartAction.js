@@ -3,9 +3,10 @@ import {
   SET_FETCHORGHEIRARCHY_SUCCESS,
   SET_FECTHORGHEIRARCHY_ERROR,
   RESET_ORGHIRARCHY_SUCCESS,
-  RESET_ORGHIRARCHY_ERROR
+  RESET_ORGHIRARCHY_ERROR,
+  SET_ORG_CONTEXT_SUCCESS,
+  SET_ORG_CONTEXT_ERROR
 } from "../../constants/dispatch";
-import { callFetchOrgHierarchyApi } from "../../api/orgDetail/orgDetailApi";
 import { api } from "../../api/api";
 
 export const fetchOrgHierarchy = orgId => {
@@ -28,6 +29,16 @@ export const resetOrgHierarchyData = () => {
       dispatch(resetOrgHierarchyDataSuccess());
     } catch (err) {
       resetOrgHierarchyDataError();
+    }
+  };
+};
+
+export const setOrgContext = id => {
+  return async dispatch => {
+    try {
+      dispatch(setOrgContextSuccess(id));
+    } catch (err) {
+      setOrgContextError();
     }
   };
 };
@@ -62,6 +73,20 @@ function resetOrgHierarchyDataSuccess(response) {
 function resetOrgHierarchyDataError(error) {
   return {
     type: RESET_ORGHIRARCHY_ERROR,
+    error
+  };
+}
+
+function setOrgContextSuccess(response) {
+  return {
+    type: SET_ORG_CONTEXT_SUCCESS,
+    response
+  };
+}
+
+function setOrgContextError(error) {
+  return {
+    type: SET_ORG_CONTEXT_ERROR,
     error
   };
 }

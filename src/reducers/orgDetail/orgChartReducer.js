@@ -4,7 +4,8 @@ import {
   SET_FECTHORGHEIRARCHY_ERROR,
   ADD_ORG_CHART_CHILD_SUCCESS,
   RESET_ORGHIRARCHY_SUCCESS,
-  DELETEORG_SUCCESS
+  DELETEORG_SUCCESS,
+  SET_ORG_CONTEXT_SUCCESS
 } from "../../constants/dispatch";
 
 import { removeFromTree, findItemNested } from "../../util/util";
@@ -12,6 +13,7 @@ import { removeFromTree, findItemNested } from "../../util/util";
 const initialState = {
   loading: false,
   orgHierarchy: {},
+  contextId: "",
   error: false
 };
 
@@ -34,6 +36,11 @@ export default (state = initialState, action) => {
     case RESET_ORGHIRARCHY_SUCCESS:
       return Object.assign({}, state, {
         orgHierarchy: initialState
+      });
+
+    case SET_ORG_CONTEXT_SUCCESS:
+      return Object.assign({}, state, {
+        contextId: action.response
       });
 
     case ADD_ORG_CHART_CHILD_SUCCESS:

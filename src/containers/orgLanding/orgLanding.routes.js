@@ -43,6 +43,10 @@ const OrgLandingRoutes = props => (
         description={
           props.organizationDetail && props.organizationDetail.description
         }
+        parentId={props.organizationDetail && props.organizationDetail.parentId}
+        parentName={
+          props.organizationDetail && props.organizationDetail.parentName
+        }
         path="/organizations/:id"
         perform="organizationDetails:list"
         component={OrgDetailRoutes}

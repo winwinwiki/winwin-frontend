@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.2.1",
     "ajv": "^6.10.0",
     "autoprefixer": "7.1.6",
     "aws-amplify": "^1.1.22",

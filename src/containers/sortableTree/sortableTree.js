@@ -7,6 +7,7 @@ import { fetchOrgHierarchy } from "../../actions/orgDetail/orgChartAction";
 import { resetOrgHierarchyData } from "../../actions/orgDetail/orgChartAction";
 import { fetchOrganisationDetail } from "../../actions/orgDetail/orgDetailAction";
 import { onDeleteOrg } from "../../actions/organization/deleteOrgAction";
+import { setOrgContext } from "../../actions/orgDetail/orgChartAction";
 import {
   startLoaderAction,
   stopLoaderAction
@@ -25,11 +26,12 @@ class Tree extends Component {
 
   componentDidMount() {
     //detech when browser's back button is clicked!
+    // this.props.setOrgContext(this.props.parentId);
     window.onpopstate = () => {
       this.props.fetchOrganisationDetail({ orgId: this.props.match.params.id });
     };
-    if (!this.props.orgHierarchy.length)
-      this.props.fetchOrgHierarchy(this.props.match.params.id);
+    // if (!this.props.orgHierarchy.length)
+    this.props.fetchOrgHierarchy(this.props.match.params.id);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,12 +42,13 @@ class Tree extends Component {
       this.setState({
         orgTreeData: nextProps.orgHierarchy
       });
+      this.props.setOrgContext(this.props.match.params.id);
     }
   }
 
-  componentWillUnmount() {
-    this.props.resetOrgHierarchyData();
-  }
+  // componentWillUnmount() {
+  //   this.props.resetOrgHierarchyData();
+  // }
 
   onEdit = () => {
     this.setState({
@@ -180,6 +183,7 @@ class Tree extends Component {
                         rowInfo.node.id !== parseInt(this.props.orgId, 10)
                       ) {
                         this.props.changePage(rowInfo.node.id);
+                        this.props.setOrgContext(rowInfo.node.id);
                       }
                     },
                     buttons: [
@@ -253,6 +257,7 @@ const mapDispatchToProps = dispatch =>
         push("/organizations/" + orgId + "/new-child-organization?", {
           parentId
         }),
+      setOrgContext,
       fetchOrgHierarchy,
       resetOrgHierarchyData,
       startLoaderAction,

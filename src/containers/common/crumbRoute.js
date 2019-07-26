@@ -35,6 +35,8 @@ export default connect(mapStateToProps)(
                   <Component
                     title={props.title}
                     orgName={props.orgName}
+                    parentId={props.parentId}
+                    parentName={props.parentName}
                     description={props.description}
                     {...routeProps}
                   />
@@ -46,6 +48,8 @@ export default connect(mapStateToProps)(
               <Component
                 title={props.title}
                 description={props.description}
+                parentId={props.parentId}
+                parentName={props.parentName}
                 {...routeProps}
               />
             ) : (

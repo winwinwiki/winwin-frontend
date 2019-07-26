@@ -5,22 +5,31 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 import { fetchOrganisationDetail } from "../../actions/orgDetail/orgDetailAction";
+import {
+  fetchOrgHierarchy,
+  setOrgContext
+} from "../../actions/orgDetail/orgChartAction";
+import BreadcrumbView from "../ui/breadcrumbs";
+import { getPath } from "../../util/util";
+import { OrgHierarchySelector } from "../../selectors/OrgHierarchySelector";
+import { push } from "react-router-redux";
 
 class OrgDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      orgDetail: null
+      orgDetail: null,
+      breadcrumbData: []
     };
   }
 
   componentDidMount() {
-    const { match } = this.props;
+    const { match, parentId } = this.props;
     this.props.fetchOrganisationDetail({ orgId: match.params.id });
   }
 
   componentWillReceiveProps(nextProps) {
-    const { organizationDetail } = this.props;
+    const { organizationDetail, parentId } = this.props;
     if (
       nextProps &&
       nextProps.organizationDetail !== organizationDetail &&
@@ -28,13 +37,30 @@ class OrgDetail extends React.Component {
     ) {
       if (!nextProps.organizationDetail.error) {
         this.setState({
-          orgDetail: nextProps.organizationDetail.data
+          orgDetail: nextProps.organizationDetail.data,
+          breadcrumbData: [
+            {
+              id: nextProps.organizationDetail.data.response.parentId,
+              label: nextProps.organizationDetail.data.response.parentName
+            }
+          ]
         });
+        // nextProps.organizationDetail.data.response.parentId &&
+        //   this.props.fetchOrgHierarchy(
+        //     nextProps.organizationDetail.data.response.parentId
+        //   );
+        // nextProps.organizationDetail.data.response.parentId &&
+        //   this.props.setOrgContext(
+        //     nextProps.organizationDetail.data.response.parentId
+        //   );
       }
     }
   }
+
+  handleClick = id => this.props.changePage(id);
+
   render() {
-    const { orgDetail } = this.state;
+    const { orgDetail, breadcrumbData } = this.state;
     const { organizationDetail, match, history } = this.props;
     if (!orgDetail || !organizationDetail || organizationDetail.error) {
       return null;
@@ -42,9 +68,16 @@ class OrgDetail extends React.Component {
     if (history.location.pathname.includes("/programs/")) {
       return <React.Fragment>{this.props.children}</React.Fragment>;
     }
+    // const data =
+    //   this.props.orgHierarchy.length &&
+    //   this.props.contextId &&
+    //   getPath([this.props.orgHierarchy[0]], parseInt(this.props.parentId));
     return (
       <React.Fragment>
         <div className="py-4 border-bottom d-flex justify-content-between">
+          {this.props.orgHierarchy.length && (
+            <BreadcrumbView items={breadcrumbData} onClick={this.handleClick} />
+          )}
           {/* <div
             aria-label="breadcrumb"
             className="col breadcrumb-container pr-0"
@@ -192,13 +225,18 @@ class OrgDetail extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  organizationDetail: state.orgDetail
+  organizationDetail: state.orgDetail,
+  orgHierarchy: OrgHierarchySelector(state),
+  contextId: state.orgChart.contextId
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      fetchOrganisationDetail
+      changePage: id => push("/organizations/" + id),
+      fetchOrganisationDetail,
+      fetchOrgHierarchy,
+      setOrgContext
     },
     dispatch
   );

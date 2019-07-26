@@ -183,6 +183,26 @@ export function getSDGDataBySubGoals(SDGList, id) {
   return sdg;
 }
 
+//generate full path for org chart
+const loop = (arr, target, index, path) => {
+  if (arr[index].id === target) {
+    path.push({ label: arr[index].title, id: arr[index].id });
+  } else if (arr[index].children.length) {
+    path.push({ label: arr[index].title, id: arr[index].id });
+    arr[index].children.forEach((_, i, a) => {
+      loop(a, target, i, path);
+    });
+
+    if (path[path.length - 1].id === arr[index].id) path.pop();
+  }
+};
+
+export const getPath = (arr, target) => {
+  let path = [];
+  arr.forEach((_, i, a) => loop(a, target, i, path));
+  return path;
+};
+
 export function deepFilter(array, indicator) {
   return array.filter(function iter(o) {
     return Object.keys(o).some(function(k) {
