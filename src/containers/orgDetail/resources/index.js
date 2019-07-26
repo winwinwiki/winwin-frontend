@@ -142,7 +142,7 @@ class Resources extends React.Component {
         count: "",
         description: ""
       },
-      modalTitle: "Add New Resource"
+      modalTitle: "Add Resource"
     });
   };
 }
