@@ -623,13 +623,17 @@ class OrgList extends React.Component {
         searchText: val
       },
       () => {
+        const { appliedFilterList, filters } = this.props;
         return this.state.searchText
           ? this.props.fetchOrganisationsList({
+              ...filters,
+              ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
               pageNo: this.state.pageNo,
               pageSize: this.state.pageSize,
               address: this.state.searchText
             })
           : this.props.fetchOrganisationsList({
+              ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
               pageNo: this.state.pageNo,
               pageSize: this.state.pageSize
             });
