@@ -98,7 +98,7 @@ class OrgFilters extends React.Component {
             Filter Options
           </label>
           <div
-            className="btn-group dropdown dropdown-with-checkbox"
+            className="btn-group dropdown dropdown-with-checkbox ml-3"
             role="group"
             aria-label="group"
           >
