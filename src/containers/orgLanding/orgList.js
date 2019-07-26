@@ -66,7 +66,7 @@ const tagColor = {
   High: "red"
 };
 
-const filtersObj = {
+export const filtersObj = {
   editedBy: [],
   industryCls: "",
   subIndustryCls: "",
@@ -82,6 +82,10 @@ const filtersObj = {
   level1List: [],
   level2List: [],
   level3List: [],
+  city: "",
+  county: "",
+  state: "",
+  country: "",
   pageNo: 0,
   pageSize: 10
 };
@@ -623,13 +627,17 @@ class OrgList extends React.Component {
         searchText: val
       },
       () => {
+        const { appliedFilterList, filters } = this.props;
         return this.state.searchText
           ? this.props.fetchOrganisationsList({
+              ...filters,
+              ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
               pageNo: this.state.pageNo,
               pageSize: this.state.pageSize,
               address: this.state.searchText
             })
           : this.props.fetchOrganisationsList({
+              ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
               pageNo: this.state.pageNo,
               pageSize: this.state.pageSize
             });

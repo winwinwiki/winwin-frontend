@@ -7,6 +7,7 @@ import ButtonGroup from "../ui/buttonGroup";
 import Search from "../ui/searchBar";
 import AppliedOrgFiltersList from "./appliedOrgFilters/appliedOrgFiltersList";
 import Can from "../Can";
+import ReactSelect from "../ui/reactSelect";
 
 class OrgFilters extends React.Component {
   constructor(props) {
@@ -59,23 +60,13 @@ class OrgFilters extends React.Component {
       <div className="d-flex align-content-center border-bottom py-2">
         <div>
           <label
-            htmlFor="search"
+            htmlFor="Address"
             className="d-block p-0 mb-0 col-form-label-sm"
           >
-            Search
+            Search by location
           </label>
-          <Search
-            placeholder="Search City/County/State/Country"
-            onChange={event => props.getSearchedText(event.target.value)}
-            onKeyPress={event => {
-              if (event.keyCode === 13 || event.which === 13) {
-                getFilteredListOfOrg(event.target.value);
-              }
-            }}
-            value={searchText}
-          />
+          <ReactSelect placeholder="Start typing..." />
         </div>
-
         <div>
           <label
             htmlFor="sector"
@@ -95,10 +86,10 @@ class OrgFilters extends React.Component {
             htmlFor="filter"
             className="d-block p-0 mb-0 col-form-label-sm"
           >
-            Filter
+            Filter Options
           </label>
           <div
-            className="btn-group dropdown dropdown-with-checkbox"
+            className="btn-group dropdown dropdown-with-checkbox ml-3"
             role="group"
             aria-label="group"
           >

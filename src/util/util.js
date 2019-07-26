@@ -3,6 +3,7 @@ import {
   frameworkTagList,
   industryClassification
 } from "../containers/orgLanding/appliedOrgFilters/appliedOrgFiltersList";
+import { CITY, COUNTY, STATE, COUNTRY } from "../constants";
 
 export function modifiyFilterList(list) {
   let desiredList = {};
@@ -63,6 +64,11 @@ export function modifiyFilterList(list) {
     desiredList["created_by"] = list["created_by"];
     desiredList["updated_by"] = list["updated_by"];
   }
+
+  if (list[CITY]) desiredList[CITY] = list[CITY];
+  if (list[COUNTY]) desiredList[COUNTY] = list[COUNTY];
+  if (list[STATE]) desiredList[STATE] = list[STATE];
+  if (list[COUNTRY]) desiredList[COUNTRY] = list[COUNTRY];
 
   return desiredList;
 }
@@ -240,3 +246,16 @@ export const findItemNested = (arr, itemId, nestingKey = "children") =>
     if (item[nestingKey])
       return findItemNested(item[nestingKey], itemId, nestingKey);
   }, null);
+
+export function cleanObj(obj) {
+  for (var propName in obj) {
+    if (
+      obj[propName] === "" ||
+      obj[propName] === null ||
+      obj[propName] === undefined
+    ) {
+      delete obj[propName];
+    }
+  }
+  return obj;
+}
