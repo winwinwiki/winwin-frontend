@@ -30,8 +30,9 @@ class ReactSelect extends Component {
     const { appliedFilterList } = this.props;
 
     this.props.setAppliedFilters(
-      filters,
+      { ...this.props.filters, ...filters },
       cleanObj({
+        ...this.props.filters,
         ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
         ...optionObj
       })
@@ -77,7 +78,8 @@ class ReactSelect extends Component {
 }
 
 const mapStateToProps = state => ({
-  appliedFilterList: state.orgList.appliedFilterList
+  appliedFilterList: state.orgList.appliedFilterList,
+  filters: state.orgList.filters
 });
 
 const mapDispatchToProps = dispatch =>
