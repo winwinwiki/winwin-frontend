@@ -14,6 +14,7 @@ class ReactSelect extends Component {
   };
 
   handleChange = option => {
+    if (!option.value) return;
     let optionObj = { [option.id]: option.value, pageNo: 0, pageSize: 10 };
     let filters = {
       ...filtersObj,
@@ -30,8 +31,9 @@ class ReactSelect extends Component {
     const { appliedFilterList } = this.props;
 
     this.props.setAppliedFilters(
-      filters,
+      { ...this.props.filters, ...filters },
       cleanObj({
+        ...this.props.filters,
         ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
         ...optionObj
       })
@@ -77,7 +79,8 @@ class ReactSelect extends Component {
 }
 
 const mapStateToProps = state => ({
-  appliedFilterList: state.orgList.appliedFilterList
+  appliedFilterList: state.orgList.appliedFilterList,
+  filters: state.orgList.filters
 });
 
 const mapDispatchToProps = dispatch =>

@@ -7553,6 +7553,7 @@ textarea {
   .dashboard-container .dashboard-content {
     padding: 1rem;
     flex: 1;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch; }
   .dashboard-container.dashboard-compressed .dashboard-header,
   .dashboard-container.dashboard-compressed .dashboard-content {

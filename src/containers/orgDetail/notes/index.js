@@ -45,10 +45,7 @@ class Notes extends React.Component {
           <div className="col-md-18 m-auto d-flex flex-column py-3">
             <h3>{this.props.type} Description</h3>
             <p>{this.props.description}</p>
-
-            {notesList && notesList.length > 0 && (
-              <div className="section-title border-bottom pb-3 mb-3">Notes</div>
-            )}
+            <div className="section-title border-bottom pb-3 mb-3">Notes</div>
             <form>
               <ul className="list-group list-group-flush">
                 {notesList &&
@@ -142,7 +139,7 @@ class Notes extends React.Component {
     if (!this.state.note) {
       this.validateNoteForm("note", this.state.note);
       return;
-    } 
+    }
     this.props.saveNote({
       organizationId: this.props.orgId,
       name: this.state.note
