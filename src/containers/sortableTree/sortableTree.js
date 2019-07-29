@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { fetchOrgHierarchy } from "../../actions/orgDetail/orgChartAction";
 import { resetOrgHierarchyData } from "../../actions/orgDetail/orgChartAction";
 import { fetchOrganisationDetail } from "../../actions/orgDetail/orgDetailAction";
-import { onDeleteOrg } from "../../actions/organization/deleteOrgAction";
+import { onDeleteOrgChart } from "../../actions/organization/deleteOrgAction";
 import {
   startLoaderAction,
   stopLoaderAction
@@ -63,7 +63,7 @@ class Tree extends Component {
   };
 
   removeOrg = id => {
-    this.props.onDeleteOrg(id);
+    this.props.onDeleteOrgChart(id);
     this.onCancel();
   };
 
@@ -258,7 +258,7 @@ const mapDispatchToProps = dispatch =>
       startLoaderAction,
       stopLoaderAction,
       fetchOrganisationDetail,
-      onDeleteOrg
+      onDeleteOrgChart
     },
     dispatch
   );
