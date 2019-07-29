@@ -40,12 +40,12 @@ export const frameworkTagList = [
 
 const frameworkLabels = {
   "Social Progress Index": {
-    level1: "Dimensions",
-    level2: "Components",
+    // level1: "Dimensions",
+    // level2: "Components",
     level3: "Indicators"
   },
   "Sustainable Developement Goals": {
-    level1: "Goals",
+    // level1: "Goals",
     level2: "Sub-Goals"
   }
 };
@@ -322,7 +322,7 @@ class AppliedOrgFiltersList extends React.Component {
                 className="mb-3"
                 classNamePrefix="react-select"
                 isMulti={false}
-                placeholder="Select Industry"
+                placeholder="Select Classification"
                 value={industryCls}
                 onChange={selectedOption =>
                   this.onSelectChange("industryCls", selectedOption)
@@ -337,7 +337,7 @@ class AppliedOrgFiltersList extends React.Component {
                 className="mb-3"
                 classNamePrefix="react-select"
                 isMulti={false}
-                placeholder="Select Sub Industry"
+                placeholder="Select Industry"
                 value={subIndustryCls}
                 onChange={selectedOption =>
                   this.onSelectChange("subIndustryCls", selectedOption)
@@ -442,14 +442,14 @@ class AppliedOrgFiltersList extends React.Component {
                   className="mb-3"
                   classNamePrefix="react-select"
                   isMulti={false}
-                  placeholder="Select Level 3"
+                  placeholder="Select..."
                   value={level3}
                   onChange={this.onLevel3Change}
                   options={level3List}
                 />
               )}
 
-            {frameworkTag && (
+            {frameworkTag && frameworkLabels[frameworkTag.label].level2 && (
               <Fragment>
                 <h5>{frameworkLabels[frameworkTag.label].level2}</h5>
                 <ReactSelect
@@ -457,19 +457,22 @@ class AppliedOrgFiltersList extends React.Component {
                   className="mb-3"
                   classNamePrefix="react-select"
                   isMulti={false}
-                  placeholder="Select Level 2"
+                  placeholder="Select..."
                   value={level2}
                   onChange={this.onLevel2Change}
                   options={level2List}
                 />
-
+              </Fragment>
+            )}
+            {frameworkTag && frameworkLabels[frameworkTag.label].level1 && (
+              <Fragment>
                 <h5>{frameworkLabels[frameworkTag.label].level1}</h5>
                 <ReactSelect
                   name="level1"
                   className="mb-3"
                   classNamePrefix="react-select"
                   isMulti={false}
-                  placeholder="Select Level 1"
+                  placeholder="Select..."
                   value={level1}
                   onChange={this.onLevel1Change}
                   options={level1List}

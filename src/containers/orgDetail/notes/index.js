@@ -64,7 +64,7 @@ class Notes extends React.Component {
                     data-target="#noteModal"
                     onClick={this.addNewNoteModal}
                   >
-                    <i className="icon-add mr-2" /> Add Another
+                    <i className="icon-add mr-2" /> Add Note
                   </a>
                 </li>
               </ul>
