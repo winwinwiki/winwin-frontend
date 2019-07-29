@@ -92,7 +92,7 @@ class DataSets extends React.Component {
                     data-target="#dataSetModal"
                     onClick={this.addNewDataSetModal}
                   >
-                    <i className="icon-add mr-2" /> Add New Data Set
+                    <i className="icon-add mr-2" /> Add Data Set
                   </a>
                 </li>
               </ul>

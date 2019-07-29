@@ -67,29 +67,6 @@ class addOrganization extends Component {
               <div className="row">
                 <div className="col">
                   <div className="form-group">
-                    <label htmlFor="childOrganizationType">
-                      Child Organization Type
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="childOrganizationType"
-                      placeholder="Enter Child Organization Type"
-                      name="childOrgType"
-                      onBlur={this.validateForm}
-                      // readOnly
-                      onChange={this.onChange}
-                      // value={this.props.history.location.search.replace(
-                      //   /\?/,
-                      //   ""
-                      // )}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col">
-                  <div className="form-group">
                     <label htmlFor="childOrganizationName">
                       Child Organization Name
                     </label>
@@ -107,6 +84,29 @@ class addOrganization extends Component {
                         {formError.childOrgName}
                       </small>
                     )}
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col">
+                  <div className="form-group">
+                    <label htmlFor="childOrganizationType">
+                      Child Organization Type
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="childOrganizationType"
+                      placeholder="Enter Child Organization Type"
+                      name="childOrgType"
+                      onBlur={this.validateForm}
+                      // readOnly
+                      onChange={this.onChange}
+                      // value={this.props.history.location.search.replace(
+                      //   /\?/,
+                      //   ""
+                      // )}
+                    />
                   </div>
                 </div>
               </div>
