@@ -68,6 +68,7 @@ const tagColor = {
 
 export const filtersObj = {
   editedBy: [],
+  createdBy: [],
   industryCls: "",
   subIndustryCls: "",
   frameworkTag: "",

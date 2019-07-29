@@ -14,6 +14,7 @@ class ReactSelect extends Component {
   };
 
   handleChange = option => {
+    if (!option.value) return;
     let optionObj = { [option.id]: option.value, pageNo: 0, pageSize: 10 };
     let filters = {
       ...filtersObj,
