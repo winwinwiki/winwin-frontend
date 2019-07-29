@@ -322,7 +322,7 @@ class AppliedOrgFiltersList extends React.Component {
                 className="mb-3"
                 classNamePrefix="react-select"
                 isMulti={false}
-                placeholder="Select Industry"
+                placeholder="Select Classification"
                 value={industryCls}
                 onChange={selectedOption =>
                   this.onSelectChange("industryCls", selectedOption)
@@ -337,7 +337,7 @@ class AppliedOrgFiltersList extends React.Component {
                 className="mb-3"
                 classNamePrefix="react-select"
                 isMulti={false}
-                placeholder="Select Sub Industry"
+                placeholder="Select Industry"
                 value={subIndustryCls}
                 onChange={selectedOption =>
                   this.onSelectChange("subIndustryCls", selectedOption)
