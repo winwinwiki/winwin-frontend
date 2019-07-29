@@ -54,7 +54,8 @@ class AppliedOrgFilters extends React.Component {
       valueArr.length +
       appliedFilterList["tagStatus"].length +
       appliedFilterList["sectorLevel"].length +
-      appliedFilterList["editedBy"].length;
+      appliedFilterList["editedBy"].length +
+      appliedFilterList["createdBy"].length;
     if (
       appliedFilterList["revenue"].min >= 0 &&
       appliedFilterList["revenue"].max > 0
@@ -83,6 +84,9 @@ class AppliedOrgFilters extends React.Component {
     let count = 0;
     let flatUserModArray = appliedFilterList["editedBy"].map(user => {
       return { type: "editedBy", value: user.label };
+    });
+    let flatCreatedByArray = appliedFilterList["createdBy"].map(user => {
+      return { type: "createdBy", value: user.label };
     });
     let flatStatusArray = appliedFilterList["tagStatus"].map(tagStatus => {
       return { type: "tagStatus", value: tagStatus };
@@ -137,6 +141,7 @@ class AppliedOrgFilters extends React.Component {
     }
     let tagValues =
       flatUserModArray &&
+      flatCreatedByArray &&
       flatStatusArray &&
       flatSectorArray &&
       flatRevenueObj &&
@@ -147,6 +152,7 @@ class AppliedOrgFilters extends React.Component {
           // flatCountryArray
           [
             ...valueArr,
+            ...flatCreatedByArray,
             ...flatUserModArray,
             ...flatStatusArray,
             ...flatSectorArray,
@@ -183,6 +189,9 @@ class AppliedOrgFilters extends React.Component {
     let flatUserModArray = appliedFilterList["editedBy"].map(user => {
       return { type: "editedBy", value: user.label };
     });
+    let flatCreatedByArray = appliedFilterList["createdBy"].map(user => {
+      return { type: "createdBy", value: user.label };
+    });
     let flatStatusArray = appliedFilterList["tagStatus"].map(tagStatus => {
       return { type: "tagStatus", value: tagStatus };
     });
@@ -235,6 +244,7 @@ class AppliedOrgFilters extends React.Component {
     }
     let tagValues =
       flatUserModArray &&
+      flatCreatedByArray &&
       flatStatusArray &&
       flatSectorArray &&
       flatRevenueObj &&
@@ -245,6 +255,7 @@ class AppliedOrgFilters extends React.Component {
           // flatCountryArray
           [
             ...valueArr,
+            ...flatCreatedByArray,
             ...flatUserModArray,
             ...flatStatusArray,
             ...flatSectorArray,
@@ -349,6 +360,11 @@ class AppliedOrgFilters extends React.Component {
             filterList["assets"].max = 0;
             break;
           case "editedBy":
+            filterList[type] = filterList[type].filter(
+              item => item.label !== value
+            );
+            break;
+          case "createdBy":
             filterList[type] = filterList[type].filter(
               item => item.label !== value
             );

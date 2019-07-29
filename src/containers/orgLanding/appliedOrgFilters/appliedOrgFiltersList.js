@@ -57,6 +57,7 @@ export const industryClassification = [
 class AppliedOrgFiltersList extends React.Component {
   state = {
     editedBy: [],
+    createdBy: [],
     industryCls: "",
     subIndustryCls: "",
     frameworkTag: "",
@@ -104,6 +105,7 @@ class AppliedOrgFiltersList extends React.Component {
   render() {
     const {
       editedBy,
+      createdBy,
       sectorLevel,
       tagStatus,
       priority,
@@ -282,6 +284,21 @@ class AppliedOrgFiltersList extends React.Component {
                 High
               </label>
             </div>
+
+            <h5>Created by User</h5>
+            <ReactSelect
+              name="createdBy"
+              className="mb-3"
+              classNamePrefix="react-select"
+              isMulti="true"
+              placeholder="Select User"
+              value={createdBy}
+              onChange={selectedOption =>
+                this.onSelectChange("createdBy", selectedOption)
+              }
+              options={userList}
+              closeMenuOnSelect="false"
+            />
 
             <h5>Edited by User</h5>
             <ReactSelect
@@ -553,6 +570,7 @@ class AppliedOrgFiltersList extends React.Component {
         pageNo: 0,
         pageSize: 10,
         editedBy: [],
+        createdBy: [],
         industryCls: "",
         subIndustryCls: "",
         frameworkTag: "",

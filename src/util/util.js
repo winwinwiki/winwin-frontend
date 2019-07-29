@@ -53,6 +53,12 @@ export function modifiyFilterList(list) {
     desiredList["editedBy"] = list["editedBy"].map(editedBy => editedBy.value);
   }
 
+  if (list["createdBy"] && list["createdBy"].length) {
+    desiredList["createdBy"] = list["createdBy"].map(
+      createdBy => createdBy.value
+    );
+  }
+
   if (
     list["pageNo"] ||
     list["pageSize"] ||
