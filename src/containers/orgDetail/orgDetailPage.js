@@ -57,6 +57,12 @@ class OrgDetailPage extends React.Component {
     }
   }
 
+  onKeyPress(event) {
+    if (event.which === 13 /* Enter */) {
+      event.preventDefault();
+    }
+  }
+
   render() {
     const { isEditable, orgDetail } = this.state;
     const { industryCodes } = this.props;
@@ -68,7 +74,7 @@ class OrgDetailPage extends React.Component {
       <section className="dashboard-content p-0 py-3 org-details-container">
         <div className="col-md-18 m-auto card">
           <div className="col-md-18 m-auto d-flex flex-column py-3">
-            <form>
+            <form onKeyPress={this.onKeyPress}>
               <ul className="list-group list-group-flush">
                 <li className="list-group-item px-0">
                   {isEditable ? (
