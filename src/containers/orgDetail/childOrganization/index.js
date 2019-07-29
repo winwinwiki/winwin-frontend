@@ -115,7 +115,7 @@ class addOrganization extends Component {
                   className="btn"
                   onClick={e => {
                     e.preventDefault();
-                    this.props.changePage(this.props.match.params.id);
+                    this.props.changePage(this.props.match.params.id, "goback");
                   }}
                 >
                   Go Back
@@ -135,7 +135,8 @@ class addOrganization extends Component {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      changePage: orgId => push(`/organizations/${orgId}/organization-chart`),
+      changePage: (orgId, param) =>
+        push(`/organizations/${orgId}/organization-chart`, param),
       onAddOrgChartChild,
       fetchOrgHierarchy
     },
