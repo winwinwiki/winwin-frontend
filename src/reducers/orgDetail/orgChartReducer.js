@@ -4,7 +4,7 @@ import {
   SET_FECTHORGHEIRARCHY_ERROR,
   ADD_ORG_CHART_CHILD_SUCCESS,
   RESET_ORGHIRARCHY_SUCCESS,
-  DELETEORG_SUCCESS
+  DELETEORGCHART_SUCCESS
 } from "../../constants/dispatch";
 
 import { removeFromTree, findItemNested } from "../../util/util";
@@ -50,7 +50,7 @@ export default (state = initialState, action) => {
         }
       };
 
-    case DELETEORG_SUCCESS:
+    case DELETEORGCHART_SUCCESS:
       const filteredTree = removeFromTree(
         state.orgHierarchy.response,
         action.response
