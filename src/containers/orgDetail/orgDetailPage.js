@@ -228,7 +228,11 @@ class OrgDetailPage extends React.Component {
                         onChange={(e, value) =>
                           this.onSuggestChange("nteeCode", value, e)
                         }
-                        readOnly={readOnly}
+                        readOnly={
+                          readOnly ||
+                          (orgDetail.sector &&
+                            orgDetail.sector.toLowerCase() !== "public")
+                        }
                         value={orgDetail.nteeCode ? orgDetail.nteeCode : ""}
                       />
                     )}
