@@ -49,6 +49,21 @@ class AutoSuggestComponent extends Component {
     });
   };
 
+  onSuggestionSelected = (event, { method }) => {
+    if (method === "enter") {
+      event.preventDefault();
+    }
+  };
+
+  handleEnter(event) {
+    if (event.keyCode === 13) {
+      const form = event.target.form;
+      const index = Array.prototype.indexOf.call(form, event.target);
+      form.elements[index + 1].focus();
+      event.preventDefault();
+    }
+  }
+
   render() {
     const { suggestions } = this.state;
     const { value, placeholder, className } = this.props;
@@ -58,12 +73,14 @@ class AutoSuggestComponent extends Component {
       className,
       value: value ? (value.name ? value.name : value) : "",
       onChange: this.props.onChange,
-      disabled: this.props.readOnly
+      disabled: this.props.readOnly,
+      onKeyDown: this.handleEnter
     };
     // Finally, render it!
     return (
       <Autosuggest
         suggestions={suggestions}
+        onSuggestionSelected={this.onSuggestionSelected}
         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
         onSuggestionsClearRequested={this.onSuggestionsClearRequested}
         getSuggestionValue={getSuggestionValue}
