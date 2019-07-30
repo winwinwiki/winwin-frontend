@@ -390,10 +390,10 @@ class AppliedOrgFilters extends React.Component {
         }
       }
     });
-    // if (!filterList["pageNo"] || !filterList["pageSize"]) {
-    //   filterList.pageNo = 0;
-    //   filterList.pageSize = 10;
-    // }
+    if (!filterList.pageNo && !filterList.pageSize) {
+      filterList.pageNo = 0;
+      filterList.pageSize = 10;
+    }
     this.props.setAppliedFilters(filterList, modifiyFilterList(filterList));
   }
 }
