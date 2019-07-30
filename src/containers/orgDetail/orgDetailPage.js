@@ -57,8 +57,11 @@ class OrgDetailPage extends React.Component {
     }
   }
 
-  onKeyPress(event) {
-    if (event.which === 13 /* Enter */) {
+  handleEnter(event) {
+    if (event.keyCode === 13) {
+      const form = event.target.form;
+      const index = Array.prototype.indexOf.call(form, event.target);
+      form.elements[index + 1].focus();
       event.preventDefault();
     }
   }
@@ -74,7 +77,7 @@ class OrgDetailPage extends React.Component {
       <section className="dashboard-content p-0 py-3 org-details-container">
         <div className="col-md-18 m-auto card">
           <div className="col-md-18 m-auto d-flex flex-column py-3">
-            <form onKeyPress={this.onKeyPress}>
+            <form>
               <ul className="list-group list-group-flush">
                 <li className="list-group-item px-0">
                   {isEditable ? (
@@ -96,6 +99,7 @@ class OrgDetailPage extends React.Component {
                   <div className="form-group">
                     <label htmlFor="category">Organization Name</label>
                     <input
+                      onKeyDown={this.handleEnter}
                       type="text"
                       className="form-control"
                       name="name"
@@ -109,6 +113,7 @@ class OrgDetailPage extends React.Component {
                   <div className="form-group">
                     <label htmlFor="tagStatus">Tag Status</label>
                     <Dropdown
+                      onKeyDown={this.handleEnter}
                       placeholder="Select Tag Status"
                       selectedItem={orgDetail.tagStatus}
                       name="tagStatus"
@@ -125,6 +130,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">Sector</label>
 
                     <Dropdown
+                      onKeyDown={this.handleEnter}
                       placeholder="Select Sector"
                       selectedItem={orgDetail.sector}
                       name="sector"
@@ -138,6 +144,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">Sector Level</label>
 
                     <Dropdown
+                      onKeyDown={this.handleEnter}
                       placeholder="Select Sector Level"
                       className="form-control"
                       selectedItem={
@@ -160,6 +167,7 @@ class OrgDetailPage extends React.Component {
                   <div className="form-group">
                     <label htmlFor="sectorLevelName">Sector Level Name</label>
                     <input
+                      onKeyDown={this.handleEnter}
                       type="text"
                       className="form-control"
                       name="sectorLevelName"
@@ -232,6 +240,7 @@ class OrgDetailPage extends React.Component {
                   <div className="form-group">
                     <label htmlFor="category">Revenue ($)</label>
                     <input
+                      onKeyDown={this.handleEnter}
                       type="text"
                       className="form-control"
                       id="category"
@@ -246,6 +255,7 @@ class OrgDetailPage extends React.Component {
                   <div className="form-group">
                     <label htmlFor="category">Assets</label>
                     <input
+                      onKeyDown={this.handleEnter}
                       type="text"
                       className="form-control"
                       id="category"
@@ -263,6 +273,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">Street Address</label>
                     <input
                       type="text"
+                      onKeyDown={this.handleEnter}
                       className="form-control"
                       name="street"
                       id="street"
@@ -276,6 +287,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">City</label>
                     <input
                       type="text"
+                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="category"
                       name="city"
@@ -289,6 +301,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="description">County</label>
                     <input
                       type="text"
+                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="category"
                       name="county"
@@ -302,6 +315,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="description">State</label>
                     <input
                       type="text"
+                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="category"
                       name="state"
@@ -315,6 +329,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="description">Zip Code</label>
                     <input
                       type="text"
+                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="category"
                       name="zip"
@@ -328,6 +343,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="description">Country</label>
                     <input
                       type="text"
+                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="category"
                       name="country"
@@ -344,6 +360,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="description">Website</label>
                     <input
                       type="text"
+                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="category"
                       name="websiteUrl"
@@ -357,6 +374,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="facebook">Facebook</label>
                     <input
                       type="text"
+                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="facebook"
                       name="facebookUrl"
@@ -370,6 +388,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="linkedIn">LinkedIn</label>
                     <input
                       type="text"
+                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="linkedIn"
                       name="linkedinUrl"
@@ -383,6 +402,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="twitter">Twitter</label>
                     <input
                       type="text"
+                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="twitter"
                       name="twitterUrl"
@@ -396,6 +416,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="instagram">Instagram</label>
                     <input
                       type="text"
+                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="twitter"
                       name="instagramUrl"
@@ -409,6 +430,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="description">Contact Info</label>
                     <input
                       type="text"
+                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="category"
                       name="contactInfo"
@@ -425,6 +447,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">Mission Statement</label>
                     <input
                       type="text"
+                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="missionStatement"
                       name="missionStatement"
@@ -438,6 +461,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">Values</label>
                     <input
                       type="text"
+                      onKeyDown={this.handleEnter}
                       className="form-control"
                       name="values"
                       id="values"
@@ -451,6 +475,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">Purpose</label>
                     <input
                       type="text"
+                      onKeyDown={this.handleEnter}
                       className="form-control"
                       name="purpose"
                       id="purpose"
@@ -464,6 +489,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">Self-Interest</label>
                     <input
                       type="text"
+                      onKeyDown={this.handleEnter}
                       className="form-control"
                       name="selfInterest"
                       id="selfInterest"
@@ -477,6 +503,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">Population Served</label>
                     <input
                       type="text"
+                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="populationServed"
                       name="populationServed"
