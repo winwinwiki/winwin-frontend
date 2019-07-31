@@ -120,7 +120,7 @@ class Resources extends React.Component {
                     data-target="#resourceModal"
                     onClick={this.addNewResourceModal}
                   >
-                    <i className="icon-add mr-2" /> Add New Resource
+                    <i className="icon-add mr-2" /> Add Resource
                   </a>
                 </li>
               </ul>
