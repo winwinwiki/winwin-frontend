@@ -37,9 +37,7 @@ const OrgLandingRoutes = props => (
       />
       {/* <CrumbRoute title={"Organization Details"} path="/organizations/:id/programs/:programId" component={ProgramDetailRoutes} /> */}
       <CrumbRoute
-        title={
-          props.organizationDetail && titleCase(props.organizationDetail.name)
-        }
+        title={props.organizationDetail && props.organizationDetail.name}
         description={
           props.organizationDetail && props.organizationDetail.description
         }
