@@ -260,7 +260,7 @@ class ResourceModal extends Component {
                       <label htmlFor="description">Description</label>
                       <textarea
                         className="form-control"
-                        placeholder="A desription about the resource will go here"
+                        placeholder="Enter Description"
                         id="description"
                         name="description"
                         rows="5"
