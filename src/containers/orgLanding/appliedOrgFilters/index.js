@@ -139,6 +139,10 @@ class AppliedOrgFilters extends React.Component {
         }
       ];
     }
+
+    //save only bottom most level of data for framework tags
+    valueArr = [valueArr[valueArr.length - 1]];
+
     let tagValues =
       flatUserModArray &&
       flatCreatedByArray &&
@@ -242,6 +246,8 @@ class AppliedOrgFilters extends React.Component {
         }
       ];
     }
+    //save only bottom most level of data for framework tags
+    valueArr = [valueArr[valueArr.length - 1]];
     let tagValues =
       flatUserModArray &&
       flatCreatedByArray &&
@@ -342,10 +348,16 @@ class AppliedOrgFilters extends React.Component {
             filterList["level3"] = "";
             break;
           case "level2":
-            filterList[type] = "";
+            filterList["frameworkTag"] = "";
+            filterList["level1"] = "";
+            filterList["level2"] = "";
             filterList["level3"] = "";
             break;
           case "level3":
+            filterList["frameworkTag"] = "";
+            filterList["level1"] = "";
+            filterList["level2"] = "";
+            filterList["level3"] = "";
           case "priority":
           case "subIndustryCls":
           case "industryCls":
