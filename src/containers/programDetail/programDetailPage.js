@@ -85,7 +85,7 @@ class ProgramDetailPage extends Component {
                           name="description"
                           readOnly={`${!editProgramDetail ? "readOnly" : ""}`}
                           rows="5"
-                          value={progDetail.description}
+                          value={progDetail.description || ""}
                           onChange={this.onChange}
                         />
                       </div>
@@ -102,7 +102,7 @@ class ProgramDetailPage extends Component {
                           name="websiteUrl"
                           readOnly={`${!editProgramDetail ? "readOnly" : ""}`}
                           placeholder="Enter Program URL"
-                          value={progDetail.websiteUrl}
+                          value={progDetail.websiteUrl || ""}
                           onChange={this.onChange}
                         />
                       </div>
