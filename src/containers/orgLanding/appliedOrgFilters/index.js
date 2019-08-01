@@ -57,25 +57,17 @@ class AppliedOrgFilters extends React.Component {
       appliedFilterList["editedBy"].length +
       appliedFilterList["createdBy"].length;
     if (
-      appliedFilterList["revenue"].min >= 0 &&
-      appliedFilterList["revenue"].max > 0
-    ) {
-      count++;
-    }
-    if (
-      appliedFilterList["assets"].min >= 0 &&
-      appliedFilterList["assets"].max > 0
-    ) {
-      count++;
-    }
-    if (
+      appliedFilterList["revenue"].min > 0 ||
+      appliedFilterList["revenue"].max > 0 ||
+      appliedFilterList["assets"].min > 0 ||
+      appliedFilterList["assets"].max > 0 ||
       appliedFilterList[CITY].length ||
       appliedFilterList[COUNTY].length ||
       appliedFilterList[STATE].length ||
       appliedFilterList[COUNTRY].length
-    ) {
+    )
       count++;
-    }
+
     return count;
   }
 
@@ -113,28 +105,40 @@ class AppliedOrgFilters extends React.Component {
     ];
 
     if (
-      appliedFilterList["revenue"].min >= 0 &&
+      appliedFilterList["revenue"].min > 0 ||
       appliedFilterList["revenue"].max > 0
     ) {
       flatRevenueObj = [
         {
           type: "revenue",
-          value: `Revenue: $${appliedFilterList["revenue"].min} - $${
+          value: `Revenue: ${
+            appliedFilterList["revenue"].min
+              ? `$${appliedFilterList["revenue"].min}`
+              : "Min"
+          } - ${
             appliedFilterList["revenue"].max
+              ? `$${appliedFilterList["revenue"].max}`
+              : "Max"
           }`
         }
       ];
     }
 
     if (
-      appliedFilterList["assets"].min >= 0 &&
+      appliedFilterList["assets"].min > 0 ||
       appliedFilterList["assets"].max > 0
     ) {
       flatAssetsObj = [
         {
           type: "assets",
-          value: `Assets: $${appliedFilterList["assets"].min} - $${
+          value: `Assets: ${
+            appliedFilterList["assets"].min
+              ? `$${appliedFilterList["assets"].min}`
+              : "Min"
+          } - ${
             appliedFilterList["assets"].max
+              ? `$${appliedFilterList["assets"].max}`
+              : "Max"
           }`
         }
       ];
@@ -353,12 +357,12 @@ class AppliedOrgFilters extends React.Component {
             filterList[type] = "";
             break;
           case "revenue":
-            filterList["revenue"].min = 0;
-            filterList["revenue"].max = 0;
+            filterList["revenue"].min = "";
+            filterList["revenue"].max = "";
             break;
           case "assets":
-            filterList["assets"].min = 0;
-            filterList["assets"].max = 0;
+            filterList["assets"].min = "";
+            filterList["assets"].max = "";
             break;
           case "editedBy":
             filterList[type] = filterList[type].filter(
