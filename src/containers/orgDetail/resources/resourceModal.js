@@ -276,7 +276,7 @@ class ResourceModal extends Component {
         </ModalBody>
         <ModalFooter>
           <Button color="secondary" onClick={this.onClose}>
-            Close
+            Cancel
           </Button>
           <Button color="primary" onClick={this.saveResource}>
             Save changes
