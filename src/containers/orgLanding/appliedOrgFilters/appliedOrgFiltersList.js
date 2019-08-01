@@ -561,9 +561,12 @@ class AppliedOrgFiltersList extends React.Component {
     //pagination
     filters.pageNo = 0;
     filters.pageSize = 10;
-    this.props.setAppliedFilters(this.state, filters);
+    this.props.setAppliedFilters(this.state, {
+      ...filters,
+      ...this.props.filters
+    });
     this.props.toggleAppliedFilterModal();
-    this.props.resetPagination();
+    // this.props.resetPagination();
   };
 
   clearAppliedFilters = () => {
@@ -616,7 +619,8 @@ const mapStateToProps = state => ({
   SDGList: state.orgList.sdgList,
   NAICSList: naicsListSelector(state),
   NTEEList: nteeListSelector(state),
-  userList: state.userManagement
+  userList: state.userManagement,
+  filters: state.orgList.filters
 });
 
 const mapDispatchToProps = dispatch =>
