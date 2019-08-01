@@ -107,6 +107,7 @@ class OrgList extends React.Component {
     orgList: [],
     activeButton: ["All"],
     searchText: "",
+    nameSearch: "",
     selectedOrgList: [],
     assestsMin: 0,
     assestsMax: 100,
@@ -126,10 +127,10 @@ class OrgList extends React.Component {
     const { appliedFilterList, filters } = this.props;
     this.props.startLoaderAction();
     this.props.fetchOrganisationsList({
-      ...filters,
-      ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
       pageNo,
-      pageSize: 10
+      pageSize: 10,
+      ...filters,
+      ...(appliedFilterList && modifiyFilterList(appliedFilterList))
     });
   }
 
@@ -144,7 +145,13 @@ class OrgList extends React.Component {
         totalPages: Math.ceil(
           this.props.orgList.data.response.filter.orgCount / this.state.pageSize
         ),
-        orgCount: this.props.orgList.data.response.filter.orgCount
+        orgCount: this.props.orgList.data.response.filter.orgCount,
+        activeButton: this.props.orgList.data.response.filter.sectors || [
+          "All"
+        ],
+        page: this.props.orgList.data.response.filter.pageNo,
+        pageSize: this.props.orgList.data.response.filter.pageSize,
+        nameSearch: this.props.orgList.data.response.filter.nameSearch
       });
 
       this.props.stopLoaderAction();
@@ -273,17 +280,6 @@ class OrgList extends React.Component {
           </Link>
         </React.Fragment>
       ),
-      // Cell: row => {
-      //   return (
-      //     <React.Fragment>
-      //       <div className="org-tag orange card d-inline-block mr-1">
-      //         <div className="px-1 py-0">A</div>
-      //         <div className="org-tag-footer" />
-      //       </div>
-      //       <a href={row.id} className="centerText d-inline-block">{row.value}</a>
-      //     </React.Fragment>
-      //   );
-      // },
       width: 280,
       resizable: false,
       placeholder: "Search by Organization Name",
@@ -295,6 +291,8 @@ class OrgList extends React.Component {
           <input
             style={{ width: "100%" }}
             placeholder="Search"
+            // value={this.state.nameSearch || ""}
+            defaultValue={this.state.nameSearch || ""}
             onKeyPress={event => {
               if (event.keyCode === 13 || event.which === 13) {
                 this.handleFilteredChange(event.target.value);
@@ -303,12 +301,6 @@ class OrgList extends React.Component {
           />
         );
       },
-      // filterMethod: (filter, rows) => {
-      //   return matchSorter(rows, filter.value, {
-      //     keys: [{ threshold: matchSorter.rankings.CONTAINS, key: "org" }]
-      //   });
-      // },
-      // filterAll: true,
       style: {
         height: 50
       }
@@ -465,6 +457,7 @@ class OrgList extends React.Component {
                 asc: true
               }
             ]}
+            sorted={(this.props.filters && this.props.filters.sortObj) || []}
             getTheadThProps={(state, rowInfo) => {
               return {
                 style: {
@@ -550,14 +543,17 @@ class OrgList extends React.Component {
     const { page, pageSize } = this.state;
     const { appliedFilterList, filters } = this.props;
     const sortOrder = findKey(sorted[0], v => v === true);
-    this.props.fetchOrganisationsList({
-      ...filters,
-      ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
-      pageNo: 0,
-      pageSize,
-      sortBy: sorted[0].id,
-      sortOrder
-    });
+    this.props.fetchOrganisationsList(
+      {
+        ...filters,
+        ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
+        pageNo: 0,
+        pageSize,
+        sortBy: sorted[0].id,
+        sortOrder
+      },
+      sorted
+    );
   };
 
   handleFilteredChange = nameSearch => {
@@ -704,11 +700,11 @@ class OrgList extends React.Component {
     });
     const apiObj = newSectors.find(x => x === "All") ? [] : newSectors;
     this.props.fetchOrganisationsList({
+      pageNo,
+      pageSize,
       ...filters,
       ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
-      sectors: apiObj,
-      pageNo,
-      pageSize
+      sectors: apiObj
     });
   };
 }
