@@ -15,9 +15,9 @@ import { api } from "../../api/api";
 import qs from "qs";
 import { PROGRAM } from "../../constants";
 
-export const fetchOrganisationsList = params => {
+export const fetchOrganisationsList = (params, sortObj) => {
   return dispatch => {
-    dispatch(setFilters(params));
+    dispatch(setFilters(sortObj ? { ...params, sortObj } : { ...params }));
     dispatch(fetchOrgRequest());
     let queryString = qs.stringify(params);
     api(

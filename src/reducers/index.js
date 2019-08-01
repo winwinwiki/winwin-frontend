@@ -35,7 +35,7 @@ import nteeList from "./orgDetail/fetchNTEEListReducer";
 import createBulkOrgReducer from "./dataFeed/createBulkOrgReducer";
 import notificationsReducer from "./common/notificationsReducer";
 
-export default combineReducers({
+const appReducer = combineReducers({
   routing: routerReducer,
   loader,
   session: login,
@@ -66,3 +66,11 @@ export default combineReducers({
   nteeList,
   notifications: notificationsReducer
 });
+
+export default (state, action) => {
+  if (action.type === "auth/LOGOUT") {
+    state = undefined;
+  }
+
+  return appReducer(state, action);
+};
