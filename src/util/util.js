@@ -8,10 +8,10 @@ import { CITY, COUNTY, STATE, COUNTRY } from "../constants";
 export function modifiyFilterList(list) {
   let desiredList = {};
 
-  if (!(list["assets"]["min"] === 0 && list["assets"]["max"] === 0)) {
+  if (list["assets"]["min"] !== "")
     desiredList["assetsMin"] = list["assets"]["min"];
+  if (list["assets"]["max"] !== "")
     desiredList["assetsMax"] = list["assets"]["max"];
-  }
 
   if (list["frameworkTag"])
     desiredList["frameworkTag"] = list["frameworkTag"]["value"];
@@ -30,10 +30,10 @@ export function modifiyFilterList(list) {
 
   if (list["priority"]) desiredList["priority"] = list["priority"];
 
-  if (!(list["revenue"]["min"] === 0 && list["revenue"]["max"] === 0)) {
+  if (list["revenue"]["min"] !== "")
     desiredList["revenueMin"] = list["revenue"]["min"];
+  if (list["revenue"]["max"] !== "")
     desiredList["revenueMax"] = list["revenue"]["max"];
-  }
 
   if (list["tagStatus"] && list["tagStatus"].length)
     desiredList["tagStatus"] = list["tagStatus"];
