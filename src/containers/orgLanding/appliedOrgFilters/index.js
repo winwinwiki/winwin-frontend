@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { setAppliedFilters } from "../../../actions/orgLanding/orgLandingAction";
 import { modifiyFilterList } from "../../../util/util";
 import { CITY, COUNTY, STATE, COUNTRY } from "../../../constants";
+import remove from "lodash/remove";
 
 class AppliedOrgFilters extends React.Component {
   constructor(props) {
@@ -50,6 +51,15 @@ class AppliedOrgFilters extends React.Component {
 
   calculateTagCount(valueArr) {
     const { appliedFilterList } = this.props;
+    if (valueArr.find(x => x.value === "Social Progress Index")) {
+      remove(valueArr, { type: "level1" });
+      remove(valueArr, { type: "level2" });
+      remove(valueArr, { type: "frameworkTag" });
+    }
+    if (valueArr.find(x => x.value === "Sustainable Developement Goals")) {
+      remove(valueArr, { type: "level1" });
+      remove(valueArr, { type: "frameworkTag" });
+    }
     let count =
       valueArr.length +
       appliedFilterList["tagStatus"].length +
@@ -142,6 +152,15 @@ class AppliedOrgFilters extends React.Component {
           }`
         }
       ];
+    }
+    if (valueArr.find(x => x.value === "Social Progress Index")) {
+      remove(valueArr, { type: "level1" });
+      remove(valueArr, { type: "level2" });
+      remove(valueArr, { type: "frameworkTag" });
+    }
+    if (valueArr.find(x => x.value === "Sustainable Developement Goals")) {
+      remove(valueArr, { type: "level1" });
+      remove(valueArr, { type: "frameworkTag" });
     }
     let tagValues =
       flatUserModArray &&
@@ -246,7 +265,15 @@ class AppliedOrgFilters extends React.Component {
         }
       ];
     }
-
+    if (valueArr.find(x => x.value === "Social Progress Index")) {
+      remove(valueArr, { type: "level1" });
+      remove(valueArr, { type: "level2" });
+      remove(valueArr, { type: "frameworkTag" });
+    }
+    if (valueArr.find(x => x.value === "Sustainable Developement Goals")) {
+      remove(valueArr, { type: "level1" });
+      remove(valueArr, { type: "frameworkTag" });
+    }
     let tagValues =
       flatUserModArray &&
       flatCreatedByArray &&
@@ -335,22 +362,27 @@ class AppliedOrgFilters extends React.Component {
     Object.keys(filterList).map((filterKey, idx) => {
       if (type === filterKey) {
         switch (type) {
-          case "frameworkTag":
-            filterList[type] = "";
+          // case "frameworkTag":
+          //   filterList[type] = "";
+          //   filterList["level1"] = "";
+          //   filterList["level2"] = "";
+          //   filterList["level3"] = "";
+          //   break;
+          // case "level1":
+          //   filterList[type] = "";
+          //   filterList["level2"] = "";
+          //   filterList["level3"] = "";
+          //   break;
+          case "level2":
+            filterList["frameworkTag"] = "";
+            filterList["level1"] = "";
+            filterList["level2"] = "";
+            break;
+          case "level3":
+            filterList["frameworkTag"] = "";
             filterList["level1"] = "";
             filterList["level2"] = "";
             filterList["level3"] = "";
-            break;
-          case "level1":
-            filterList[type] = "";
-            filterList["level2"] = "";
-            filterList["level3"] = "";
-            break;
-          case "level2":
-            filterList[type] = "";
-            filterList["level3"] = "";
-            break;
-          case "level3":
           case "priority":
           case "subIndustryCls":
           case "industryCls":
