@@ -231,12 +231,12 @@ class OrgDetailPage extends React.Component {
                         readOnly={
                           readOnly ||
                           (orgDetail.sector &&
-                            orgDetail.sector.toLowerCase() !== "public")
+                            orgDetail.sector.toLowerCase() === "private")
                         }
                         value={
                           orgDetail.nteeCode
                             ? orgDetail.sector &&
-                              orgDetail.sector.toLowerCase() !== "public"
+                              orgDetail.sector.toLowerCase() === "private"
                               ? ""
                               : orgDetail.nteeCode
                             : ""
@@ -615,6 +615,12 @@ class OrgDetailPage extends React.Component {
       nteeCode:
         this.state.orgDetail.nteeCode && this.state.orgDetail.nteeCode.id
     };
+    if (apiObj.sector.toLowerCase() !== "public") {
+      apiObj.sectorLevel = "";
+      apiObj.sectorLevelName = "";
+      if (apiObj.sector.toLowerCase() === "private") apiObj.nteeCode = null;
+    }
+
     this.props.onSaveOrgBasicInfo([apiObj]);
   };
 
