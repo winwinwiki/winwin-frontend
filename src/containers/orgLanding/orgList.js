@@ -327,6 +327,13 @@ class OrgList extends React.Component {
       Cell: row => <div className="centerText">{row.value}</div>
     },
     {
+      id: "state",
+      Header: "State",
+      accessor: "address[state]",
+      sortable: false,
+      Cell: row => <div className="centerText">{row.value}</div>
+    },
+    {
       id: "created_by",
       Header: "Created By",
       accessor: "createdBy",
