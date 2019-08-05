@@ -569,7 +569,7 @@ class OrgDetailPage extends React.Component {
     this.setState({
       orgDetail: {
         ...JSON.parse(JSON.stringify(this.state.orgDetail)),
-        [field]: JSON.parse(JSON.stringify(newValue))
+        [field]: newValue ? JSON.parse(JSON.stringify(newValue)) : null
       }
     });
   };
