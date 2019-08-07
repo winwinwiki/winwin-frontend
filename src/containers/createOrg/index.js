@@ -54,6 +54,7 @@ class CreateOrg extends React.Component {
           entity: entityList[0],
           location: null
         });
+        //redirect to basic info page
         this.props.changePage(nextProps.createOrg.data.response.id);
       }
     }
