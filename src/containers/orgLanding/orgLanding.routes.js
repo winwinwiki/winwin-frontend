@@ -8,10 +8,17 @@ import OrgDetailRoutes from "../orgDetail/orgDetail.routes";
 import OrgList from "./orgList";
 import CreateOrg from "../createOrg";
 import UploadDataFeed from "../uploadDataFeed";
-import { titleCase } from "../../util/util";
+import IdleTimer from "react-idle-timer";
+import { bindActionCreators } from "redux";
+import { logout, onLogin } from "../../actions/auth/loginAction";
 
 const OrgLandingRoutes = props => (
   <OrgLanding history={props.history} match={props.match}>
+    <IdleTimer
+      onIdle={() => props.logout()}
+      debounce={250}
+      timeout={1000 * 60 * 60 * 2} //2 hours timeout
+    />
     <Switch>
       <PrivateRoute
         title={"Organizations - WinWin"}
@@ -54,7 +61,10 @@ const mapStateToProps = state => ({
   organizationDetail: state.orgDetail.data && state.orgDetail.data.response
 });
 
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ logout, onLogin }, dispatch);
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(OrgLandingRoutes);

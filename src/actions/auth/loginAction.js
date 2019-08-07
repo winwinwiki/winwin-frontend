@@ -16,26 +16,6 @@ export const onLogin = params => {
     api("/user/login", "POST", JSON.stringify(userObj), false)
       .then(response => dispatch(loginSuccess(response)))
       .catch(error => dispatch(loginError(error)));
-    //Temp
-    // Auth.signIn(params.username, params.password).then(
-    //   () => {
-    //     return api("/login", "POST", params, false).then((response) => {
-    //     Auth.currentAuthenticatedUser().then(user => {
-    //       const { attributes } = user;
-    //       const userObj = {
-    //         id: attributes.sub,
-    //         name: attributes["custom:fullName"],
-    //         email: attributes.email,
-    //         role: attributes["custom:role"],
-    //         team: attributes["custom:team"]
-    //       };
-    //       dispatch(loginSuccess(userObj));
-    //     });
-    //   },
-    //   error => {
-    //     dispatch(loginError(error));
-    //   }
-    // );
   };
 };
 
