@@ -23,7 +23,10 @@ class addOrganization extends Component {
   onSave = e => {
     e.preventDefault();
     const { childOrgName, childOrgType, formError } = this.state;
-    const { location: { state: { parentId } = {} } = {} } = this.props;
+    const {
+      location: { state: { parentId } = {} } = {},
+      orgHierarchy
+    } = this.props;
     if (!childOrgName) {
       this.validateAddForm("childOrgName", childOrgName);
       return;
@@ -31,6 +34,7 @@ class addOrganization extends Component {
       return;
     }
     const apiObj = {
+      rootParentId: orgHierarchy && orgHierarchy.response.id,
       parentId: parentId,
       childOrgType:
         childOrgType || this.props.history.location.search.replace(/\?/, ""),
@@ -132,6 +136,10 @@ class addOrganization extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  orgHierarchy: state.orgChart.orgHierarchy
+});
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
@@ -144,6 +152,6 @@ const mapDispatchToProps = dispatch =>
   );
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(addOrganization);
