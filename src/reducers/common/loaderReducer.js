@@ -65,7 +65,10 @@ import {
   DELETEORG_ERROR,
   RESETPASSWORD_REQUEST,
   RESETPASSWORD_SUCCESS,
-  RESETPASSWORD_ERROR
+  RESETPASSWORD_ERROR,
+  CREATEORG_REQUEST,
+  CREATEORG_SUCCESS,
+  CREATEORG_ERROR
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -421,6 +424,21 @@ export default (state = initialState, action) => {
         loading: false
       });
     case RESETPASSWORD_ERROR:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    // create org
+    case CREATEORG_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
+    case CREATEORG_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false
+      });
+    case CREATEORG_ERROR:
       return Object.assign({}, state, {
         loading: false
       });
