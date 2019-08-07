@@ -4,6 +4,15 @@ export const LOADER_STOP = "loader/LOADER_STOP";
 //notifications
 export const ADD_NOTIFICATION = "notifications/ADD_NOTIFICATION";
 export const REMOVE_NOTIFICATION = "notifications/REMOVE_NOTIFICATION";
+
+//set refresh token
+export const SET_REFRESH_TOKEN_REQUEST = "auth/SET_REFRESH_TOKEN_REQUEST";
+export const SET_REFRESH_TOKEN_SUCCESS = "auth/SET_REFRESH_TOKEN_SUCCESS";
+export const SET_REFRESH_TOKEN_ERROR = "auth/SET_REFRESH_TOKEN_ERROR";
+
+export const REFRESHING_TOKEN = "auth/REFRESHING_TOKEN";
+export const DONE_REFRESHING_TOKEN = "auth/DONE_REFRESHING_TOKEN";
+
 //login
 export const LOGIN_REQUEST = "auth/LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "auth/LOGIN_SUCCESS";

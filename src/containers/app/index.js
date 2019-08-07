@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import LoadingSpinner from "../common/loadingSpinner";
 import FooterComponent from "../footer";
-import Header from "../header";
 import { loadUserFromStorageAction } from "../../actions/common/localStorageAction";
 
 class App extends React.Component {
