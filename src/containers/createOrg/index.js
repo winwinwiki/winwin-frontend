@@ -54,7 +54,7 @@ class CreateOrg extends React.Component {
           entity: entityList[0],
           location: null
         });
-        this.props.changePage();
+        this.props.changePage(nextProps.createOrg.data.response.id);
       }
     }
   }
@@ -393,7 +393,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      changePage: () => push("/organizations"),
+      changePage: id => push(`/organizations/${id}`),
       onCreateOrg
     },
     dispatch
