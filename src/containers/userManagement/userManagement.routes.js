@@ -9,10 +9,18 @@ import UserProfile from "./userProfile";
 import ChangePassword from "../auth/changePassword";
 import CreateUser from "../createUser";
 import NotificationToaster from "../ui/notificationToaster";
+import IdleTimer from "react-idle-timer";
+import { bindActionCreators } from "redux";
+import { logout } from "../../actions/auth/loginAction";
 
 const OrgLandingRoutes = props => (
   <UserManagement history={props.history} match={props.match}>
     <NotificationToaster />
+    <IdleTimer
+      onIdle={() => props.logout()}
+      debounce={250}
+      timeout={1000 * 60 * 60 * 2} //2 hours timeout
+    />
     <Switch>
       <PrivateRoute
         title="User Management"
@@ -49,7 +57,9 @@ const mapStateToProps = state => ({
   isAuthenticated: state.session.isAuthenticated
 });
 
+const mapDispatchToProps = dispatch => bindActionCreators({ logout }, dispatch);
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(OrgLandingRoutes);

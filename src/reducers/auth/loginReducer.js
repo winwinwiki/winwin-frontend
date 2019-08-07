@@ -3,12 +3,13 @@ import {
   LOGIN_SUCCESS,
   LOGIN_ERROR,
   LOAD_USER_FROM_STORAGE,
-  USERINFO_SUCCESS,
   LOGOUT,
-  SAVEUSERINFO_SUCCESS,
-  LOGGED_IN_USERINFO_SUCCESS
+  LOGGED_IN_USERINFO_SUCCESS,
+  SET_REFRESH_TOKEN_SUCCESS,
+  REFRESHING_TOKEN
 } from "../../constants/dispatch";
-import { updateObject } from "../../util/util";
+import { updateObject, addToLocalStorageObject } from "../../util/util";
+import AuthUser from "./userProfile";
 
 const initialState = {
   loading: false,
@@ -30,6 +31,25 @@ export default (state = initialState, action) => {
         isAuthenticated: false
       });
 
+    case SET_REFRESH_TOKEN_SUCCESS:
+      addToLocalStorageObject("_auth", "accessToken", action.response);
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          accessToken: action.response
+        }
+      };
+
+    case REFRESHING_TOKEN:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          freshTokenPromise: action.freshTokenPromise
+        }
+      };
+
     case LOGIN_SUCCESS:
       action.response.response &&
         action.response.response.authResult &&
@@ -42,6 +62,11 @@ export default (state = initialState, action) => {
           "user",
           JSON.stringify(action.response.response.userDetails)
         );
+      //refresh token
+
+      if (action.response.response.authResult.refreshToken)
+        AuthUser.setToken(action.response.response.authResult.refreshToken);
+
       return Object.assign({}, state, {
         loading: false,
         data: action.response.response.authResult
@@ -73,10 +98,14 @@ export default (state = initialState, action) => {
     case LOAD_USER_FROM_STORAGE: {
       const user = action.data.user;
       const isAuthenticated = user && user.email ? true : false;
-      return Object.assign({}, state, {
+      return {
+        ...state,
+        data: state.data
+          ? state.data
+          : JSON.parse(localStorage.getItem("_auth")),
         isAuthenticated,
         user
-      });
+      };
     }
 
     case LOGOUT: {

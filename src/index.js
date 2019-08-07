@@ -42,7 +42,7 @@ export const history = createHistory();
 
 const initialState = {};
 const customEnhancers = [checkTokenExpiration];
-const middleware = [thunk, routerMiddleware(history), ...customEnhancers];
+const middleware = [...customEnhancers, thunk, routerMiddleware(history)];
 
 // if (process.env.NODE_ENV === "development") {
 //   const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
