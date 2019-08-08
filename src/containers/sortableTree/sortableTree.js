@@ -44,6 +44,14 @@ class Tree extends Component {
       this.setState({
         orgTreeData: nextProps.orgHierarchy
       });
+      if (
+        this.props.orgHierarchy.length &&
+        this.props.orgHierarchy[0].id !== parseInt(this.props.match.params.id)
+      ) {
+        this.props.fetchOrganisationDetail({
+          orgId: this.props.match.params.id
+        });
+      }
     }
   }
 
