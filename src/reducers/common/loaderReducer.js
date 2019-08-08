@@ -70,7 +70,10 @@ import {
   CREATEORG_SUCCESS,
   CREATEORG_ERROR,
   REFRESHING_TOKEN,
-  DONE_REFRESHING_TOKEN
+  DONE_REFRESHING_TOKEN,
+  FETCH_ORGDETAIL_REQUEST,
+  FETCH_ORGDETAIL_SUCCESS,
+  FETCH_ORGDETAIL_ERROR
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -452,6 +455,21 @@ export default (state = initialState, action) => {
       });
 
     case DONE_REFRESHING_TOKEN:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    // org details
+    case FETCH_ORGDETAIL_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
+    case FETCH_ORGDETAIL_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false
+      });
+    case FETCH_ORGDETAIL_ERROR:
       return Object.assign({}, state, {
         loading: false
       });
