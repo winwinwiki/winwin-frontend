@@ -46,7 +46,9 @@ export function refreshToken(dispatch) {
     headers: CommonUtil.getHeaders(),
     body: JSON.stringify({
       userName: JSON.parse(localStorage.getItem("user"))["email"],
-      refreshToken: JSON.parse(localStorage.getItem("refreshToken"))
+      refreshToken:
+        JSON.parse(localStorage.getItem("refreshToken")) ||
+        JSON.parse(localStorage.getItem("_auth"))["refreshToken"]
     })
   })
     .then(res => res.json())
