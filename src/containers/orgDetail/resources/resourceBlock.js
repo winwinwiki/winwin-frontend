@@ -53,7 +53,7 @@ const ResourceBlock = props => {
               id="count"
               readOnly="readOnly"
               placeholder="Count"
-              value={data.count}
+              value={data.count || ""}
             />
           </div>
         </div>
