@@ -72,6 +72,7 @@ export const filtersObj = {
   industryCls: "",
   subIndustryCls: "",
   frameworkTag: "",
+  nameSearch: "",
   level1: "",
   level2: "",
   level3: "",
@@ -566,14 +567,16 @@ class OrgList extends React.Component {
   handleFilteredChange = nameSearch => {
     const { pageSize } = this.state;
     const { appliedFilterList, filters } = this.props;
-
-    this.props.fetchOrganisationsList({
+    const apiObj = {
       ...filters,
-      ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
+      ...appliedFilterList,
       pageNo: 0,
       pageSize,
       nameSearch
-    });
+    };
+    this.props.fetchOrganisationsList(
+      appliedFilterList ? modifiyFilterList(apiObj) : apiObj
+    );
   };
 
   handlePageChange = page => {
