@@ -569,14 +569,15 @@ class OrgList extends React.Component {
     const { appliedFilterList, filters } = this.props;
     const apiObj = {
       ...filters,
-      ...appliedFilterList,
+      ...(appliedFilterList ? appliedFilterList : filtersObj),
       pageNo: 0,
       pageSize,
       nameSearch
     };
-    this.props.fetchOrganisationsList(
-      appliedFilterList ? modifiyFilterList(apiObj) : apiObj
-    );
+    this.props.setAppliedFilters(apiObj, modifiyFilterList(apiObj));
+    // this.props.fetchOrganisationsList(
+    //   appliedFilterList ? modifiyFilterList(apiObj) : apiObj
+    // );
   };
 
   handlePageChange = page => {
