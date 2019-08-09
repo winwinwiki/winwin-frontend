@@ -28,6 +28,11 @@ export function modifiyFilterList(list) {
     if (list["level2"]) desiredList["shortNameCode"] = list["level2"]["value"];
   }
 
+  if (list["nameSearch"]) desiredList["nameSearch"] = list["nameSearch"];
+
+  if (list["sectors"] && list["sectors"].length)
+    desiredList["sectors"] = list["sectors"];
+
   if (list["priority"]) desiredList["priority"] = list["priority"];
 
   if (list["revenue"]["min"] !== "")

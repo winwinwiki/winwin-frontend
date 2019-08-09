@@ -431,11 +431,15 @@ class AppliedOrgFilters extends React.Component {
       filterList.pageNo = 0;
       filterList.pageSize = 10;
     }
-    this.props.setAppliedFilters(filterList, modifiyFilterList(filterList));
+    this.props.setAppliedFilters(
+      { ...this.props.filters, ...filterList },
+      modifiyFilterList({ ...this.props.filters, ...filterList })
+    );
   }
 }
 const mapStateToProps = state => ({
-  appliedFilterList: state.orgList.appliedFilterList
+  appliedFilterList: state.orgList.appliedFilterList,
+  filters: state.orgList.filters
 });
 
 const mapDispatchToProps = dispatch =>
