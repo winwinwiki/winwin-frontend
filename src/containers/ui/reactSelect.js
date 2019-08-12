@@ -15,7 +15,7 @@ class ReactSelect extends Component {
 
   handleChange = option => {
     if (!option.value) return;
-    let optionObj = { [option.id]: option.value, pageNo: 0, pageSize: 10 };
+    let optionObj = { [option.id]: option.value };
     let filters = {
       ...filtersObj,
       ...this.props.appliedFilterList,
@@ -31,11 +31,12 @@ class ReactSelect extends Component {
     const { appliedFilterList } = this.props;
 
     this.props.setAppliedFilters(
-      { ...this.props.filters, ...filters },
+      { ...this.props.filters, ...filters, pageNo: 0 },
       cleanObj({
         ...this.props.filters,
         ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
-        ...optionObj
+        ...optionObj,
+        pageNo: 0
       })
     );
   };
