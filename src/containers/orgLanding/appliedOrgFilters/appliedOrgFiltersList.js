@@ -563,7 +563,8 @@ class AppliedOrgFiltersList extends React.Component {
     filters.pageSize = 10;
     this.props.setAppliedFilters(this.state, {
       ...filters,
-      ...this.props.filters
+      ...this.props.filters,
+      pageNo: 0
     });
     this.props.toggleAppliedFilterModal();
     // this.props.resetPagination();
