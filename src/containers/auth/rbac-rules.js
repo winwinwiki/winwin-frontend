@@ -90,7 +90,7 @@ const rules = {
       //notes
       "organizationNotes:list",
       "organizationNotes:create",
-      "organizationNotes:delete"
+      "organizationNotes:delete",
       //user profile
       "users:getSelf",
       //user actions
