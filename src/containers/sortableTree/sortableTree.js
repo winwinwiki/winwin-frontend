@@ -14,6 +14,7 @@ import {
 import { OrgHierarchySelector } from "../../selectors/OrgHierarchySelector";
 import "./sortableTree.css";
 import { PopupModal } from "../ui/popupModal";
+import Can from "../Can";
 class Tree extends Component {
   state = {
     isEdited: false,
@@ -46,7 +47,8 @@ class Tree extends Component {
       });
       if (
         this.props.orgHierarchy.length &&
-        this.props.orgHierarchy[0].id !== parseInt(this.props.match.params.id)
+        this.props.orgHierarchy[0].id !==
+          parseInt(this.props.match.params.id, 10)
       ) {
         this.props.fetchOrganisationDetail({
           orgId: this.props.match.params.id
@@ -113,6 +115,8 @@ class Tree extends Component {
 
   render() {
     const { isEdited } = this.state;
+    const { session } = this.props;
+
     return (
       <section className="dashboard-content p-0 py-3 org-details-container">
         <div className="col-md-18 m-auto card">
@@ -129,15 +133,21 @@ class Tree extends Component {
             <ul className="list-group list-group-flush">
               <li className="list-group-item px-0">
                 {!isEdited && (
-                  <div className="row">
-                    <ul className="action-icons">
-                      <li>
-                        <a href="javascript:;" onClick={this.onEdit}>
-                          <i className="icon-edit" />
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
+                  <Can
+                    role={session.user && session.user.role}
+                    perform="organizationDetails:edit"
+                    yes={() => (
+                      <div className="row">
+                        <ul className="action-icons">
+                          <li>
+                            <a href="javascript:;" onClick={this.onEdit}>
+                              <i className="icon-edit" />
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    )}
+                  />
                 )}
 
                 <SortableTree
@@ -269,7 +279,8 @@ class Tree extends Component {
 }
 
 const mapStateToProps = state => ({
-  orgHierarchy: OrgHierarchySelector(state)
+  orgHierarchy: OrgHierarchySelector(state),
+  session: state.session
 });
 
 const mapDispatchToProps = dispatch =>

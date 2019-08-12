@@ -16,6 +16,7 @@ import {
 } from "../../../actions/common/loaderActions";
 import debounce from "lodash/debounce";
 import { programListSelector } from "../../../selectors/programListSelector";
+import Can from "../../Can";
 class ProgramList extends React.Component {
   state = {
     searchText: ""
@@ -32,7 +33,7 @@ class ProgramList extends React.Component {
 
   render() {
     let { searchText } = this.state;
-    const { programList } = this.props;
+    const { programList, session } = this.props;
     if (!programList) {
       return null;
     }
@@ -49,21 +50,27 @@ class ProgramList extends React.Component {
                   value={searchText}
                 />
               </div>
-              <div
-                className="col col-md-auto"
-                data-toggle="modal"
-                data-target="#addProgramModal"
-              >
-                <Link
-                  to={`${this.props.match.url.replace(
-                    "/programs",
-                    "/new-program"
-                  )}`}
-                  className="btn btn-primary"
-                >
-                  Add Program
-                </Link>
-              </div>
+              <Can
+                role={session.user && session.user.role}
+                perform="programs:create"
+                yes={() => (
+                  <div
+                    className="col col-md-auto"
+                    data-toggle="modal"
+                    data-target="#addProgramModal"
+                  >
+                    <Link
+                      to={`${this.props.match.url.replace(
+                        "/programs",
+                        "/new-program"
+                      )}`}
+                      className="btn btn-primary"
+                    >
+                      Add Program
+                    </Link>
+                  </div>
+                )}
+              />
             </div>
             <div className="row">
               <div className="col">
@@ -118,7 +125,8 @@ class ProgramList extends React.Component {
 
 const mapStateToProps = state => ({
   programList: state.programList.programList,
-  currentOrgId: programListSelector(state)
+  currentOrgId: programListSelector(state),
+  session: state.session
 });
 
 const mapDispatchToProps = dispatch =>

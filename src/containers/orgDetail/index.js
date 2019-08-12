@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 import { fetchOrganisationDetail } from "../../actions/orgDetail/orgDetailAction";
+import Can from "../Can";
 
 class OrgDetail extends React.Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class OrgDetail extends React.Component {
   }
   render() {
     const { orgDetail } = this.state;
-    const { organizationDetail, match, history } = this.props;
+    const { organizationDetail, match, history, session } = this.props;
     if (!orgDetail || !organizationDetail || organizationDetail.error) {
       return null;
     }
@@ -160,21 +161,34 @@ class OrgDetail extends React.Component {
                   {/* <a className="dropdown-item" href="#">
                     Change Status
                   </a> */}
-                  <Link
-                    className="dropdown-item"
-                    to={`${match.url}/new-program`}
-                  >
-                    Add Program
-                  </Link>
+                  <Can
+                    role={session.user && session.user.role}
+                    perform="programs:create"
+                    yes={() => (
+                      <Link
+                        className="dropdown-item"
+                        to={`${match.url}/new-program`}
+                      >
+                        Add Program
+                      </Link>
+                    )}
+                  />
+
                   {/* <a className="dropdown-item" href="#">
                     Add Child Organization
                   </a> */}
-                  <Link
-                    className="dropdown-item"
-                    to={`${match.url}/view-history`}
-                  >
-                    View History
-                  </Link>
+                  <Can
+                    role={session.user && session.user.role}
+                    perform="organizationHistory:list"
+                    yes={() => (
+                      <Link
+                        className="dropdown-item"
+                        to={`${match.url}/view-history`}
+                      >
+                        View History
+                      </Link>
+                    )}
+                  />
                 </div>
               </div>
             </div>
@@ -192,7 +206,8 @@ class OrgDetail extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  organizationDetail: state.orgDetail
+  organizationDetail: state.orgDetail,
+  session: state.session
 });
 
 const mapDispatchToProps = dispatch =>

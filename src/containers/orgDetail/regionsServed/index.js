@@ -88,6 +88,7 @@ class RegionsServed extends Component {
     const {
       data: { response: regionsServedList } = {}
     } = this.props.regionsServed;
+    const { session } = this.props;
 
     return (
       <section className="dashboard-content p-0 py-3 org-details-container">
@@ -100,17 +101,23 @@ class RegionsServed extends Component {
             <form onSubmit={this.onSubmit}>
               <ul className="list-group list-group-flush">
                 {!isEdited && (
-                  <li className="list-group-item px-0">
-                    <div className="row">
-                      <ul className="action-icons">
-                        <li>
-                          <a href="javascript:;" onClick={this.onEdit}>
-                            <i className="icon-edit" />
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
+                  <Can
+                    role={session.user && session.user.role}
+                    perform="organizationDetailsRegionsServed:edit"
+                    yes={() => (
+                      <li className="list-group-item px-0">
+                        <div className="row">
+                          <ul className="action-icons">
+                            <li>
+                              <a href="javascript:;" onClick={this.onEdit}>
+                                <i className="icon-edit" />
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </li>
+                    )}
+                  />
                 )}
                 {isEdited && (
                   <div className="row mt-2">
@@ -311,7 +318,8 @@ class RegionsServed extends Component {
 }
 
 const mapStateToProps = state => ({
-  regionsServed: state.regionsServed
+  regionsServed: state.regionsServed,
+  session: state.session
   // regionsList: regionsListSelector(state)
 });
 

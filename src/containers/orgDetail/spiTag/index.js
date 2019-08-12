@@ -10,12 +10,18 @@ import {
 } from "../../../actions/common/loaderActions";
 import { updateSPIData } from "../../../actions/orgDetail/spiTagsAction";
 import { PROGRAM } from "../../../constants";
+import Can from "../../Can";
 class SpiTags extends React.Component {
   componentDidMount() {
-    const { orgId, type, programId } = this.props;
+    const { orgId, type, programId, session } = this.props;
     this.props.startLoaderAction();
     this.props.fetchSpiTags(type === PROGRAM ? programId : orgId, type);
-    this.props.fetchSpiTagsList(type === PROGRAM ? programId : orgId, type);
+    Can({
+      role: session.user && session.user.role,
+      perform: "organizationDetailsSPITags:edit",
+      yes: () =>
+        this.props.fetchSpiTagsList(type === PROGRAM ? programId : orgId, type)
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -25,7 +31,7 @@ class SpiTags extends React.Component {
   }
 
   render() {
-    const { spiTags, orgId, type } = this.props;
+    const { spiTags, orgId, type, session } = this.props;
     if (!spiTags || !spiTags.data || spiTags.error) {
       return null;
     }
@@ -37,26 +43,32 @@ class SpiTags extends React.Component {
             <p>{this.props.description}</p>
 
             <div className="section-title">Social Progress Index Tag</div>
-            <form>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item px-0">
-                  <div className="row">
-                    <ul className="action-icons">
-                      <li>
-                        <a
-                          href="javascript:;"
-                          data-toggle="modal"
-                          data-target="#spiModal"
-                        >
-                          <i className="icon-edit" />
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                {this.createSpiBox()}
-              </ul>
-            </form>
+            <Can
+              role={session.user && session.user.role}
+              perform="organizationDetailsSPITags:edit"
+              yes={() => (
+                <form>
+                  <ul className="list-group list-group-flush">
+                    <li className="list-group-item px-0">
+                      <div className="row">
+                        <ul className="action-icons">
+                          <li>
+                            <a
+                              href="javascript:;"
+                              data-toggle="modal"
+                              data-target="#spiModal"
+                            >
+                              <i className="icon-edit" />
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+                    {this.createSpiBox()}
+                  </ul>
+                </form>
+              )}
+            />
           </div>
         </div>
         {this.props.SPIList && (
@@ -119,7 +131,8 @@ class SpiTags extends React.Component {
 
 const mapStateToProps = state => ({
   spiTags: state.spiTags,
-  SPIList: state.orgList.spiList
+  SPIList: state.orgList.spiList,
+  session: state.session
 });
 
 const mapDispatchToProps = dispatch =>

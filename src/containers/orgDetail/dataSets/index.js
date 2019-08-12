@@ -15,6 +15,7 @@ import {
 } from "../../../actions/common/loaderActions";
 import { PopupModal } from "../../ui/popupModal";
 import { PROGRAM } from "../../../constants";
+import Can from "../../Can";
 class DataSets extends React.Component {
   constructor(props) {
     super(props);
@@ -61,7 +62,7 @@ class DataSets extends React.Component {
 
   render() {
     const { dataSetList, selectedData, modaltitle } = this.state;
-    const { dataset, datasetCategories } = this.props;
+    const { dataset, datasetCategories, session } = this.props;
     if (dataset.error || !dataSetList) {
       return null;
     }
@@ -83,18 +84,25 @@ class DataSets extends React.Component {
                     data={dataSet}
                     changeModalData={this.changeModalData}
                     selectedDataSet={this.selectedDataSet}
+                    session={this.props.session}
                   />
                 ))}
-                <li className="list-group-item px-0 pt-4">
-                  <a
-                    href="javascript:;"
-                    data-toggle="modal"
-                    data-target="#dataSetModal"
-                    onClick={this.addNewDataSetModal}
-                  >
-                    <i className="icon-add mr-2" /> Add Data Set
-                  </a>
-                </li>
+                <Can
+                  role={session.user && session.user.role}
+                  perform="organizationDetailsDataSet:create"
+                  yes={() => (
+                    <li className="list-group-item px-0 pt-4">
+                      <a
+                        href="javascript:;"
+                        data-toggle="modal"
+                        data-target="#dataSetModal"
+                        onClick={this.addNewDataSetModal}
+                      >
+                        <i className="icon-add mr-2" /> Add Data Set
+                      </a>
+                    </li>
+                  )}
+                />
               </ul>
             </form>
           </div>
@@ -198,7 +206,8 @@ class DataSets extends React.Component {
 
 const mapStateToProps = state => ({
   dataset: state.dataset,
-  datasetCategories: state.datasetCategories
+  datasetCategories: state.datasetCategories,
+  session: state.session
 });
 
 const mapDispatchToProps = dispatch =>

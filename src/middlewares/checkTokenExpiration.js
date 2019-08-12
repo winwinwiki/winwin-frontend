@@ -12,7 +12,8 @@ export function checkTokenExpiration({ dispatch, getState }) {
     if (typeof action === "function" && getState().session.isAuthenticated) {
       if (
         (getState().session.data && getState().session.data.accessToken) ||
-        JSON.parse(localStorage.getItem("_auth")).accessToken
+        (JSON.parse(localStorage.getItem("_auth")) &&
+          JSON.parse(localStorage.getItem("_auth")).accessToken)
       ) {
         // decode jwt so that we know if and when it expires
         var accessToken =
