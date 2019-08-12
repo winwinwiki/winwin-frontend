@@ -432,8 +432,8 @@ class AppliedOrgFilters extends React.Component {
       filterList.pageSize = 10;
     }
     this.props.setAppliedFilters(
-      { ...this.props.filters, ...filterList },
-      modifiyFilterList({ ...this.props.filters, ...filterList })
+      { ...this.props.filters, ...filterList, pageNo: 0 },
+      modifiyFilterList({ ...this.props.filters, ...filterList, pageNo: 0 })
     );
   }
 }

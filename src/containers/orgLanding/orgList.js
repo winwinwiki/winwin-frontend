@@ -711,11 +711,11 @@ class OrgList extends React.Component {
     });
     const apiObj = newSectors.find(x => x === "All") ? [] : newSectors;
     this.props.fetchOrganisationsList({
-      pageNo,
       pageSize,
       ...filters,
       ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
-      sectors: apiObj
+      sectors: apiObj,
+      pageNo: 0
     });
   };
 }
