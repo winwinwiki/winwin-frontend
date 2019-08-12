@@ -1,4 +1,5 @@
 import React from "react";
+import Can from "../../Can";
 
 class Note extends React.Component {
   state = {
@@ -25,7 +26,7 @@ class Note extends React.Component {
 
   render() {
     const { isEditable } = this.state;
-    const { selectedNote } = this.props;
+    const { selectedNote, session } = this.props;
     const { data } = this.state;
     return (
       <li className="list-group-item border-0 px-0">
@@ -40,16 +41,22 @@ class Note extends React.Component {
                   <i className="icon-edit" />
                 </a>
               </li> */}
-              <li>
-                <a
-                  href="javascript:;"
-                  data-toggle="modal"
-                  data-target="#deleteModal"
-                  onClick={() => selectedNote(data.noteId)}
-                >
-                  <i className="icon-delete" />
-                </a>
-              </li>
+              <Can
+                role={session.user && session.user.role}
+                perform="organizationNotes:delete"
+                yes={() => (
+                  <li>
+                    <a
+                      href="javascript:;"
+                      data-toggle="modal"
+                      data-target="#deleteModal"
+                      onClick={() => selectedNote(data.noteId)}
+                    >
+                      <i className="icon-delete" />
+                    </a>
+                  </li>
+                )}
+              />
             </ul>
           </div>
         )}

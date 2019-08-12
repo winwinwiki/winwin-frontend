@@ -23,6 +23,7 @@ import {
 } from "../../actions/orgDetail/industryClassificationAction";
 import AutoSuggestComponent from "../common/autoCompleteComponent";
 import { orgDetailsSelector } from "../../selectors/orgDetailsSelector";
+import Can from "../Can";
 class OrgDetailPage extends React.Component {
   state = {
     orgDetail: null,
@@ -68,7 +69,7 @@ class OrgDetailPage extends React.Component {
 
   render() {
     const { isEditable, orgDetail } = this.state;
-    const { industryCodes } = this.props;
+    const { session, industryCodes } = this.props;
     if (!orgDetail) {
       return null;
     }
@@ -83,18 +84,24 @@ class OrgDetailPage extends React.Component {
                   {isEditable ? (
                     ""
                   ) : (
-                    <div className="row">
-                      <ul className="action-icons active">
-                        <li>
-                          <a
-                            href="javascript:;"
-                            onClick={() => this.editBasicInfo()}
-                          >
-                            <i className="icon-edit" />
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
+                    <Can
+                      role={session.user && session.user.role}
+                      perform="organizationDetails:edit"
+                      yes={() => (
+                        <div className="row">
+                          <ul className="action-icons active">
+                            <li>
+                              <a
+                                href="javascript:;"
+                                onClick={() => this.editBasicInfo()}
+                              >
+                                <i className="icon-edit" />
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      )}
+                    />
                   )}
                   <div className="form-group">
                     <label htmlFor="category">Organization Name</label>
@@ -636,7 +643,8 @@ class OrgDetailPage extends React.Component {
 
 const mapStateToProps = state => ({
   organizationDetail: orgDetailsSelector(state),
-  industryCodes: industryClassificationSelector(state)
+  industryCodes: industryClassificationSelector(state),
+  session: state.session
 });
 
 const mapDispatchToProps = dispatch =>

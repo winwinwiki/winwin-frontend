@@ -1,6 +1,25 @@
 const rules = {
   Reader: {
-    static: ["organizations:list"]
+    static: [
+      "organizations:list",
+      "organizationDetails:list",
+      "organizationDetailsDataSet:list",
+      "organizationHistory:list",
+      "organizationNotes:list",
+      "programs:list",
+      "programDetails:list",
+      "programDetailsDataSet:list",
+      "programDetailsRegionsServed:list",
+      "programDetailsResources:list",
+      "programDetailsSPITags:list",
+      "programDetailsSDGTags:list",
+      "organizationDetailsRegionsServed:list",
+      "organizationDetailsResources:list",
+      "organizationDetailsSPITags:list",
+      "organizationDetailsSDGTags:list",
+      "organizationsChart:list",
+      "users:changePassword"
+    ]
   },
   DataSeeder: {
     static: [
@@ -9,6 +28,9 @@ const rules = {
       "organizations:create",
       "organizations:edit",
       "organizations:delete",
+      //naics ntee
+      "naics:list",
+      "naics:list",
       //orgdetails
       "organizationDetails:list",
       //org chart
@@ -33,8 +55,10 @@ const rules = {
       "organizationDetailsRegionsServed:delete",
       //spitags
       "organizationDetailsSPITags:list",
+      "organizationDetailsSPITags:edit",
       //sdgtags
       "organizationDetailsSDGTags:list",
+      "organizationDetailsSDGTags:edit",
       //programs
       "programs:list",
       "programs:create",
@@ -57,12 +81,16 @@ const rules = {
       "programDetailsRegionsServed:delete",
       // prog spitags
       "programDetailsSPITags:list",
+      "programDetailsSPITags:edit",
       //prog sdgtags
       "programDetailsSDGTags:list",
+      "programDetailsSDGTags:edit",
       //orgEdit history
       "organizationHistory:list",
       //notes
       "organizationNotes:list",
+      "organizationNotes:create",
+      "organizationNotes:delete"
       //user profile
       "users:getSelf",
       //user actions
@@ -94,6 +122,10 @@ const rules = {
       "organizations:delete",
       //orgdetails
       "organizationDetails:list",
+      "organizationDetails:edit",
+      //naics ntee
+      "naics:list",
+      "naics:list",
       //org chart
       "organizationsChart:list",
       "organizationsChart:get",
@@ -116,8 +148,10 @@ const rules = {
       "organizationDetailsRegionsServed:delete",
       //spitags
       "organizationDetailsSPITags:list",
+      "organizationDetailsSPITags:edit",
       //sdgtags
       "organizationDetailsSDGTags:list",
+      "organizationDetailsSDGTags:edit",
       //programs
       "programs:list",
       "programs:create",
@@ -140,8 +174,10 @@ const rules = {
       "programDetailsRegionsServed:delete",
       // prog spitags
       "programDetailsSPITags:list",
+      "programDetailsSPITags:edit",
       //prog sdgtags
       "programDetailsSDGTags:list",
+      "programDetailsSDGTags:edit",
       //usermanagement
       "users:list",
       "users:create",
@@ -152,7 +188,9 @@ const rules = {
       //orgEdit history
       "organizationHistory:list",
       //notes
-      "organizationNotes:list"
+      "organizationNotes:list",
+      "organizationNotes:create",
+      "organizationNotes:delete"
     ]
   }
 };

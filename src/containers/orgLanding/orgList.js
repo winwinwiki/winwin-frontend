@@ -392,7 +392,8 @@ class OrgList extends React.Component {
     const {
       userRole,
       appliedFilterList,
-      orgList: { loading } = {}
+      orgList: { loading } = {},
+      session
     } = this.props;
 
     let orgList = this.state.orgList;
@@ -416,6 +417,12 @@ class OrgList extends React.Component {
         />
         <div className="d-flex py-3 align-items-center applied-filters-container">
           <Dropdown
+            disabled={Can({
+              role: session.user && session.user.role,
+              perform: "organizationDetails:edit",
+              yes: () => false,
+              no: () => true
+            })}
             selectedItem={entity}
             name="filterEntity"
             placeholder="Actions"
@@ -724,7 +731,8 @@ const mapStateToProps = state => ({
   orgList: state.orgList,
   appliedFilterList: state.orgList.appliedFilterList,
   userRole: state.session.user.role,
-  filters: state.orgList.filters
+  filters: state.orgList.filters,
+  session: state.session
 });
 
 const mapDispatchToProps = dispatch =>

@@ -15,6 +15,7 @@ import {
 } from "../../../actions/common/loaderActions";
 import { PopupModal } from "../../ui/popupModal";
 import { PROGRAM } from "../../../constants";
+import Can from "../../Can";
 class Resources extends React.Component {
   constructor(props) {
     super(props);
@@ -90,7 +91,7 @@ class Resources extends React.Component {
 
   render() {
     const { selectedData, modaltitle, resourcesList } = this.state;
-    const { resources, resourceCategories } = this.props;
+    const { resources, resourceCategories, session } = this.props;
     if (!resources || !resourcesList) {
       return null;
     }
@@ -111,18 +112,25 @@ class Resources extends React.Component {
                     data={resource}
                     changeModalData={this.changeModalData}
                     selectedResource={this.selectedResource}
+                    session={session}
                   />
                 ))}
-                <li className="list-group-item px-0 pt-4">
-                  <a
-                    href="javascript:;"
-                    data-toggle="modal"
-                    data-target="#resourceModal"
-                    onClick={this.addNewResourceModal}
-                  >
-                    <i className="icon-add mr-2" /> Add Resource
-                  </a>
-                </li>
+                <Can
+                  role={session.user && session.user.role}
+                  perform="organizationDetailsResources:create"
+                  yes={() => (
+                    <li className="list-group-item px-0 pt-4">
+                      <a
+                        href="javascript:;"
+                        data-toggle="modal"
+                        data-target="#resourceModal"
+                        onClick={this.addNewResourceModal}
+                      >
+                        <i className="icon-add mr-2" /> Add Resource
+                      </a>
+                    </li>
+                  )}
+                />
               </ul>
             </form>
           </div>
@@ -209,7 +217,8 @@ class Resources extends React.Component {
 
 const mapStateToProps = state => ({
   resources: state.resources,
-  resourceCategories: state.resourceCategories
+  resourceCategories: state.resourceCategories,
+  session: state.session
 });
 
 const mapDispatchToProps = dispatch =>

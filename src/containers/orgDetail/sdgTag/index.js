@@ -9,12 +9,18 @@ import {
   stopLoaderAction
 } from "../../../actions/common/loaderActions";
 import { PROGRAM } from "../../../constants";
+import Can from "../../Can";
 class SdgTags extends React.Component {
   componentDidMount() {
-    const { orgId, type, programId } = this.props;
+    const { orgId, type, programId, session } = this.props;
     this.props.startLoaderAction();
     this.props.fetchSdgTags(type === PROGRAM ? programId : orgId, type);
-    this.props.fetchSdgTagsList(type === PROGRAM ? programId : orgId, type);
+    Can({
+      role: session.user && session.user.role,
+      perform: "organizationDetailsSDGTags:edit",
+      yes: () =>
+        this.props.fetchSdgTagsList(type === PROGRAM ? programId : orgId, type)
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -24,7 +30,7 @@ class SdgTags extends React.Component {
   }
 
   render() {
-    const { sdgTags, orgId, type } = this.props;
+    const { sdgTags, orgId, type, session } = this.props;
     if (!sdgTags || !sdgTags.data || sdgTags.error) {
       return null;
     }
@@ -38,26 +44,32 @@ class SdgTags extends React.Component {
             <div className="section-title">
               Sustainable Development Goals Tag
             </div>
-            <form>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item px-0">
-                  <div className="row">
-                    <ul className="action-icons">
-                      <li>
-                        <a
-                          href="javascript:;"
-                          data-toggle="modal"
-                          data-target="#sdgModal"
-                        >
-                          <i className="icon-edit" />
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                {this.createSdgBox()}
-              </ul>
-            </form>
+            <Can
+              role={session.user && session.user.role}
+              perform="organizationDetailsSPITags:edit"
+              yes={() => (
+                <form>
+                  <ul className="list-group list-group-flush">
+                    <li className="list-group-item px-0">
+                      <div className="row">
+                        <ul className="action-icons">
+                          <li>
+                            <a
+                              href="javascript:;"
+                              data-toggle="modal"
+                              data-target="#sdgModal"
+                            >
+                              <i className="icon-edit" />
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+                    {this.createSdgBox()}
+                  </ul>
+                </form>
+              )}
+            />
           </div>
         </div>
         {this.props.SDGList && (
@@ -109,7 +121,8 @@ class SdgTags extends React.Component {
 
 const mapStateToProps = state => ({
   sdgTags: state.sdgTags,
-  SDGList: state.orgList.sdgList
+  SDGList: state.orgList.sdgList,
+  session: state.session
 });
 
 const mapDispatchToProps = dispatch =>

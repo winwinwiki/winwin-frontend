@@ -1,31 +1,44 @@
 import React from "react";
+import Can from "../../Can";
 
 const ResourceBlock = props => {
-  const { data } = props;
+  const { data, session } = props;
   return (
     <li className="list-group-item px-0">
       <div className="row">
         <ul className="action-icons">
-          <li>
-            <a
-              href="javascript:;"
-              data-toggle="modal"
-              data-target="#resourceModal"
-              onClick={() => props.changeModalData(data.id)}
-            >
-              <i className="icon-edit" />
-            </a>
-          </li>
-          <li>
-            <a
-              href="javascript:;"
-              data-toggle="modal"
-              data-target="#deleteModal"
-              onClick={() => props.selectedResource(data)}
-            >
-              <i className="icon-delete" />
-            </a>
-          </li>
+          <Can
+            role={session.user && session.user.role}
+            perform="organizationDetailsResources:edit"
+            yes={() => (
+              <li>
+                <a
+                  href="javascript:;"
+                  data-toggle="modal"
+                  data-target="#resourceModal"
+                  onClick={() => props.changeModalData(data.id)}
+                >
+                  <i className="icon-edit" />
+                </a>
+              </li>
+            )}
+          />
+          <Can
+            role={session.user && session.user.role}
+            perform="organizationDetailsResources:delete"
+            yes={() => (
+              <li>
+                <a
+                  href="javascript:;"
+                  data-toggle="modal"
+                  data-target="#deleteModal"
+                  onClick={() => props.selectedResource(data)}
+                >
+                  <i className="icon-delete" />
+                </a>
+              </li>
+            )}
+          />
         </ul>
       </div>
       <div className="row mt-2">

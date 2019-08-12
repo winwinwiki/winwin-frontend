@@ -11,6 +11,7 @@ import {
 
 import { NoteModal } from "./noteModal";
 import { PopupModal } from "../../ui/popupModal";
+import Can from "../../Can";
 class Notes extends React.Component {
   state = {
     modaltitle: "",
@@ -35,7 +36,7 @@ class Notes extends React.Component {
 
   render() {
     const { modaltitle, notesList, note } = this.state;
-    const { isNotesSuccess } = this.props;
+    const { isNotesSuccess, session } = this.props;
     if (!isNotesSuccess || !notesList) {
       return null;
     }
@@ -55,18 +56,25 @@ class Notes extends React.Component {
                       data={note}
                       selectedNote={this.setNodeId}
                       onUpdateNote={this.onUpdateNote}
+                      session={session}
                     />
                   ))}
-                <li className="list-group-item px-0 pt-4">
-                  <a
-                    href="javascript:;"
-                    data-toggle="modal"
-                    data-target="#noteModal"
-                    onClick={this.addNewNoteModal}
-                  >
-                    <i className="icon-add mr-2" /> Add Note
-                  </a>
-                </li>
+                <Can
+                  role={session.user && session.user.role}
+                  perform="organizationNotes:create"
+                  yes={() => (
+                    <li className="list-group-item px-0 pt-4">
+                      <a
+                        href="javascript:;"
+                        data-toggle="modal"
+                        data-target="#noteModal"
+                        onClick={this.addNewNoteModal}
+                      >
+                        <i className="icon-add mr-2" /> Add Note
+                      </a>
+                    </li>
+                  )}
+                />
               </ul>
             </form>
           </div>
@@ -157,7 +165,8 @@ class Notes extends React.Component {
 
 const mapStateToProps = state => ({
   notesList: state.notes.notesList,
-  isNotesSuccess: state.notes.isNotesSuccess
+  isNotesSuccess: state.notes.isNotesSuccess,
+  session: state.session
 });
 
 const mapDispatchToProps = dispatch =>
