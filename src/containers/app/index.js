@@ -4,9 +4,11 @@ import { bindActionCreators } from "redux";
 import LoadingSpinner from "../common/loadingSpinner";
 import FooterComponent from "../footer";
 import { loadUserFromStorageAction } from "../../actions/common/localStorageAction";
+import { loadReCaptcha } from "react-recaptcha-google";
 
 class App extends React.Component {
   componentDidMount() {
+    loadReCaptcha();
     // if (typeof window !== "undefined") {
     //   window.addEventListener("storage", this.handleLocalStorageChange);
     // }
