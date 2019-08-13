@@ -5,7 +5,7 @@ import {
 } from "../../constants/dispatch";
 import { api } from "../../api/api";
 
-export const createKibanaUser = params => {
+export const createKibanaUserAction = params => {
   return dispatch => {
     dispatch(createKibanaUserRequest());
     api("/user/createKibanaUser", "POST", JSON.stringify(params), true).then(

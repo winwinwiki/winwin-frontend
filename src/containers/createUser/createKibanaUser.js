@@ -2,7 +2,7 @@ import React from "react";
 import { push } from "react-router-redux";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { createKibanaUser } from "../../actions/createUser/createKibanaUser";
+import { createKibanaUserAction } from "../../actions/createUser/createKibanaUserAction";
 import NotificationToaster from "../ui/notificationToaster";
 import validate from "../../util/validation";
 import { toast } from "react-toastify";
@@ -205,7 +205,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       changePage: source => push("/", source),
-      createKibanaUser
+      createKibanaUserAction
     },
     dispatch
   );
