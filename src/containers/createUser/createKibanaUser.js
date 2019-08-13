@@ -34,6 +34,18 @@ class CreateKibanaUser extends React.Component {
     }
   }
 
+  componentWillReceiveProps = nextProps => {
+    if (
+      nextProps &&
+      nextProps.createdUser &&
+      nextProps.createdUser.isKibanaUserAdded
+    ) {
+      this.timer = setTimeout(() => {
+        this.props.changePage();
+      }, 1500);
+    }
+  };
+
   onLoadRecaptcha() {
     if (this.captchaDemo) {
       this.captchaDemo.reset();
@@ -201,6 +213,10 @@ class CreateKibanaUser extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  createdUser: state.createUser
+});
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
@@ -211,6 +227,6 @@ const mapDispatchToProps = dispatch =>
   );
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(CreateKibanaUser);
