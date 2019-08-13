@@ -73,7 +73,10 @@ import {
   DONE_REFRESHING_TOKEN,
   FETCH_ORGDETAIL_REQUEST,
   FETCH_ORGDETAIL_SUCCESS,
-  FETCH_ORGDETAIL_ERROR
+  FETCH_ORGDETAIL_ERROR,
+  CREATE_KIBANA_USER_REQUEST,
+  CREATE_KIBANA_USER_SUCCESS,
+  CREATE_KIBANA_USER_ERROR
 } from "../../constants/dispatch";
 
 const initialState = {
@@ -470,6 +473,21 @@ export default (state = initialState, action) => {
         loading: false
       });
     case FETCH_ORGDETAIL_ERROR:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    // create kibana users
+    case CREATE_KIBANA_USER_REQUEST:
+      return Object.assign({}, state, {
+        loading: true
+      });
+
+    case CREATE_KIBANA_USER_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false
+      });
+    case CREATE_KIBANA_USER_ERROR:
       return Object.assign({}, state, {
         loading: false
       });

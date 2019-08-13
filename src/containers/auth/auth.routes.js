@@ -9,6 +9,7 @@ import ResetPassword from "./resetPassword";
 import newUserChangePassword from "./changePassword/newUserChangePassword";
 import PrivateRoute from "../privateRouter";
 import PageNotFound from "./pageNotFound";
+import createKibanaUser from "../createUser/createKibanaUser";
 
 const AuthRoutes = ({ location: { state } }) => (
   <React.Fragment>
@@ -18,6 +19,7 @@ const AuthRoutes = ({ location: { state } }) => (
         <Route exact path="/" component={Login} />
         <Route exact path="/forget-password" component={ForgetPassword} />
         <Route exact path="/reset-password" component={ResetPassword} />
+        <Route exact path="/createKibanaUser" component={createKibanaUser} />
         {/* <PrivateRoute
           title={"Reset Forgotten Password"}
           authenticated={(state && state.isAuth) || false}
