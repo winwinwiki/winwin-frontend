@@ -68,7 +68,7 @@ class CreateKibanaUser extends React.Component {
       return;
     }
 
-    this.props.createKibanaUser({
+    this.props.createKibanaUserAction({
       userDisplayName,
       email: this.state.email
     });
