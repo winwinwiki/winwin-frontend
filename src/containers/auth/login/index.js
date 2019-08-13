@@ -170,6 +170,13 @@ class Login extends React.Component {
         >
           Login
         </button>
+        <div className="mt-4 text-white">
+          {" "}
+          Need an account ?{" "}
+          <Link to="/createKibanaUser" className="mt-3 text-white">
+            Sign Up?
+          </Link>
+        </div>
       </div>
     );
   }
