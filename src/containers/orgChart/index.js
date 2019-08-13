@@ -59,7 +59,7 @@ class OrgChart extends React.Component {
   componentDidUpdate(prevProps) {
     if (
       prevProps.orgHierarchy !== this.props.orgHierarchy &&
-      this.props.orgHierarchy.response
+      this.props.orgHierarchy
     ) {
       this.props.stopLoaderAction();
     }

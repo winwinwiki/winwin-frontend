@@ -1,32 +1,45 @@
 import React from "react";
+import Can from "../../Can";
 
 class DataSetBlock extends React.Component {
   render() {
-    const { data } = this.props;
+    const { data, session } = this.props;
     return (
       <li className="list-group-item px-0">
         <div className="row">
           <ul className="action-icons">
-            <li>
-              <a
-                href="javascript:;"
-                data-toggle="modal"
-                data-target="#dataSetModal"
-                onClick={() => this.props.changeModalData(data.id)}
-              >
-                <i className="icon-edit" />
-              </a>
-            </li>
-            <li>
-              <a
-                href="javascript:;"
-                data-toggle="modal"
-                data-target="#deleteModal"
-                onClick={() => this.props.selectedDataSet(data)}
-              >
-                <i className="icon-delete" />
-              </a>
-            </li>
+            <Can
+              role={session.user && session.user.role}
+              perform="organizationDetailsDataSet:edit"
+              yes={() => (
+                <li>
+                  <a
+                    href="javascript:;"
+                    data-toggle="modal"
+                    data-target="#dataSetModal"
+                    onClick={() => this.props.changeModalData(data.id)}
+                  >
+                    <i className="icon-edit" />
+                  </a>
+                </li>
+              )}
+            />
+            <Can
+              role={session.user && session.user.role}
+              perform="organizationDetailsDataSet:delete"
+              yes={() => (
+                <li>
+                  <a
+                    href="javascript:;"
+                    data-toggle="modal"
+                    data-target="#deleteModal"
+                    onClick={() => this.props.selectedDataSet(data)}
+                  >
+                    <i className="icon-delete" />
+                  </a>
+                </li>
+              )}
+            />
           </ul>
         </div>
         <div className="row mt-2">

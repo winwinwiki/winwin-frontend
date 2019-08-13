@@ -64,7 +64,10 @@ export default (state = initialState, action) => {
         );
       //refresh token
 
-      if (action.response.response.authResult.refreshToken)
+      if (
+        action.response.response.authResult &&
+        action.response.response.authResult.refreshToken
+      )
         AuthUser.setToken(action.response.response.authResult.refreshToken);
 
       return Object.assign({}, state, {
@@ -72,7 +75,9 @@ export default (state = initialState, action) => {
         data: action.response.response.authResult
           ? action.response.response.authResult
           : action.response.response,
-        user: action.response.response.userDetails,
+        user: action.response.response.userDetails
+          ? action.response.response.userDetails
+          : "",
         error: false,
         isNewUser: action.response.response.isNewUser
           ? action.response.response.isNewUser

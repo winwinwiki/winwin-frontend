@@ -26,6 +26,7 @@ import {
   naicsListSelector,
   nteeListSelector
 } from "../../../selectors/industryClassificationSelector";
+import Can from "../../Can";
 var classNames = require("classnames");
 
 const Priority = ["Normal", "High"];
@@ -79,12 +80,33 @@ class AppliedOrgFiltersList extends React.Component {
   };
 
   componentDidMount() {
+    const { session } = this.props;
     this.timer = setTimeout(() => {
-      this.props.fetchUsersList();
-      this.props.fetchNAICSList();
-      this.props.fetchNTEEList();
-      this.props.fetchSpiTagsList();
-      this.props.fetchSdgTagsList();
+      Can({
+        role: session.user && session.user.role,
+        perform: "users:list",
+        yes: () => this.props.fetchUsersList()
+      });
+      Can({
+        role: session.user && session.user.role,
+        perform: "naics:list",
+        yes: () => this.props.fetchNAICSList()
+      });
+      Can({
+        role: session.user && session.user.role,
+        perform: "ntee:list",
+        yes: () => this.props.fetchNTEEList()
+      });
+      Can({
+        role: session.user && session.user.role,
+        perform: "organizationDetailsSPITags:list",
+        yes: () => this.props.fetchSpiTagsList()
+      });
+      Can({
+        role: session.user && session.user.role,
+        perform: "organizationDetailsSDGTags:list",
+        yes: () => this.props.fetchSdgTagsList()
+      });
     }, 5000);
   }
 
@@ -621,7 +643,8 @@ const mapStateToProps = state => ({
   NAICSList: naicsListSelector(state),
   NTEEList: nteeListSelector(state),
   userList: state.userManagement,
-  filters: state.orgList.filters
+  filters: state.orgList.filters,
+  session: state.session
 });
 
 const mapDispatchToProps = dispatch =>
