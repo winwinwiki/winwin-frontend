@@ -64,6 +64,8 @@ const rules = {
       "programs:create",
       //program details
       "programDetails:list",
+      "programDetails:edit",
+      "programDetails:delete",
       //prog datasets
       "programDetailsDataSet:list",
       "programDetailsDataSet:create",
@@ -157,6 +159,8 @@ const rules = {
       "programs:create",
       //program details
       "programDetails:list",
+      "programDetails:edit",
+      "programDetails:delete",
       //prog datasets
       "programDetailsDataSet:list",
       "programDetailsDataSet:create",

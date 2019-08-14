@@ -180,14 +180,14 @@ class UserList extends React.Component {
       id: "role",
       Header: "Role",
       accessor: "role",
-      sortable: false,
+      sortable: true,
       Cell: row => <div className="centerText">{row.value}</div>
     },
     {
       id: "team",
       Header: "Team",
       accessor: "team",
-      sortable: false,
+      sortable: true,
       Cell: row => <div className="centerText">{row.value}</div>
     },
     {
