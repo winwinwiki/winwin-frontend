@@ -5,6 +5,7 @@ import { saveProgramDetailsAction } from "../../actions/program/saveProgramDetai
 import { deleteProgram } from "../../actions/program/deleteProgramAction";
 import { PopupModal } from "../ui/popupModal";
 import { push } from "react-router-redux";
+import Can from "../Can";
 class ProgramDetailPage extends Component {
   state = {
     editProgramDetail: false,
@@ -23,8 +24,8 @@ class ProgramDetailPage extends Component {
   };
 
   render() {
-    const { editProgramDetail } = this.state;
-    const { programDetail } = this.state;
+    const { editProgramDetail, programDetail } = this.state;
+    const { session } = this.props;
     if (!programDetail || !programDetail.response) {
       return null;
     }
@@ -42,20 +43,32 @@ class ProgramDetailPage extends Component {
                         !editProgramDetail ? "active" : ""
                       }`}
                     >
-                      <li>
-                        <a href="javascript:;" onClick={this.onEdit}>
-                          <i className="icon-edit" />
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="javascript:;"
-                          data-toggle="modal"
-                          data-target="#deleteModal"
-                        >
-                          <i className="icon-delete" />
-                        </a>
-                      </li>
+                      <Can
+                        role={session.user && session.user.role}
+                        perform="programDetails:edit"
+                        yes={() => (
+                          <li>
+                            <a href="javascript:;" onClick={this.onEdit}>
+                              <i className="icon-edit" />
+                            </a>
+                          </li>
+                        )}
+                      />
+                      <Can
+                        role={session.user && session.user.role}
+                        perform="programDetails:delete"
+                        yes={() => (
+                          <li>
+                            <a
+                              href="javascript:;"
+                              data-toggle="modal"
+                              data-target="#deleteModal"
+                            >
+                              <i className="icon-delete" />
+                            </a>
+                          </li>
+                        )}
+                      />
                     </ul>
                   </div>
                   <div className="row mt-2">
@@ -188,7 +201,8 @@ class ProgramDetailPage extends Component {
 }
 
 const mapStateToProps = state => ({
-  programDetail: state.programDetail
+  programDetail: state.programDetail,
+  session: state.session
 });
 
 const mapDispatchToProps = dispatch =>
