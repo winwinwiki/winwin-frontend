@@ -97,7 +97,7 @@
   },
   "scripts": {
     "build": "npm-run-all build-css build-js",
-    "start": "PORT=443 npm-run-all -p watch-css start-js",
+    "start": "npm-run-all -p watch-css start-js",
     "build-js": "node scripts/build.js",
     "start-js": "node scripts/start.js",
     "build-dev": "env-cmd -f .env.development npm run build",
