@@ -2,9 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
-import AccessComponent from "../common/accessComponent";
 import { logoutAction } from "../../actions/auth/loginAction";
 import Can from "../Can";
+import { REACT_APP_KIBANA_DASHBOARD_URL } from "../../buildConfig/apiConfig";
 
 const Header = props => {
   const { session, history } = props;
@@ -76,15 +76,19 @@ const Header = props => {
                     </Link>
                   )}
                 />
-                {/* <AccessComponent
+                <Can
                   role={userInfo.role}
-                  access={["Administrator", "DataSeeder"]}
-                >
-                  {" "}
-                  <Link to="/organizations" className="dropdown-item">
-                    Organization Management
-                  </Link>
-                </AccessComponent> */}
+                  perform="organizations:list"
+                  yes={() => (
+                    <a
+                      href={REACT_APP_KIBANA_DASHBOARD_URL}
+                      target="_blank"
+                      className="dropdown-item"
+                    >
+                      Wiki Dashboard (Kibana)
+                    </a>
+                  )}
+                />
                 <Can
                   role={userInfo.role}
                   perform="users:list"
@@ -94,15 +98,6 @@ const Header = props => {
                     </Link>
                   )}
                 />
-                {/* <AccessComponent
-                  role={userInfo.role}
-                  access={["Administrator"]}
-                >
-                  {" "}
-                  <Link to="/user-management" className="dropdown-item">
-                    User Management
-                  </Link>
-                </AccessComponent> */}
                 <Can
                   role={userInfo.role}
                   perform="users:getSelf"
@@ -117,20 +112,6 @@ const Header = props => {
                     </Link>
                   )}
                 />
-                {/* <AccessComponent
-                  role={userInfo.role}
-                  access={["Administrator", "DataSeeder"]}
-                >
-                  {" "}
-                  <Link
-                    to={`/user-management/${encodeURIComponent(
-                      userInfo.email
-                    )}`}
-                    className="dropdown-item"
-                  >
-                    My Profile
-                  </Link>
-                </AccessComponent> */}
                 <Can
                   role={userInfo.role}
                   perform="users:changePassword"
@@ -140,16 +121,6 @@ const Header = props => {
                     </Link>
                   )}
                 />
-                {/* <AccessComponent
-                  role={userInfo.role}
-                  access={["Administrator", "DataSeeder"]}
-                >
-                  {" "}
-                  <Link to="/change-password" className="dropdown-item">
-                    Change Password
-                  </Link>
-                </AccessComponent> */}
-
                 <a
                   href="javascript:;"
                   className="dropdown-item"
