@@ -1,12 +1,14 @@
 import {
   CREATEUSER_REQUEST,
   CREATEUSER_SUCCESS,
-  CREATEUSER_ERROR
+  CREATEUSER_ERROR,
+  CREATE_KIBANA_USER_SUCCESS
 } from "../../constants/dispatch";
 
 const initialState = {
   loading: false,
   data: null,
+  isKibanaUserAdded: null,
   error: false
 };
 
@@ -23,6 +25,13 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         loading: false,
         data: action.response,
+        error: false
+      });
+
+    case CREATE_KIBANA_USER_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false,
+        isKibanaUserAdded: action.response,
         error: false
       });
 
