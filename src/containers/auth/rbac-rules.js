@@ -1,24 +1,24 @@
 const rules = {
   Reader: {
     static: [
-      "organizations:list",
-      "organizationDetails:list",
-      "organizationDetailsDataSet:list",
-      "organizationHistory:list",
-      "organizationNotes:list",
-      "programs:list",
-      "programDetails:list",
-      "programDetailsDataSet:list",
-      "programDetailsRegionsServed:list",
-      "programDetailsResources:list",
-      "programDetailsSPITags:list",
-      "programDetailsSDGTags:list",
-      "organizationDetailsRegionsServed:list",
-      "organizationDetailsResources:list",
-      "organizationDetailsSPITags:list",
-      "organizationDetailsSDGTags:list",
-      "organizationsChart:list",
-      "users:changePassword"
+      // "organizations:list",
+      // "organizationDetails:list",
+      // "organizationDetailsDataSet:list",
+      // "organizationHistory:list",
+      // "organizationNotes:list",
+      // "programs:list",
+      // "programDetails:list",
+      // "programDetailsDataSet:list",
+      // "programDetailsRegionsServed:list",
+      // "programDetailsResources:list",
+      // "programDetailsSPITags:list",
+      // "programDetailsSDGTags:list",
+      // "organizationDetailsRegionsServed:list",
+      // "organizationDetailsResources:list",
+      // "organizationDetailsSPITags:list",
+      // "organizationDetailsSDGTags:list",
+      // "organizationsChart:list",
+      // "users:changePassword"
     ]
   },
   DataSeeder: {
