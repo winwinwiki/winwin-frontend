@@ -58,7 +58,13 @@ export function refreshToken(dispatch) {
         type: DONE_REFRESHING_TOKEN
       });
 
-      dispatch(saveToken(t.response.authResult.accessToken));
+      dispatch(
+        saveToken(
+          t.response &&
+            t.response.authResult &&
+            t.response.authResult.accessToken
+        )
+      );
 
       return t.response.authResult.accessToken
         ? Promise.resolve(t.response.authResult.accessToken)
