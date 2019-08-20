@@ -7309,6 +7309,9 @@ p {
 [role="main"] {
   padding-top: 90px; }
 
+[role="main-kustom"] {
+  padding-top: 65px; }
+
 .bg-dark {
   background-color: #4D4D4D !important; }
 
