@@ -247,29 +247,38 @@ class OrgList extends React.Component {
       width: 50
     },
     {
+      id: "tag",
+      Header: "",
+      accessor: "id",
+      sortable: false,
+      resizable: false,
+      Cell: row => (
+        <div className="mt-1">
+          <div className="px-1 py-0">
+            <h1
+              className={`org-tag ${
+                row.original.priority ? tagColor[row.original.priority] : ""
+              }`}
+            >
+              {row.original.tagStatus
+                ? tagIcon[tags[row.original.tagStatus]]
+                : tagIcon["unfinishedtag"]}
+            </h1>
+          </div>
+        </div>
+      ),
+      width: 30
+    },
+    {
       id: "name",
       Header: "Organization Name",
       accessor: "name",
       Cell: row => (
         <React.Fragment>
-          <div className="d-inline-block mr-5">
-            <div className="px-1 py-0">
-              <h1
-                className={`org-tag ${
-                  row.original.priority ? tagColor[row.original.priority] : ""
-                }`}
-              >
-                {row.original.tagStatus
-                  ? tagIcon[tags[row.original.tagStatus]]
-                  : tagIcon["unfinishedtag"]}
-              </h1>
-            </div>
-            {/* <div className="org-tag-footer" /> */}
-          </div>
           <Link
-            className="centerText d-inline-block"
+            className="centerText d-inline-block ml-1"
             style={{
-              maxWidth: 190,
+              // maxWidth: 190,
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap"
@@ -282,7 +291,7 @@ class OrgList extends React.Component {
         </React.Fragment>
       ),
       width: 280,
-      resizable: false,
+      // resizable: false,
       placeholder: "Search by Organization Name",
       sortable: true,
       filterable: true,
