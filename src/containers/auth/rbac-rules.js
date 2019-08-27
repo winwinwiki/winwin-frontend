@@ -1,6 +1,8 @@
 const rules = {
   Reader: {
     static: [
+      "users:getSelf"
+      // "users:edit"
       // "organizations:list",
       // "organizationDetails:list",
       // "organizationDetailsDataSet:list",
@@ -95,6 +97,7 @@ const rules = {
       "organizationNotes:delete",
       //user profile
       "users:getSelf",
+      "users:edit",
       //user actions
       "users:changePassword"
     ]
