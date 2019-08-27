@@ -119,6 +119,7 @@ const rules = {
   },
   Administrator: {
     static: [
+      "kibana:publish",
       //orglist page
       "organizations:list",
       "organizations:create",
