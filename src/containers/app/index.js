@@ -32,16 +32,10 @@ class App extends React.Component {
           <LoadingSpinner message={loader.message} fullscreen={true} />
         )}
 
-        {userInfo && userInfo.role === "Reader" ? (
-          <KibanaLanding />
-        ) : (
-          <React.Fragment>
-            <div className="main-content d-flex flex-column container">
-              {this.props.children}
-            </div>
-            <FooterComponent />
-          </React.Fragment>
-        )}
+        <React.Fragment>
+          {this.props.children}
+          <FooterComponent />
+        </React.Fragment>
       </React.Fragment>
     );
   }
