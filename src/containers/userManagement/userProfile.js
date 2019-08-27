@@ -11,6 +11,7 @@ import validate from "../../util/validation";
 import "./userProfile.css";
 import { Link } from "react-router-dom";
 import { s3Upload } from "../../libs/awsLib";
+import Can from "../Can";
 
 class UserProfile extends React.Component {
   state = {
@@ -83,11 +84,20 @@ class UserProfile extends React.Component {
             ) : (
               <div className="row">
                 <ul className="action-icons active">
-                  <li>
-                    <a href="javascript:;" onClick={() => this.editUserInfo()}>
-                      <i className="icon-edit" />
-                    </a>
-                  </li>
+                  <Can
+                    role={session.user && session.user.role}
+                    perform="users:edit"
+                    yes={() => (
+                      <li>
+                        <a
+                          href="javascript:;"
+                          onClick={() => this.editUserInfo()}
+                        >
+                          <i className="icon-edit" />
+                        </a>
+                      </li>
+                    )}
+                  />
                 </ul>
               </div>
             )}
@@ -141,17 +151,6 @@ class UserProfile extends React.Component {
                     <div className="col">
                       <div className="form-group">
                         <label htmlFor="role">Role</label>
-                        {/* <input
-                          id="role"
-                          type="text"
-                          placeholder="Role"
-                          className="form-control"
-                          onBlur={this.validateField}
-                          onChange={this.onChange}
-                          name="role"
-                          value={userInfo.role}
-                          readOnly={readOnly}
-                        /> */}
                         <Dropdown
                           selectedItem={role || userInfo.role}
                           name="role"
@@ -193,38 +192,6 @@ class UserProfile extends React.Component {
                   </div>
                 </form>
               </div>
-              {/* <div className="col-8 ml-auto">
-                {isEditable && !file ? (
-                  <Fragment>
-                    <Upload
-                      type="image"
-                      accept="image/*"
-                      onDrop={this.onDrop}
-                      text="Upload Photo"
-                    />
-                  </Fragment>
-                ) : file ? (
-                  <aside className="thumbsContainer">
-                    <div className="thumb" key={file.name}>
-                      <div className="thumbInner">
-                        <img
-                          src={file.preview}
-                          alt="Preview"
-                          className="previewImg"
-                        />
-                      </div>
-                    </div>
-                  </aside>
-                ) : (
-                  ""
-                )}
-                {userProfileFormError.file && (
-                  <div className="text-danger small">
-                    {userProfileFormError.file}
-                  </div>
-                )}
-                {this.renderSelectedFile()}
-              </div> */}
             </div>
             {isEditable ? (
               <div className="row justify-content-center footer-actions active">
