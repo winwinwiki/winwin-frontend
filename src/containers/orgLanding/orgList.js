@@ -72,7 +72,7 @@ export const filtersObj = {
   industryCls: "",
   subIndustryCls: "",
   frameworkTag: "",
-  nameSearch: "",
+  // nameSearch: "",
   level1: "",
   level2: "",
   level3: "",
@@ -502,9 +502,7 @@ class OrgList extends React.Component {
         <PopupModal
           modalid="deleteModal"
           modaltitle="Alert!"
-          modalcontent={`Are you sure you want to delete '${
-            this.state.orgName
-          }' ?`}
+          modalcontent={`Are you sure you want to delete '${this.state.orgName}' ?`}
           primarybuttontext="Delete Organization"
           secondarybuttontext="Cancel"
           handleDelete={() => this.handleOrgDelete(this.state.orgId)}
