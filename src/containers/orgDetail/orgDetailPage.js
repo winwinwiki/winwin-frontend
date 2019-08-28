@@ -259,28 +259,28 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">Revenue ($)</label>
                     <input
                       onKeyDown={this.handleEnter}
-                      type="text"
+                      type="number"
                       className="form-control"
                       id="category"
                       name="revenue"
                       onChange={this.onChange}
                       readOnly={readOnly}
-                      placeholder="Enter Revenue Amount"
+                      placeholder="Enter Revenue Amount eg. 100.00"
                       value={orgDetail.revenue || ""}
                     />
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="category">Assets</label>
+                    <label htmlFor="category">Assets ($)</label>
                     <input
                       onKeyDown={this.handleEnter}
-                      type="text"
+                      type="number"
                       className="form-control"
                       id="category"
                       name="assets"
                       onChange={this.onChange}
                       readOnly={readOnly}
-                      placeholder="Enter Assets"
+                      placeholder="Enter Assets  eg. 100.00"
                       value={orgDetail.assets || ""}
                     />
                   </div>
