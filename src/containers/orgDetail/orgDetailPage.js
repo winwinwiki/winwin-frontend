@@ -259,7 +259,7 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">Revenue ($)</label>
                     <input
                       onKeyDown={this.handleEnter}
-                      type="text"
+                      type="number"
                       className="form-control"
                       id="category"
                       name="revenue"
@@ -271,10 +271,10 @@ class OrgDetailPage extends React.Component {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="category">Assets</label>
+                    <label htmlFor="category">Assets ($)</label>
                     <input
                       onKeyDown={this.handleEnter}
-                      type="text"
+                      type="number"
                       className="form-control"
                       id="category"
                       name="assets"
