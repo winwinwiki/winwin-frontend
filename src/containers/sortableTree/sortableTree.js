@@ -15,6 +15,7 @@ import { OrgHierarchySelector } from "../../selectors/OrgHierarchySelector";
 import "./sortableTree.css";
 import { PopupModal } from "../ui/popupModal";
 import Can from "../Can";
+import { orgDetailsSelector } from "../../selectors/orgDetailsSelector";
 class Tree extends Component {
   state = {
     isEdited: false,
@@ -27,8 +28,19 @@ class Tree extends Component {
   componentDidMount() {
     //detech when browser's back button is clicked!
     window.onpopstate = () => {
-      this.props.fetchOrganisationDetail({ orgId: this.props.match.params.id });
-      this.props.fetchOrgHierarchy(this.props.match.params.id);
+      const {
+        organizationDetail,
+        match: { params: { id: paramsOrgId } = {} } = {}
+      } = this.props;
+      const {
+        data: { response: { id: orgId } = {} } = {}
+      } = organizationDetail;
+      if (parseInt(paramsOrgId) !== orgId) {
+        this.props.fetchOrganisationDetail({
+          orgId: this.props.match.params.id
+        });
+        this.props.fetchOrgHierarchy(this.props.match.params.id);
+      }
     };
     if (
       !this.props.orgHierarchy.length ||
@@ -234,9 +246,7 @@ class Tree extends Component {
                           <button
                             className="btn f-15"
                             onClick={() => this.goToParent(rowInfo)}
-                            title={`Go to parent organization: ${
-                              rowInfo.node.parentName
-                            }`}
+                            title={`Go to parent organization: ${rowInfo.node.parentName}`}
                             onMouseOver={this.onHover}
                           >
                             <i className="icon-arrow-up" />
@@ -266,9 +276,7 @@ class Tree extends Component {
         <PopupModal
           modalid="deleteModal"
           modaltitle="Alert!"
-          modalcontent={`Are you sure you want to delete '${
-            this.state.nodeTitile
-          }' ?`}
+          modalcontent={`Are you sure you want to delete '${this.state.nodeTitile}' ?`}
           primarybuttontext="Delete Organization"
           secondarybuttontext="Cancel"
           handleDelete={() => this.removeOrg(this.state.nodeId)}
@@ -280,7 +288,8 @@ class Tree extends Component {
 
 const mapStateToProps = state => ({
   orgHierarchy: OrgHierarchySelector(state),
-  session: state.session
+  session: state.session,
+  organizationDetail: orgDetailsSelector(state)
 });
 
 const mapDispatchToProps = dispatch =>
