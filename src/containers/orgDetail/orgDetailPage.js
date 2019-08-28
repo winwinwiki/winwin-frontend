@@ -265,7 +265,7 @@ class OrgDetailPage extends React.Component {
                       name="revenue"
                       onChange={this.onChange}
                       readOnly={readOnly}
-                      placeholder="Enter Revenue Amount"
+                      placeholder="Enter Revenue Amount eg. 100.00"
                       value={orgDetail.revenue || ""}
                     />
                   </div>
@@ -280,7 +280,7 @@ class OrgDetailPage extends React.Component {
                       name="assets"
                       onChange={this.onChange}
                       readOnly={readOnly}
-                      placeholder="Enter Assets"
+                      placeholder="Enter Assets  eg. 100.00"
                       value={orgDetail.assets || ""}
                     />
                   </div>
