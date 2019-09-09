@@ -7,19 +7,12 @@ import OrgLandingRoutes from "../orgLanding/orgLanding.routes";
 import UserManagementRoutes from "../userManagement/userManagement.routes";
 import KibanaLanding from "../auth/login/kibana";
 import { connect } from "react-redux";
+import { ROLE_READER } from "../../constants/userRoles";
 
 const AppRoutes = ({ userInfo, location, ...props }) => (
   <App history={props.history} match={props.match}>
     <Switch>
-      {userInfo &&
-        userInfo.role === "Reader" &&
-        !location.pathname.startsWith("/user-management") && (
-          <CrumbRoute
-            title="Wiki Dashboard"
-            path="/"
-            component={KibanaLanding}
-          />
-        )}
+      
 
       <CrumbRoute
         title="Organization Management"
@@ -28,7 +21,7 @@ const AppRoutes = ({ userInfo, location, ...props }) => (
       />
       <CrumbRoute
         title={
-          userInfo && userInfo.role === "Reader" ? "Kibana" : "User Management"
+          userInfo && userInfo.role === ROLE_READER ? "Kibana" : "User Management"
         }
         path="/user-management"
         component={UserManagementRoutes}
@@ -38,6 +31,12 @@ const AppRoutes = ({ userInfo, location, ...props }) => (
         path="/change-password"
         component={UserManagementRoutes}
       />
+      <CrumbRoute
+        title="Wiki Dashboard"
+        path="/"
+        component={userInfo && userInfo.role === ROLE_READER ? KibanaLanding : AuthRoutes}
+      />
+
       <Route path="/" component={AuthRoutes} />
     </Switch>
   </App>
@@ -45,7 +44,7 @@ const AppRoutes = ({ userInfo, location, ...props }) => (
 
 const mapStateToProps = state => ({
   userInfo: state.session.user,
-  location: state.routing.location
+  location: state.router.location
 });
 
 export default connect(mapStateToProps)(AppRoutes);

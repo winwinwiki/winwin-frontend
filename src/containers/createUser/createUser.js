@@ -1,13 +1,13 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import Dropdown from "../ui/dropdown";
 import validate from "../../util/validation";
-
-const rolesList = ["Administrator", "DataSeeder", "Reader"];
+import { ROLE_ADMIN, ROLE_DATA_SEEDER, ROLE_READER } from "../../constants/userRoles";
 
 class CreateUser extends Component {
   state = {
     fullName: "",
-    role: rolesList[0],
+    role: ROLE_ADMIN,
     email: "",
     team: "",
     formError: {
@@ -40,14 +40,14 @@ class CreateUser extends Component {
       //   field === "email" ||
       field === "role"
     ) {
-      if (!value) {
-        formError[field] = "This field is required.";
+      if (field === "role" && !value) {
+        formError[field] = "This field is required";
         this.setState({ formError });
         return;
       }
       let isValid = validate.name(value);
       if (!isValid) {
-        formError[field] = "Enter valid name.";
+        formError[field] = "Enter valid name";
         this.setState({ formError });
         return;
       }
@@ -56,14 +56,9 @@ class CreateUser extends Component {
       return;
     }
     if (field === "email") {
-      if (!value) {
-        formError[field] = "E-mail is required.";
-        this.setState({ formError });
-        return;
-      }
       let isValid = validate.email(value);
       if (!isValid) {
-        formError[field] = "Enter valid e-mail.";
+        formError[field] = "Enter valid e-mail";
         this.setState({ formError });
         return;
       }
@@ -102,7 +97,7 @@ class CreateUser extends Component {
               <div className="row">
                 <div className="col">
                   <div className="form-group">
-                    <label htmlFor="fullName">Full Name</label>
+                    <label htmlFor="fullName" className="required">Full Name</label>
                     <input
                       id="fullName"
                       type="text"
@@ -112,6 +107,7 @@ class CreateUser extends Component {
                       onChange={this.onChange}
                       name="fullName"
                       value={fullName}
+                      required
                     />
                     {formError.fullName && (
                       <div className="text-danger small">
@@ -124,7 +120,7 @@ class CreateUser extends Component {
               <div className="row">
                 <div className="col">
                   <div className="form-group">
-                    <label htmlFor="email">E-mail</label>
+                    <label htmlFor="email" className="required">E-mail</label>
                     <input
                       id="email"
                       type="text"
@@ -134,6 +130,7 @@ class CreateUser extends Component {
                       onChange={this.onChange}
                       name="email"
                       value={email}
+                      required
                     />
                     {formError.email && (
                       <div className="text-danger small">{formError.email}</div>
@@ -144,13 +141,13 @@ class CreateUser extends Component {
               <div className="row">
                 <div className="col">
                   <div className="form-group">
-                    <label htmlFor="role">Role</label>
+                    <label htmlFor="role" className="required">Role</label>
                     <Dropdown
                       selectedItem={role}
                       name="role"
                       containerClass="dropdown dropdown-with-searchbox"
                       onChange={this.onDropdownChange}
-                      items={rolesList}
+                      items={[ROLE_ADMIN, ROLE_DATA_SEEDER, ROLE_READER]}
                     />
                   </div>
                 </div>
@@ -173,20 +170,19 @@ class CreateUser extends Component {
                   </div>
                 </div>
               </div>
-            </form>
 
-            <button
-              className="btn btn-link w-50 mt-4"
-              onClick={this.props.history.goBack}
-            >
-              Cancel
-            </button>
-            <button
-              className="btn btn-lg btn-primary w-50 mt-4"
-              onClick={this.onCreateUser}
-            >
-              Create
-            </button>
+              <Link to='/user-management' className="btn btn-link w-50 mt-4">
+                Cancel
+              </Link>
+
+              <button
+                type="submit"
+                className="btn btn-lg btn-primary w-50 mt-4"
+                onClick={this.onCreateUser}>
+                Create
+              </button>
+
+            </form>
           </div>
         </div>
       </div>

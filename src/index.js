@@ -3,10 +3,11 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import AppRoutes from "./containers/app/app";
 import registerServiceWorker from "./registerServiceWorker";
-import { ConnectedRouter } from "react-router-redux";
-import { routerMiddleware } from "react-router-redux";
+//import { ConnectedRouter } from "react-router-redux";
+//import { routerMiddleware } from "react-router-redux";
 import createHistory from "history/createBrowserHistory";
 import { createStore, applyMiddleware, compose } from "redux";
+import { routerMiddleware, ConnectedRouter } from 'connected-react-router'
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import reducer from "./reducers";
@@ -65,7 +66,7 @@ const enhancer = composeEnhancers(
 );
 
 export const store = createStore(
-  reducer,
+  reducer(history),
   initialState,
   enhancer
   // compose(applyMiddleware(...middleware))

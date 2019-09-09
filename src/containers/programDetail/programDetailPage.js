@@ -4,7 +4,8 @@ import { bindActionCreators } from "redux";
 import { saveProgramDetailsAction } from "../../actions/program/saveProgramDetailsAction";
 import { deleteProgram } from "../../actions/program/deleteProgramAction";
 import { PopupModal } from "../ui/popupModal";
-import { push } from "react-router-redux";
+//import { push } from "react-router-redux";
+import { push } from 'connected-react-router';
 import Can from "../Can";
 class ProgramDetailPage extends Component {
   state = {

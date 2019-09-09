@@ -1,6 +1,7 @@
 import { bindActionCreators } from "redux";
 import CreateUser from "./createUser";
-import { push } from "react-router-redux";
+//import { push } from "react-router-redux";
+import { push } from 'connected-react-router';
 import { connect } from "react-redux";
 import { onCreateUser } from "../../actions/createUser/createUserAction";
 

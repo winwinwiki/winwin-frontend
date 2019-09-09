@@ -9,7 +9,8 @@ import {
   tagStatusList
 } from "../../constants";
 import { bindActionCreators } from "redux";
-import { push } from "react-router-redux";
+//import { push } from "react-router-redux";
+import { push } from 'connected-react-router';
 import { onSaveOrgBasicInfo } from "../../actions/orgDetail/orgDetailAction";
 import { fetchOrganisationDetail } from "../../actions/orgDetail/orgDetailAction";
 import {
@@ -622,7 +623,7 @@ class OrgDetailPage extends React.Component {
       nteeCode:
         this.state.orgDetail.nteeCode && this.state.orgDetail.nteeCode.id
     };
-    if (apiObj.sector.toLowerCase() !== "public") {
+    if (apiObj.sector && apiObj.sector.toLowerCase() !== "public") {
       apiObj.sectorLevel = "";
       apiObj.sectorLevelName = "";
       if (apiObj.sector.toLowerCase() === "private") apiObj.nteeCode = null;

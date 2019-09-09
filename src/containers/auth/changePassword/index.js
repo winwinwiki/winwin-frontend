@@ -3,7 +3,8 @@ import validate from "../../../util/validation";
 import { bindActionCreators } from "redux";
 import { onChangePassword } from "../../../actions/auth/changePasswordAction";
 import { connect } from "react-redux";
-import { push } from "react-router-redux";
+//import { push } from "react-router-redux";
+import { push } from 'connected-react-router';
 
 class UserProfile extends React.Component {
   state = {

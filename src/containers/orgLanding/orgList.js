@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
-import { push } from "react-router-redux";
+//import { push } from "react-router-redux";
+import { push } from 'connected-react-router';
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ReactTable from "react-table";
@@ -122,6 +123,11 @@ class OrgList extends React.Component {
     totalPages: 0,
     orgCount: 0
   };
+
+  constructor(props) {
+    super(props);
+    this.nameSearchInput = React.createRef();
+  }
 
   componentDidMount() {
     const { pageNo, pageSize } = this.state;
@@ -278,7 +284,7 @@ class OrgList extends React.Component {
           <Link
             className="centerText d-inline-block ml-1"
             style={{
-              // maxWidth: 190,
+              width: "100%",
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap"
@@ -301,7 +307,8 @@ class OrgList extends React.Component {
           <input
             style={{ width: "100%" }}
             placeholder="Search"
-            // value={this.state.nameSearch || ""}
+            ref={this.nameSearchInput}
+            //value={this.state.nameSearch || ""}
             defaultValue={this.state.nameSearch || ""}
             onKeyPress={event => {
               if (event.keyCode === 13 || event.which === 13) {
@@ -517,7 +524,8 @@ class OrgList extends React.Component {
           searchText: "",
           page: 0,
           pageSize: 10,
-          activeButton: ["All"]
+          activeButton: ["All"],
+          nameSearch: ""
         })
       : this.setState({ page: 0, pageSize: 10 });
 
@@ -537,6 +545,7 @@ class OrgList extends React.Component {
     const { pageNo } = this.state;
     this.props.fetchOrganisationsList({ pageNo, pageSize: 10 });
     this.props.setAppliedFilters(filtersObj, { pageNo, pageSize: 10 });
+    this.nameSearchInput.current.value = "";
     this.resetPagination({ resetAll: true });
   };
 

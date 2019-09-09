@@ -1,5 +1,6 @@
 import React from "react";
-import { push } from "react-router-redux";
+//import { push } from "react-router-redux";
+import { push } from 'connected-react-router';
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ReactTable from "react-table";
@@ -278,13 +279,9 @@ class UserList extends React.Component {
             >
               Create Users
             </button> */}
-            <a
-              href="javascript:;"
-              onClick={() => this.changePage("new")}
-              className="btn btn-link"
-            >
+            <Link to='/user-management/new' className="btn btn-link">
               <i className="icon-add mr-1" /> Create
-            </a>
+            </Link>
 
             <div aria-labelledby="uploadUsers" className="dropdown-menu">
               <a
