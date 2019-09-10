@@ -1,5 +1,7 @@
 import { combineReducers } from "redux";
-import { routerReducer } from "react-router-redux";
+//import { routerReducer } from "react-router-redux";
+import { routerReducer } from 'connected-react-router';
+import { connectRouter } from 'connected-react-router'
 
 import loader from "./common/loaderReducer";
 
@@ -35,7 +37,8 @@ import nteeList from "./orgDetail/fetchNTEEListReducer";
 import createBulkOrgReducer from "./dataFeed/createBulkOrgReducer";
 import notificationsReducer from "./common/notificationsReducer";
 
-const appReducer = combineReducers({
+const appReducer = (history) => combineReducers({
+  router: connectRouter(history),
   routing: routerReducer,
   loader,
   session: login,
@@ -67,10 +70,11 @@ const appReducer = combineReducers({
   notifications: notificationsReducer
 });
 
-export default (state, action) => {
-  if (action.type === "auth/LOGOUT") {
-    state = undefined;
-  }
+export default appReducer;
+//export default (state, action) => {
+//  if (action.type === "auth/LOGOUT") {
+//    state = undefined;
+//  }
 
-  return appReducer(state, action);
-};
+//  return appReducer(state, action);
+//};

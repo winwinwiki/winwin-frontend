@@ -80,6 +80,10 @@ input {
   }
 }
 
+form label.required:after {
+    color: red;
+    content: " *";
+}
 
 //Custom Select
 .custom-select{

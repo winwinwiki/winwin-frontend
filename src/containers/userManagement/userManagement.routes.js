@@ -13,7 +13,7 @@ import IdleTimer from "react-idle-timer";
 import { bindActionCreators } from "redux";
 import { logout } from "../../actions/auth/loginAction";
 
-const OrgLandingRoutes = props => (
+const UserManagementRoutes = props => (
   <UserManagement history={props.history} match={props.match}>
     <NotificationToaster />
     <IdleTimer
@@ -62,4 +62,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({ logout }, dispatch);
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(OrgLandingRoutes);
+)(UserManagementRoutes);

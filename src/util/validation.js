@@ -13,7 +13,7 @@ export default {
     return pwd === cnfPwd;
   },
   name: function(name) {
-    let regx = /^[a-zA-Z\-]+$/;
+    let regx = /^([\w-']+)\b(.+)?/gm;
     return regx.test(name);
   },
   file: function(file) {

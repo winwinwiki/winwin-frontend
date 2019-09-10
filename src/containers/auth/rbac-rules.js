@@ -1,8 +1,9 @@
 const rules = {
   Reader: {
     static: [
-      "users:getSelf"
-      // "users:edit"
+      "users:getSelf",
+      "users:changePassword",
+      "users:edit"
       // "organizations:list",
       // "organizationDetails:list",
       // "organizationDetailsDataSet:list",
@@ -20,7 +21,6 @@ const rules = {
       // "organizationDetailsSPITags:list",
       // "organizationDetailsSDGTags:list",
       // "organizationsChart:list",
-      // "users:changePassword"
     ]
   },
   DataSeeder: {
@@ -35,6 +35,7 @@ const rules = {
       "naics:list",
       //orgdetails
       "organizationDetails:list",
+      "organizationDetails:edit",
       //org chart
       "organizationsChart:list",
       "organizationsChart:get",
@@ -107,6 +108,7 @@ const rules = {
       "organizations:list",
       "organizations:create",
       "users:getSelf",
+      "users:changePassword",
       "home-page:visit",
       "dashboard-page:visit"
     ],

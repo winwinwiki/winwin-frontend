@@ -7389,6 +7389,10 @@ input {
     color: #4D4D4D;
     font-size: 0.875rem; }
 
+form label.required:after {
+  color: red;
+  content: " *"; }
+
 .custom-select {
   font-weight: 300; }
 

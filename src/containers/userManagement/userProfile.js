@@ -12,6 +12,7 @@ import "./userProfile.css";
 import { Link } from "react-router-dom";
 import { s3Upload } from "../../libs/awsLib";
 import Can from "../Can";
+import { ROLE_ADMIN } from "../../constants/userRoles";
 
 class UserProfile extends React.Component {
   state = {
@@ -70,7 +71,10 @@ class UserProfile extends React.Component {
       file
     } = this.state;
     const { session, userInfo: { data } = {} } = this.props;
+    console.log('session.user.role=', session.user.role);
+    console.log('userInfo', userInfo);
     let readOnly = isEditable ? "" : "readOnly";
+    const roleEditable = isEditable && session.user.role === ROLE_ADMIN;
     if (!session || !session.user || !userInfo) {
       return null;
     }
@@ -90,7 +94,7 @@ class UserProfile extends React.Component {
                     yes={() => (
                       <li>
                         <a
-                          href="javascript:;"
+                          href="javascript:void(0);"
                           onClick={() => this.editUserInfo()}
                         >
                           <i className="icon-edit" />
@@ -107,6 +111,7 @@ class UserProfile extends React.Component {
             <div className="row">
               <div className="col-13">
                 <form>
+
                   <div className="row">
                     <div className="col">
                       <div className="form-group">
@@ -124,6 +129,7 @@ class UserProfile extends React.Component {
                       </div>
                     </div>
                   </div>
+
                   <div className="row">
                     <div className="col">
                       <div className="form-group">
@@ -147,6 +153,7 @@ class UserProfile extends React.Component {
                       </div>
                     </div>
                   </div>
+
                   <div className="row">
                     <div className="col">
                       <div className="form-group">
@@ -157,7 +164,7 @@ class UserProfile extends React.Component {
                           containerClass="dropdown dropdown-with-searchbox"
                           onChange={this.onDropdownChange}
                           items={rolesList}
-                          disabled={readOnly}
+                          disabled={!roleEditable}
                         />
                         {userProfileFormError.role && (
                           <div className="text-danger small">
@@ -167,6 +174,7 @@ class UserProfile extends React.Component {
                       </div>
                     </div>
                   </div>
+
                   <div className="row">
                     <div className="col">
                       <div className="form-group">

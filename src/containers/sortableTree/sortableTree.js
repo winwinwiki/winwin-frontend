@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import SortableTree, { toggleExpandedForAll } from "react-sortable-tree";
-import { push } from "react-router-redux";
+//import { push } from "react-router-redux";
+import { push } from 'connected-react-router';
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { fetchOrgHierarchy } from "../../actions/orgDetail/orgChartAction";

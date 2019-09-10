@@ -16,18 +16,14 @@ const Header = props => {
     <Fragment>
       <nav className="navbar main-nav navbar-dark bg-dark navbar-expand-md">
         <div className="container">
-          <a
-            href="#"
-            className="navbar-brand"
-            onClick={() => history.push("/")}
-          >
+          <Link to="/" className="navbar-brand">
             <img
               src="/images/winwin-logo-white.svg"
               alt="WinWin logo"
               height="30"
               className="mb-2"
             />
-          </a>
+          </Link>
           <div className="navbar-nav-scroll">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item mx-4">
@@ -113,6 +109,7 @@ const Header = props => {
                       </span>
                     )}
                   />
+                  <hr/>
                   <Can
                     role={userInfo.role}
                     perform="users:getSelf"
@@ -139,7 +136,7 @@ const Header = props => {
                   <a
                     href="javascript:;"
                     className="dropdown-item"
-                    onClick={props.logoutAction}
+                    onClick={() => handleLogout (props)}
                   >
                     Logout
                   </a>
@@ -179,6 +176,12 @@ const handlePublish = props => {
   });
   return props.publishToKibanaAction();
 };
+
+const handleLogout = props => {
+  props.history.entries = [];
+  props.history.index = -1;
+  props.logoutAction();
+}
 
 const mapStateToProps = state => ({
   session: state.session

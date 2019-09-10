@@ -3,7 +3,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { onSubmit } from "../../../actions/auth/forgetPasswordAction";
 import validate from "../../../util/validation";
-import { push } from "react-router-redux";
+//import { push } from "react-router-redux";
+import { push } from 'connected-react-router';
 import NotificationToaster from "../../ui/notificationToaster";
 class ForgetPassword extends React.Component {
   constructor(props) {
