@@ -48,7 +48,7 @@ class KibanaLanding extends React.Component {
 const mapStateToProps = state => ({
   session: state.session,
   userInfo: state.userInfo,
-  location: state.routing.location
+  location: state.router.location
 });
 
 const mapDispatchToProps = dispatch =>

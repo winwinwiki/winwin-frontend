@@ -141,6 +141,10 @@ class OrgList extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    this.resetAllFilters();
+  }
+
   componentDidUpdate(prevProps) {
     if (
       prevProps.orgList !== this.props.orgList &&

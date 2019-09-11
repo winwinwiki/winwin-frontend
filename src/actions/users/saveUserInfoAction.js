@@ -19,26 +19,21 @@ export const onSaveUserInfo = (obj, params) => {
       }
     );
   };
-  // return dispatch => {
-  //   dispatch(saveUserInfoRequest());
-  //   return Auth.currentAuthenticatedUser().then(
-  //     user => {
-  //       obj.profileImage = profileImage;
-  //       const { name, role, team } = obj;
-  //       const responseObj = {
-  //         "custom:fullName": name,
-  //         "custom:role": role,
-  //         "custom:team": team
-  //       };
-  //       Auth.updateUserAttributes(user, responseObj);
+};
 
-  //       dispatch(saveUserInfoSuccess(obj));
-  //     },
-  //     error => {
-  //       dispatch(saveUserInfoError(error));
-  //     }
-  //   );
-  // };
+export const onUpdateUserActiveState = (obj, params) => {
+  return dispatch => {
+    dispatch(saveUserInfoRequest());
+    let url = params === isUserProfile ? "/user/update" : "/user/updateAll";
+    return api(url, "PUT", JSON.stringify(obj), true).then(
+      response => {
+        dispatch(saveUserInfoSuccess(response));
+      },
+      error => {
+        dispatch(saveUserInfoError(error));
+      }
+    );
+  };
 };
 
 function saveUserInfoRequest() {

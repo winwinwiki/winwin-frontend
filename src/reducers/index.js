@@ -30,6 +30,7 @@ import userManagement from "./userManagement/userListReducer";
 import notes from "./orgDetail/notesReducer";
 import createUser from "./createUser/createUserReducer";
 import saveUserInfo from "./users/saveUserInfoReducer";
+import updateUserActiveState from "./users/updateUserActiveStateReducer";
 import datasetCategories from "./orgDetail/dataSetCategoriesReducer";
 import resourceCategories from "./orgDetail/resourceCategoriesReducer";
 import naicsList from "./orgDetail/fetchNAICSListReducer";
@@ -39,7 +40,7 @@ import notificationsReducer from "./common/notificationsReducer";
 
 const appReducer = (history) => combineReducers({
   router: connectRouter(history),
-  routing: routerReducer,
+  routing: connectRouter(history),
   loader,
   session: login,
   forgetPassword,
@@ -63,6 +64,7 @@ const appReducer = (history) => combineReducers({
   userManagement,
   notes,
   saveUserInfo,
+  updateUserActiveState,
   datasetCategories,
   resourceCategories,
   naicsList,

@@ -3,6 +3,8 @@ import {
   SET_FETCHUSER_SUCCESS,
   SET_FETCHUSER_ERROR,
   DELETE_USER_SUCCESS,
+  DELETE_USER_ERROR,
+  DELETE_USER_REQUEST,
   CREATEUSER_SUCCESS
 } from "../../constants/dispatch";
 
@@ -28,22 +30,36 @@ export default (state = initialState, action) => {
         error: false
       });
 
+    case SET_FETCHUSER_ERROR:
+      return Object.assign({}, state, {
+        loading: false,
+        data: action.error,
+        error: true
+      });
+
     case CREATEUSER_SUCCESS:
       return {
         ...state,
         data: [...state.data, action.response]
       };
 
+    case DELETE_USER_REQUEST:
+      return Object.assign({}, state, {
+        loading: true,
+        error: false
+      });
+
     case DELETE_USER_SUCCESS:
       return {
         ...state,
+        loading: false,
+        error: false,
         data: state.data.filter(x => x.email !== action.response.email)
       };
 
-    case SET_FETCHUSER_ERROR:
+    case DELETE_USER_ERROR:
       return Object.assign({}, state, {
         loading: false,
-        data: action.error,
         error: true
       });
 
