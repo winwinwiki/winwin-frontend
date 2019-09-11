@@ -19,6 +19,7 @@ import {
   stopLoaderAction
 } from "../../actions/common/loaderActions";
 import { onSaveUserInfo } from "../../actions/users/saveUserInfoAction";
+import { onUpdateUserActiveState } from '../../actions/users/updateUserActiveStateAction';
 import { PopupModal } from "../ui/popupModal";
 import { isUserProfile } from "../../constants";
 
@@ -42,7 +43,7 @@ class UserList extends React.Component {
   };
 
   componentDidMount() {
-    this.props.startLoaderAction();
+    //this.props.startLoaderAction();
     this.props.fetchUsersList();
     if (this.props.userList.length > 0) {
       this.setState({
@@ -62,11 +63,24 @@ class UserList extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      prevProps.userList !== this.props.userList &&
-      this.props.userList.data
-    ) {
-      this.props.stopLoaderAction();
+    // Fetch user list / Delete user response
+    if (prevProps.userList !== this.props.userList) {
+      if (this.props.userList.loading) {
+        this.props.startLoaderAction();
+      }
+      else if (!this.props.userList.loading) {
+        this.props.stopLoaderAction();
+      }
+    }
+
+    // Make user active/inactive response
+    if (prevProps.activeState !== this.props.activeState) {
+      if (this.props.activeState.loading) {
+        this.props.startLoaderAction();
+      }
+      else if (!this.props.activeState.loading) {
+        this.props.stopLoaderAction();
+      }
     }
   }
 
@@ -425,26 +439,34 @@ class UserList extends React.Component {
 
   onDropdownChange = (field, value) => {
     let { filteredList = [] } = this.state;
-    this.setState({ [field]: value });
-    if (field === "action" && value === "Edit User") {
-      this.onEditUser();
+    if (filteredList && filteredList.length > 0) {
+      this.setState({ [field]: value });
+      if (field === "action" && value === "Edit User") {
+        this.onEditUser();
+        this.props.onSaveUserInfo(filteredList, !isUserProfile);
+      }
+      else if (field === "action" &&
+        (value === "Make Active" || value === "Make Inactive")) {
+        let userEmailList = [];
+        const toMakeActive = value === "Make Active";
+        for (let user of filteredList) {
+          userEmailList.push(user.email);
+
+          if (JSON.parse(user.isActive) === toMakeActive) {
+            alert('At least one user is already in the requested state. This operation cannot be performed. Please select all the users in same state to proceed.');
+            userEmailList = [];
+            return;
+          }
+        }
+        //this.props.startLoaderAction();
+        this.props.onUpdateUserActiveState(userEmailList, toMakeActive);
+      }
+      this.setState({
+        selected: {},
+        selectAll: 0,
+        filteredList: []
+      });
     }
-    if (field === "action" && value === "Make Active")
-      filteredList = filteredList.map(x => {
-        x.isActive = "true";
-        return x;
-      });
-    if (field === "action" && value === "Make Inactive")
-      filteredList = filteredList.map(x => {
-        x.isActive = "false";
-        return x;
-      });
-    this.props.onSaveUserInfo(filteredList, !isUserProfile);
-    this.setState({
-      selected: {},
-      selectAll: 0,
-      filteredList: []
-    });
   };
 
   onCreateUserDownload = () => {
@@ -539,7 +561,8 @@ class UserList extends React.Component {
 
 const mapStateToProps = state => ({
   userList: state.userManagement,
-  loggedInUserEmail: state.session.user.email
+  loggedInUserEmail: state.session.user.email,
+  activeState: state.updateUserActiveState
 });
 
 const mapDispatchToProps = dispatch =>
@@ -550,7 +573,8 @@ const mapDispatchToProps = dispatch =>
       startLoaderAction,
       stopLoaderAction,
       deleteUser,
-      onSaveUserInfo
+      onSaveUserInfo,
+      onUpdateUserActiveState
     },
     dispatch
   );

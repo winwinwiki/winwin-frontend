@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import CommonUtil from "./commonUtil";
 import { store } from "../index";
 import { showNotification } from "../actions/common/showNotificationAction";
@@ -13,17 +14,17 @@ export function api(url, method, body, isAuth, contentType, timeout = 7000) {
             .clone()
             .json()
             .then(json => {
+              const errMsg = json.response || "Oops! Something went wrong.";
               store.dispatch(
                 showNotification({
-                  type: "ERROR",
-                  message: titleCase(
-                    json.response || "Oops! Something went wrong."
-                  )
+                  type: toast.TYPE.ERROR,
+                  message: titleCase(errMsg)
                 })
               );
-              reject(json.response);
+              reject(errMsg);
             });
-        } else {
+        }
+        else {
           handleNotifications(method);
           resolve(response.json());
         }
@@ -38,7 +39,7 @@ export function api(url, method, body, isAuth, contentType, timeout = 7000) {
         })
           .then(handleErrors)
           .catch(error => reject(error))
-          .then(responseJson => resolve(responseJson));
+          //.then(responseJson => resolve(responseJson));
       } else {
         fetch(baseUrl, {
           method: method,
@@ -49,7 +50,7 @@ export function api(url, method, body, isAuth, contentType, timeout = 7000) {
         })
           .then(handleErrors) //return a promise
           .catch(error => reject(error))
-          .then(responseJson => resolve(responseJson));
+          //.then(responseJson => resolve(responseJson));
       }
     })
     // new Promise((_, reject) =>
@@ -63,7 +64,7 @@ function handleNotifications(method) {
     case "DELETE":
       store.dispatch(
         showNotification({
-          type: "SUCCESS",
+          type: toast.TYPE.SUCCESS,
           message: `Deleted successfully!`
         })
       );
@@ -71,7 +72,7 @@ function handleNotifications(method) {
     case "POST":
       store.dispatch(
         showNotification({
-          type: "SUCCESS",
+          type: toast.TYPE.SUCCESS,
           message: `Created successfully!`
         })
       );
@@ -79,7 +80,7 @@ function handleNotifications(method) {
     case "PUT":
       store.dispatch(
         showNotification({
-          type: "SUCCESS",
+          type: toast.TYPE.SUCCESS,
           message: `Updated successfully!`
         })
       );

@@ -6,14 +6,14 @@ import { connect } from "react-redux";
 
 class NotificationToaster extends Component {
   generateNotification(notification) {
-    switch (notification.type.toUpperCase()) {
-      case "SUCCESS":
+    switch (notification.type) {
+      case toast.TYPE.SUCCESS:
         return toast.success(notification.message);
-      case "INFO":
+      case toast.TYPE.INFO:
         return toast.info(notification.message);
-      case "ERROR":
+      case toast.TYPE.ERROR:
         return toast.error(notification.message);
-      case "WARNING":
+      case toast.TYPE.WARNING:
         return toast.warning(notification.message);
       default:
         return null;
