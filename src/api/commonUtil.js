@@ -19,11 +19,11 @@ class CommonUtil {
   static getHeaders(contentType) {
     return contentType
       ? {
-          Accept: "application/json"
+          "Accept": "application/json"
         }
       : {
           "Content-Type": "application/json",
-          Accept: "application/json"
+          "Accept": "application/json"
         };
   }
 
@@ -52,7 +52,8 @@ class CommonUtil {
       : {
           "user-auth-id": authId,
           "Content-Type": "application/json",
-          Accept: "application/json"
+          "Accept": "application/json",
+          "Cache-Control":"private, must-revalidate, max-age=300"
         };
   }
 }

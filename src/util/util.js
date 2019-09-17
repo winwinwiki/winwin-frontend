@@ -1,8 +1,5 @@
 import moment from "moment";
-import {
-  frameworkTagList,
-  industryClassification
-} from "../containers/orgLanding/appliedOrgFilters/appliedOrgFiltersList";
+import { OrgFilters } from "../constants/orgFilters";
 import { CITY, COUNTY, STATE, COUNTRY } from "../constants";
 
 export function modifiyFilterList(list) {
@@ -19,11 +16,11 @@ export function modifiyFilterList(list) {
   // if (list["industryCls"])
   //   desiredList["industryCls"] = list["industryCls"]["value"];
 
-  if (list["frameworkTag"]["value"] === frameworkTagList[0]["value"]) {
+  if (list["frameworkTag"]["value"] === OrgFilters.frameworkTagList[0]["value"]) {
     if (list["level1"]) desiredList["dimensionId"] = list["level1"]["value"];
     if (list["level2"]) desiredList["componentId"] = list["level2"]["value"];
     if (list["level3"]) desiredList["indicatorId"] = list["level3"]["value"];
-  } else if (list["frameworkTag"]["value"] === frameworkTagList[1]["value"]) {
+  } else if (list["frameworkTag"]["value"] === OrgFilters.frameworkTagList[1]["value"]) {
     if (list["level1"]) desiredList["goalCode"] = list["level1"]["value"];
     if (list["level2"]) desiredList["shortNameCode"] = list["level2"]["value"];
   }
@@ -47,10 +44,10 @@ export function modifiyFilterList(list) {
     desiredList["sectorLevel"] = list["sectorLevel"];
 
   if (list["industryCls"] && list["subIndustryCls"]) {
-    if (list["industryCls"]["label"] === industryClassification[0].label)
+    if (list["industryCls"]["label"] === OrgFilters.industryClassification[0].label)
       desiredList["naicsCode"] = list["subIndustryCls"].value;
 
-    if (list["industryCls"]["label"] === industryClassification[1].label)
+    if (list["industryCls"]["label"] === OrgFilters.industryClassification[1].label)
       desiredList["nteeCode"] = list["subIndustryCls"].value;
   }
 
