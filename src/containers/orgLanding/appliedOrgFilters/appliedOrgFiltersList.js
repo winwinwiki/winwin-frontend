@@ -27,57 +27,11 @@ import {
   nteeListSelector
 } from "../../../selectors/industryClassificationSelector";
 import Can from "../../Can";
+import { OrgFilters } from '../../../constants/orgFilters';
 var classNames = require("classnames");
 
-const Priority = ["Normal", "High"];
-
-export const frameworkTagList = [
-  { value: "SPI", label: "Social Progress Index" },
-  {
-    value: "SDG",
-    label: "Sustainable Developement Goals"
-  }
-];
-
-const frameworkLabels = {
-  "Social Progress Index": {
-    // level1: "Dimensions",
-    // level2: "Components",
-    level3: "Indicators"
-  },
-  "Sustainable Developement Goals": {
-    // level1: "Goals",
-    level2: "Sub-Goals"
-  }
-};
-
-export const industryClassification = [
-  { value: "NAICS", label: "NAICS" },
-  { value: "NTEE", label: "NTEE" }
-];
 class AppliedOrgFiltersList extends React.Component {
-  state = {
-    editedBy: [],
-    createdBy: [],
-    industryCls: "",
-    subIndustryCls: "",
-    frameworkTag: "",
-    level1: "",
-    level2: "",
-    level3: "",
-    sectorLevel: [],
-    tagStatus: [],
-    priority: "",
-    revenue: { min: "", max: "" },
-    assets: { min: "", max: "" },
-    level1List: [],
-    level2List: [],
-    level3List: [],
-    city: "",
-    county: "",
-    state: "",
-    country: ""
-  };
+  state = Object.assign({}, OrgFilters.defaultFilters);
 
   componentDidMount() {
     const { session } = this.props;
@@ -165,14 +119,14 @@ class AppliedOrgFiltersList extends React.Component {
 
     if (
       this.props.NAICSList &&
-      industryCls.value === industryClassification[0].value
+      industryCls.value === OrgFilters.industryClassification[0].value
     )
       SubIndustryClassification = this.props.NAICSList.map(function(value) {
         return { value: value.id, label: value.name };
       });
     if (
       this.props.NTEEList &&
-      industryCls.value === industryClassification[1].value
+      industryCls.value === OrgFilters.industryClassification[1].value
     )
       SubIndustryClassification = this.props.NTEEList.map(function(value) {
         return { value: value.id, label: value.name };
@@ -181,7 +135,7 @@ class AppliedOrgFiltersList extends React.Component {
     //frameworkTag
     if (
       this.props.customSPIList &&
-      frameworkTag.value === frameworkTagList[0].value
+      frameworkTag.value === OrgFilters.frameworkTagList[0].value
     )
       level3List = this.props.customSPIList.map(value => {
         return { value: value.indicatorId, label: value.indicatorName };
@@ -189,7 +143,7 @@ class AppliedOrgFiltersList extends React.Component {
 
     if (
       this.props.customSDGList &&
-      frameworkTag.value === frameworkTagList[1].value
+      frameworkTag.value === OrgFilters.frameworkTagList[1].value
     )
       level2List = this.props.customSDGList.map(value => {
         return {
@@ -279,9 +233,9 @@ class AppliedOrgFiltersList extends React.Component {
             <div className="btn-group btn-group-toggle mb-4">
               <label
                 className={`btn btn-outline-secondary ${
-                  priority === Priority[0] ? "active" : ""
+                  priority === OrgFilters.Priority[0] ? "active" : ""
                 }`}
-                onClick={this.setPriority.bind(this, Priority[0])}
+                onClick={this.setPriority.bind(this, OrgFilters.Priority[0])}
               >
                 <input
                   type="radio"
@@ -293,9 +247,9 @@ class AppliedOrgFiltersList extends React.Component {
               </label>
               <label
                 className={`btn btn-outline-secondary ${
-                  priority === Priority[1] ? "active" : ""
+                  priority === OrgFilters.Priority[1] ? "active" : ""
                 }`}
-                onClick={this.setPriority.bind(this, Priority[1])}
+                onClick={this.setPriority.bind(this, OrgFilters.Priority[1])}
               >
                 <input
                   type="radio"
@@ -349,7 +303,7 @@ class AppliedOrgFiltersList extends React.Component {
                 onChange={selectedOption =>
                   this.onSelectChange("industryCls", selectedOption)
                 }
-                options={industryClassification}
+                options={OrgFilters.industryClassification}
               />
             )}
 
@@ -450,15 +404,15 @@ class AppliedOrgFiltersList extends React.Component {
               placeholder="Select Framework Tag"
               value={frameworkTag}
               onChange={this.onFrameworkTagChange}
-              options={frameworkTagList}
+              options={OrgFilters.frameworkTagList}
             />
 
             {frameworkTag &&
-              frameworkTag.label === frameworkTagList[0].label && (
-                <h5>{frameworkLabels[frameworkTag.label].level3}</h5>
+              frameworkTag.label === OrgFilters.frameworkTagList[0].label && (
+                <h5>{OrgFilters.frameworkLabels[frameworkTag.label].level3}</h5>
               )}
             {frameworkTag &&
-              frameworkTag.label === frameworkTagList[0].label && (
+              frameworkTag.label === OrgFilters.frameworkTagList[0].label && (
                 <ReactSelect
                   name="level3"
                   className="mb-3"
@@ -471,9 +425,9 @@ class AppliedOrgFiltersList extends React.Component {
                 />
               )}
 
-            {frameworkTag && frameworkLabels[frameworkTag.label].level2 && (
+            {frameworkTag && OrgFilters.frameworkLabels[frameworkTag.label].level2 && (
               <Fragment>
-                <h5>{frameworkLabels[frameworkTag.label].level2}</h5>
+                <h5>{OrgFilters.frameworkLabels[frameworkTag.label].level2}</h5>
                 <ReactSelect
                   name="level2"
                   className="mb-3"
@@ -486,9 +440,9 @@ class AppliedOrgFiltersList extends React.Component {
                 />
               </Fragment>
             )}
-            {frameworkTag && frameworkLabels[frameworkTag.label].level1 && (
+            {frameworkTag && OrgFilters.frameworkLabels[frameworkTag.label].level1 && (
               <Fragment>
-                <h5>{frameworkLabels[frameworkTag.label].level1}</h5>
+                <h5>{OrgFilters.frameworkLabels[frameworkTag.label].level1}</h5>
                 <ReactSelect
                   name="level1"
                   className="mb-3"
@@ -595,30 +549,7 @@ class AppliedOrgFiltersList extends React.Component {
   clearAppliedFilters = () => {
     this.props.resetFilters();
     this.setState(
-      {
-        pageNo: 0,
-        pageSize: 10,
-        editedBy: [],
-        createdBy: [],
-        industryCls: "",
-        subIndustryCls: "",
-        frameworkTag: "",
-        level1: "",
-        level2: "",
-        level3: "",
-        sectorLevel: [],
-        tagStatus: [],
-        priority: "",
-        revenue: { min: "", max: "" },
-        assets: { min: "", max: "" },
-        level1List: [],
-        level2List: [],
-        level3List: [],
-        city: "",
-        county: "",
-        state: "",
-        country: ""
-      },
+      Object.assign({}, OrgFilters.defaultFilters),
       () => this.props.setAppliedFilters(null, { pageNo: 0, pageSize: 10 })
     );
   };
