@@ -127,7 +127,7 @@ class SideBar extends React.Component {
           </li>
           <li className="list-group-item">
             <a
-              href="javascript:;"
+              href="javascript:void(0);"
               className={activeNav === `${type}-details` ? "active" : ""}
               onClick={() => {
                 this.changeActiveNav(`${this.props.type}-details`);

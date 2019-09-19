@@ -10,7 +10,7 @@ import { PopupModal } from "../ui/popupModal";
 import { toast } from "react-toastify";
 
 const Header = props => {
-  const { session, history } = props;
+  const { session } = props;
   let userInfo = session && session.user ? session.user : {};
   return (
     <Fragment>
@@ -27,22 +27,22 @@ const Header = props => {
           <div className="navbar-nav-scroll">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item mx-4">
-                <a href="javascript:;" className="nav-link">
+                <a href="javascript:void(0);" className="nav-link">
                   Explore<span className="sr-only">(current)</span>
                 </a>
               </li>
               <li className="nav-item mx-4">
-                <a href="javascript:;" className="nav-link">
+                <a href="javascript:void(0);" className="nav-link">
                   Inspirations
                 </a>
               </li>
               <li className="nav-item mx-4">
-                <a href="javascript:;" className="nav-link">
+                <a href="javascript:void(0);" className="nav-link">
                   Raves &amp; Rants
                 </a>
               </li>
               <li className="nav-item mx-4">
-                <a href="javascript:;" className="nav-link">
+                <a href="javascript:void(0);" className="nav-link">
                   Expert Spotlight
                 </a>
               </li>
@@ -52,7 +52,7 @@ const Header = props => {
             <ul className="navbar-nav">
               <li className="nav-item dropdown">
                 <a
-                  href="#"
+                  href="javascript:void(0);"
                   id="navbarDropdownMenuLink"
                   data-toggle="dropdown"
                   aria-haspopup="true"
@@ -134,7 +134,7 @@ const Header = props => {
                     )}
                   />
                   <a
-                    href="javascript:;"
+                    href="javascript:void(0);"
                     className="dropdown-item"
                     onClick={() => handleLogout (props)}
                   >

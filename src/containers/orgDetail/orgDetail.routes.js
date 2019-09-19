@@ -8,13 +8,11 @@ import ViewHistory from "./viewHistory";
 import DataSets from "./dataSets";
 import SpiTags from "./spiTag";
 import SdgTags from "./sdgTag";
-import NewPage from "./newPage";
 import RegionsServed from "./regionsServed";
 import Resources from "./resources";
 import Programs from "./programs";
 import Notes from "./notes";
 import AddProgram from "./programs/addProgram";
-import OrgChart from "../orgChart";
 import AddChildOrganisation from "./childOrganization";
 
 import ProgramDetailRoutes from "../programDetail/programDetail.routes";
