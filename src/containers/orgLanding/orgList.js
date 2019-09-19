@@ -130,19 +130,21 @@ class OrgList extends React.Component {
   }
 
   componentDidMount() {
-    const { pageNo, pageSize } = this.state;
-    const { appliedFilterList, filters } = this.props;
+    //const { pageNo, pageSize } = this.state;
+    //const { appliedFilterList, filters } = this.props;
     this.props.startLoaderAction();
-    this.props.fetchOrganisationsList({
-      pageNo,
-      pageSize: 10,
-      ...filters,
-      ...(appliedFilterList && modifiyFilterList(appliedFilterList))
-    });
+    // Reset the filters during org list load to remove the old state issues.
+    this.resetAllFilters();
+    //this.props.fetchOrganisationsList({
+    //  pageNo,
+    //  pageSize: 10,
+    //  ...filters,
+    //  ...(appliedFilterList && modifiyFilterList(appliedFilterList))
+    //});
   }
 
   componentWillUnmount() {
-    this.resetAllFilters();
+    //this.resetAllFilters();
   }
 
   componentDidUpdate(prevProps) {

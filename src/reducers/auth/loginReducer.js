@@ -8,7 +8,7 @@ import {
   SET_REFRESH_TOKEN_SUCCESS,
   REFRESHING_TOKEN
 } from "../../constants/dispatch";
-import { updateObject, addToLocalStorageObject } from "../../util/util";
+import { addToLocalStorageObject } from "../../util/util";
 import AuthUser from "./userProfile";
 
 const initialState = {

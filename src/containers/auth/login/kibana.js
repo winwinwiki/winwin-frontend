@@ -12,6 +12,7 @@ import {
 } from "../../../actions/common/loaderActions";
 import Header from "../../../containers/header/index";
 import UserProfile from "../../userManagement/userProfile";
+import { REACT_APP_KIBANA_DASHBOARD_URL } from "../../../buildConfig/apiConfig";
 
 class KibanaLanding extends React.Component {
   render() {
@@ -28,15 +29,9 @@ class KibanaLanding extends React.Component {
             {location && location.pathname.startsWith("/user-management") ? (
               <UserProfile />
             ) : (
-              <iframe
-                title={
-                  userInfo && userInfo.userDisplayName
-                    ? `${userInfo.userDisplayName}'s Dashboard`
-                    : "Custom Kibana Dashboard"
-                }
-                src="https://search-winwindev-3bunivyjknlg772kykxnenk4qi.us-west-2.es.amazonaws.com/_plugin/kibana/app/kibana#/dashboard/d37ff9f0-b44a-11e9-b1d4-4bccfe0423b1?embed=true&_g=()"
-                style={{ border: 0, width: "100%", height: "100%" }}
-              />
+                <div>
+                  <p className="align-middle text-center mt-3 lead">You are not authorized to access the admin console. Please login to <mark><a href={REACT_APP_KIBANA_DASHBOARD_URL}>WinWin Wiki</a></mark>.</p>
+                </div>
             )}
           </React.Fragment>
         </main>
