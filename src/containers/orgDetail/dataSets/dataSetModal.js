@@ -225,7 +225,7 @@ class DataSetModal extends Component {
           </div>
         </ModalHeader>
         <ModalBody>
-          <form>
+          <form onSubmit={e => { e.preventDefault(); }}>
             <ul className="list-group list-group-flush">
               <li className="list-group-item px-0">
                 <div className="row">
