@@ -22,7 +22,7 @@ const Auth = props => {
                 problems
               </h1>
               <p className="mt-5">
-                Some supporting text would be good to have here.
+                Changing the way the world finds opportunities and solves problems by connecting innovators with the information they need to see what others can't imagine.
               </p>
             </div>
           </div>
