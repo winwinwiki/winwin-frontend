@@ -8543,6 +8543,8 @@ textarea {
     font-size: 15px;
     overflow: hidden;
     text-overflow: ellipsis; }
+  .ReactTable .orgName {
+    text-align: inherit; }
 
 .ReactTable.-striped .rt-tr.-odd {
   background: #fff; }

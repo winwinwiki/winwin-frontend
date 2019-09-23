@@ -288,7 +288,7 @@ class OrgList extends React.Component {
       Cell: row => (
         <React.Fragment>
           <Link
-            className="centerText d-inline-block ml-1"
+            className="centerText orgName d-inline-block ml-1"
             style={{
               width: "100%",
               overflow: "hidden",
