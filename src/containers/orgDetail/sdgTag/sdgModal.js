@@ -115,7 +115,7 @@ class SDGModal extends React.Component {
                       <React.Fragment key={idx1}>
                         <div className="col-sm-8">
                           <p className="border-bottom pb-3">
-                            {goalObj.goalCode + " " + goalObj.goalName}
+                            {goalObj.goalCode + ". " + goalObj.goalName}
                           </p>
                           <div className="item-list mb-4">
                             {goalObj.subGoals.map((subGoalObj, idx2) => (
