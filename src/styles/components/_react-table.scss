@@ -539,6 +539,9 @@ $border_left_color_2: #f7f7f7;
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  .orgName {
+    text-align: inherit;
+  }
 }
 .ReactTable.-striped {
   .rt-tr.-odd {
