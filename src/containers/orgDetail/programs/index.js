@@ -98,28 +98,41 @@ class ProgramList extends React.Component {
     this.props.filterProgramsList(this.props.orgId, apiObj);
   }, 500);
 
+programSortFunction = (a, b) => {
+    if (a.name.toLowerCase() > b.name.toLowerCase()) {
+        return 1;
+    }
+    else if (a.name.toLowerCase() < b.name.toLowerCase()) {
+        return -1;
+    }
+    else {
+        return 0;
+    }
+}
+
   renderProgramList = (programList, searchText) => {
     let filteredProgramList = [];
     if (programList.response) {
       const { response } = programList;
       filteredProgramList = response;
+      filteredProgramList.sort(this.programSortFunction);
     }
-    return filteredProgramList.length ? (
-      filteredProgramList.map(program => (
-        <Link
-          key={program.id}
-          to={`${this.props.match.url}/${program.id}`}
-          className="list-group-item list-group-item-action"
-        >
-          {program.name}
-        </Link>
-      ))
-    ) : (
-      <div className="disabled-text list-group-item list-group-item-action">
-        {" "}
-        No programs were found
+      return filteredProgramList.length ? (
+          filteredProgramList.map(program => (
+              <Link
+                  key={program.id}
+                  to={`${this.props.match.url}/${program.id}`}
+                  className="list-group-item list-group-item-action"
+              >
+                  {program.name}
+              </Link>
+          ))
+      ) : (
+              <div className="disabled-text list-group-item list-group-item-action">
+                  {" "}
+                  No programs were found
       </div>
-    );
+          );
   };
 }
 
