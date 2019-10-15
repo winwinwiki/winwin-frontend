@@ -1,5 +1,6 @@
 .org-details-container {
   background-color: $org-detail-bg;
+  min-height:600px;
 
   .list-group-item {
     &:hover {
