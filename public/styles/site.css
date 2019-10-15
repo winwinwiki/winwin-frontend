@@ -8748,7 +8748,8 @@ h5.modal-title {
   margin: 10px 0; }
 
 .org-details-container {
-  background-color: #F2F2F2; }
+  background-color: #F2F2F2;
+  min-height: 600px; }
   .org-details-container .list-group-item:hover .action-icons {
     display: block; }
 
