@@ -1,4 +1,5 @@
 import React from "react";
+import "./index.css";
 
 const Auth = props => {
   return (
@@ -18,11 +19,14 @@ const Auth = props => {
             </div>
             <div className="login-text">
               <h1>
-                Changing the way the world finds opportunities and solves
-                problems
+                Changing the way the world finds opportunities and solves problems
               </h1>
               <p className="mt-5">
-                Changing the way the world finds opportunities and solves problems by connecting innovators with the information they need to see what others can't imagine.
+                <ul>
+                  <li><a href="http://wiki.winwin.care/" target="_blank" rel="noopener noreferrer">Explore</a> the Wiki Dashboard</li>
+                  <li><a href="mailto:beth.roberts@winwin.care" target="_blank" rel="noopener noreferrer">Request</a> permission to edit wiki</li>
+                  <li><a href="http://www.winwin.care" target="_blank" rel="noopener noreferrer">Learn</a> more about WinWin</li>
+                </ul>
               </p>
             </div>
           </div>

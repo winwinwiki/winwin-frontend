@@ -131,7 +131,7 @@ class OrgDetailPage extends React.Component {
                       disabled={readOnly}
                     />
                   </div>
-                  <div className="section-title border-bottom pb-3 mb-3">
+                  <div className="section-title border-bottom mb-3">
                     Sector Detail
                   </div>
                   <div className="form-group">
