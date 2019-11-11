@@ -717,7 +717,12 @@ class OrgList extends React.Component {
         return x;
       });
     }
-    this.props.onSaveOrgBasicInfo(selectedOrgList);
+    if (selectedOrgList && selectedOrgList.length) {
+      this.props.onSaveOrgBasicInfo(selectedOrgList);
+    }
+    else{
+      alert(`You need to select atleast one organization!`);
+    }
   };
 
   filterOrgList = filter => {
