@@ -722,7 +722,7 @@ class OrgList extends React.Component {
     }
     else{
       setTimeout(()=> {
-        alert(`You need to select atleast one organization!`);
+        alert(` You need to select atleast one organization!`);
       }, 200);
       
     }
