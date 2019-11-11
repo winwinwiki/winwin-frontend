@@ -721,7 +721,10 @@ class OrgList extends React.Component {
       this.props.onSaveOrgBasicInfo(selectedOrgList);
     }
     else{
-      alert(`You need to select atleast one organization!`);
+      setTimeout(()=> {
+        alert(`You need to select atleast one organization!`);
+      }, 200);
+      
     }
   };
 
