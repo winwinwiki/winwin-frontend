@@ -26,10 +26,19 @@ import AutoSuggestComponent from "../common/autoCompleteComponent";
 import { orgDetailsSelector } from "../../selectors/orgDetailsSelector";
 import Can from "../Can";
 class OrgDetailPage extends React.Component {
-  state = {
+  constructor(props) {
+    super(props);
+  this.state = {
     orgDetail: null,
-    isEditable: false
+    isEditable: false,
+    formError: {
+      revenue: null,
+      assets: null
+    }
   };
+  this.validateForm = this.validateForm.bind(this);
+  
+}
 
   componentDidMount() {
     const {
@@ -59,17 +68,8 @@ class OrgDetailPage extends React.Component {
     }
   }
 
-  handleEnter(event) {
-    if (event.keyCode === 13) {
-      const form = event.target.form;
-      const index = Array.prototype.indexOf.call(form, event.target);
-      form.elements[index + 1].focus();
-      event.preventDefault();
-    }
-  }
-
   render() {
-    const { isEditable, orgDetail } = this.state;
+    const { isEditable, orgDetail, formError } = this.state;
     const { session, industryCodes } = this.props;
     if (!orgDetail) {
       return null;
@@ -107,7 +107,6 @@ class OrgDetailPage extends React.Component {
                   <div className="form-group">
                     <label htmlFor="category">Organization Name</label>
                     <input
-                      onKeyDown={this.handleEnter}
                       type="text"
                       className="form-control"
                       name="name"
@@ -121,7 +120,6 @@ class OrgDetailPage extends React.Component {
                   <div className="form-group">
                     <label htmlFor="tagStatus">Tag Status</label>
                     <Dropdown
-                      onKeyDown={this.handleEnter}
                       placeholder="Select Tag Status"
                       selectedItem={orgDetail.tagStatus}
                       name="tagStatus"
@@ -138,7 +136,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">Sector</label>
 
                     <Dropdown
-                      onKeyDown={this.handleEnter}
                       placeholder="Select Sector"
                       selectedItem={orgDetail.sector}
                       name="sector"
@@ -152,7 +149,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">Sector Level</label>
 
                     <Dropdown
-                      onKeyDown={this.handleEnter}
                       placeholder="Select Sector Level"
                       className="form-control"
                       selectedItem={
@@ -175,7 +171,6 @@ class OrgDetailPage extends React.Component {
                   <div className="form-group">
                     <label htmlFor="sectorLevelName">Sector Level Name</label>
                     <input
-                      onKeyDown={this.handleEnter}
                       type="text"
                       className="form-control"
                       name="sectorLevelName"
@@ -259,31 +254,41 @@ class OrgDetailPage extends React.Component {
                   <div className="form-group">
                     <label htmlFor="category">Revenue ($)</label>
                     <input
-                      onKeyDown={this.handleEnter}
                       type="number"
                       className="form-control"
                       id="category"
                       name="revenue"
                       onChange={this.onChange}
+                      onBlur={this.validateField}
                       readOnly={readOnly}
                       placeholder="Enter Revenue Amount eg. 100.00"
                       value={orgDetail.revenue || ""}
                     />
+                    {formError.revenue && (
+                    <small className="form-element-hint text-danger">
+                      {formError.revenue}
+                    </small>
+                  )}
                   </div>
 
                   <div className="form-group">
                     <label htmlFor="category">Assets ($)</label>
                     <input
-                      onKeyDown={this.handleEnter}
                       type="number"
                       className="form-control"
                       id="category"
                       name="assets"
                       onChange={this.onChange}
+                      onBlur={this.validateField}
                       readOnly={readOnly}
                       placeholder="Enter Assets  eg. 100.00"
                       value={orgDetail.assets || ""}
                     />
+                    {formError.assets && (
+                    <small className="form-element-hint text-danger">
+                      {formError.assets}
+                    </small>
+                  )}
                   </div>
                   <div className="section-title border-bottom pb-3 mb-3">
                     Headquarters
@@ -292,7 +297,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">Street Address</label>
                     <input
                       type="text"
-                      onKeyDown={this.handleEnter}
                       className="form-control"
                       name="street"
                       id="street"
@@ -306,7 +310,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">City</label>
                     <input
                       type="text"
-                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="category"
                       name="city"
@@ -320,7 +323,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="description">County</label>
                     <input
                       type="text"
-                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="category"
                       name="county"
@@ -334,7 +336,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="description">State</label>
                     <input
                       type="text"
-                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="category"
                       name="state"
@@ -348,7 +349,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="description">Zip Code</label>
                     <input
                       type="text"
-                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="category"
                       name="zip"
@@ -362,7 +362,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="description">Country</label>
                     <input
                       type="text"
-                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="category"
                       name="country"
@@ -379,7 +378,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="description">Website</label>
                     <input
                       type="text"
-                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="category"
                       name="websiteUrl"
@@ -393,7 +391,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="facebook">Facebook</label>
                     <input
                       type="text"
-                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="facebook"
                       name="facebookUrl"
@@ -407,7 +404,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="linkedIn">LinkedIn</label>
                     <input
                       type="text"
-                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="linkedIn"
                       name="linkedinUrl"
@@ -421,7 +417,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="twitter">Twitter</label>
                     <input
                       type="text"
-                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="twitter"
                       name="twitterUrl"
@@ -435,7 +430,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="instagram">Instagram</label>
                     <input
                       type="text"
-                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="twitter"
                       name="instagramUrl"
@@ -449,7 +443,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="description">Contact Info</label>
                     <input
                       type="text"
-                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="category"
                       name="contactInfo"
@@ -466,7 +459,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">Mission Statement</label>
                     <input
                       type="text"
-                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="missionStatement"
                       name="missionStatement"
@@ -480,7 +472,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">Values</label>
                     <input
                       type="text"
-                      onKeyDown={this.handleEnter}
                       className="form-control"
                       name="values"
                       id="values"
@@ -494,7 +485,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">Purpose</label>
                     <input
                       type="text"
-                      onKeyDown={this.handleEnter}
                       className="form-control"
                       name="purpose"
                       id="purpose"
@@ -508,7 +498,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">Self-Interest</label>
                     <input
                       type="text"
-                      onKeyDown={this.handleEnter}
                       className="form-control"
                       name="selfInterest"
                       id="selfInterest"
@@ -522,7 +511,6 @@ class OrgDetailPage extends React.Component {
                     <label htmlFor="category">Population Served</label>
                     <input
                       type="text"
-                      onKeyDown={this.handleEnter}
                       className="form-control"
                       id="populationServed"
                       name="populationServed"
@@ -549,12 +537,14 @@ class OrgDetailPage extends React.Component {
                   {isEditable ? (
                     <div className="row justify-content-center footer-actions active">
                       <button
+                        type="button"
                         className="btn"
                         onClick={() => this.onCancelBasicInfo()}
                       >
                         Cancel
                       </button>
                       <button
+                        type="submit"
                         className="btn btn-primary"
                         onClick={this.saveBasicInfo}
                       >
@@ -573,6 +563,30 @@ class OrgDetailPage extends React.Component {
     );
   }
 
+  validateField = e => {
+    this.validateForm();
+  };
+
+  validateForm = () => {
+    const formError = {};
+    let allClear = true;
+
+    // Validate revenue
+    if (this.state.orgDetail.revenue && 
+      this.state.orgDetail.revenue.toString().split(".")[0].length > 17) {
+        formError['revenue'] = "Revenue should be less than 100,000 Trillions";
+        allClear = false;
+    }
+    // Validate assets
+    if (this.state.orgDetail.assets && 
+      this.state.orgDetail.assets.toString().split(".")[0].length > 17) {
+        formError["assets"] = "Assets should be less than 100,000 Trillions";
+        allClear = false;
+    }
+    this.setState({ formError });
+    return allClear;
+  };
+
   onSuggestChange = (field, { newValue }, e) => {
     this.setState({
       orgDetail: {
@@ -589,12 +603,19 @@ class OrgDetailPage extends React.Component {
   };
 
   onChange = e => {
-    let orgDetailCopy = JSON.parse(JSON.stringify(this.state.orgDetail));
-    const { target: { name, value } = {} } = e;
+    const name = e.target.name;
+    const value = e.target.value;
+    let orgDetailCopy = {...this.state.orgDetail};
     if (addressFields.includes(name.toLowerCase())) {
       orgDetailCopy.address[name] = value;
-    } else orgDetailCopy[name] = value;
-    this.setState({ orgDetail: orgDetailCopy });
+    } 
+    else { 
+      orgDetailCopy[name] = value;
+    }
+    this.setState({ 
+      orgDetail: orgDetailCopy 
+    }, function() {
+    });
   };
 
   onDropdownChange = (field, value) => {
@@ -612,9 +633,17 @@ class OrgDetailPage extends React.Component {
 
   saveBasicInfo = e => {
     e.preventDefault();
+    const { revenue, assets } = this.state.orgDetail;
+
+    if(!this.validateForm()){
+      alert('Please fix the error in the form before submission');
+      return;
+    }
+   
     this.setState({
       isEditable: false
     });
+
     let apiObj = this.state.orgDetail;
     apiObj = {
       ...apiObj,
