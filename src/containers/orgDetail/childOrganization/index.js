@@ -6,12 +6,16 @@ import { push } from 'connected-react-router';
 import { onAddOrgChartChild } from "../../../actions/orgChart/onAddChild";
 import { fetchOrgHierarchy } from "../../../actions/orgDetail/orgChartAction";
 class addOrganization extends Component {
-  state = {
-    formError: {
-      childOrgName: "",
-      childOrgType: ""
-    }
-  };
+  constructor(props){
+    super(props);
+    //this.onSave = this.onSave.bind(this);
+    this.state = {
+      formError: {
+        childOrgName: "",
+        childOrgType: ""
+      }
+    };
+  }
 
   componentDidMount() {
     this.props.fetchOrgHierarchy(this.props.match.params.id);
@@ -21,8 +25,9 @@ class addOrganization extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  onSave = e => {
-    e.preventDefault();
+  onSave = event => {
+    event.preventDefault();
+    event.stopPropagation();
     const { childOrgName, childOrgType, formError } = this.state;
     const {
       location: { state: { parentId } = {} } = {},
@@ -43,7 +48,7 @@ class addOrganization extends Component {
     };
     this.props.onAddOrgChartChild(apiObj);
     this.props.changePage(this.props.orgId);
-  };
+  }
 
   validateForm = e => {
     this.validateAddForm(e.target.name, e.target.value);
@@ -68,7 +73,7 @@ class addOrganization extends Component {
       <section className="dashboard-content p-0 py-3 org-details-container">
         <div className="col-md-18 m-auto card">
           <div className="col-md-18 m-auto d-flex flex-column py-3">
-            <form>
+            <form onSubmit={this.onSave}>
               <div className="row">
                 <div className="col">
                   <div className="form-group">
@@ -93,7 +98,9 @@ class addOrganization extends Component {
                 </div>
               </div>
               <div className="row justify-content-center footer-actions active">
+               {/* Button type is important in <form>. Reference - https://dzello.com/blog/2017/02/19/demystifying-enter-key-submission-for-react-forms/ */}
                 <button
+                  type="button"                
                   className="btn"
                   onClick={e => {
                     e.preventDefault();
@@ -102,7 +109,7 @@ class addOrganization extends Component {
                 >
                   Go Back
                 </button>
-                <button className="btn btn-primary" onClick={this.onSave}>
+                <button type="submit" className="btn btn-primary">
                   Save
                 </button>
               </div>
