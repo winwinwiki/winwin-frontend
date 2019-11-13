@@ -317,7 +317,7 @@ class OrgList extends React.Component {
             //value={this.state.nameSearch || ""}
             defaultValue={this.state.nameSearch || ""}
             onKeyPress={event => {
-              if (event.keyCode === 13 || event.which === 13) {
+              if (this.nameSearchInput.current.value != "" && (event.keyCode === 13 || event.which === 13)) {
                 this.handleFilteredChange(event.target.value);
               }
             }}
