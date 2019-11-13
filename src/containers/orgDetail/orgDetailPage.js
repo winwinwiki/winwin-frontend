@@ -574,13 +574,13 @@ class OrgDetailPage extends React.Component {
     // Validate revenue
     if (this.state.orgDetail.revenue && 
       this.state.orgDetail.revenue.toString().split(".")[0].length > 17) {
-        formError['revenue'] = "Revenue should be less than 100,000 Trillions";
+        formError['revenue'] = "Revenue should be less than 18 digits";
         allClear = false;
     }
     // Validate assets
     if (this.state.orgDetail.assets && 
       this.state.orgDetail.assets.toString().split(".")[0].length > 17) {
-        formError["assets"] = "Assets should be less than 100,000 Trillions";
+        formError["assets"] = "Assets should be less than 18 digits";
         allClear = false;
     }
     this.setState({ formError });
