@@ -247,7 +247,7 @@ class OrgDetailPage extends React.Component {
                       />
                     )}
                   </div>
-                  <div className="section-title border-bottom pb-3 mb-3">
+                  <div className="section-title border-bottom mb-3">
                     Financial
                   </div>
 
@@ -290,7 +290,7 @@ class OrgDetailPage extends React.Component {
                     </small>
                   )}
                   </div>
-                  <div className="section-title border-bottom pb-3 mb-3">
+                  <div className="section-title border-bottom mb-3">
                     Headquarters
                   </div>
                   <div className="form-group">
@@ -371,7 +371,7 @@ class OrgDetailPage extends React.Component {
                       value={orgDetail.address.country || ""}
                     />
                   </div>
-                  <div className="section-title border-bottom pb-3 mb-3">
+                  <div className="section-title border-bottom mb-3">
                     Web Links
                   </div>
                   <div className="form-group">
@@ -452,7 +452,7 @@ class OrgDetailPage extends React.Component {
                       value={orgDetail.contactInfo || ""}
                     />
                   </div>
-                  <div className="section-title border-bottom pb-3 mb-3">
+                  <div className="section-title border-bottom mb-3">
                     Other
                   </div>
                   <div className="form-group">
