@@ -27,8 +27,12 @@ export function modifiyFilterList(list) {
 
   if (list["nameSearch"]) desiredList["nameSearch"] = list["nameSearch"];
 
-  if (list["sectors"] && list["sectors"].length)
+  if (list["sectors"] && list["sectors"].length) {
     desiredList["sectors"] = list["sectors"];
+    if (desiredList["sectors"].indexOf("All") != -1) {
+      desiredList["sectors"].splice(desiredList["sectors"].indexOf("All"), 1);
+    }
+  }
 
   if (list["priority"]) desiredList["priority"] = list["priority"];
 
