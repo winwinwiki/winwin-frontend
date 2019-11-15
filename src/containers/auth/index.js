@@ -21,13 +21,11 @@ const Auth = props => {
               <h1>
                 Changing the way the world finds opportunities and solves problems
               </h1>
-              <p className="mt-5">
-                <ul>
-                  <li><a className="login-page" href="http://wiki.winwin.care/" target="_blank" rel="noopener noreferrer">Explore</a> the Wiki Dashboard</li>
-                  <li><a className="login-page" href="mailto:beth.roberts@winwin.care" target="_blank" rel="noopener noreferrer">Request</a> permission to edit wiki</li>
-                  <li><a className="login-page" href="http://www.winwin.care" target="_blank" rel="noopener noreferrer">Learn</a> more about WinWin</li>
-                </ul>
-              </p>
+              <ul className="mt-5 pl-4">
+                <li><a className="login-page" href="http://wiki.winwin.care/" target="_blank" rel="noopener noreferrer">Explore</a> the Wiki Dashboard</li>
+                <li><a className="login-page" href="mailto:beth.roberts@winwin.care" target="_blank" rel="noopener noreferrer">Request</a> permission to edit wiki</li>
+                <li><a className="login-page" href="http://www.winwin.care" target="_blank" rel="noopener noreferrer">Learn</a> more about WinWin</li>
+              </ul>
             </div>
           </div>
         </main>

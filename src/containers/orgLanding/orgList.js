@@ -53,7 +53,7 @@ const tags = {
   "Ready For Tagging": "readyfortagging"
 };
 
-const buttonList = [
+const sectorButtonList = [
   { id: "all", name: "All" },
   { id: "public", name: "Public" },
   { id: "private", name: "Private" },
@@ -440,11 +440,11 @@ class OrgList extends React.Component {
         <NotificationToaster />
         <OrgFilters
           activeButton={activeButton}
-          buttonList={buttonList}
+          buttonList={sectorButtonList}
           searchText={searchText}
           getSearchedText={this.getSearchedText}
           getFilteredListOfOrg={this.getFilteredListOfOrg}
-          filterOrgList={this.filterOrgList}
+          onSectorChange={this.onSectorChange}
           resetFilters={this.resetFilters}
           resetPagination={this.resetPagination}
           userRole={userRole}
@@ -726,32 +726,26 @@ class OrgList extends React.Component {
     }
   };
 
-  filterOrgList = filter => {
-    const { activeButton, pageNo, pageSize } = this.state;
+  onSectorChange = newSector => {
+    const { pageSize } = this.state;
     const { appliedFilterList, filters } = this.props;
-    let newSectors = activeButton.slice();
-    if (filter["sector"] === "All") {
-      newSectors = ["All"];
-    } else {
-      if (newSectors.indexOf("All") > -1)
-        newSectors.splice(newSectors.indexOf("All"), 1);
-      newSectors.indexOf(filter["sector"]) > -1
-        ? newSectors.splice(newSectors.indexOf(filter["sector"]), 1)
-        : (newSectors[0] = filter["sector"]);
-    }
-    if (newSectors.length === 0) newSectors.push("All");
+    
+    if (newSector == undefined || newSector == null || !newSector)
+      newSector = "All";
+
     this.setState({
-      activeButton: newSectors,
+      activeButton: [newSector],
       page: 0
     });
-    const apiObj = newSectors.find(x => x === "All") ? [] : newSectors;
-    this.props.fetchOrganisationsList({
-      pageSize,
+
+    const apiObj = {
       ...filters,
-      ...(appliedFilterList && modifiyFilterList(appliedFilterList)),
-      sectors: apiObj,
-      pageNo: 0
-    });
+      ...(appliedFilterList ? appliedFilterList : filtersObj),
+      pageNo: 0,
+      pageSize,
+      sectors: [newSector],
+    };
+    this.props.setAppliedFilters(apiObj, modifiyFilterList(apiObj));
   };
 }
 

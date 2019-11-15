@@ -18,7 +18,6 @@ class OrgFilters extends React.Component {
     };
     this.changePage = this.changePage.bind(this);
     this.toggleAppliedFilterModal = this.toggleAppliedFilterModal.bind(this);
-    this.setActiveButton = this.setActiveButton.bind(this);
     this.setWrapperRef = this.setWrapperRef.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
   }
@@ -78,7 +77,7 @@ class OrgFilters extends React.Component {
           <ButtonGroup
             activeButton={activeButton}
             buttonList={buttonList}
-            onChange={this.setActiveButton}
+            onChange={this.props.onSectorChange}
           />
         </div>
 
@@ -146,10 +145,6 @@ class OrgFilters extends React.Component {
   toggleAppliedFilterModal() {
     const { isFilterModalVisible } = this.state;
     this.setState({ isFilterModalVisible: !isFilterModalVisible });
-  }
-
-  setActiveButton(field) {
-    this.props.filterOrgList({ sector: field });
   }
 }
 
