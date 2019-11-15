@@ -427,16 +427,20 @@ class AppliedOrgFilters extends React.Component {
         }
       }
     });
-    if (!filterList.pageNo && !filterList.pageSize) {
+    if (!filterList.pageNo || !filterList.pageSize) {
       filterList.pageNo = 0;
       filterList.pageSize = 10;
     }
-    this.props.setAppliedFilters(
-      { ...this.props.filters, ...filterList, pageNo: 0 },
-      modifiyFilterList({ ...this.props.filters, ...filterList, pageNo: 0 })
-    );
+
+    const apiObj = {
+      ...this.props.filters,
+      ...filterList,
+      pageNo: 0
+    };
+    this.props.setAppliedFilters(apiObj, modifiyFilterList(apiObj));
   }
 }
+
 const mapStateToProps = state => ({
   appliedFilterList: state.orgList.appliedFilterList,
   filters: state.orgList.filters

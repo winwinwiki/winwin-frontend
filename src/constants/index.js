@@ -30,3 +30,5 @@ export const isUserProfile = true;
 export const USER = { isLoggedInUser: "isLoggedInUser", isUser: "isUser" };
 
 export const notificationPopupTimeout = 4000;
+
+export const APPLIED_ORG_FILTER_LSO_NAME = '_appliedFilter';

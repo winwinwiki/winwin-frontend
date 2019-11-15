@@ -64,13 +64,13 @@ export function modifiyFilterList(list) {
   if (
     list["pageNo"] ||
     list["pageSize"] ||
-    list["created_by"] ||
-    list["updated_by"]
+    list["createdBy"] ||
+    list["editedBy"]
   ) {
     desiredList["pageNo"] = list["pageNo"];
     desiredList["pageSize"] = list["pageSize"];
-    desiredList["created_by"] = list["created_by"];
-    desiredList["updated_by"] = list["updated_by"];
+    desiredList["createdBy"] = list["createdBy"];
+    desiredList["editedBy"] = list["editedBy"];
   }
 
   if (list[CITY]) desiredList[CITY] = list[CITY];
@@ -118,6 +118,17 @@ export const compareStrings = (a, b) => {
       )
   );
 };
+
+export const filterComparator = (val1, val2, key) => {
+  if (key === 'pageNo' ||
+    key === 'pageSize' ||
+    key === 'componentId' ||
+    key === 'dimensionId' ||
+    key === 'indicatorId' ||
+    key === 'revenueMin') {
+    return true;
+  }
+}
 
 export function titleCase(str) {
   return str
@@ -287,4 +298,15 @@ export var addToLocalStorageObject = function(name, key, value) {
 
   // Save back to localStorage
   localStorage.setItem(name, JSON.stringify(existing));
+};
+
+export const getFromLocalStorage = function (name, key) {
+  var existing = localStorage.getItem(name);
+  existing = existing ? JSON.parse(existing) : {};
+  if (existing) {
+    return existing[key];
+  }
+  else {
+    return undefined;
+  }
 };

@@ -1,8 +1,5 @@
 import {REACT_APP_API_SERVER} from "../buildConfig/apiConfig";
-//Temp
-const url = "https://demo8782246.mockable.io";
-const url1 = "https://demo4705881.mockable.io";
-
+import {getFromLocalStorage} from '../util/util';
 const serverUrl = REACT_APP_API_SERVER;
 
 class CommonUtil {
@@ -28,9 +25,7 @@ class CommonUtil {
   }
 
   static getToken(contentType) {
-    let token = localStorage.getItem("_auth")
-      ? localStorage.getItem("_auth").accessToken
-      : null;
+    let token = getFromLocalStorage("_auth", 'accessToken');
     return contentType
       ? {
           Authorization: "Bearer " + token
@@ -42,9 +37,7 @@ class CommonUtil {
   }
 
   static getAuthId(contentType) {
-    let authId = localStorage.getItem("_auth")
-      ? JSON.parse(localStorage.getItem("_auth")).accessToken
-      : null;
+    let authId = getFromLocalStorage("_auth", 'accessToken');
     return contentType
       ? {
           "user-auth-id": authId

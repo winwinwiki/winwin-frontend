@@ -3,14 +3,13 @@ import {
   CHANGEPASSWORD_SUCCESS,
   CHANGEPASSWORD_ERROR
 } from "../../constants/dispatch";
+import{getFromLocalStorage} from '../../util/util';
 import { api } from "../../api/api";
 
 export const onChangePassword = params => {
   return dispatch => {
     dispatch(changePasswordRequest());
-    const accessToken = localStorage.getItem("_auth")
-      ? JSON.parse(localStorage.getItem("_auth")).accessToken
-      : null;
+    const accessToken = getFromLocalStorage("_auth", 'accessToken');
     const userObj = {
       accessToken,
       password: params.oldPassword,
