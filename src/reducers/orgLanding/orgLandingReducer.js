@@ -12,6 +12,12 @@ import {
   SET_FILTERS
 } from "../../constants/dispatch";
 
+import {
+  APPLIED_ORG_FILTER_LSO_NAME
+} from '../../constants';
+
+import { addToLocalStorageObject } from "../../util/util";
+
 const initialState = {
   loading: false,
   data: null,
@@ -69,6 +75,11 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {});
 
     case SET_APPLIED_FILTER:
+
+      // Update local storage with current state of filters
+      let filters = Object.assign({}, action.appliedFilterList);
+      addToLocalStorageObject(APPLIED_ORG_FILTER_LSO_NAME, 'appliedFilters', filters);
+
       return Object.assign({}, state, {
         appliedFilterList: action.appliedFilterList
       });

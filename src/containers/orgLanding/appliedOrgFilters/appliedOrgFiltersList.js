@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import isEqualWith from "lodash/isEqualWith";
 import Checkbox from "../../ui/checkbox";
 import { setAppliedFilters } from "../../../actions/orgLanding/orgLandingAction";
 import ReactSelect from "react-select";
@@ -8,7 +9,8 @@ import "react-input-range/lib/css/index.css";
 import {
   modifiyFilterList,
   getSPIDataByIndicators,
-  getSDGDataBySubGoals
+  getSDGDataBySubGoals,
+  filterComparator
 } from "../../../util/util";
 import { entityList, tagStatusList } from "../../../constants";
 import { fetchUsersList } from "../../../actions/userManagement/userListAction";
@@ -72,7 +74,7 @@ class AppliedOrgFiltersList extends React.Component {
     // console.log('modal open');
     if (
       nextProps.appliedFilterList &&
-      JSON.stringify(nextProps.appliedFilterList) !== JSON.stringify(this.state)
+      !isEqualWith(nextProps.appliedFilterList, this.state, filterComparator)
     ) {
       this.setState(nextProps.appliedFilterList);
     }
@@ -93,6 +95,7 @@ class AppliedOrgFiltersList extends React.Component {
       level3,
       level1List
     } = this.state;
+
     const { isFilterModalVisible, activeOrg, orgDetail } = this.props;
 
     let userList = [];
@@ -136,21 +139,25 @@ class AppliedOrgFiltersList extends React.Component {
     if (
       this.props.customSPIList &&
       frameworkTag.value === OrgFilters.frameworkTagList[0].value
-    )
+    ) {
+
       level3List = this.props.customSPIList.map(value => {
         return { value: value.indicatorId, label: value.indicatorName };
       });
+    }
 
     if (
       this.props.customSDGList &&
       frameworkTag.value === OrgFilters.frameworkTagList[1].value
-    )
+    ) {
+
       level2List = this.props.customSDGList.map(value => {
         return {
           value: value.subGoalCode,
           label: `${value.subGoalCode} ${value.subGoalName}`
         };
       });
+    }
 
     return (
       <form
@@ -533,17 +540,17 @@ class AppliedOrgFiltersList extends React.Component {
   };
 
   addFiltersTag = () => {
-    let filters = modifiyFilterList(this.state);
-    //pagination
-    filters.pageNo = 0;
-    filters.pageSize = 10;
-    this.props.setAppliedFilters(this.state, {
+
+    const { filters } = this.props;
+
+    const apiObj = {
       ...filters,
-      ...this.props.filters,
+      ...this.state,
       pageNo: 0
-    });
+    };
+    this.props.setAppliedFilters(apiObj, modifiyFilterList(apiObj));
+
     this.props.toggleAppliedFilterModal();
-    // this.props.resetPagination();
   };
 
   clearAppliedFilters = () => {

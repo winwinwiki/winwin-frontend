@@ -24,10 +24,15 @@ import { onDeleteOrg } from "../../actions/organization/deleteOrgAction";
 import { Link } from "react-router-dom";
 import { PopupModal } from "../ui/popupModal";
 import Can from "../Can";
-import isEqual from "lodash/isEqual";
+import isEqualWith from "lodash/isEqualWith";
 import findKey from "lodash/findKey";
-import { modifiyFilterList } from "../../util/util";
+import {
+  modifiyFilterList,
+  filterComparator,
+  getFromLocalStorage
+} from "../../util/util";
 import NotificationToaster from "../ui/notificationToaster";
+import { APPLIED_ORG_FILTER_LSO_NAME } from '../../constants';
 
 const setPriorityHigh = "Set Priority High";
 const setPriorityNormal = "Set Priority Normal";
@@ -68,29 +73,29 @@ const tagColor = {
 };
 
 export const filtersObj = {
-  editedBy: [],
+  assets: { min: "", max: "" },
+  city: "",
+  country: "",
+  county: "",
   createdBy: [],
-  industryCls: "",
-  subIndustryCls: "",
+  editedBy: [],
   frameworkTag: "",
-  // nameSearch: "",
+  industryCls: "",
   level1: "",
+  level1List: [],
   level2: "",
+  level2List: [],
   level3: "",
-  sectorLevel: [],
-  tagStatus: [],
+  level3List: [],
+  pageNo: 0,
+  pageSize: 10,
   priority: "",
   revenue: { min: "", max: "" },
-  assets: { min: "", max: "" },
-  level1List: [],
-  level2List: [],
-  level3List: [],
-  city: "",
-  county: "",
+  sectorLevel: [],
   state: "",
-  country: "",
-  pageNo: 0,
-  pageSize: 10
+  subIndustryCls: "",
+  // nameSearch: "",
+  tagStatus: []
 };
 
 const getNoDataProps = props => ({
@@ -130,17 +135,7 @@ class OrgList extends React.Component {
   }
 
   componentDidMount() {
-    //const { pageNo, pageSize } = this.state;
-    //const { appliedFilterList, filters } = this.props;
-    this.props.startLoaderAction();
-    // Reset the filters during org list load to remove the old state issues.
-    this.resetAllFilters();
-    //this.props.fetchOrganisationsList({
-    //  pageNo,
-    //  pageSize: 10,
-    //  ...filters,
-    //  ...(appliedFilterList && modifiyFilterList(appliedFilterList))
-    //});
+    this.applyInitialFilters();
   }
 
   componentWillUnmount() {
@@ -170,6 +165,23 @@ class OrgList extends React.Component {
       this.props.stopLoaderAction();
     }
   }
+
+  applyInitialFilters = () => {
+    this.props.startLoaderAction();
+    const values = getFromLocalStorage(APPLIED_ORG_FILTER_LSO_NAME, 'appliedFilters');
+    const { appliedFilterList, filters } = this.props;
+    const allFilters = {
+      ...filters,
+      ...(appliedFilterList ? appliedFilterList : filtersObj),
+      ...values
+    };
+    if (!allFilters.pageNo || !allFilters.pageSize) {
+      allFilters.pageNo = 0;
+      allFilters.pageSize = 10;
+    }
+    this.props.fetchOrganisationsList(modifiyFilterList(allFilters));
+    this.props.setAppliedFilters(allFilters, modifiyFilterList(allFilters));
+  };
 
   toggleRow = id => {
     const newSelected = Object.assign({}, this.state.selected);
@@ -357,7 +369,7 @@ class OrgList extends React.Component {
       Cell: row => <div className="centerText">{row.value}</div>
     },
     {
-      id: "created_by",
+      id: "createdBy",
       Header: "Created By",
       accessor: "createdBy",
       sortable: true,
@@ -400,7 +412,7 @@ class OrgList extends React.Component {
       width: 50
     }
   ];
-
+  
   render() {
     const {
       entity,
@@ -458,7 +470,7 @@ class OrgList extends React.Component {
           </div>
 
           <AppliedOrgFilters />
-          {appliedFilterList && !isEqual(appliedFilterList, filtersObj) && (
+          {appliedFilterList && !isEqualWith(appliedFilterList, filtersObj, filterComparator) && (
             <div className="clear-filters">
               <a
                 href="javascript:;"
@@ -550,7 +562,7 @@ class OrgList extends React.Component {
   resetAllFilters = () => {
     const { pageNo } = this.state;
     this.props.fetchOrganisationsList({ pageNo, pageSize: 10 });
-    this.props.setAppliedFilters(filtersObj, { pageNo, pageSize: 10 });
+    this.props.setAppliedFilters(filtersObj, { pageNo, pageSize: 10 }); // Only affects the UI. Do not make fetch call.
     this.nameSearchInput.current.value = "";
     this.resetPagination({ resetAll: true });
   };
@@ -560,20 +572,13 @@ class OrgList extends React.Component {
     this.setState({ pageSize });
     const { appliedFilterList, filters } = this.props;
 
-    if (appliedFilterList) {
-      appliedFilterList.pageNo = page;
-      appliedFilterList.pageSize = pageSize;
-      this.props.fetchOrganisationsList({
-        ...filters,
-        ...modifiyFilterList(appliedFilterList)
-      });
-    } else {
-      this.props.fetchOrganisationsList({
-        ...filters,
-        pageNo: page,
-        pageSize: pageSize
-      });
-    }
+    const apiObj = {
+      ...filters,
+      ...(appliedFilterList ? appliedFilterList : filtersObj),
+      pageNo: page,
+      pageSize
+    };
+    this.props.setAppliedFilters(apiObj, modifiyFilterList(apiObj));
   };
 
   handleSortedChange = sorted => {
@@ -613,20 +618,13 @@ class OrgList extends React.Component {
     const { pageSize } = this.state;
     const { appliedFilterList, filters } = this.props;
 
-    if (appliedFilterList) {
-      appliedFilterList.pageNo = page;
-      appliedFilterList.pageSize = pageSize;
-      this.props.fetchOrganisationsList({
-        ...filters,
-        ...modifiyFilterList(appliedFilterList)
-      });
-    } else {
-      this.props.fetchOrganisationsList({
-        ...filters,
-        pageNo: page,
-        pageSize
-      });
-    }
+    const apiObj = {
+      ...filters,
+      ...(appliedFilterList ? appliedFilterList : filtersObj),
+      pageNo: page,
+      pageSize
+    };
+    this.props.setAppliedFilters(apiObj, modifiyFilterList(apiObj));
   };
 
   // //when checkbox is checked
