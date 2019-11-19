@@ -10,6 +10,7 @@ import validate from "../../util/validation";
 import { titleCase, formatBytes } from "../../util/util";
 import { REACT_APP_BULK_UPLOAD_TEMPLATE_URL } from "../../buildConfig/apiConfig";
 import { toast } from "react-toastify";
+import NotificationToaster from "../ui/notificationToaster";
 
 const message = () => (
   <Fragment>
@@ -43,6 +44,7 @@ class UploadDataFeed extends React.Component {
     const { formError, file } = this.state;
     return (
       <div className="container">
+        <NotificationToaster />
         <div className="row ">
           <div className="col-sm-12 mx-auto my-3">
             <div className="d-flex align-content-center">
@@ -159,7 +161,7 @@ class UploadDataFeed extends React.Component {
     //custom notification toaster
     toast.info(message(), {
       position: "top-right",
-      autoClose: 10000,
+      autoClose: 5000,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,

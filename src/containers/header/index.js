@@ -8,12 +8,14 @@ import Can from "../Can";
 import { REACT_APP_KIBANA_DASHBOARD_URL } from "../../buildConfig/apiConfig";
 import { PopupModal } from "../ui/popupModal";
 import { toast } from "react-toastify";
+import NotificationToaster from "../ui/notificationToaster";
 
 const Header = props => {
   const { session } = props;
   let userInfo = session && session.user ? session.user : {};
   return (
     <Fragment>
+      <NotificationToaster />
       <nav className="navbar main-nav navbar-dark bg-dark navbar-expand-md">
         <div className="container">
           <Link to="/" className="navbar-brand">
@@ -168,7 +170,7 @@ const message = () => (
 const handlePublish = props => {
   toast.info(message(), {
     position: "top-right",
-    autoClose: 10000,
+    autoClose: 5000,
     hideProgressBar: true,
     closeOnClick: true,
     pauseOnHover: true,
