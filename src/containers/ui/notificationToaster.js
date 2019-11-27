@@ -12,6 +12,7 @@ class NotificationToaster extends Component {
       case toast.TYPE.INFO:
         return toast.info(notification.message);
       case toast.TYPE.ERROR:
+        toast.dismiss(); // dismiss all toasts before showing error.
         return toast.error(notification.message);
       case toast.TYPE.WARNING:
         return toast.warning(notification.message);
@@ -19,6 +20,7 @@ class NotificationToaster extends Component {
         return null;
     }
   }
+  
   componentWillReceiveProps(newProps) {
     Object.keys(newProps.notifications).map(notificationId => {
       this.generateNotification(newProps.notifications[notificationId]);
@@ -36,6 +38,7 @@ class NotificationToaster extends Component {
         pauseOnVisibilityChange
         draggable
         pauseOnHover
+        className="widthy-toast-container"
       />
     );
   }

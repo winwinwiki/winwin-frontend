@@ -8737,6 +8737,10 @@ textarea {
     .react-select__control .react-select__value-container--has-value .react-select__multi-value {
       justify-content: space-between; }
 
+.widthy-toast-container {
+  width: auto !important;
+  max-width: 500px; }
+
 h5.modal-title {
   font-size: 1.5rem !important; }
 
