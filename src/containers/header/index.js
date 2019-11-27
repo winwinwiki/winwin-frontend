@@ -15,7 +15,6 @@ const Header = props => {
   let userInfo = session && session.user ? session.user : {};
   return (
     <Fragment>
-      <NotificationToaster />
       <nav className="navbar main-nav navbar-dark bg-dark navbar-expand-md">
         <div className="container">
           <Link to="/" className="navbar-brand">
