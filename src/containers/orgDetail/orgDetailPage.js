@@ -33,7 +33,8 @@ class OrgDetailPage extends React.Component {
     isEditable: false,
     formError: {
       revenue: null,
-      assets: null
+      assets: null,
+      name: null
     }
   };
   this.validateForm = this.validateForm.bind(this);
@@ -113,9 +114,15 @@ class OrgDetailPage extends React.Component {
                       id="name"
                       readOnly={readOnly}
                       onChange={this.onChange}
+                      onBlur={this.validateField}
                       placeholder="Enter Organization Name"
                       value={orgDetail.name || ""}
                     />
+                    {formError.name && (
+                    <small className="form-element-hint text-danger">
+                      {formError.name}
+                    </small>
+                  )}
                   </div>
                   <div className="form-group">
                     <label htmlFor="tagStatus">Tag Status</label>
@@ -571,6 +578,12 @@ class OrgDetailPage extends React.Component {
     const formError = {};
     let allClear = true;
 
+    // Validate organization name
+    if (this.state.orgDetail.name.length < 1) {
+        formError['name'] = "Org name is required.";
+        allClear = false;
+    }
+
     // Validate revenue
     if (this.state.orgDetail.revenue && 
       this.state.orgDetail.revenue.toString().split(".")[0].length > 17) {
@@ -633,7 +646,7 @@ class OrgDetailPage extends React.Component {
 
   saveBasicInfo = e => {
     e.preventDefault();
-    const { revenue, assets } = this.state.orgDetail;
+    const { revenue, assets, name } = this.state.orgDetail;
 
     if(!this.validateForm()){
       alert('Please fix the error in the form before submission');

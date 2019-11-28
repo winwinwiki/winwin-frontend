@@ -5,15 +5,43 @@ import { connect } from "react-redux";
 import { push } from 'connected-react-router';
 import { onAddProgram } from "../../../actions/program/addProgramAction";
 class addProgram extends Component {
-  state = {};
+  //state = {};
+  constructor(props) {
+    super(props);
+  this.state = {
+    formError: {
+      name: ""
+    }
+  };
+  this.validateForm = this.validateForm.bind(this);
+  
+}
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  validateForm = () => {
+    const formError = {};
+    let allClear = true;
+
+    // Validate Program name
+    if (document.querySelector("#programName").value.trim().length < 1) {
+        formError['name'] = "Program name is required.";
+        allClear = false;
+    }
+    this.setState({ formError });
+    return allClear;
+  };
+
   onSave = e => {
     e.preventDefault();
     const { description, programName, programUrl } = this.state;
+
+    if(!this.validateForm()){
+      alert('Please fix the error in the form before submission');
+      return;
+    }
     const apiObj = {
       organizationId: this.props.orgId,
       name: programName,
@@ -35,6 +63,7 @@ class addProgram extends Component {
   };
 
   render() {
+    const { formError } = this.state;
     return (
       <section className="dashboard-content p-0 py-3 org-details-container">
         <div className="col-md-18 m-auto card">
@@ -52,6 +81,11 @@ class addProgram extends Component {
                       placeholder="Enter Program Name"
                       onChange={this.onChange}
                     />
+                    {formError.name && (
+                    <small className="form-element-hint text-danger">
+                      {formError.name}
+                    </small>
+                  )}
                   </div>
                 </div>
               </div>
