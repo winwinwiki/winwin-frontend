@@ -8,13 +8,22 @@ import { PopupModal } from "../ui/popupModal";
 import { push } from 'connected-react-router';
 import Can from "../Can";
 class ProgramDetailPage extends Component {
-  state = {
+  //state = {
+  //  editProgramDetail: false,
+  // programDetail: ""
+  //};
+  constructor(props) {
+    super(props);
+  this.state = {
     editProgramDetail: false,
     programDetail: "",
     formError: {
       name: null
     }
   };
+  this.validateForm = this.validateForm.bind(this);
+  
+}
 
   componentDidUpdate(prevProps) {
     if (this.props.programDetail !== prevProps.programDetail) {
@@ -214,6 +223,18 @@ class ProgramDetailPage extends Component {
     this.setState({
       editProgramDetail: false
     });
+  };
+  validateForm = () => {
+    const formError = {};
+    let allClear = true;
+
+    // Validate Program name
+    if (document.querySelector("#programName").value.trim().length < 1) {
+        formError['name'] = "Program name is required.";
+        allClear = false;
+    }
+    this.setState({ formError });
+    return allClear;
   };
   onSave = e => {
     e.preventDefault();

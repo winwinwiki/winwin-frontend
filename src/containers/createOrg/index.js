@@ -315,7 +315,7 @@ class CreateOrg extends React.Component {
   validateCreateOrgForm = (field, value) => {
     const { formError } = this.state;
     if (field === "orgName") {
-      if (!value) {
+      if (!value.trim()) {
         formError.orgName = "Org name is required.";
         this.setState({ formError });
         return;
