@@ -579,7 +579,7 @@ class OrgDetailPage extends React.Component {
     let allClear = true;
 
     // Validate organization name
-    if (this.state.orgDetail.name.length < 1) {
+    if (this.state.orgDetail.name.trim().length < 1) {
         formError['name'] = "Org name is required.";
         allClear = false;
     }
