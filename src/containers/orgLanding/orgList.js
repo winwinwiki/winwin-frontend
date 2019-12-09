@@ -358,14 +358,14 @@ class OrgList extends React.Component {
       id: "city",
       Header: "City",
       accessor: "address[city]",
-      sortable: false,
+      sortable: true,
       Cell: row => <div className="centerText">{row.value}</div>
     },
     {
       id: "state",
       Header: "State",
       accessor: "address[state]",
-      sortable: false,
+      sortable: true,
       Cell: row => <div className="centerText">{row.value}</div>
     },
     {

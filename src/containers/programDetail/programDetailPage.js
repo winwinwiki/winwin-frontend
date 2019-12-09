@@ -18,23 +18,22 @@ class ProgramDetailPage extends Component {
     editProgramDetail: false,
     programDetail: "",
     formError: {
-      name: ""
+      name: null
     }
   };
   this.validateForm = this.validateForm.bind(this);
   
 }
 
-  static getDerivedStateFromProps = (nextProps, prevState) => {
-    if (nextProps.programDetail !== prevState.programDetail) {
-      return {
-        ...prevState,
-        programDetail: nextProps.programDetail.data
-      };
+  componentDidUpdate(prevProps) {
+    if (this.props.programDetail !== prevProps.programDetail) {
+      if (!this.props.programDetail.error) {
+        this.setState({
+          programDetail: Object.assign({}, this.props.programDetail.data)
+        });
+      }
     }
-
-    return null;
-  };
+  }
 
   render() {
     const { editProgramDetail, programDetail, formError } = this.state;
@@ -98,11 +97,12 @@ class ProgramDetailPage extends Component {
                           value={progDetail.name}
                           onChange={this.onChange}
                         />
-                        {formError.name && (
-                    <small className="form-element-hint text-danger">
-                      {formError.name}
-                    </small>
-                  )}
+                        {
+                          formError.name && (
+                          <small className="form-element-hint text-danger">
+                            {formError.name}
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -165,9 +165,9 @@ class ProgramDetailPage extends Component {
         <PopupModal
           modalid="deleteModal"
           modaltitle="Alert!"
-          modalcontent={`Are you sure you want to delete '${this.props
-            .programDetail.data.response.name ||
-            this.props.programDetail.data.response[0].name}' ?`}
+          modalcontent={
+            `Are you sure you want to delete '${this.props.programDetail.data.response.name ||
+            (this.props.programDetail.data.response[0] && this.props.programDetail.data.response[0].name)}' ?`}
           primarybuttontext="Delete Program"
           secondarybuttontext="Cancel"
           handleDelete={this.handleDelete}
@@ -187,11 +187,30 @@ class ProgramDetailPage extends Component {
     this.props.changePage(orgId);
   };
 
+  validateForm = () => {
+    const formError = {};
+    let allClear = false;
+
+    // Validate program name
+    const progName = this.state.programDetail.response.name;
+    if (progName && progName.trim()) {
+      allClear = true;
+      formError['name'] = '';
+    }
+    else {
+      formError['name'] = "Program name cannot be blank";
+      allClear = false;
+    }
+
+    this.setState({ formError });
+    return allClear;
+  };
+
   onChange = e => {
-    const { programDetail: { response } = {} } = this.state;
+    let progDetail = this.state.programDetail;
     const { target: { name, value } = {} } = e;
-    response[name] = value;
-    this.setState({ programDetail: response });
+    progDetail.response[name] = value;
+    this.setState({ programDetail: progDetail });
   };
 
   onEdit = () => {
@@ -219,20 +238,15 @@ class ProgramDetailPage extends Component {
   };
   onSave = e => {
     e.preventDefault();
+    if (this.validateForm()) {
+      this.setState({
+        editProgramDetail: false
+      });
 
-    if(!this.validateForm()){
-      alert('Please fix the error in the form before submission');
-      return;
+      const { programDetail: { response: apiObj } } = this.state;
+
+      this.props.saveProgramDetailsAction(apiObj.length ? apiObj : [apiObj]);
     }
-
-    this.setState({
-      editProgramDetail: false
-    });
-    const {
-      programDetail: { response: apiObj }
-    } = this.state;
-
-    this.props.saveProgramDetailsAction(apiObj.length ? apiObj : [apiObj]);
   };
 }
 
