@@ -49,6 +49,10 @@ class AppliedOrgFilters extends React.Component {
     );
   }
 
+  isRevenueAvailable(revenueValue) {
+    return !isNaN(parseFloat(revenueValue));
+  }
+
   calculateTagCount(valueArr) {
     const { appliedFilterList } = this.props;
     if (valueArr.find(x => x.value === "Social Progress Index")) {
@@ -67,8 +71,8 @@ class AppliedOrgFilters extends React.Component {
       appliedFilterList["editedBy"].length +
       appliedFilterList["createdBy"].length;
     if (
-      appliedFilterList["revenue"].min > 0 ||
-      appliedFilterList["revenue"].max > 0 ||
+      this.isRevenueAvailable(appliedFilterList["revenue"].min) ||
+      this.isRevenueAvailable(appliedFilterList["revenue"].max) ||
       appliedFilterList["assets"].min > 0 ||
       appliedFilterList["assets"].max > 0 ||
       appliedFilterList[CITY].length ||
@@ -115,8 +119,8 @@ class AppliedOrgFilters extends React.Component {
     ];
 
     if (
-      appliedFilterList["revenue"].min > 0 ||
-      appliedFilterList["revenue"].max > 0
+      this.isRevenueAvailable(appliedFilterList["revenue"].min) ||
+      this.isRevenueAvailable(appliedFilterList["revenue"].max)
     ) {
       flatRevenueObj = [
         {
@@ -239,8 +243,8 @@ class AppliedOrgFilters extends React.Component {
       }
     ];
     if (
-      appliedFilterList["revenue"].min >= 0 &&
-      appliedFilterList["revenue"].max > 0
+      this.isRevenueAvailable(appliedFilterList["revenue"].min) &&
+      this.isRevenueAvailable(appliedFilterList["revenue"].max)
     ) {
       flatRevenueObj = [
         {
