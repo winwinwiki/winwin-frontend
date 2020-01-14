@@ -115,6 +115,8 @@ export default (state = initialState, action) => {
 
     case LOGOUT: {
       localStorage.clear();
+      // HACK: To clear all data from state, and redux
+      setTimeout(() => { window.location.reload(true); }, 1000);
       return Object.assign({}, state, {
         loading: false,
         data: null,
