@@ -1,15 +1,9 @@
-import { apiConfig as apiConfigDev } from "./apiConfig.dev";
-import { apiConfig as apiConfigQa } from "./apiConfig.qa";
-import { apiConfig as apiConfigProd } from "./apiConfig.prod";
-let apiConfig = apiConfigProd;
-if (process.env.NODE_ENV === "development") {
-  apiConfig = apiConfigDev;
-}
-if (process.env.NODE_ENV === "test") {
-  apiConfig = apiConfigQa;
-}
-if (process.env.NODE_ENV === "production") {
-  apiConfig = apiConfigProd;
-}
+console.log("env=", process.env.REACT_APP_WINWIN_ENV);
 
-export default apiConfig;
+export const REACT_APP_API_SERVER = process.env.REACT_APP_API_SERVER;
+export const REACT_APP_BULK_UPLOAD_TEMPLATE_URL =
+  process.env.REACT_APP_BULK_UPLOAD_TEMPLATE_URL;
+export const REACT_APP_GOOGLE_RECAPTCHA_SITE_KEY =
+  process.env.REACT_APP_GOOGLE_RECAPTCHA_SITE_KEY;
+export const REACT_APP_KIBANA_DASHBOARD_URL =
+  process.env.REACT_APP_KIBANA_DASHBOARD_URL;

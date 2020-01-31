@@ -13,6 +13,7 @@
     top: 40px;
     border: 1px solid #E6E6E6;
     border-radius: 4px;
+    z-index: 1;
 }
 
 .geosuggest__suggests li {

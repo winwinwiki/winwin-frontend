@@ -1,0 +1,16 @@
+.rst__rowLabel{
+    cursor: pointer !important;
+}
+
+.rst__rowSubtitle{
+    line-height: 0;
+}
+
+/* remove dragging handle */
+.rst__moveHandle {
+    display: none;
+}
+
+.rst__rowContents {
+    border-left: 1px solid #bbb;
+}

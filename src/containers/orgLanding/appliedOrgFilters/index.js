@@ -3,6 +3,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { setAppliedFilters } from "../../../actions/orgLanding/orgLandingAction";
 import { modifiyFilterList } from "../../../util/util";
+import { CITY, COUNTY, STATE, COUNTRY } from "../../../constants";
+import remove from "lodash/remove";
 
 class AppliedOrgFilters extends React.Component {
   constructor(props) {
@@ -22,7 +24,7 @@ class AppliedOrgFilters extends React.Component {
         {this.createTag(valueArr)}
         {/* {appliedFilterList.map(filter => <span className="badge badge-pill badge-secondary"> {filter} <a href="javascript:;" className=""><i className="icon-close"></i></a></span>)} */}
         {!tagCount && <span> No filters applied</span>}
-        {tagCount > 3 && (
+        {tagCount > 4 && (
           <a
             href="javascript:;"
             className="dropdown-toggle plain text-primary"
@@ -32,10 +34,10 @@ class AppliedOrgFilters extends React.Component {
             aria-haspopup="true"
             aria-expanded="false"
           >
-            + {tagCount - 3} More
+            + {tagCount - 4} More
           </a>
         )}
-        {tagCount > 3 && (
+        {tagCount > 4 && (
           <div
             className="dropdown-menu dropdown-menu-left"
             aria-labelledby="dropdownMenuLink1"
@@ -47,39 +49,150 @@ class AppliedOrgFilters extends React.Component {
     );
   }
 
+  isRevenueAvailable(revenueValue) {
+    return !isNaN(parseFloat(revenueValue));
+  }
+
   calculateTagCount(valueArr) {
     const { appliedFilterList } = this.props;
-    return (
+    if (valueArr.find(x => x.value === "Social Progress Index")) {
+      remove(valueArr, { type: "level1" });
+      remove(valueArr, { type: "level2" });
+      remove(valueArr, { type: "frameworkTag" });
+    }
+    if (valueArr.find(x => x.value === "Sustainable Developement Goals")) {
+      remove(valueArr, { type: "level1" });
+      remove(valueArr, { type: "frameworkTag" });
+    }
+    let count =
       valueArr.length +
-      appliedFilterList["status"].length +
-      appliedFilterList["sector"].length +
-      appliedFilterList["userMod"].length
-    );
+      appliedFilterList["tagStatus"].length +
+      appliedFilterList["sectorLevel"].length +
+      appliedFilterList["editedBy"].length +
+      appliedFilterList["createdBy"].length;
+    if (
+      this.isRevenueAvailable(appliedFilterList["revenue"].min) ||
+      this.isRevenueAvailable(appliedFilterList["revenue"].max) ||
+      appliedFilterList["assets"].min > 0 ||
+      appliedFilterList["assets"].max > 0 ||
+      appliedFilterList[CITY].length ||
+      appliedFilterList[COUNTY].length ||
+      appliedFilterList[STATE].length ||
+      appliedFilterList[COUNTRY].length
+    )
+      count++;
+
+    return count;
   }
 
   createTag(valueArr) {
     const { appliedFilterList } = this.props;
     let count = 0;
-    let flatUserModArray = appliedFilterList["userMod"].map(user => {
-      return { type: "userMod", value: user.label };
+    let flatUserModArray = appliedFilterList["editedBy"].map(user => {
+      return { type: "editedBy", value: user.label };
     });
-    let flatStatusArray = appliedFilterList["status"].map(status => {
-      return { type: "status", value: status };
+    let flatCreatedByArray = appliedFilterList["createdBy"].map(user => {
+      return { type: "createdBy", value: user.label };
     });
-    let flatSectorArray = appliedFilterList["sector"].map(sector => {
-      return { type: "sector", value: sector };
+    let flatStatusArray = appliedFilterList["tagStatus"].map(tagStatus => {
+      return { type: "tagStatus", value: tagStatus };
     });
+    let flatSectorArray = appliedFilterList["sectorLevel"].map(sectorLevel => {
+      return { type: "sectorLevel", value: sectorLevel };
+    });
+    let flatAssetsObj = {};
+    let flatRevenueObj = {};
+    let flatCityArray = appliedFilterList[CITY] && [
+      { type: CITY, value: `City: ${appliedFilterList[CITY]}` }
+    ];
+    let flatCountyrArray = appliedFilterList[COUNTY] && [
+      { type: COUNTY, value: `County: ${appliedFilterList[COUNTY]}` }
+    ];
+    let flatStateArray = appliedFilterList[STATE] && [
+      { type: STATE, value: `State: ${appliedFilterList[STATE]}` }
+    ];
+    let flatCountryArray = appliedFilterList[COUNTRY] && [
+      {
+        type: COUNTRY,
+        value: `Country: ${appliedFilterList[COUNTRY]}`
+      }
+    ];
+
+    if (
+      this.isRevenueAvailable(appliedFilterList["revenue"].min) ||
+      this.isRevenueAvailable(appliedFilterList["revenue"].max)
+    ) {
+      flatRevenueObj = [
+        {
+          type: "revenue",
+          value: `Revenue: ${
+            appliedFilterList["revenue"].min
+              ? `$${appliedFilterList["revenue"].min}`
+              : "Min"
+          } - ${
+            appliedFilterList["revenue"].max
+              ? `$${appliedFilterList["revenue"].max}`
+              : "Max"
+          }`
+        }
+      ];
+    }
+
+    if (
+      appliedFilterList["assets"].min > 0 ||
+      appliedFilterList["assets"].max > 0
+    ) {
+      flatAssetsObj = [
+        {
+          type: "assets",
+          value: `Assets: ${
+            appliedFilterList["assets"].min
+              ? `$${appliedFilterList["assets"].min}`
+              : "Min"
+          } - ${
+            appliedFilterList["assets"].max
+              ? `$${appliedFilterList["assets"].max}`
+              : "Max"
+          }`
+        }
+      ];
+    }
+    if (valueArr.find(x => x.value === "Social Progress Index")) {
+      remove(valueArr, { type: "level1" });
+      remove(valueArr, { type: "level2" });
+      remove(valueArr, { type: "frameworkTag" });
+    }
+    if (valueArr.find(x => x.value === "Sustainable Developement Goals")) {
+      remove(valueArr, { type: "level1" });
+      remove(valueArr, { type: "frameworkTag" });
+    }
     let tagValues =
-      flatUserModArray && flatStatusArray && flatSectorArray
-        ? [
+      flatUserModArray &&
+      flatCreatedByArray &&
+      flatStatusArray &&
+      flatSectorArray &&
+      flatRevenueObj &&
+      flatAssetsObj
+        ? // flatCityArray &&
+          // flatCountyrArray &&
+          // flatStateArray &&
+          // flatCountryArray
+          [
             ...valueArr,
+            ...flatCreatedByArray,
             ...flatUserModArray,
             ...flatStatusArray,
-            ...flatSectorArray
+            ...flatSectorArray,
+            ...flatRevenueObj,
+            ...flatAssetsObj,
+            ...flatCityArray,
+            ...flatCountyrArray,
+            ...flatStateArray,
+            ...flatCountryArray
           ]
         : valueArr;
     return tagValues.map((val, idx) => {
-      if (val && count <= 2) {
+      if (val && count <= 3) {
         count++;
         return (
           <span key={idx} className="badge badge-pill badge-secondary">
@@ -100,27 +213,99 @@ class AppliedOrgFilters extends React.Component {
   createMoreTag(valueArr) {
     const { appliedFilterList } = this.props;
     let count = 0;
-    let flatUserModArray = appliedFilterList["userMod"].map(user => {
-      return { type: "userMod", value: user.label };
+    let flatUserModArray = appliedFilterList["editedBy"].map(user => {
+      return { type: "editedBy", value: user.label };
     });
-    let flatStatusArray = appliedFilterList["status"].map(status => {
-      return { type: "status", value: status };
+    let flatCreatedByArray = appliedFilterList["createdBy"].map(user => {
+      return { type: "createdBy", value: user.label };
     });
-    let flatSectorArray = appliedFilterList["sector"].map(sector => {
-      return { type: "sector", value: sector };
+    let flatStatusArray = appliedFilterList["tagStatus"].map(tagStatus => {
+      return { type: "tagStatus", value: tagStatus };
     });
+    let flatSectorArray = appliedFilterList["sectorLevel"].map(sectorLevel => {
+      return { type: "sectorLevel", value: sectorLevel };
+    });
+    let flatAssetsObj = {};
+    let flatRevenueObj = {};
+    let flatCityArray = appliedFilterList[CITY] && [
+      { type: CITY, value: `City: ${appliedFilterList[CITY]}` }
+    ];
+    let flatCountyrArray = appliedFilterList[COUNTY] && [
+      { type: COUNTY, value: `County: ${appliedFilterList[COUNTY]}` }
+    ];
+    let flatStateArray = appliedFilterList[STATE] && [
+      { type: STATE, value: `State: ${appliedFilterList[STATE]}` }
+    ];
+    let flatCountryArray = appliedFilterList[COUNTRY] && [
+      {
+        type: COUNTRY,
+        value: `Country: ${appliedFilterList[COUNTRY]}`
+      }
+    ];
+    if (
+      this.isRevenueAvailable(appliedFilterList["revenue"].min) &&
+      this.isRevenueAvailable(appliedFilterList["revenue"].max)
+    ) {
+      flatRevenueObj = [
+        {
+          type: "revenue",
+          value: `Revenue: $${appliedFilterList["revenue"].min} - $${
+            appliedFilterList["revenue"].max
+          }`
+        }
+      ];
+    }
+
+    if (
+      appliedFilterList["assets"].min >= 0 &&
+      appliedFilterList["assets"].max > 0
+    ) {
+      flatAssetsObj = [
+        {
+          type: "assets",
+          value: `Assets: $${appliedFilterList["assets"].min} - $${
+            appliedFilterList["assets"].max
+          }`
+        }
+      ];
+    }
+    if (valueArr.find(x => x.value === "Social Progress Index")) {
+      remove(valueArr, { type: "level1" });
+      remove(valueArr, { type: "level2" });
+      remove(valueArr, { type: "frameworkTag" });
+    }
+    if (valueArr.find(x => x.value === "Sustainable Developement Goals")) {
+      remove(valueArr, { type: "level1" });
+      remove(valueArr, { type: "frameworkTag" });
+    }
     let tagValues =
-      flatUserModArray && flatStatusArray && flatSectorArray
-        ? [
+      flatUserModArray &&
+      flatCreatedByArray &&
+      flatStatusArray &&
+      flatSectorArray &&
+      flatRevenueObj &&
+      flatAssetsObj
+        ? // flatCityArray &&
+          // flatCountyrArray &&
+          // flatStateArray &&
+          // flatCountryArray
+          [
             ...valueArr,
+            ...flatCreatedByArray,
             ...flatUserModArray,
             ...flatStatusArray,
-            ...flatSectorArray
+            ...flatSectorArray,
+            ...flatRevenueObj,
+            ...flatAssetsObj,
+            ...flatCityArray,
+            ...flatCountyrArray,
+            ...flatStateArray,
+            ...flatCountryArray
           ]
         : valueArr;
     return tagValues.map((val, idx) => {
       if (val) {
-        if (count > 2) {
+        if (count > 3) {
           return (
             <span key={idx} className="badge badge-pill badge-secondary">
               {" "}
@@ -181,50 +366,88 @@ class AppliedOrgFilters extends React.Component {
     Object.keys(filterList).map((filterKey, idx) => {
       if (type === filterKey) {
         switch (type) {
-          case "frameworkTag":
-            filterList[type] = "";
+          // case "frameworkTag":
+          //   filterList[type] = "";
+          //   filterList["level1"] = "";
+          //   filterList["level2"] = "";
+          //   filterList["level3"] = "";
+          //   break;
+          // case "level1":
+          //   filterList[type] = "";
+          //   filterList["level2"] = "";
+          //   filterList["level3"] = "";
+          //   break;
+          case "level2":
+            filterList["frameworkTag"] = "";
+            filterList["level1"] = "";
+            filterList["level2"] = "";
+            break;
+          case "level3":
+            filterList["frameworkTag"] = "";
             filterList["level1"] = "";
             filterList["level2"] = "";
             filterList["level3"] = "";
-            break;
-          case "level1":
-            filterList[type] = "";
-            filterList["level2"] = "";
-            filterList["level3"] = "";
-            break;
-          case "level2":
-            filterList[type] = "";
-            filterList["level3"] = "";
-            break;
-          case "level3":
           case "priority":
           case "subIndustryCls":
           case "industryCls":
             filterList[type] = "";
             break;
-          case "revenueRange":
-          case "assetsRange":
-            filterList[type]["max"] = 0;
+          case "revenue":
+            filterList["revenue"].min = "";
+            filterList["revenue"].max = "";
             break;
-          case "userMod":
+          case "assets":
+            filterList["assets"].min = "";
+            filterList["assets"].max = "";
+            break;
+          case "editedBy":
             filterList[type] = filterList[type].filter(
               item => item.label !== value
             );
             break;
-          case "status":
-          case "sector":
+          case "createdBy":
+            filterList[type] = filterList[type].filter(
+              item => item.label !== value
+            );
+            break;
+          case "tagStatus":
+          case "sectorLevel":
             filterList[type].splice(filterList[type].indexOf(value), 1);
+            break;
+          case CITY:
+            filterList[CITY] = "";
+            break;
+          case COUNTY:
+            filterList[COUNTY] = "";
+            break;
+          case STATE:
+            filterList[STATE] = "";
+            break;
+          case COUNTRY:
+            filterList[COUNTRY] = "";
             break;
           default:
             break;
         }
       }
     });
-    this.props.setAppliedFilters(filterList, modifiyFilterList(filterList));
+    if (!filterList.pageNo || !filterList.pageSize) {
+      filterList.pageNo = 0;
+      filterList.pageSize = 10;
+    }
+
+    const apiObj = {
+      ...this.props.filters,
+      ...filterList,
+      pageNo: 0
+    };
+    this.props.setAppliedFilters(apiObj, modifiyFilterList(apiObj));
   }
 }
+
 const mapStateToProps = state => ({
-  appliedFilterList: state.orgList.appliedFilterList
+  appliedFilterList: state.orgList.appliedFilterList,
+  filters: state.orgList.filters
 });
 
 const mapDispatchToProps = dispatch =>

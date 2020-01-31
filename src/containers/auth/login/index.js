@@ -1,5 +1,6 @@
 import React from "react";
-import { push } from "react-router-redux";
+//import { push } from "react-router-redux";
+import { push } from 'connected-react-router';
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -11,7 +12,7 @@ import {
   startLoaderAction,
   stopLoaderAction
 } from "../../../actions/common/loaderActions";
-
+import NotificationToaster from "../../ui/notificationToaster";
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -30,8 +31,13 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
+    this.nameInput.focus();
     const { session } = this.props;
-    if (session && session.isAuthenticated && session.user) {
+    if (session && session.isAuthenticated && session.user && !session.error) {
+      console.log(
+        "User session is already active, moving to landing page",
+        session.user
+      );
       this.changePage(session.user);
     }
   }
@@ -42,23 +48,35 @@ class Login extends React.Component {
       nextProps &&
       nextProps.session !== session &&
       nextProps.session.data &&
-      !nextProps.session.user &&
+      !nextProps.session.data.userDetails &&
       !nextProps.session.error
     ) {
       this.setState({
         email: "",
         password: ""
       });
-      this.props.fetchUserInfo();
+      // console.log("User logged in, fetching user info");
+      // this.props.fetchUserInfo();
     }
 
     if (
       nextProps &&
       nextProps.session !== session &&
       nextProps.session &&
-      nextProps.session.user
+      nextProps.session.data
     ) {
-      this.changePage(nextProps.session.user);
+      if (
+        nextProps.session.data &&
+        nextProps.session.isAuthenticated &&
+        !session.error
+      )
+        this.changePage(
+          nextProps.session.data.userDetails || nextProps.session.data,
+          nextProps.session.data.isNewUser
+        );
+      else if (nextProps.session.data || !nextProps.session.isAuthenticated)
+        //stop loader
+        this.props.stopLoaderAction();
     }
   }
 
@@ -67,11 +85,12 @@ class Login extends React.Component {
     let { session } = this.props;
     return (
       <div className="w-100 flex-fill d-flex flex-column justify-content-center">
-        {session && session.error && (
+        <NotificationToaster />
+        {/* {session && session.error && (
           <small className="form-element-hint text-danger">
             {session.data.message}
           </small>
-        )}
+        )} */}
         <div className="form-group w-100 mb-4 login-form-group">
           <label htmlFor="userName" className="sr-only">
             User Name
@@ -95,9 +114,6 @@ class Login extends React.Component {
           )}
         </div>
         <div className="form-group w-100 mb-4 login-form-group">
-          <label htmlFor="userPassword" className="sr-only">
-            User Password
-          </label>
           <input
             id="userPassword"
             type="password"
@@ -115,16 +131,53 @@ class Login extends React.Component {
               {formError.password}
             </small>
           )}
+          <i
+            className="icon-circle-question custom-icon cursor-pointer"
+            id="passwordInfo"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          />
+          <div
+            className="dropdown-menu dropdown-menu-left"
+            aria-labelledby="passwordInfo"
+          >
+            <div className="row">
+              <div className="col">
+                Password must
+                <ul>
+                  <li>Be at least 8 characters long</li>
+                  <li>Include at least one capital letter (A-Z)</li>
+                  <li>Include at least one small letter (a-z)</li>
+                  <li>Include at least one number (0-9)</li>
+                  <li>
+                    Include at least one special character{" "}
+                    {`{^$*.[]{}()?-"!@#%&/\,><':;|_~`}`}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
         <Link to="/forget-password" className="px-4 text-white">
           Forgot password?
         </Link>
         <button
+          ref={input => {
+            this.nameInput = input;
+          }}
           className="btn btn-lg btn-light w-100 mt-4"
           onClick={this.onLoginSubmit}
         >
           Login
         </button>
+        <div className="mt-4 text-white">
+          {" "}
+          Need an account ?{" "}
+          <Link to="/createKibanaUser" className="mt-3 text-white">
+            Sign Up?
+          </Link>
+        </div>
       </div>
     );
   }
@@ -161,12 +214,12 @@ class Login extends React.Component {
       this.setState({ formError });
       return;
     }
-    let isValidPwd = validate.password(value);
-    if (!isValidPwd) {
-      formError.password = "enter valid password";
-      this.setState({ formError });
-      return;
-    }
+    // let isValidPwd = validate.password(value);
+    // if (!isValidPwd) {
+    //   formError.password = "enter valid password";
+    //   this.setState({ formError });
+    //   return;
+    // }
     formError.password = "";
     this.setState({ formError });
     return;
@@ -188,15 +241,21 @@ class Login extends React.Component {
     }
     this.props.startLoaderAction("Logging in...");
     this.props.onLogin({ username: email, password: password });
+    // !this.props.session.error &&
+    //   this.props.fetchUserInfo(email, USER.isLoggedInUser);
   }
 
-  changePage(userInfo) {
-    switch (userInfo.role) {
-      case "admin":
-      case "seeder":
-        return this.props.changePage("/organizations");
-      default:
-        return this.props.stopLoaderAction();
+  changePage(userInfo, isNewUser) {
+    this.props.stopLoaderAction();
+    if (isNewUser) {
+      this.props.changePage("/verify-user", userInfo.userName);
+    } else {
+      // switch (userInfo.role) {
+      //   case "Administrator":
+      //   case "seeder":
+      //     return this.props.changePage("/organizations");
+      //   default:
+      return this.props.changePage("/organizations");
     }
   }
 }
@@ -209,7 +268,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      changePage: page => push(page),
+      changePage: (page, param) => push(page, param),
       onLogin,
       fetchUserInfo,
       startLoaderAction,

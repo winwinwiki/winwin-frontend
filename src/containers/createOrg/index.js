@@ -1,27 +1,37 @@
 import React from "react";
-import { push } from "react-router-redux";
+//import { push } from "react-router-redux";
+import { push } from 'connected-react-router';
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Geosuggest from "react-geosuggest";
 import Dropdown from "../ui/dropdown";
-import { onCreateOrg } from "../../actions/createOrg/createOrgAction";
+import { onCreateOrg } from "../../actions/organization/createOrgAction";
 import "./createOrg.css";
 import validate from "../../util/validation";
-
-const sectoryList = ["Public", "Private", "Social"];
-const entityList = ["Federal", "State", "County", "City", "District"];
+import { sectorsList, entityList, tagStatusList } from "../../constants";
+import NotificationToaster from "../ui/notificationToaster";
 
 class CreateOrg extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       orgName: "",
-      sector: sectoryList[0],
+      sector: sectorsList[0],
       entity: entityList[0],
+      country: "",
+      city: "",
+      state: "",
+      county: "",
+      zipcode: "",
       location: null,
       formError: {
         orgName: "",
-        location: ""
+        location: "",
+        country: "",
+        city: "",
+        county: "",
+        state: "",
+        zipcode: ""
       }
     };
     this._geoSuggest = null;
@@ -41,18 +51,30 @@ class CreateOrg extends React.Component {
       if (!nextProps.createOrg.error) {
         this.setState({
           orgName: "",
-          sector: sectoryList[0],
+          sector: sectorsList[0],
           entity: entityList[0],
           location: null
         });
-        this.props.changePage();
+        //redirect to basic info page
+        this.props.changePage(nextProps.createOrg.data.response.id);
       }
     }
   }
   render() {
-    const { orgName, sector, entity, formError } = this.state;
+    const {
+      orgName,
+      sector,
+      entity,
+      country,
+      city,
+      state,
+      county,
+      zipcode,
+      formError
+    } = this.state;
     return (
       <div className="container">
+        <NotificationToaster />
         <div className="row ">
           <div className="col-sm-12 mx-auto my-3">
             <form>
@@ -91,7 +113,7 @@ class CreateOrg extends React.Component {
                       name="sector"
                       containerClass="dropdown dropdown-with-searchbox"
                       onChange={this.onDropdownChange.bind(this)}
-                      items={sectoryList}
+                      items={sectorsList}
                     />
                   </div>
                 </div>
@@ -99,16 +121,136 @@ class CreateOrg extends React.Component {
                   <div className="form-group">
                     <label htmlFor="entity">Sector Level</label>
                     <Dropdown
-                      selectedItem={entity}
+                      selectedItem={
+                        sector && sector.toLowerCase() !== "public"
+                          ? ""
+                          : entity
+                      }
+                      placeholder="Select Sector Level"
                       name="entity"
                       containerClass="dropdown dropdown-with-searchbox"
                       onChange={this.onDropdownChange.bind(this)}
                       items={entityList}
+                      disabled={sector && sector.toLowerCase() !== "public"}
                     />
                   </div>
                 </div>
               </div>
               <div className="row">
+                <div className="col">
+                  <div className="form-group">
+                    <label htmlFor="country">Country</label>
+                    <input
+                      id="country"
+                      type="text"
+                      aria-describedby="countryDesc"
+                      placeholder="Country"
+                      className="form-control"
+                      onBlur={this.validateField}
+                      onChange={this.onChange}
+                      name="country"
+                      value={country}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col">
+                  <div className="form-group">
+                    <label htmlFor="county">County</label>
+                    <input
+                      id="county"
+                      type="text"
+                      aria-describedby="countyDesc"
+                      placeholder="County"
+                      className="form-control"
+                      onBlur={this.validateField}
+                      onChange={this.onChange}
+                      name="county"
+                      value={county}
+                    />
+                    <small id="countyDesc" className="sr-only">
+                      County
+                    </small>
+                    {formError.county && (
+                      <div className="text-danger small">
+                        {formError.county}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="col">
+                  <div className="form-group">
+                    <label htmlFor="state">State</label>
+                    <input
+                      id="state"
+                      type="text"
+                      aria-describedby="stateDesc"
+                      placeholder="State"
+                      className="form-control"
+                      onBlur={this.validateField}
+                      onChange={this.onChange}
+                      name="state"
+                      value={state}
+                    />
+                    <small id="stateDesc" className="sr-only">
+                      State
+                    </small>
+                    {formError.state && (
+                      <div className="text-danger small">{formError.state}</div>
+                    )}
+                  </div>
+                </div>
+                <div className="col">
+                  <div className="form-group">
+                    <label htmlFor="city">City</label>
+                    <input
+                      id="city"
+                      type="text"
+                      aria-describedby="cityDesc"
+                      placeholder="City"
+                      className="form-control"
+                      onBlur={this.validateField}
+                      onChange={this.onChange}
+                      name="city"
+                      value={city}
+                    />
+                    <small id="orgNameDesc" className="sr-only">
+                      City
+                    </small>
+                    {formError.city && (
+                      <div className="text-danger small">{formError.city}</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col">
+                  <div className="form-group">
+                    <label htmlFor="zipcode">Zip/Postal Code</label>
+                    <input
+                      id="zipcode"
+                      type="text"
+                      aria-describedby="zipcodeDesc"
+                      placeholder="Zip/Postal Code"
+                      className="form-control"
+                      onBlur={this.validateField}
+                      onChange={this.onChange}
+                      name="zipcode"
+                      value={zipcode}
+                    />
+                    <small id="orgNameDesc" className="sr-only">
+                      Zip/Postal Code
+                    </small>
+                    {formError.zipcode && (
+                      <div className="text-danger small">
+                        {formError.zipcode}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+              {/* <div className="row">
                 <div className="col">
                   <div className="form-group">
                     <label htmlFor="newOrgLocation">Location</label>
@@ -118,6 +260,7 @@ class CreateOrg extends React.Component {
                       placeholder="Search State/County/City/District"
                       className="form-control position-relative"
                       initialValue=""
+                      // types={["address", "(cities)"]}
                       fixtures={[]}
                       onBlur={this.validateLocationField}
                       onSuggestSelect={this.onSuggestSelect}
@@ -129,7 +272,7 @@ class CreateOrg extends React.Component {
                     )}
                   </div>
                 </div>
-              </div>
+              </div> */}
             </form>
 
             <button
@@ -155,6 +298,9 @@ class CreateOrg extends React.Component {
   }
 
   onDropdownChange(field, value) {
+    if (field === "sector" && value.toLowerCase() !== "public") {
+      this.setState({ entity: "" });
+    }
     this.setState({ [field]: value });
   }
 
@@ -169,39 +315,69 @@ class CreateOrg extends React.Component {
   validateCreateOrgForm = (field, value) => {
     const { formError } = this.state;
     if (field === "orgName") {
-      if (!value) {
+      if (!value.trim()) {
         formError.orgName = "Org name is required.";
         this.setState({ formError });
         return;
       }
-      let isValid = validate.name(value);
-      if (!isValid) {
-        formError.orgName = "Enter valid org name.";
-        this.setState({ formError });
-        return;
-      }
+      // Keep a valid name
+      // let isValid = validate.name(value);
+      // if (!isValid) {
+      //   formError.orgName = "Enter valid org name.";
+      //   this.setState({ formError });
+      //   return;
+      // }
       formError.orgName = "";
       this.setState({ formError });
       return;
     }
-    if (!value) {
-      formError.location = "Location is required.";
+    if (field === "zipcode") {
+      let isValid = validate.number(value);
+      if (!isValid) {
+        formError.zipcode = "Enter valid zipcode.";
+        this.setState({ formError });
+        return;
+      }
+      formError.zipcode = "";
       this.setState({ formError });
       return;
     }
-    formError.location = "";
-    this.setState({ formError });
-    return;
   };
 
   onCreateOrg() {
-    const { orgName, location, sector, entity } = this.state;
-    if (!orgName || !location) {
+    const {
+      orgName,
+      location,
+      sector,
+      entity,
+      country,
+      state,
+      city,
+      county,
+      zipcode
+    } = this.state;
+    if (!orgName) {
       this.validateCreateOrgForm("orgName", orgName);
-      this.validateCreateOrgForm("location", location);
+      this.validateCreateOrgForm("zipcode", zipcode);
       return;
     }
-    this.props.onCreateOrg({ orgName, location, sector, entity });
+    const apiObj = {
+      name: orgName,
+      sector: sector,
+      sectorLevel: entity,
+      parentId: null, // since it is org
+      type: "organization", // since it is org
+      tagStatus: tagStatusList[1],
+      priority: "Normal",
+      address: {
+        country: country,
+        state: state,
+        city: city,
+        county: county ? county : null,
+        zip: zipcode
+      }
+    };
+    this.props.onCreateOrg(apiObj);
   }
 
   onSuggestSelect(suggest) {
@@ -219,7 +395,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      changePage: () => push("/organizations"),
+      changePage: id => push(`/organizations/${id}`),
       onCreateOrg
     },
     dispatch

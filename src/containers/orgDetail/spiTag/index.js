@@ -4,15 +4,34 @@ import { connect } from "react-redux";
 import SPIModal from "./spiModal";
 import { fetchSpiTags } from "../../../actions/orgDetail/spiTagsAction";
 import { fetchSpiTagsList } from "../../../actions/orgLanding/orgLandingAction";
-
+import {
+  startLoaderAction,
+  stopLoaderAction
+} from "../../../actions/common/loaderActions";
+import { updateSPIData } from "../../../actions/orgDetail/spiTagsAction";
+import { PROGRAM } from "../../../constants";
+import Can from "../../Can";
 class SpiTags extends React.Component {
   componentDidMount() {
-    this.props.fetchSpiTags();
-    this.props.fetchSpiTagsList();
+    const { orgId, type, programId, session } = this.props;
+    this.props.startLoaderAction();
+    this.props.fetchSpiTags(type === PROGRAM ? programId : orgId, type);
+    Can({
+      role: session.user && session.user.role,
+      perform: "organizationDetailsSPITags:edit",
+      yes: () =>
+        this.props.fetchSpiTagsList(type === PROGRAM ? programId : orgId, type)
+    });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.spiTags !== this.props.spiTags && this.props.spiTags.data) {
+      this.props.stopLoaderAction();
+    }
   }
 
   render() {
-    const { spiTags } = this.props;
+    const { spiTags, orgId, type, session } = this.props;
     if (!spiTags || !spiTags.data || spiTags.error) {
       return null;
     }
@@ -21,72 +40,88 @@ class SpiTags extends React.Component {
         <div className="col-md-18 m-auto card">
           <div className="col-md-18 m-auto d-flex flex-column py-3">
             <h3>{this.props.type} Description</h3>
-            <p>
-              Arts center conducts classes on any artistic or cultural topics
-              ranging from ?crafts, dance, singing, painting. Camps for youth
-              and adults and events ?open to the public. They also offer open
-              space for private events.
-            </p>
+            <p>{this.props.description}</p>
 
             <div className="section-title">Social Progress Index Tag</div>
-            <form>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item px-0">
-                  <div className="row">
-                    <ul className="action-icons">
-                      <li>
-                        <a
-                          href="javascript:;"
-                          data-toggle="modal"
-                          data-target="#spiModal"
-                        >
-                          <i className="icon-edit" />
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                {this.createSpiBox()}
-              </ul>
-            </form>
+            <Can
+              role={session.user && session.user.role}
+              perform="organizationDetailsSPITags:edit"
+              yes={() => (
+                <form>
+                  <ul className="list-group list-group-flush">
+                    <li className="list-group-item px-0">
+                      <div className="row">
+                        <ul className="action-icons">
+                          <li>
+                            <a
+                              href="javascript:;"
+                              data-toggle="modal"
+                              data-target="#spiModal"
+                            >
+                              <i className="icon-edit" />
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+                    {this.createSpiBox()}
+                  </ul>
+                </form>
+              )}
+            />
           </div>
         </div>
-        <SPIModal SPIData={spiTags.data} />
+        {this.props.SPIList && (
+          <SPIModal
+            type={type}
+            orgId={orgId}
+            checkedSPITags={spiTags.data.response}
+            updateSPIData={updateSPIData}
+            SPIList={this.props.SPIList}
+            programId={this.props.programId}
+          />
+        )}
       </section>
     );
   }
 
   createSpiBox() {
     const { spiTags } = this.props;
-    let spiTagsList = spiTags.data;
+    let spiTagsList = spiTags.data.response;
     let desiredTagsList = {};
     spiTagsList.map(tags => {
-      if (!desiredTagsList[tags["level1"]])
-        desiredTagsList[tags["level1"]] = {};
+      if (!desiredTagsList[tags["dimensionName"]])
+        desiredTagsList[tags["dimensionName"]] = {};
 
-      if (!desiredTagsList[tags["level1"]][tags["level2"]])
-        desiredTagsList[tags["level1"]][tags["level2"]] = [];
+      if (!desiredTagsList[tags["dimensionName"]][tags["componentName"]])
+        desiredTagsList[tags["dimensionName"]][tags["componentName"]] = [];
 
-      desiredTagsList[tags["level1"]][tags["level2"]].push(tags["level3"]);
+      desiredTagsList[tags["dimensionName"]][tags["componentName"]].push(
+        tags["indicatorName"]
+      );
       return desiredTagsList;
     });
-    return Object.keys(desiredTagsList).map((level1, idx) => (
+    return Object.keys(desiredTagsList).map((dimensionName, idx) => (
       <div key={idx} className="card custom-list-container mt-2">
-        <div className="card-header">{level1}</div>
+        <div className="card-header">{dimensionName}</div>
         <div className="card-body">
           <ul className="">
-            {Object.keys(desiredTagsList[level1]).map((level2, idx2) => (
-              <li key={idx2}>
-                <span>{level2}</span>
-                <ul>
-                  {desiredTagsList[level1][level2].map((level3, idx3) => (
-                    <li key={idx3}>
-                      <span>{level3}</span>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))}
+            {Object.keys(desiredTagsList[dimensionName]).map(
+              (componentName, idx2) => (
+                <li key={idx2}>
+                  <span>{componentName}</span>
+                  <ul>
+                    {desiredTagsList[dimensionName][componentName].map(
+                      (indicatorName, idx3) => (
+                        <li key={idx3}>
+                          <span>{indicatorName}</span>
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </li>
+              )
+            )}
           </ul>
         </div>
       </div>
@@ -95,14 +130,19 @@ class SpiTags extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  spiTags: state.spiTags
+  spiTags: state.spiTags,
+  SPIList: state.orgList.spiList,
+  session: state.session
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       fetchSpiTags,
-      fetchSpiTagsList
+      fetchSpiTagsList,
+      startLoaderAction,
+      stopLoaderAction,
+      updateSPIData
     },
     dispatch
   );

@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 import { fetchOrganisationDetail } from "../../actions/orgDetail/orgDetailAction";
+import Can from "../Can";
 
 class OrgDetail extends React.Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class OrgDetail extends React.Component {
   }
   render() {
     const { orgDetail } = this.state;
-    const { organizationDetail, match, history } = this.props;
+    const { organizationDetail, match, history, session } = this.props;
     if (!orgDetail || !organizationDetail || organizationDetail.error) {
       return null;
     }
@@ -45,7 +46,7 @@ class OrgDetail extends React.Component {
     return (
       <React.Fragment>
         <div className="py-4 border-bottom d-flex justify-content-between">
-          <div
+          {/* <div
             aria-label="breadcrumb"
             className="col breadcrumb-container pr-0"
           >
@@ -138,7 +139,7 @@ class OrgDetail extends React.Component {
                 </h2>
               </li>
             </ol>
-          </div>
+          </div> */}
           <div className="ml-auto">
             <div className="d-flex align-items-center">
               <div className="dropdown">
@@ -157,27 +158,37 @@ class OrgDetail extends React.Component {
                   className="dropdown-menu dropdown-menu-right"
                   aria-labelledby="dropdownMenuLink"
                 >
-                  <a className="dropdown-item" href="#">
+                  {/* <a className="dropdown-item" href="#">
                     Change Status
-                  </a>
-                  <Link
-                    className="dropdown-item"
-                    to={`${match.url}/new-program`}
-                  >
-                    Add Program
-                  </Link>
-                  <a className="dropdown-item" href="#">
+                  </a> */}
+                  <Can
+                    role={session.user && session.user.role}
+                    perform="programs:create"
+                    yes={() => (
+                      <Link
+                        className="dropdown-item"
+                        to={`${match.url}/new-program`}
+                      >
+                        Add Program
+                      </Link>
+                    )}
+                  />
+
+                  {/* <a className="dropdown-item" href="#">
                     Add Child Organization
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    Edit Organization Name
-                  </a>
-                  <Link
-                    className="dropdown-item"
-                    to={`${match.url}/view-history`}
-                  >
-                    View History
-                  </Link>
+                  </a> */}
+                  <Can
+                    role={session.user && session.user.role}
+                    perform="organizationHistory:list"
+                    yes={() => (
+                      <Link
+                        className="dropdown-item"
+                        to={`${match.url}/view-history`}
+                      >
+                        View History
+                      </Link>
+                    )}
+                  />
                 </div>
               </div>
             </div>
@@ -195,7 +206,8 @@ class OrgDetail extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  organizationDetail: state.orgDetail
+  organizationDetail: state.orgDetail,
+  session: state.session
 });
 
 const mapDispatchToProps = dispatch =>

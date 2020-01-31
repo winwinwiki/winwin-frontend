@@ -2,3 +2,6 @@ node_modules/
 .idea/
 build/
 public/styles/
+false/
+public/styles/site.css
+.vs/

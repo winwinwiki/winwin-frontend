@@ -4,32 +4,95 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 import {
-  saveOrgResources,
-  fetchOrgResources
+  fetchOrgResources,
+  deleteOrgResource
 } from "../../../actions/orgDetail/resourcesAction";
+import { fetchResourceCategories } from "../../../actions/orgDetail/resourceCategoriesAction";
 import ResourceModal from "./resourceModal";
-
+import {
+  startLoaderAction,
+  stopLoaderAction
+} from "../../../actions/common/loaderActions";
+import { PopupModal } from "../../ui/popupModal";
+import { PROGRAM } from "../../../constants";
+import Can from "../../Can";
 class Resources extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
+      resource: {
+        id: "",
+        name: ""
+      },
+      resourcesList: null,
+      resourceToBeDeleted: "",
       selectedData: {
         category: "",
         count: "",
         description: ""
       },
-      modalTitle: ""
+      modaltitle: "",
+      modal: false
     };
   }
 
   componentDidMount() {
-    this.props.fetchOrgResources();
+    const { programId, orgId, type } = this.props;
+    this.props.startLoaderAction();
+    this.props.fetchOrgResources(type === PROGRAM ? programId : orgId, type);
   }
 
-  render() {
-    const { selectedData, modalTitle } = this.state;
+  componentWillReceiveProps(nextProps) {
     const { resources } = this.props;
-    if (!resources || !resources.data || resources.error) {
+    if (
+      nextProps.resources.data !== resources.data &&
+      nextProps.resources.data
+    ) {
+      if (!nextProps.resources.error) {
+        this.setState({
+          resourcesList: nextProps.resources.data.response
+        });
+      }
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.resources !== this.props.resources &&
+      this.props.resources.data
+    ) {
+      this.props.stopLoaderAction();
+    }
+  }
+
+  handleNewModalData = newModalData => {
+    const { resourcesList } = this.state;
+    const newList = [...resourcesList, newModalData];
+    this.setState({
+      resourcesList: newList
+    });
+  };
+
+  selectedResource = resource => {
+    this.setState({
+      resource: {
+        id: resource.id,
+        name: resource.resourceCategory.categoryName
+      }
+    });
+  };
+
+  toggle = () => {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
+  };
+
+  render() {
+    const { selectedData, modaltitle, resourcesList } = this.state;
+    const { resources, resourceCategories, session } = this.props;
+    if (!resources || !resourcesList) {
       return null;
     }
     return (
@@ -37,125 +100,135 @@ class Resources extends React.Component {
         <div className="col-md-18 m-auto card">
           <div className="col-md-18 m-auto d-flex flex-column py-3">
             <h3>{this.props.type} Description</h3>
-            <p>
-              Arts center conducts classes on any artistic or cultural topics
-              ranging from ?crafts, dance, singing, painting. Camps for youth
-              and adults and events ?open to the public. They also offer open
-              space for private events.
-            </p>
-
+            <p>{this.props.description}</p>
             <div className="section-title border-bottom pb-3 mb-3">
               Resources
             </div>
             <form>
               <ul className="list-group list-group-flush">
-                {resources.data.map(resource => (
+                {resourcesList.map((resource, index) => (
                   <ResourceBlock
-                    key={resource.id}
+                    key={index}
                     data={resource}
                     changeModalData={this.changeModalData}
+                    selectedResource={this.selectedResource}
+                    session={session}
                   />
                 ))}
-                <li className="list-group-item px-0 pt-4">
-                  <a
-                    href="javascript:;"
-                    data-toggle="modal"
-                    data-target="#resourceModal"
-                    onClick={this.addNewDataSetModal}
-                  >
-                    <i className="icon-add mr-2" /> Add Another
-                  </a>
-                </li>
+                <Can
+                  role={session.user && session.user.role}
+                  perform="organizationDetailsResources:create"
+                  yes={() => (
+                    <li className="list-group-item px-0 pt-4">
+                      <a
+                        href="javascript:;"
+                        data-toggle="modal"
+                        data-target="#resourceModal"
+                        onClick={this.addNewResourceModal}
+                      >
+                        <i className="icon-add mr-2" /> Add Resource
+                      </a>
+                    </li>
+                  )}
+                />
               </ul>
             </form>
           </div>
         </div>
-        <ResourceModal modalData={selectedData} title={modalTitle} />
-
-        <div
-          className="modal fade"
-          id="deleteModal"
-          tabIndex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div
-            className="modal-dialog modal-sm modal-dialog-centered"
-            role="document"
-          >
-            <div className="modal-content">
-              <div className="dashboard-container">
-                <div className="dashboard-header">
-                  <div className="modal-header flex-column">
-                    <div className="d-flex w-100 p-3">
-                      <h5 className="modal-title" id="exampleModalLabel">
-                        Alert!
-                      </h5>
-                      <button
-                        type="button"
-                        className="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="modal-body dashboard-content">
-                  Are you sure you want to delete this record?
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    data-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                  <button type="button" className="btn btn-primary">
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ResourceModal
+          resourcesList={resourcesList}
+          type={this.props.type}
+          orgId={this.props.orgId}
+          modalData={selectedData}
+          title={modaltitle}
+          toggle={this.toggle}
+          showModal={this.state.modal}
+          programId={this.props.programId}
+        />
+        <PopupModal
+          modalid="deleteModal"
+          modaltitle="Alert!"
+          modalcontent={`Are you sure you want to delete '${
+            this.state.resource.name
+          }' ?`}
+          primarybuttontext="Delete Resource"
+          secondarybuttontext="Cancel"
+          handleDelete={() => this.handleDelete()}
+        />
       </section>
     );
   }
-  changeModalData = resourceId => {
-    const { resources } = this.props;
+
+  handleDelete = () => {
+    const { resource: { id: resourceId } = {}, resourcesList } = this.state;
+    const { orgId, type, programId } = this.props;
+    const filteredList = resourcesList.filter(x => x.id !== resourceId);
+    this.props.deleteOrgResource(
+      orgId,
+      resourceId,
+      type,
+      filteredList,
+      programId
+    );
     this.setState({
-      selectedData: resources.data.filter(
-        resource => resource.id === resourceId
-      )[0],
-      modalTitle: "Edit Resource"
+      selectedData: {
+        resourceCategory: { categoryName: "" },
+        count: "",
+        description: ""
+      }
     });
   };
 
-  addNewDataSetModal = () => {
+  //when edit resource
+  changeModalData = resourceId => {
+    const { resourcesList } = this.state;
+    const { orgId, programId, type } = this.props;
+    this.props.fetchResourceCategories(
+      type === PROGRAM ? programId : orgId,
+      type
+    );
+    this.toggle();
+    this.setState({
+      selectedData: resourcesList.filter(
+        resource => resource.id === resourceId
+      )[0],
+      modaltitle: "Edit Resource"
+    });
+  };
+
+  //add new resource
+  addNewResourceModal = () => {
+    const { orgId, programId, type } = this.props;
+    this.toggle();
+    this.props.fetchResourceCategories(
+      type === PROGRAM ? programId : orgId,
+      type
+    );
     this.setState({
       selectedData: {
-        category: "",
+        resourceCategory: { categoryName: "" },
         count: "",
         description: ""
       },
-      modalTitle: "Add New Resource"
+      modaltitle: "Add Resource"
     });
   };
 }
 
 const mapStateToProps = state => ({
-  resources: state.resources
+  resources: state.resources,
+  resourceCategories: state.resourceCategories,
+  session: state.session
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      saveOrgResources,
-      fetchOrgResources
+      fetchOrgResources,
+      fetchResourceCategories,
+      deleteOrgResource,
+      startLoaderAction,
+      stopLoaderAction
     },
     dispatch
   );

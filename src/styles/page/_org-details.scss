@@ -1,5 +1,6 @@
 .org-details-container {
   background-color: $org-detail-bg;
+  min-height:600px;
 
   .list-group-item {
     &:hover {
@@ -7,14 +8,18 @@
         display: block;
       }
     }
-    .action-icons {
-      transition: ease all .3s;
-      display: none;
-      &.active{
-        display: block;
-      }
-    }
+    // .action-icons {
+    //   transition: ease all .3s;
+    //   display: none;
+    //   &.active{
+    //     display: block;
+    //   }
+    // }
   }
+}
+
+.cursor-pointer { 
+  cursor: pointer;
 }
 
 .action-icons {
@@ -48,6 +53,12 @@
 .org-tag{
   &.orange{
     border-color: #ffc107
+  }
+  &.green{
+    color: #29950E    //normal priority
+  }
+  &.red{
+    color: #D0021B     //high priority
   }
   .org-tag-footer{
     padding: 0.1em 0em;

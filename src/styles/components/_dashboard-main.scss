@@ -5,8 +5,12 @@
   min-height: 0;
 }
 
+.d-flex{    // Firefox bug : to allow overflow in firefox
+  min-height: 0;
+}
+
 .dashboard-container{
-  overflow: hidden;
+  // overflow: hidden;
   //overflow-x: hidden;
   //overflow-y: auto;
   //overflow: auto;
@@ -20,7 +24,7 @@
     padding: 1rem;
     flex: 1;
     overflow-x: hidden;
-    overflow-y: auto;
+    // overflow-y: auto;
     -webkit-overflow-scrolling: touch; //momentum scroll
   }
   .dashboard-footer{

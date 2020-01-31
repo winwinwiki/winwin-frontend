@@ -12,6 +12,10 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
+//const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CompressionPlugin = require('compression-webpack-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -147,11 +151,24 @@ module.exports = {
           {
             test: /\.(js|jsx|mjs)$/,
             include: paths.appSrc,
+            exclude: /node_modules/,
             loader: require.resolve('babel-loader'),
             options: {
               
               compact: true,
             },
+          },
+          {
+            test: /\.(sa|sc)ss$/,
+            exclude: /node_modules/,
+            use: ExtractTextPlugin.extract({
+              fallback:'style-loader',
+              use: [
+                { loader: 'css-loader', options: { minimize: true } }, // translates CSS into CommonJS
+                //'postcss-loader',
+                "sass-loader", // compiles Sass to CSS, using Node Sass by default
+              ]
+            })
           },
           // The notation here is somewhat confusing.
           // "postcss" loader applies autoprefixer to our CSS.
@@ -247,6 +264,7 @@ module.exports = {
       minify: {
         removeComments: true,
         collapseWhitespace: true,
+        collapseInlineTagWhitespace: true,
         removeRedundantAttributes: true,
         useShortDoctype: true,
         removeEmptyAttributes: true,
@@ -262,6 +280,14 @@ module.exports = {
     // It is absolutely essential that NODE_ENV was set to production here.
     // Otherwise React will be compiled in the very slow development mode.
     new webpack.DefinePlugin(env.stringified),
+    new webpack.optimize.DedupePlugin(), //dedupe similar code 
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      filename: 'vendor.[chunkhash].js',
+      minChunks (module) {
+          return module.context && module.context.indexOf('node_modules') >= 0;
+      }
+    }),
     // Minify the code.
     new webpack.optimize.UglifyJsPlugin({
       compress: {
@@ -271,6 +297,7 @@ module.exports = {
         // Pending further investigation:
         // https://github.com/mishoo/UglifyJS2/issues/2011
         comparisons: false,
+        dead_code: true,
       },
       mangle: {
         safari10: true,
@@ -286,6 +313,7 @@ module.exports = {
     // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
     new ExtractTextPlugin({
       filename: cssFilename,
+      allChunks: true
     }),
     // Generate a manifest file which contains a mapping of all asset filenames
     // to their corresponding output file so that tools can pick it up without
@@ -329,6 +357,22 @@ module.exports = {
     // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
     // You can remove this if you don't use Moment.js:
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    
+    // new webpack.optimize.DedupePlugin(), //dedupe similar code 
+    new webpack.optimize.AggressiveMergingPlugin(),//Merge chunks
+    new StyleExtHtmlWebpackPlugin({
+      minify: true
+    }),
+    new CompressionPlugin({
+      filename: "[path].gz[query]",
+      algorithm: "gzip",
+      test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/,
+      threshold: 10240,
+      minRatio: 0.8
+    }),
+    new BundleAnalyzerPlugin({
+        analyzerMode: 'static'
+    })
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.

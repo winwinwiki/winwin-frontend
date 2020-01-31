@@ -39,7 +39,8 @@
 @import "node_modules/bootstrap/scss/_utilities";
 @import "node_modules/bootstrap/scss/_print";
 
-
+//sortable tree css
+@import 'node_modules/react-sortable-tree/style';
 
 //Custom styles.
 //@import "base/fonts";
@@ -78,6 +79,7 @@
 @import "components/list";
 @import "components/upload";
 @import "components/select";
+@import "components/react-toastify";
 
 
 //Pages Styles
@@ -88,4 +90,5 @@
 @import "page/login";
 @import "page/section-header";
 @import "page/user-profile";
+@import "page/react-autosuggest"
 

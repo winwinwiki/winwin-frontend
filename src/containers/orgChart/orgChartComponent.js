@@ -32,7 +32,9 @@ export class OrgChartComponent {
         return `<div class="title p-2">${node.name}</div>
                     <div class="content">
                         <div class="row m-0">
-                            <div class="col-sm-24 px-2">${node.location}</div>
+                            <div class="col-sm-24 px-2">${`${
+                              node.location.city
+                            } , ${node.location.country}`}</div>
                         </div>
                         <div class="row m-0">
                             <div class="col-sm-12 px-2">${

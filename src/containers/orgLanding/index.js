@@ -23,14 +23,16 @@ class OrgLanding extends React.Component {
       return null;
     }
     return (
-      <div className="d-flex flex-column h-100 w-100">
-        <Header history={history} />
-        <main role="main" className="dashboard-container">
-          <React.Fragment>
-            <SectionHeader />
-            {this.props.children}
-          </React.Fragment>
-        </main>
+      <div className="main-content d-flex flex-column container h-100">
+        <div className="d-flex flex-column h-100 w-100">
+          <Header history={history} />
+          <main role="main" className="dashboard-container">
+            <React.Fragment>
+              <SectionHeader />
+              {this.props.children}
+            </React.Fragment>
+          </main>
+        </div>
       </div>
     );
   }

@@ -1,34 +1,36 @@
-import { FP_REQUEST, FP_SUCCESS, FP_ERROR } from '../../constants/dispatch';
-import { api } from '../../api/api';
+import { FP_REQUEST, FP_SUCCESS, FP_ERROR } from "../../constants/dispatch";
+import { api } from "../../api/api";
 
-export const onSubmit = (params) => {
-    return dispatch => {
-        dispatch(fpRequest());
-        api("/users", "POST", params, true).then((response) => {
-            dispatch(fpSuccess(response));
-        }, (error) => {
-            dispatch(fpError(error));
-        });
-    }
-}
+export const onSubmit = params => {
+  return dispatch => {
+    dispatch(fpRequest());
+    api("/user/resetPassword", "POST", JSON.stringify(params), true).then(
+      response => {
+        dispatch(fpSuccess(response));
+      },
+      error => {
+        dispatch(fpError(error));
+      }
+    );
+  };
+};
 
 function fpRequest() {
-    return {
-        type: FP_REQUEST
-    };
+  return {
+    type: FP_REQUEST
+  };
 }
 
 function fpSuccess(response) {
-    return {
-        type: FP_SUCCESS,
-        response
-    };
+  return {
+    type: FP_SUCCESS,
+    response
+  };
 }
 
 function fpError(error) {
-    return {
-        type: FP_ERROR,
-        error
-    };
+  return {
+    type: FP_ERROR,
+    error
+  };
 }
-
