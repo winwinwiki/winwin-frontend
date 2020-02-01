@@ -1,4 +1,5 @@
 import React from "react";
+import { REACT_APP_KIBANA_DASHBOARD_URL } from "../../buildConfig/apiConfig";
 import "./index.css";
 
 const Auth = props => {
@@ -22,7 +23,7 @@ const Auth = props => {
                 Changing the way the world finds opportunities and solves problems
               </h1>
               <ul className="mt-5 pl-4">
-                <li><a className="login-page" href="http://wiki.winwin.care/" target="_blank" rel="noopener noreferrer">Explore</a> the Wiki Dashboard</li>
+                <li><a className="login-page" href={REACT_APP_KIBANA_DASHBOARD_URL} target="_blank" rel="noopener noreferrer">Explore</a> the Wiki Dashboard</li>
                 <li><a className="login-page" href="mailto:beth.roberts@winwin.care" target="_blank" rel="noopener noreferrer">Request</a> permission to edit wiki</li>
                 <li><a className="login-page" href="http://www.winwin.care" target="_blank" rel="noopener noreferrer">Learn</a> more about WinWin</li>
               </ul>
