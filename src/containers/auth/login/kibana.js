@@ -30,7 +30,7 @@ class KibanaLanding extends React.Component {
               <UserProfile />
             ) : (
                 <div>
-                  <p className="align-middle text-center mt-3 lead">You are not authorized to access the admin console. Please login to <mark><a href={REACT_APP_KIBANA_DASHBOARD_URL}>WinWin Wiki</a></mark>.</p>
+                  <p className="align-middle text-center mt-3 lead">You are not authorized to access the admin console. Please login to <mark><a href={REACT_APP_KIBANA_DASHBOARD_URL}>NewImpact Wiki</a></mark>.</p>
                 </div>
             )}
           </React.Fragment>

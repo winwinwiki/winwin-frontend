@@ -18,7 +18,7 @@ const PrivateRoute = ({
       let combinedProps = { ...rest, ...props };
       return authenticated === true ? (
         <DocumentTitle
-          title={title ? titleCase(title) + " - WinWin" : "WinWin"}
+          title={title ? titleCase(title) + " - NewImpact" : "NewImpact"}
         >
           {rest.perform ? (
             <Can
