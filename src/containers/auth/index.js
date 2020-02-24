@@ -6,14 +6,14 @@ const Auth = props => {
   return (
     <div className="main-content d-flex flex-column container">
       <div className="main-content d-flex flex-grow-1">
-        <main className="section-login p-3 flex-fill d-flex align-items-center">
+        <main className="section-login p-3 flex-fill d-flex align-items-center mb-5">
           <div className="login-container d-flex px-4">
             <div className="card card-login align-items-center">
-              <div className="my-5">
+              <div className="mt-5 mb-3">
                 <img
                   src="../images/newimpact_logo.svg"
                   alt="NewImpact logo"
-                  className="mb-2"
+                  className="mb-2 w-100"
                 />
               </div>
               {props.children}
