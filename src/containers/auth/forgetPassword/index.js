@@ -38,7 +38,7 @@ class ForgetPassword extends React.Component {
     let { email, emailError } = this.state;
     let { forgetPassword } = this.props;
     return (
-      <div className="w-100 flex-fill d-flex flex-column justify-content-center">
+      <div className="w-100 flex-fill d-flex flex-column">
         <NotificationToaster />
         {!forgetPassword.data && !forgetPassword.error ? (
           <div>

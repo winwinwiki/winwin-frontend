@@ -8850,7 +8850,6 @@ h5.modal-title {
 .card-login {
   width: 468px;
   min-height: 660px;
-  max-height: 90vh;
   border: none;
   border-radius: 0;
   padding: 3.5rem 2.1875rem;

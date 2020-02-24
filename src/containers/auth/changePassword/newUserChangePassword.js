@@ -127,7 +127,7 @@ class NewUserChangePassword extends React.Component {
   render() {
     let { retypeNewPass, newPassword, oldPassword, formError } = this.state;
     return (
-      <div className="w-100 flex-fill d-flex flex-column justify-content-center">
+      <div className="w-100 flex-fill d-flex flex-column">
         <NotificationToaster />
         <div className="form-group w-100 mb-4 login-form-group">
           <div className="d-flex">
