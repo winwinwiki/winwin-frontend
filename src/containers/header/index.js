@@ -20,7 +20,7 @@ const Header = props => {
           <Link to="/" className="navbar-brand">
             <img
               src="/images/winwin-logo-white.svg"
-              alt="WinWin logo"
+              alt="NewImpact logo"
               height="30"
               className="mb-2"
             />

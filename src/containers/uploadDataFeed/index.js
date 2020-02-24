@@ -26,7 +26,7 @@ class UploadDataFeed extends React.Component {
     }
   };
   componentDidMount() {
-    document.title = "Upload Data Feed - WinWin";
+    document.title = "Upload Data Feed - NewImpact";
   }
   componentWillReceiveProps(nextProps) {
     const { dataFeed } = this.props;

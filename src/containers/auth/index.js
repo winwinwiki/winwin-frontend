@@ -11,8 +11,8 @@ const Auth = props => {
             <div className="card card-login align-items-center">
               <div className="my-5">
                 <img
-                  src="../images/winwin-logo.svg"
-                  alt="WinWin logo"
+                  src="../images/newimpact_logo.svg"
+                  alt="NewImpact logo"
                   className="mb-2"
                 />
               </div>
@@ -24,8 +24,8 @@ const Auth = props => {
               </h1>
               <ul className="mt-5 pl-4">
                 <li><a className="login-page" href={REACT_APP_KIBANA_DASHBOARD_URL} target="_blank" rel="noopener noreferrer">Explore</a> the Wiki Dashboard</li>
-                <li><a className="login-page" href="mailto:beth.roberts@winwin.care" target="_blank" rel="noopener noreferrer">Request</a> permission to edit wiki</li>
-                <li><a className="login-page" href="http://www.winwin.care" target="_blank" rel="noopener noreferrer">Learn</a> more about WinWin</li>
+                <li><a className="login-page" href="mailto:beth.roberts@newimpact.care" target="_blank" rel="noopener noreferrer">Request</a> permission to edit wiki</li>
+                <li><a className="login-page" href="http://www.newimpact.care" target="_blank" rel="noopener noreferrer">Learn</a> more about NewImpact</li>
               </ul>
             </div>
           </div>
