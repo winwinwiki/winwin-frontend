@@ -19,10 +19,9 @@ const Header = props => {
         <div className="container">
           <Link to="/" className="navbar-brand">
             <img
-              src="/images/winwin-logo-white.svg"
+              src="/images/newimpact-logo-white.svg"
               alt="NewImpact logo"
-              height="30"
-              className="mb-2"
+              height="40"
             />
           </Link>
           <div className="navbar-nav-scroll">
