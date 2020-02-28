@@ -29,7 +29,7 @@ class UserProfile extends React.Component {
   };
 
   componentDidMount() {
-    document.title = "User Details - Winwin";
+    document.title = "User Details - NewImpact";
     const { session, location: { state: { email } = {} } = {} } = this.props;
 
     if (!session || !session.user || !session.isAuthenticated) {

@@ -24,7 +24,7 @@ export default connect(mapStateToProps)(
         >
           <DocumentTitle
             title={
-              props.title ? titleCase(props.title) + " - WinWin" : "WinWin"
+              props.title ? titleCase(props.title) + " - NewImpact" : "NewImpact"
             }
           >
             {Component && props.perform ? (

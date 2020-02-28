@@ -18,7 +18,7 @@ class CreateUser extends Component {
   };
 
   componentDidMount() {
-    document.title = "New User - WinWin";
+    document.title = "New User - NewImpact";
   }
 
   onChange = e => {

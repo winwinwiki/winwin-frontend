@@ -84,7 +84,7 @@ class Login extends React.Component {
     let { email, password, formError } = this.state;
     let { session } = this.props;
     return (
-      <div className="w-100 flex-fill d-flex flex-column justify-content-center">
+      <div className="w-100 flex-fill d-flex flex-column">
         <NotificationToaster />
         {/* {session && session.error && (
           <small className="form-element-hint text-danger">

@@ -21,7 +21,7 @@ const OrgLandingRoutes = props => (
     />
     <Switch>
       <PrivateRoute
-        title={"Organizations - WinWin"}
+        title={"Organizations - NewImpact"}
         authenticated={props.isAuthenticated}
         exact
         path="/organizations"

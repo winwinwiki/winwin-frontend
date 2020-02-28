@@ -3,7 +3,8 @@ const rules = {
     static: [
       "users:getSelf",
       "users:changePassword",
-      "users:edit"
+      "users:edit",
+      "users:feedback"
       // "organizations:list",
       // "organizationDetails:list",
       // "organizationDetailsDataSet:list",
@@ -100,7 +101,8 @@ const rules = {
       "users:getSelf",
       "users:edit",
       //user actions
-      "users:changePassword"
+      "users:changePassword",
+      "users:feedback"
     ]
   },
   writer: {
@@ -109,6 +111,7 @@ const rules = {
       "organizations:create",
       "users:getSelf",
       "users:changePassword",
+      "users:feedback",
       "home-page:visit",
       "dashboard-page:visit"
     ],
@@ -195,6 +198,7 @@ const rules = {
       "users:delete",
       "users:getSelf",
       "users:changePassword",
+      "users:feedback",
       //orgEdit history
       "organizationHistory:list",
       //notes

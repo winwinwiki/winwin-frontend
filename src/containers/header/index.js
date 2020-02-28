@@ -19,10 +19,9 @@ const Header = props => {
         <div className="container">
           <Link to="/" className="navbar-brand">
             <img
-              src="/images/winwin-logo-white.svg"
-              alt="WinWin logo"
-              height="30"
-              className="mb-2"
+              src="/images/newimpact-logo-white.svg"
+              alt="NewImpact logo"
+              height="40"
             />
           </Link>
           <div className="navbar-nav-scroll">
@@ -108,6 +107,13 @@ const Header = props => {
                       >
                         Publish To Kibana
                       </span>
+                    )}
+                  />
+                  <Can
+                    role={userInfo.role}
+                    perform="users:feedback"
+                    yes={() => (
+                      <a href="mailto:wiki-feedback-help@newimpact.care" className="dropdown-item" target="_blank" rel="noopener noreferrer">Send Feedback</a>
                     )}
                   />
                   <hr/>
