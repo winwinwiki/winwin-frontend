@@ -24,7 +24,7 @@ const Auth = props => {
               </h1>
               <ul className="mt-5 pl-4">
                 <li><a className="login-page" href={REACT_APP_KIBANA_DASHBOARD_URL} target="_blank" rel="noopener noreferrer">Explore</a> the Wiki Dashboard</li>
-                <li><a className="login-page" href="mailto:beth.roberts@newimpact.care" target="_blank" rel="noopener noreferrer">Request</a> permission to edit wiki</li>
+                <li><a className="login-page" href="mailto:wiki-edit-request@newimpact.care" target="_blank" rel="noopener noreferrer">Request</a> permission to edit wiki</li>
                 <li><a className="login-page" href="http://www.newimpact.care" target="_blank" rel="noopener noreferrer">Learn</a> more about NewImpact</li>
               </ul>
             </div>

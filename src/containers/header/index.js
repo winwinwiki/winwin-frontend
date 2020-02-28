@@ -109,6 +109,13 @@ const Header = props => {
                       </span>
                     )}
                   />
+                  <Can
+                    role={userInfo.role}
+                    perform="users:feedback"
+                    yes={() => (
+                      <a href="mailto:wiki-feedback-help@newimpact.care" className="dropdown-item" target="_blank" rel="noopener noreferrer">Send Feedback</a>
+                    )}
+                  />
                   <hr/>
                   <Can
                     role={userInfo.role}
