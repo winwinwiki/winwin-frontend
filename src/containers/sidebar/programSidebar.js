@@ -8,12 +8,12 @@ const subNavOptions = [
     path: ""
   },
   {
-    title: "Data Sets",
-    path: "data-sets"
-  },
-  {
     title: "Resources",
     path: "resources"
+  },
+  {
+    title: "Data Sets",
+    path: "data-sets"
   },
   {
     title: "Regions Served",
