@@ -107,8 +107,8 @@
     "start-test": "env-cmd -f .env.test npm run start",
     "build-staging": "env-cmd -f .env.staging npm run build",
     "start-staging": "env-cmd -f .env.staging npm run start",
-    "build-staging": "env-cmd -f .env.production npm run build",
-    "start-staging": "env-cmd -f .env.production npm run start",
+    "build-prod": "env-cmd -f .env.production npm run build",
+    "start-prod": "env-cmd -f .env.production npm run start",
     "test": "node scripts/test.js --env=jsdom",
     "build-css": "node-sass-chokidar --include-path ./src/styles --include-path ./node_modules src/styles/ -o public/styles/",
     "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src/styles --include-path ./node_modules src/styles/ -o public/styles/ --watch --recursive"
