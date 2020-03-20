@@ -299,7 +299,7 @@ class OrgList extends React.Component {
       accessor: "name",
       Cell: row => (
         <React.Fragment>
-          <Link
+          <a
             className="centerText orgName d-inline-block ml-1"
             style={{
               width: "100%",
@@ -307,11 +307,12 @@ class OrgList extends React.Component {
               textOverflow: "ellipsis",
               whiteSpace: "nowrap"
             }}
-            to={"organizations/" + row.original.id}
+            href={"organizations/" + row.original.id}
+            target="_blank"
             title={row.value}
           >
             {row.value}
-          </Link>
+          </a>
         </React.Fragment>
       ),
       width: 280,
