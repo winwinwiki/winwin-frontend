@@ -33,7 +33,7 @@ const rules = {
       "organizations:delete",
       //naics ntee
       "naics:list",
-      "naics:list",
+      "ntee:list",
       //orgdetails
       "organizationDetails:list",
       "organizationDetails:edit",
@@ -136,7 +136,7 @@ const rules = {
       "organizationDetails:edit",
       //naics ntee
       "naics:list",
-      "naics:list",
+      "ntee:list",
       //org chart
       "organizationsChart:list",
       "organizationsChart:get",
