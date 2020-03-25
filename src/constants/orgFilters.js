@@ -48,6 +48,7 @@ export const OrgFilters = {
     city: "",
     county: "",
     state: "",
-    country: ""
+    country: "",
+    nameSearch:""
   }
 }
