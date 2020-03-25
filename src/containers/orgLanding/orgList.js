@@ -330,7 +330,8 @@ class OrgList extends React.Component {
             //value={this.state.nameSearch || ""}
             defaultValue={this.state.nameSearch || ""}
             onKeyPress={event => {
-              if (this.nameSearchInput.current.value != "" && (event.keyCode === 13 || event.which === 13)) {
+              if (this.nameSearchInput.current.value !== this.nameSearchInput.current.defaultValue &&
+                  (event.keyCode === 13 || event.which === 13)) {
                 this.handleFilteredChange(event.target.value);
               }
             }}
@@ -565,6 +566,7 @@ class OrgList extends React.Component {
     this.props.fetchOrganisationsList({ pageNo, pageSize: 10 });
     this.props.setAppliedFilters(filtersObj, { pageNo, pageSize: 10 }); // Only affects the UI. Do not make fetch call.
     this.nameSearchInput.current.value = "";
+    this.nameSearchInput.current.defaultValue = "";
     this.resetPagination({ resetAll: true });
   };
 

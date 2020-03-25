@@ -33,7 +33,12 @@ import { OrgFilters } from '../../../constants/orgFilters';
 var classNames = require("classnames");
 
 class AppliedOrgFiltersList extends React.Component {
-  state = Object.assign({}, OrgFilters.defaultFilters);
+  constructor(props) {
+    super(props);
+    this.state = this.getInitialState();
+  }
+
+  getInitialState = () => (Object.assign({}, OrgFilters.defaultFilters))
 
   componentDidMount() {
     const { session } = this.props;
@@ -76,7 +81,10 @@ class AppliedOrgFiltersList extends React.Component {
       nextProps.appliedFilterList &&
       !isEqualWith(nextProps.appliedFilterList, this.state, filterComparator)
     ) {
-      this.setState(nextProps.appliedFilterList);
+      // Clear the state and update with new incoming state
+      this.setState(this.getInitialState(), () => {
+        this.setState(nextProps.appliedFilterList);
+      });
     }
   }
 
