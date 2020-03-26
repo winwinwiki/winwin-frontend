@@ -703,22 +703,22 @@ class OrgList extends React.Component {
 
   onDropdownChange = (e, val) => {
     let { selectedOrgList } = this.state;
-    if (val === markReadyForTagging) {
-      selectedOrgList.map(x => {
-        x.tagStatus = priorityStatus[val];
-        x.naicsCode = (x.naicsCode && x.naicsCode.id) || "";
-        x.nteeCode = (x.nteeCode && x.nteeCode.id) || "";
-        return x;
-      });
-    } else {
-      selectedOrgList.map(x => {
-        x.priority = priorityStatus[val];
-        x.naicsCode = (x.naicsCode && x.naicsCode.id) || "";
-        x.nteeCode = (x.nteeCode && x.nteeCode.id) || "";
-        return x;
-      });
-    }
     if (selectedOrgList && selectedOrgList.length) {
+      if (val === markReadyForTagging) {
+        selectedOrgList.map(x => {
+          x.tagStatus = priorityStatus[val];
+          x.naicsCode = (x.naicsCode && x.naicsCode.id) || x.naicsCode || "";
+          x.nteeCode = (x.nteeCode && x.nteeCode.id) || x.nteeCode || "";
+          return x;
+        });
+      } else {
+        selectedOrgList.map(x => {
+          x.priority = priorityStatus[val];
+          x.naicsCode = (x.naicsCode && x.naicsCode.id) || x.naicsCode || "";
+          x.nteeCode = (x.nteeCode && x.nteeCode.id) || x.nteeCode || "";
+          return x;
+        });
+      }
       this.props.onSaveOrgBasicInfo(selectedOrgList);
     }
     else{
