@@ -4,7 +4,6 @@ import { Switch } from "react-router";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-import { fetchOrganisationDetail } from "../../actions/orgDetail/orgDetailAction";
 import PrivateRoute from "../privateRouter";
 import ProgramDetail from "./";
 import ProgramDetailPage from "./programDetailPage";
@@ -22,14 +21,6 @@ class ProgramDetailRoutes extends React.Component {
     this.state = {
       progDetail: {}
     };
-  }
-
-  componentDidMount() {
-    const { match } = this.props;
-    this.props.fetchOrganisationDetail({
-      orgId: match.params.id,
-      programId: match.params.programId
-    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -140,7 +131,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      fetchOrganisationDetail
+      
     },
     dispatch
   );
