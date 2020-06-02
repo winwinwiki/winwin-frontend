@@ -67,14 +67,14 @@ export function modifiyFilterList(list) {
 
   if (
     list["pageNo"] ||
-    list["pageSize"] ||
+    list["pageSize"] /*||
     list["createdBy"] ||
-    list["editedBy"]
+    list["editedBy"]*/
   ) {
     desiredList["pageNo"] = list["pageNo"];
     desiredList["pageSize"] = list["pageSize"];
-    desiredList["createdBy"] = list["createdBy"];
-    desiredList["editedBy"] = list["editedBy"];
+    /*desiredList["createdBy"] = list["createdBy"];
+    desiredList["editedBy"] = list["editedBy"];*/
   }
 
   if (list[CITY]) desiredList[CITY] = list[CITY];
