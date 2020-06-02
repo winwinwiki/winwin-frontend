@@ -28,8 +28,20 @@ class ProgramDetailPage extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.programDetail !== prevProps.programDetail) {
       if (!this.props.programDetail.error) {
+        let progDetail = {};
+        if(this.props.programDetail.data 
+          && this.props.programDetail.data.response 
+          && Array.isArray(this.props.programDetail.data.response)){
+          progDetail.data = {};
+          progDetail.data.response = this.props.programDetail.data.response[0];
+        }
+        else{
+          progDetail = this.props.programDetail;
+        }
+        
+        console.log('updating program details with',progDetail);
         this.setState({
-          programDetail: Object.assign({}, this.props.programDetail.data)
+          programDetail: Object.assign({}, progDetail.data)
         });
       }
     }
