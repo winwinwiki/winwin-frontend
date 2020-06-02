@@ -3,6 +3,11 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { saveProgramDetailsAction } from "../../actions/program/saveProgramDetailsAction";
 import { deleteProgram } from "../../actions/program/deleteProgramAction";
+import { fetchProgramDetail } from "../../actions/orgDetail/orgDetailAction";
+import {
+  startLoaderAction,
+  stopLoaderAction
+} from "../../actions/common/loaderActions";
 import { PopupModal } from "../ui/popupModal";
 //import { push } from "react-router-redux";
 import { push } from 'connected-react-router';
@@ -14,16 +19,23 @@ class ProgramDetailPage extends Component {
   //};
   constructor(props) {
     super(props);
-  this.state = {
-    editProgramDetail: false,
-    programDetail: "",
-    formError: {
-      name: null
-    }
-  };
-  this.validateForm = this.validateForm.bind(this);
-  
-}
+    this.state = {
+      editProgramDetail: false,
+      programDetail: "",
+      formError: {
+        name: null
+      }
+    };
+    this.validateForm = this.validateForm.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.startLoaderAction();
+    console.log('program detail mounted');
+    this.props.fetchProgramDetail({
+      programId: this.props.programId
+    });
+  }
 
   componentDidUpdate(prevProps) {
     if (this.props.programDetail !== prevProps.programDetail) {
@@ -43,6 +55,8 @@ class ProgramDetailPage extends Component {
         this.setState({
           programDetail: Object.assign({}, progDetail.data)
         });
+
+        this.props.stopLoaderAction();
       }
     }
   }
@@ -272,7 +286,10 @@ const mapDispatchToProps = dispatch =>
     {
       changePage: orgId => push(`/organizations/${orgId}/programs`),
       saveProgramDetailsAction,
-      deleteProgram
+      deleteProgram,
+      startLoaderAction,
+      stopLoaderAction,
+      fetchProgramDetail
     },
     dispatch
   );
