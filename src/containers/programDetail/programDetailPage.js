@@ -3,6 +3,11 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { saveProgramDetailsAction } from "../../actions/program/saveProgramDetailsAction";
 import { deleteProgram } from "../../actions/program/deleteProgramAction";
+import { fetchProgramDetail } from "../../actions/orgDetail/orgDetailAction";
+import {
+  startLoaderAction,
+  stopLoaderAction
+} from "../../actions/common/loaderActions";
 import { PopupModal } from "../ui/popupModal";
 //import { push } from "react-router-redux";
 import { push } from 'connected-react-router';
@@ -14,23 +19,44 @@ class ProgramDetailPage extends Component {
   //};
   constructor(props) {
     super(props);
-  this.state = {
-    editProgramDetail: false,
-    programDetail: "",
-    formError: {
-      name: null
-    }
-  };
-  this.validateForm = this.validateForm.bind(this);
-  
-}
+    this.state = {
+      editProgramDetail: false,
+      programDetail: "",
+      formError: {
+        name: null
+      }
+    };
+    this.validateForm = this.validateForm.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.startLoaderAction();
+    console.log('program detail mounted');
+    this.props.fetchProgramDetail({
+      programId: this.props.programId
+    });
+  }
 
   componentDidUpdate(prevProps) {
     if (this.props.programDetail !== prevProps.programDetail) {
       if (!this.props.programDetail.error) {
+        let progDetail = {};
+        if(this.props.programDetail.data 
+          && this.props.programDetail.data.response 
+          && Array.isArray(this.props.programDetail.data.response)){
+          progDetail.data = {};
+          progDetail.data.response = this.props.programDetail.data.response[0];
+        }
+        else{
+          progDetail = this.props.programDetail;
+        }
+        
+        console.log('updating program details with',progDetail);
         this.setState({
-          programDetail: Object.assign({}, this.props.programDetail.data)
+          programDetail: Object.assign({}, progDetail.data)
         });
+
+        this.props.stopLoaderAction();
       }
     }
   }
@@ -260,7 +286,10 @@ const mapDispatchToProps = dispatch =>
     {
       changePage: orgId => push(`/organizations/${orgId}/programs`),
       saveProgramDetailsAction,
-      deleteProgram
+      deleteProgram,
+      startLoaderAction,
+      stopLoaderAction,
+      fetchProgramDetail
     },
     dispatch
   );

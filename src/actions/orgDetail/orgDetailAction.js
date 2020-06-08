@@ -36,6 +36,20 @@ export const fetchOrganisationDetail = params => {
   };
 };
 
+export const fetchProgramDetail = params => {
+  return dispatch => {
+    let url = "/program/" + params.programId;
+    api(url, "GET", {}, true).then(
+      response => {
+        dispatch(fetchProgDetailSuccess(response));
+      },
+      error => {
+        dispatch(fetchProgDetailError(error));
+      }
+    );
+  };
+};
+
 export const onSaveOrgBasicInfo = params => {
   return dispatch => {
     dispatch(saveOrgBasicInfoReq());
