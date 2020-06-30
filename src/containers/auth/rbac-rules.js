@@ -97,6 +97,8 @@ const rules = {
       "organizationNotes:list",
       "organizationNotes:create",
       "organizationNotes:delete",
+      //usermanagement
+      "users:list",
       //user profile
       "users:getSelf",
       "users:edit",
