@@ -27,7 +27,7 @@ const UserManagementRoutes = props => (
         authenticated={props.isAuthenticated}
         exact
         path="/user-management"
-        perform="users:list"
+        perform="users:manage"
         component={UserList}
       />
       <PrivateRoute
