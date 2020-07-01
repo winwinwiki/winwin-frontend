@@ -195,6 +195,7 @@ const rules = {
       "programDetailsSDGTags:edit",
       //usermanagement
       "users:list",
+      "users:manage",
       "users:create",
       "users:edit",
       "users:delete",
