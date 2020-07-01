@@ -89,7 +89,7 @@ const Header = props => {
                   />
                   <Can
                     role={userInfo.role}
-                    perform="users:list"
+                    perform="users:manage"
                     yes={() => (
                       <Link to="/user-management" className="dropdown-item">
                         User Management
