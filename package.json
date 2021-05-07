@@ -33,7 +33,7 @@
     "history": "4.7.2",
     "jest": "20.0.4",
     "jwt-decode": "^2.2.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "lorem-ipsum": "^2.0.1",
     "match-sorter": "^2.3.0",
     "moment": "^2.24.0",
