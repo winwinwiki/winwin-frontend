@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "ajv": "^6.10.0",
+    "ajv": "^6.12.3",
     "autoprefixer": "7.1.6",
     "aws-amplify": "^1.1.22",
     "babel-core": "^6.26.3",
